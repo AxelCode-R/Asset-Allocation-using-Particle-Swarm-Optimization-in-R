@@ -1,22 +1,25 @@
 --- 
-title: "A GitBook Example for Teaching"
-author: "[dr. Caspar J. van Lissa](https://www.uu.nl/staff/CJvanLissa)"
+title: "Master-Thesis"
+author: "Axel Roth"
 date: "`r Sys.Date()`"
 description: This GitBook is an example of a GitBook for teaching. It can be 
   adapted for specific courses. The output format for this example
   is bookdown::gitbook.
 documentclass: book
 classoption: oneside
-github-repo: cjvanlissa/gitbook-demo
+github-repo: AxelCode-R/Master-Thesis
 link-citations: yes
 bibliography:
 - book.bib
 - packages.bib
 site: bookdown::bookdown_site
 biblio-style: apalike
+editor_options: 
+  chunk_output_type: console
 ---
-```{r, include=FALSE}
-# bookdown::render_book('index.Rmd', 'bookdown::pdf_book')
+```{r, include=FALSE, eval=FALSE}
+Sys.setenv(R_GSCMD="C:\\Program Files (x86)\\gs\\gs9.55.0\\bin\\gswin32.exe")
+bookdown::render_book('index.Rmd', 'bookdown::pdf_book')
 ```
 
 
