@@ -23,6 +23,16 @@ bookdown::render_book('index.Rmd', 'bookdown::pdf_book')
 ```
 
 
+```{r, include=FALSE, eval=FALSE}
+library(httr)
+
+headers = c('Upgrade-Insecure-Requests' = '1')
+
+params = list('datatype' = 'json')
+
+res <- httr::GET(url = 'https://financialmodelingprep.com/api/v3/financial-statement-symbol-lists', httr::add_headers(.headers=headers), query = params)
+```
+
 <!--"Using GitBooks to create Open course materials"-->
 # About GitBooks
 asdasdasd
