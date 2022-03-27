@@ -2,22 +2,35 @@ library(dplyr)
 library(xts)
 library(lubridate)
 
+source("R/calculations.R")
+source("R/plotly_charts.R")
+
 dates <- seq.Date(from = as.Date("2022-01-01"), to=as.Date("2022-01-20"), by="days")
 
 
 fund <- NULL
 
-pool_n <- 10
+pool_n <- 100
 
 
-bm_pool <- xts(x = sapply(1:pool_n/1000, function(x){
-  rnorm(length(dates), mean = x, sd = 0.01+0.005*runif(1)-x)
-}), order.by = dates)
+bm_pool <- xts(x = sapply(0.01+0.05*(1:pool_n)/sum(1:pool_n)+rnorm(pool_n, 0, 0.0005), function(x){
+  rnorm(length(dates), mean = x, sd = x*5)#*(1+rnorm(length(dates), mean=0, sd=0.1))
+}), order.by = dates) %>%
+  setNames(paste0("asset_",1:pool_n))
 
-bm <- xts(x = bm_pool %*% (1:pool_n/sum(1:pool_n)), order.by = dates)
+
+random_wgt <- abs(rnorm(pool_n, mean=1/pool_n, sd=1/pool_n))
+bm <- xts(x = bm_pool %*% (random_wgt/sum(random_wgt)), order.by = dates) %>%
+  setNames("BM")
+
+plotly_line_chart_xts(return_to_kurs(bm))
+
+bm_kurs <- return_to_kurs(bm_pool)
+#plotly_line_chart_xts(bm_kurs)
+
 
 rule <- list()
-rule$n <- 4
+rule$n <- round(pool_n*0.5)
 
 opt <- list()
 opt$iter <- 10000
@@ -37,10 +50,11 @@ fitness_f <- function(fund_xts_return, bm_xts_return, lambda){
   lambda * tracking_error(fund_xts_return, bm_xts_return) - (1-lambda) * excess_return(fund_xts_return, bm_xts_return)
 }
 
+samples_n <- 20
 
-init_funds <- matrix(runif(100), ncol = 10) %>%
+init_funds <- matrix(runif(pool_n*samples_n), ncol = pool_n, nrow=samples_n) %>%
   {./rowSums(.)}
-row.names(init_funds) <- paste0("Fund_",1:10)
+row.names(init_funds) <- paste0("Fund_",1:samples_n)
 
 
 
@@ -54,16 +68,16 @@ for(i in 1:opt$iter){
   fitness_funds <- apply(init_funds_return, 2, function(x){fitness_f(fund_xts_return=x, bm_xts_return=bm, lambda=0.5)})
 
 
-  groups <- sample(c(rep(T,5),rep(F,5)), 10)
+  groups <- sample(c(rep(T,ceiling(samples_n/2)),rep(F,ceiling(samples_n/2))), samples_n)
   parents <- names(c(which(fitness_funds==min(fitness_funds[groups]))[1],which(fitness_funds==min(fitness_funds[!groups]))[1]))
-  cross_rand <- sample(c(rep(T,5),rep(F,5)), 10)
-  child_1 <- colSums(init_funds[parents,] * matrix(c(cross_rand, !cross_rand), ncol=10, byrow = T))
-  child_1 <- child_1 * (1+rnorm(10, mean = 0, sd = 0.01))
+  cross_rand <- sample(c(rep(T,ceiling(pool_n/2)),rep(F,ceiling(pool_n/2))), pool_n)
+  child_1 <- colSums(init_funds[parents,] * matrix(c(cross_rand, !cross_rand), ncol=pool_n, byrow = T))
+  child_1 <- child_1 * (1+rnorm(pool_n, mean = 0, sd = 0.01))
   #child_1[!child_1 %in% child_1[child_1 >= sort(child_1, decreasing = T)[rule$n]]] <- 0
   child_1[sample(1:length(child_1), size = sum(child_1!=0)-rule$n, prob = abs(child_1)/sum(abs(child_1)))] <- 0
   child_1 <- child_1/sum(child_1)
-  child_2 <- colSums(init_funds[parents,] * matrix(c(!cross_rand, cross_rand), ncol=10, byrow = T))
-  child_2 <- child_2 * (1+rnorm(10, mean = 0, sd = 0.01))
+  child_2 <- colSums(init_funds[parents,] * matrix(c(!cross_rand, cross_rand), ncol=pool_n, byrow = T))
+  child_2 <- child_2 * (1+rnorm(pool_n, mean = 0, sd = 0.01))
   #child_2[!child_2 %in% child_2[child_2 >= sort(child_2, decreasing = T)[rule$n]]] <- 0
   child_2[sample(1:length(child_2), size = sum(child_2!=0)-rule$n, prob = abs(child_2)/sum(abs(child_2)))] <- 0
   child_2 <- child_2/sum(child_2)
@@ -107,4 +121,71 @@ suppressPlotlyMessage({
 
 
 child_1
+
+
+
+
+
+
+
+
+
+
+
+
+
+### nochmal
+
+library(dplyr)
+library(xts)
+library(lubridate)
+
+for(src in list.files("R")){
+  source(paste0("R/", src))
+}
+
+load("R-research/returns_df.rdata")
+pool_returns_df <- returns_df
+rownames(pool_returns_df) <- seq.Date(from = Sys.Date()-nrow(pool_returns_df)+1, to=Sys.Date(), by="days")
+
+init_optimizer <- function(pool_returns_df){
+
+  v <- list(
+    "pool" = list(
+      "returns" = NULL,
+      "assets_n" = NULL,
+      "days_n" = NULL
+    ),
+    "fund" = list(
+      "wgts" = NULL,
+      "returns" = NULL
+    ),
+    "bm" = list(
+      "wgts" = NULL,
+      "returns" = NULL
+    ),
+    "options" = list(
+      "iter" = 5000
+    ),
+    "result" = list(
+
+    )
+  )
+
+  v$pool$returns <- xts(pool_returns_df, order.by = as.Date(rownames(pool_returns_df)))
+  v$pool$assets_n <- ncol(v$pool$returns)
+  v$pool$days_n <- nrow(v$pool$returns)
+
+  v$bm$wgts <- rep(1/ncol(v$pool$returns),ncol(v$pool$returns))
+
+  v$bm$returns <- xts(v$pool$returns %*% rep(1/v$pool$assets_n,v$pool$assets_n), order.by=index(v$pool$returns))
+
+  return(v)
+}
+
+
+# plotly_line_chart_xts(return_to_kurs(bm$returns))
+
+
+
 

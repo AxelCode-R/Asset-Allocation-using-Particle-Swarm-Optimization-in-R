@@ -653,3 +653,6 @@ paste("Portfolio Std dev:", round(sqrt(opt$par %*% cov_mat %*% opt$par), 5))
 
 sum(opt$par)
 
+
+
+
