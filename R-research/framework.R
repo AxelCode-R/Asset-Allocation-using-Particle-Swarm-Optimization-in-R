@@ -23,9 +23,9 @@ random_wgt <- abs(rnorm(pool_n, mean=1/pool_n, sd=1/pool_n))
 bm <- xts(x = bm_pool %*% (random_wgt/sum(random_wgt)), order.by = dates) %>%
   setNames("BM")
 
-plotly_line_chart_xts(return_to_kurs(bm))
+plotly_line_chart_xts(return_to_cumret(bm))
 
-bm_kurs <- return_to_kurs(bm_pool)
+bm_kurs <- return_to_cumret(bm_pool)
 #plotly_line_chart_xts(bm_kurs)
 
 
@@ -148,24 +148,38 @@ load("R-research/returns_df.rdata")
 pool_returns_df <- returns_df
 rownames(pool_returns_df) <- seq.Date(from = Sys.Date()-nrow(pool_returns_df)+1, to=Sys.Date(), by="days")
 
-init_optimizer <- function(pool_returns_df){
+init_optimizer <- function(pool_returns_df, bm_wgts){
 
   v <- list(
     "pool" = list(
       "returns" = NULL,
+      "mean_returns" = NULL,
       "assets_n" = NULL,
-      "days_n" = NULL
+      "days_n" = NULL,
+      "cov" = NULL
     ),
     "fund" = list(
       "wgts" = NULL,
       "returns" = NULL
+    ),
+    "algorithm" = list(
+      "pso_pkg" = list(
+        "fun" = NULL,
+        "risk_factor_intensity" = list("mean"=1, "sd"=10, "sum_wgts"=10, "tracking_error"=10, "assets_n"=10)
+      )
     ),
     "bm" = list(
       "wgts" = NULL,
       "returns" = NULL
     ),
     "options" = list(
-      "iter" = 5000
+      "iter" = 5000,
+      "rebalance_on" = NULL,
+      "round_at" = 6
+    ),
+    "constraints" = list(
+      "sum_wgts" = 1,
+      "assets_n" = NULL
     ),
     "result" = list(
 
@@ -173,8 +187,10 @@ init_optimizer <- function(pool_returns_df){
   )
 
   v$pool$returns <- xts(pool_returns_df, order.by = as.Date(rownames(pool_returns_df)))
+  v$pool$mean_returns <- sapply(v$pool$returns, mean)
   v$pool$assets_n <- ncol(v$pool$returns)
   v$pool$days_n <- nrow(v$pool$returns)
+  v$pool$cov <- cov(v$pool$returns)
 
   v$bm$wgts <- rep(1/ncol(v$pool$returns),ncol(v$pool$returns))
 
@@ -183,8 +199,77 @@ init_optimizer <- function(pool_returns_df){
   return(v)
 }
 
+v <- init_optimizer(
+  pool_returns_df = pool_returns_df
+)
 
-# plotly_line_chart_xts(return_to_kurs(bm$returns))
+v$options$rebalance_on <- seq.Date(from = as.Date(paste0(substr(Sys.Date()-nrow(pool_returns_df)+1,1,8),substr(Sys.Date(),9,10))), to=Sys.Date(), by="months") %>% last(5)
+# plotly_line_chart_xts(return_to_cumret(bm$returns))
+
+v$constraints$assets_n <- 10
+
+
+
+obj_func_TE <- function(wgts,
+                        v){
+
+  intensitys <- v$algorithm$pso_pkg$risk_factor_intensity
+
+  port_returns <- v$pool$mean_returns %*% wgts
+  port_risk <- t(wgts) %*% v$pool$cov %*% wgts
+  port_returns_ts <- v$pool$returns %*% wgts #as.matrix(v$pool$returns) %*% t(t(wgts))
+
+  # maximize returns
+  obj <- - intensitys$mean * port_returns
+
+  # minimize sd/risk
+  obj <- obj + intensitys$sd * port_risk
+
+  # sum up to sum_wgts (v$constraints$sum_wgts)
+  obj <- obj + intensitys$sum_wgts * (sum(wgts) - v$constraints$sum_wgts)^2
+
+  # minimize tracking error
+  obj <- obj + intensitys$tracking_error * sd(port_returns_ts - v$bm$returns)
+
+  # target cardinality constrain of n (v$constraints$assets_n) assets
+  if(!is.null(v$constraints$assets_n)){
+    obj <- obj + intensitys$assets_n * ((sum(round(wgts,v$options$round_at)!=0)-v$constraints$assets_n)/v$pool$assets_n)^2
+  }
+
+  return(obj)
+}
+
+
+#v$algorithm$pso_pkg <- function(v){
+
+  opt <- psoptim(
+     par = rep(0, v$pool$assets_n),
+     fn = obj_func_TE,
+     v = v,
+     lambda1 = 10, risk_av = 1000,
+     lower = rep(0, n_stocks),
+     upper = rep(1, n_stocks),
+     control = list(
+       maxit = 500,
+       s = 100,
+       maxit.stagnate = 500,
+       trace=1
+     )
+  )
+
+  v$fund$wgts <- opt$par
+  v$fund$returns <- xts(v$pool$returns %*% opt$par, order.by=as.Date(index(v$pool$returns)))
+
+
+  plotly_line_chart_xts(return_to_cumret(cbind.xts("Fund"=v$fund$returns, "BM"=v$bm$returns)))
+#}
+
+
+
+
+
+
+
 
 
 
