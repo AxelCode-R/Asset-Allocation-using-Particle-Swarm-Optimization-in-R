@@ -216,7 +216,7 @@ v$constraints$assets_n <- 10
 
 
 
-obj_func <- function(wgts, v, date, cov, mean_returns){
+obj_func <- function(wgts, v, data_date, cov, mean_returns){
 
   intensitys <- v$algorithm$pso_pkg$settings$risk_factor_intensity
 
@@ -232,7 +232,7 @@ obj_func <- function(wgts, v, date, cov, mean_returns){
 
   # minimize tracking error with decreasing intensity
   te_settings <- v$algorithm$pso_pkg$settings$tracking_error
-  temp_te <- (1-(1-te_settings$reduce_historical_intensity_to)*length(v$bm$returns[paste0("/",date-1),]):1/length(v$bm$returns[paste0("/",date-1),])) * (v$pool$returns[paste0("/",date-1),] %*% wgts - v$bm$returns[paste0("/",date-1),])
+  temp_te <- (1-(1-te_settings$reduce_historical_intensity_to)*length(v$bm$returns[paste0("/",data_date-1),]):1/length(v$bm$returns[paste0("/",data_date-1),])) * (v$pool$returns[paste0("/",data_date-1),] %*% wgts - v$bm$returns[paste0("/",data_date-1),])
   temp_te[temp_te>0] <- temp_te[temp_te>0] * te_settings$reduce_positivs
   obj <- obj + intensitys$tracking_error * sd(temp_te)
 
@@ -255,15 +255,15 @@ v$algorithm$pso_pkg$fun <- function(v){
   for(i in 1:length(v$options$rebalance_at)){
     print(i)
 
-    date <- v$options$rebalance_at[i]-1
-    mean_returns <- sapply(v$pool$returns[paste0("/",date),], mean)
-    cov <- cov(v$pool$returns[paste0("/",date),])
+    date <- v$options$rebalance_at[i]
+    mean_returns <- sapply(v$pool$returns[paste0("/",date-1),], mean)
+    cov <- cov(v$pool$returns[paste0("/",date-1),])
 
     opt <- psoptim(
       par = if(!is.null(v$fund$wgts)){v$fund$wgts}else{rep(0, v$pool$assets_n)},
       fn = obj_func,
       v = v,
-      date = date,
+      data_date = date-1,
       cov = cov,
       mean_returns = mean_returns,
       lower = rep(0, v$pool$assets_n),
@@ -279,15 +279,15 @@ v$algorithm$pso_pkg$fun <- function(v){
 
     train_interval <- seq.Date(
       from = if(length(v$options$rebalance_at[i-1])==0){v$options$rebalance_at[i]-30}else{v$options$rebalance_at[i-1]},
-      to = date,
+      to = date-1,
       by = "days"
     )
 
 
     test_interval <- if(!is.na(v$options$rebalance_at[i+1])){
       seq.Date(
-        from = date+1,
-        to = v$options$rebalance_at[i+1],
+        from = date,
+        to = v$options$rebalance_at[i+1]-1,
         by = "days"
       )
     }else{NULL}
@@ -295,7 +295,7 @@ v$algorithm$pso_pkg$fun <- function(v){
 
 
     l <- list(
-      "date" = date+1,
+      "date" = date,
       "wgts" = round(opt$par, v$options$round_at)
     )
 
@@ -337,14 +337,10 @@ v_backtest_returns <- function(v){
 
 
     returns <- cbind.xts(
-      "Fund" = xts(v$pool$returns[paste0(res$date+1,"/",v$results[[i+1]]$date),] %*% res$wgts, order.by=as.Date(index(v$bm$returns[paste0(res$date+1,"/",v$results[[i+1]]$date),]))),
-      "BM" = v$bm$returns[paste0(res$date+1,"/",v$results[[i+1]]$date),]
+      "Fund" = xts(v$pool$returns[paste0(res$date,"/",v$results[[i+1]]$date-1),] %*% res$wgts, order.by=as.Date(index(v$bm$returns[paste0(res$date,"/",v$results[[i+1]]$date-1),]))),
+      "BM" = v$bm$returns[paste0(res$date,"/",v$results[[i+1]]$date-1),]
     )
 
-    annotation_data <- bind_rows(
-      annotation_data,
-      data.frame("Date"=res$date, "TE_train"=round(res$tracking_error_train,6), "TE_test"=round(res$tracking_error_test,6), "change"=if(is.null(res$percent_change)){1}else{round(res$percent_change,6)}, "TE_test_calced"=round(sum((returns$Fund-returns$BM)^2),6))
-    )
 
     df_returns_not_split <- data.frame("Date"=index(returns), as.data.frame(returns))
     rownames(df_returns_not_split) <- NULL
@@ -365,6 +361,11 @@ v_backtest_returns <- function(v){
       df_returns_split
     )
 
+    annotation_data <- bind_rows(
+      annotation_data,
+      data.frame("Date"=res$date, "TE_train"=round(res$tracking_error_train,6), "TE_test"=round(res$tracking_error_test,6), "change"=if(is.null(res$percent_change)){1}else{round(res$percent_change,6)}, "Alpha"=paste0(round(last(returns$Fund-returns$BM),2), " %"))
+    )
+
   }
 
   all_returns_not_split <- return_to_cumret(xts(all_returns_not_split[,-1], order.by=as.Date(all_returns_not_split$Date)))
@@ -373,12 +374,12 @@ v_backtest_returns <- function(v){
 
 
   p_split <- plot_ly() %>%
-    add_trace(x=all_returns$Date, y=all_returns$Fund, name="Fund", mode="lines", type = 'scatter') %>%
-    add_trace(x=all_returns$Date, y=all_returns$BM, name="BM", mode="lines", type = 'scatter') %>%
+    add_trace(x=all_returns_split$Date, y=all_returns_split$Fund, name="Fund", mode="lines", type = 'scatter') %>%
+    add_trace(x=all_returns_split$Date, y=all_returns_split$BM, name="BM", mode="lines", type = 'scatter') %>%
     add_annotations(
       x = annotation_data$Date,
-      y = max(all_returns[,2:3], na.rm = T)*1.1,
-      text = paste0("TE_train: ", annotation_data$TE_train, "\nTE_test: ", annotation_data$TE_test, "\nTE_test_calced: ", annotation_data$TE_test_calced, "\nchange: ", annotation_data$change),
+      y = max(all_returns_split[,2:3], na.rm = T)*1.1,
+      text = paste0("TE_train: ", annotation_data$TE_train, "\nTE_test: ", annotation_data$TE_test, "\nAlpha: ", annotation_data$Alpha, "\nchange: ", annotation_data$change),
       xref = "x",
       yref = "y",
       showarrow=F) %>%
@@ -387,10 +388,11 @@ v_backtest_returns <- function(v){
     )
 
 
-  return(list(p_not_split, p_split))
+  return(list("p_not_split"=p_not_split, "p_split"=p_split))
 
 }
 
 
-
-
+plot_list <- v_backtest_returns(v)
+plot_list$p_not_split
+plot_list$p_split
