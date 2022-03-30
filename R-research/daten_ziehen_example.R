@@ -370,6 +370,18 @@ for(i in 1:length(uni_spx_ticker)){
 x = data.frame(jsonlite::fromJSON(paste0("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAP&outputsize=compact&apikey=O4AMN6UP1CNSQ13Z")))
 
 
+k=2
+system.time({
+  for(i in 1:2){
+    x = data.frame(jsonlite::fromJSON(paste0("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=",uni_spx_ticker[i],"&outputsize=compact&apikey=",api_keys[k])))
+    y = data.frame(jsonlite::fromJSON(paste0("https://www.alphavantage.co/query?function=OVERVIEW&symbol=",uni_spx_ticker[i],"&apikey=",api_keys[k])))
+    print(paste0(c(dim(x),dim(y)), collapse = " "))
+  }
+})
+
+
+
+
 
 
 
