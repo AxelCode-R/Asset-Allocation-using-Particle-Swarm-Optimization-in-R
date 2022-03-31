@@ -136,6 +136,7 @@
 
 ### nochmal
 options(scipen=999)
+options(stringsAsFactors = FALSE)
 
 library(dplyr)
 library(xts)
@@ -169,7 +170,7 @@ init_optimizer <- function(pool_returns_df, bm_wgts){
       "pso_pkg" = list(
         "fun" = NULL,
         "settings" = list(
-          "risk_factor_intensity" = list("mean"=1, "sd"=10, "sum_wgts"=10, "tracking_error"=10, "assets_n"=10, "percent_change"=10),
+          "risk_factor_intensity" = list("mean"=1, "sd"=10, "sum_wgts"=10, "tracking_error"=10, "assets_n"=10, "percent_change"=10, "short"=10),
           "tracking_error" = list("reduce_historical_intensity_to"=0.3, "reduce_positivs"=0.5)
         )
       )
@@ -186,7 +187,8 @@ init_optimizer <- function(pool_returns_df, bm_wgts){
     "constraints" = list(
       "sum_wgts" = 1,
       "assets_n" = NULL,
-      "percent_change" = 0.2
+      "percent_change" = 0.2,
+      "short" = 0
     ),
     "results" = list(
     )
@@ -209,53 +211,110 @@ v <- init_optimizer(
   pool_returns_df = pool_returns_df
 )
 
-v$options$rebalance_at <- seq.Date(from = as.Date(paste0(substr(Sys.Date()-nrow(pool_returns_df)+1,1,8),substr(Sys.Date(),9,10))), to=Sys.Date(), by="months") %>% last(5)
+v$options$rebalance_at <- seq.Date(from = as.Date(paste0(substr(Sys.Date()-nrow(pool_returns_df)+1,1,8),"01")), to=as.Date(paste0(substr(Sys.Date(),1,8),"01")), by="months") %>% last(6)
 # plotly_line_chart_xts(return_to_cumret(bm$returns))
 
 v$constraints$assets_n <- 10
 
 
 
-obj_func <- function(wgts, v, data_date, cov, mean_returns){
+obj_func <- function(wgts, v, data_date, cov, mean_returns, save_stats = FALSE){
 
   intensitys <- v$algorithm$pso_pkg$settings$risk_factor_intensity
 
 
+  # # maximize returns
+  # obj <- - intensitys$mean * (mean_returns %*% wgts)
+  #
+  # # minimize sd/risk
+  # obj <- obj + intensitys$sd * (t(wgts) %*% cov %*% wgts)
+  #
+  # # sum up to sum_wgts (v$constraints$sum_wgts)
+  # obj <- obj + intensitys$sum_wgts * (sum(wgts) - v$constraints$sum_wgts)^2
+  #
+  # # minimize tracking error with decreasing intensity and reduced positiv errors
+  # te_settings <- v$algorithm$pso_pkg$settings$tracking_error
+  # te_intensity <- 1-(1-te_settings$reduce_historical_intensity_to) * (length(v$bm$returns[paste0("/",data_date-1),]):1)/length(v$bm$returns[paste0("/",data_date-1),])
+  # te <- te_intensity * (v$pool$returns[paste0("/",data_date-1),] %*% wgts - v$bm$returns[paste0("/",data_date-1),])
+  # te[te>0] <- te[te>0] * te_settings$reduce_positivs
+  # obj <- obj + intensitys$tracking_error * sum((te)^2)
+  #
+  # # target cardinality constrain of n (v$constraints$assets_n) assets
+  # if(!is.null(v$constraints$assets_n)){
+  #   obj <- obj + intensitys$assets_n * ((sum(round(wgts, v$options$round_at)!=0)-v$constraints$assets_n)/v$pool$assets_n)^2
+  # }
+  #
+  # # percent change on rebalancing
+  # if(!is.null(v$fund$wgts)){
+  #   obj <- obj + intensitys$percent_change * (max(sum(abs(v$fund$wgts-wgts)), v$constraints$percent_change) - v$constraints$percent_change)
+  # }
+  #
+
   # maximize returns
-  obj <- - intensitys$mean * (mean_returns %*% wgts)
+  return <- - mean_returns %*% wgts
 
   # minimize sd/risk
-  obj <- obj + intensitys$sd * (t(wgts) %*% cov %*% wgts)
+  risk <- t(wgts) %*% cov %*% wgts
 
   # sum up to sum_wgts (v$constraints$sum_wgts)
-  obj <- obj + intensitys$sum_wgts * (sum(wgts) - v$constraints$sum_wgts)^2
+  sum_wgts <- (sum(wgts) - v$constraints$sum_wgts)^2
 
-  # minimize tracking error with decreasing intensity
+  # minimize tracking error with decreasing intensity and reduced positiv errors
   te_settings <- v$algorithm$pso_pkg$settings$tracking_error
-  temp_te <- (1-(1-te_settings$reduce_historical_intensity_to)*length(v$bm$returns[paste0("/",data_date-1),]):1/length(v$bm$returns[paste0("/",data_date-1),])) * (v$pool$returns[paste0("/",data_date-1),] %*% wgts - v$bm$returns[paste0("/",data_date-1),])
-  temp_te[temp_te>0] <- temp_te[temp_te>0] * te_settings$reduce_positivs
-  obj <- obj + intensitys$tracking_error * sd(temp_te)
+  te_intensity <- 1-(1-te_settings$reduce_historical_intensity_to) * (length(v$bm$returns[paste0("/",data_date-1),]):1)/length(v$bm$returns[paste0("/",data_date-1),])
+  te <- te_intensity * (v$pool$returns[paste0("/",data_date-1),] %*% wgts - v$bm$returns[paste0("/",data_date-1),])
+  te[te>0] <- te[te>0] * te_settings$reduce_positivs
+  te <- sum((te)^2)
 
   # target cardinality constrain of n (v$constraints$assets_n) assets
-  if(!is.null(v$constraints$assets_n)){
-    obj <- obj + intensitys$assets_n * ((sum(round(wgts, v$options$round_at)!=0)-v$constraints$assets_n)/v$pool$assets_n)^2
-  }
+  asset_n <- if(!is.null(v$constraints$assets_n)){
+    ((sum(round(wgts, v$options$round_at)!=0)-v$constraints$assets_n)/v$pool$assets_n)^2
+  }else{0}
 
   # percent change on rebalancing
-  if(!is.null(v$fund$wgts)){
-    obj <- obj + intensitys$percent_change * (max(sum(abs(v$fund$wgts-wgts)), v$constraints$percent_change) - v$constraints$percent_change)
+  change <- if(!is.null(v$fund$wgts)){
+    max(sum(abs(v$fund$wgts-wgts)), v$constraints$percent_change) - v$constraints$percent_change
+  }else{0}
+
+  # allow only v$constraints$short percent in short positions
+  short <- max(sum(abs(wgts[wgts<0])), v$constraints$short) - v$constraints$short
+
+  obj <- intensitys$mean * return + intensitys$sd * risk + intensitys$sum_wgts * sum_wgts + intensitys$tracking_error * te + intensitys$assets_n * asset_n + intensitys$percent_change * change + intensitys$short * short
+
+  if(save_stats){
+    if(!exists("obj_stats")){obj_stats <<- NULL}
+    obj_stats <<- rbind(
+      obj_stats,
+      data.frame(
+        "return"=return,
+        "risk"=risk,
+        "sum_wgts"=sum_wgts,
+        "te"=te,
+        "asset_n"=asset_n,
+        "change"=change,
+        "short"=short,
+        "obj"=obj,
+        "return2"=intensitys$mean*return,
+        "risk2"=intensitys$sd*risk,
+        "sum_wgts2"=intensitys$sum_wgts*sum_wgts,
+        "te2"=intensitys$tracking_error*te,
+        "asset_n2"=intensitys$assets_n*asset_n,
+        "change2"=intensitys$percent_change*change,
+        "short2"=intensitys$short*short
+      )
+    )
   }
 
   return(obj)
 }
 
 
-v$algorithm$pso_pkg$fun <- function(v){
+v$algorithm$pso_pkg$fun <- function(v, save_stats = FALSE){
 
   for(i in 1:length(v$options$rebalance_at)){
     print(i)
 
-    date <- v$options$rebalance_at[i]
+    date <- as.Date(v$options$rebalance_at[i])
     mean_returns <- sapply(v$pool$returns[paste0("/",date-1),], mean)
     cov <- cov(v$pool$returns[paste0("/",date-1),])
 
@@ -266,10 +325,11 @@ v$algorithm$pso_pkg$fun <- function(v){
       data_date = date-1,
       cov = cov,
       mean_returns = mean_returns,
+      save_stats = save_stats,
       lower = rep(0, v$pool$assets_n),
       upper = rep(1, v$pool$assets_n),
       control = list(
-        maxit = 500,
+        maxit = 100,
         s = 100,
         maxit.stagnate = 500,
         trace=1
@@ -322,23 +382,67 @@ v$algorithm$pso_pkg$fun <- function(v){
 }
 
 
-v <- v$algorithm$pso_pkg$fun(v=v)
+v <- v$algorithm$pso_pkg$fun(v=v, save_stats = TRUE)
+obj_stats2 <- cbind("row"=1:nrow(obj_stats), obj_stats)
+#View(obj_stats)
+#plotly_line_chart_xts(return_to_cumret(cbind.xts("Fund"=v$fund$returns, "BM"=v$bm$returns)))
+# plot_ly() %>%
+#   add_trace(x=obj_stats$row, y=obj_stats$return2, name="return2", mode="lines", type = 'scatter') %>%
+#   add_trace(x=obj_stats$row, y=obj_stats$return2+obj_stats$risk2, name="risk2", mode="lines", type = 'scatter') %>%
+#   add_trace(x=obj_stats$row, y=obj_stats$return2+obj_stats$risk2+obj_stats$sum_wgts2, name="sum_wgts2", mode="lines", type = 'scatter') %>%
+#   add_trace(x=obj_stats$row, y=obj_stats$return2+obj_stats$risk2+obj_stats$sum_wgts2+obj_stats$te2, name="te2", mode="lines", type = 'scatter') %>%
+#   add_trace(x=obj_stats$row, y=obj_stats$return2+obj_stats$risk2+obj_stats$sum_wgts2+obj_stats$te2+obj_stats$asset_n2, name="asset_n2", mode="lines", type = 'scatter') %>%
+#   add_trace(x=obj_stats$row, y=obj_stats$return2+obj_stats$risk2+obj_stats$sum_wgts2+obj_stats$te2+obj_stats$asset_n2+obj_stats$change2, name="change2", mode="lines", type = 'scatter') %>%
+#   #add_trace(x=obj_stats$row, y=obj_stats$obj, name="obj", mode="lines", type = 'scatter') %>%
+#   layout(
+#     yaxis = list(range=c(0,10))
+#   )
+
+obj_stats2 <- obj_stats2 %>%
+  mutate(row = round(row/100)) %>%
+  group_by(row) %>%
+  summarise(return2 = sum(return2),
+            risk2 = sum(risk2),
+            sum_wgts2 = sum(sum_wgts2),
+            te2 = sum(te2),
+            asset_n2 = sum(asset_n2),
+            change2 = sum(change2),
+            short2 = sum(short2),
+            obj = sum(obj)
+            ) %>%
+  ungroup() %>%
+  mutate(obj = obj/max(obj)*100)
 
 #plotly_line_chart_xts(return_to_cumret(cbind.xts("Fund"=v$fund$returns, "BM"=v$bm$returns)))
+p1 <- plot_ly(data = obj_stats2, x=~row, y=~return2, name="return2", mode="none", type = 'scatter', stackgroup="one", groupnorm="percent") %>%
+  add_trace(y=~risk2, name="risk2") %>%
+  add_trace(y=~sum_wgts2, name="sum_wgts2") %>%
+  add_trace(y=~te2, name="te2") %>%
+  add_trace(y=~asset_n2, name="asset_n2") %>%
+  add_trace(y=~change2, name="change2") %>%
+  add_trace(y=~short2, name="short2")# %>%
+  #add_trace(y=~obj, name="obj", mode="lines+scatter", type = 'scatter')
+
+p2 <- plot_ly(data = obj_stats2, x=~row, y=~obj, name="obj", mode="lines", type = 'scatter') %>%
+  layout(yaxis=list(range=c(0,0.1), ticksuffix="%"))
+
+subplot(p1, p2, nrows = 2)
 
 
-v_backtest_returns <- function(v){
+linechart_backtest_returns <- function(v){
 
   all_returns_not_split <- NULL
   all_returns_split <- NULL
   annotation_data <- NULL
-  for(i in 1:(length(v$results)-1)){
+  for(i in 1:length(v$results)){
     res <- v$results[[i]]
 
+    from <- res$date
+    to <- if(i != length(v$results)){v$results[[i+1]]$date-1}else{max(index(v$pool$returns))}
 
     returns <- cbind.xts(
-      "Fund" = xts(v$pool$returns[paste0(res$date,"/",v$results[[i+1]]$date-1),] %*% res$wgts, order.by=as.Date(index(v$bm$returns[paste0(res$date,"/",v$results[[i+1]]$date-1),]))),
-      "BM" = v$bm$returns[paste0(res$date,"/",v$results[[i+1]]$date-1),]
+      "Fund" = xts(v$pool$returns[paste0(from,"/",to),] %*% res$wgts, order.by=as.Date(index(v$bm$returns[paste0(from,"/",to),]))),
+      "BM" = v$bm$returns[paste0(from,"/",to),]
     )
 
 
@@ -363,7 +467,12 @@ v_backtest_returns <- function(v){
 
     annotation_data <- bind_rows(
       annotation_data,
-      data.frame("Date"=res$date, "TE_train"=round(res$tracking_error_train,6), "TE_test"=round(res$tracking_error_test,6), "change"=if(is.null(res$percent_change)){1}else{round(res$percent_change,6)}, "Alpha"=paste0(round(last(returns$Fund-returns$BM),2), " %"))
+      data.frame(
+        "Date"=res$date,
+        "TE_train"=round(res$tracking_error_train,6),
+        "TE_test"=if(!is.null(res$tracking_error_test)){round(res$tracking_error_test,6)}else{NA},
+        "change"=if(is.null(res$percent_change)){"100 %"}else{paste0(round(res$percent_change,4)*100," %")},
+        "Alpha"=paste0(round(last(returns$Fund-returns$BM),2), " %"))
     )
 
   }
@@ -384,7 +493,11 @@ v_backtest_returns <- function(v){
       yref = "y",
       showarrow=F) %>%
     layout(
-      xaxis = list(tickvals=annotation_data$Date)
+      xaxis = list(
+        type = 'date',
+        tickformat = "%Y-%m-%d",
+        tickvals=c(annotation_data$Date, max(all_returns_split$Date))
+        )
     )
 
 
@@ -393,6 +506,6 @@ v_backtest_returns <- function(v){
 }
 
 
-plot_list <- v_backtest_returns(v)
+plot_list <- linechart_backtest_returns(v)
 plot_list$p_not_split
 plot_list$p_split
