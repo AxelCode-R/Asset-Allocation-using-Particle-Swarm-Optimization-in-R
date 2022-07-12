@@ -1,14 +1,10 @@
 book_filename: "gitbook-demo"
 rmd_files: ["index.Rmd",
-            "prerequisites.Rmd",
-            "get_your_gitbook.Rmd",
-            "editing_the_book.Rmd",
-            "figures_tables.Rmd",
-            "examples.Rmd",
-            "open_educational.Rmd",
-            "use_in_course.Rmd",
-            "licenses.Rmd",
-            "references.Rmd"]
+            "0_Abstract.Rmd",
+            "1_Activ_vs_Passiv_Investing.Rmd",
+            "2_Challenges_of_Passiv_Investing.Rmd",
+            "3_Analytical_Solver.Rmd",
+            "4_Simple_Particle_Swarm_Optimization.Rmd"]
 output_dir: "docs"
 language:
   ui:
