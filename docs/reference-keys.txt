@@ -1,0 +1,6 @@
+about-gitbooks
+abstract
+activ_vs_passiv_investing
+challenges_of_passiv_investing
+analytical_solver
+simple_particle_swarm_optimization

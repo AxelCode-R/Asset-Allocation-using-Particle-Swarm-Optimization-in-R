@@ -1,7 +1,7 @@
 --- 
 title: "Master-Thesis"
 author: "Axel Roth"
-date: "`r Sys.Date()`"
+date: "2022-07-12"
 output:
   html_document:
     df_print: paged
@@ -19,17 +19,9 @@ editor_options:
 description: This GitBook is an example of a GitBook for teaching. It can be adapted
   for specific courses. The output format for this example is bookdown::gitbook.
 ---
-```{r, include=FALSE, eval=FALSE}
-Sys.setenv(R_GSCMD="C:\\Program Files (x86)\\gs\\gs9.55.0\\bin\\gswin32.exe")
-#bookdown::render_book('index.Rmd', 'bookdown::pdf_book')
-bookdown::render_book('index.Rmd', 'bookdown::gitbook', new_session = TRUE)
-# serve_book(daemon=T)
-# devtools::install_github("crsh/citr")
-# citr::insert_citation()
-```
+
 
 # About GitBooks
 asdasdasd
 22222
 333333
-555555
