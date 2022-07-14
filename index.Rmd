@@ -24,8 +24,10 @@ Sys.setenv(R_GSCMD="C:\\Program Files (x86)\\gs\\gs9.55.0\\bin\\gswin32.exe")
 #bookdown::render_book('index.Rmd', 'bookdown::pdf_book')
 bookdown::render_book('index.Rmd', 'bookdown::gitbook', new_session = TRUE)
 # serve_book(daemon=T)
+# servr::daemon_stop(1)
 # devtools::install_github("crsh/citr")
 # citr::insert_citation()
+# git add .
 ```
 
 # About GitBooks
