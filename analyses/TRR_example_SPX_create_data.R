@@ -1,17 +1,7 @@
+source("global.R")
 
-options(scipen=999)
-options(stringsAsFactors = FALSE)
-options(max.print=100)
-library(lubridate)
-library(alphavantager)
-library(dplyr)
-library(readr)
-library(tidyverse)
-library(rvest)
-library(xts)
-
-
-min_date <- "2005-01-01"
+min_date <- as.Date("2005-01-01")
+max_date <- as.Date("2022-07-13")
 
 
 # GET COMPOSITION OF STX
@@ -69,12 +59,10 @@ save(spx_composition, file="data/spx_composition.rdata")
 
 
 # GET DAILY RETURNS AND PRICES FOR ALL SPX TICKERS
-api_key <- Sys.getenv("api_key")
-source("R/alphavantage_wrappers.R")
 spx_daily_adj_data <- get_prices_and_returns_av(
     choosen_tickers = spx_composition$Ticker %>% unique(),
-    min_date = as.Date(min_date),
-    max_date = Sys.Date(),
+    min_date = min_date,
+    max_date = max_date,
     min_date_history = days(0)
   )
 
@@ -82,11 +70,11 @@ save(spx_daily_adj_data, file="data/spx_daily_adj_data.rdata")
 
 
 
-# GET REFERENCE INDEX (iShares S&P 500 UCITS Dist ETF)
+# GET REFERENCE INDEX iShares Core S&P 500 ETF
 spx_index_daily_adj_data <- get_prices_and_returns_av(
-  choosen_tickers = "IUSA.DEX",
-  min_date = as.Date(min_date),
-  max_date = Sys.Date(),
+  choosen_tickers = "IVV",
+  min_date = min_date,
+  max_date = max_date,
   min_date_history = days(0)
 )
 

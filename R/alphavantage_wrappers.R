@@ -83,7 +83,10 @@ get_prices_and_returns_av <- function(choosen_tickers, max_date, min_date, min_d
             "ticker"=ticker,
             temp_daily_return %>%
               read_csv() %>%
-              filter(timestamp>=min_date-min_date_history)
+              filter(
+                timestamp >= min_date-min_date_history,
+                timestamp <= max_date
+              )
           )
           break
         }else if(substr(temp_daily_return,8,11) == "Note" && !"Error.Message" %in% names(temp_daily_return)){
