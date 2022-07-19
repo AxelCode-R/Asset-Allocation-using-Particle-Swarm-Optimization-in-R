@@ -56,37 +56,68 @@ if(!is.positive.definite(mat$Dmat)){
   mat$Dmat <- temp
 }
 
+##########################################
+# Helper Functions
+##########################################
 
+objectiv_fitness <- function(x, mat){
+  0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
+}
+
+constraint_check <- function(x, mat){
+  - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
+}
+
+MSE <- function(x){
+  sqrt(sum(( x )^2))
+}
+
+##########################################
+# Information Datastructure
+##########################################
+
+info <- NULL
+
+##########################################
 # solve.QP
+##########################################
+
 qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
-qp$value
 
 
 qp_port_returns_train <- xts(asset_returns_train %*% qp$solution, order.by = index(asset_returns_train)) %>% `colnames<-`(., "qp_port_returns_train")
 qp_port_returns_test <- xts(asset_returns_test %*% qp$solution, order.by = index(asset_returns_test)) %>% `colnames<-`(., "qp_port_returns_test")
 
-qp_MSE <- sqrt(sum(( ret_to_cumret(qp_port_returns_train) - ret_to_cumret(bm_returns_train) )^2))
+qp_alpha_train <- ret_to_cumret(qp_port_returns_train) - ret_to_cumret(bm_returns_train)
+qp_alpha_test <- ret_to_cumret(qp_port_returns_test) - ret_to_cumret(bm_returns_test)
 
+info <- bind_rows(
+  info,
+  data.frame(
+    "date" = date,
+    "optimizer" = "QP",
+    "type" = "train",
+    "objectiv_fitness" = objectiv_fitness(qp$solution, mat),
+    "constraint_check" = constraint_check(qp$solution, mat),
+    "MSE_train" = MSE(qp_alpha_train),
+    "MSE_test" = MSE(qp_alpha_test),
+  )
+)
 
-
-
+##########################################
 # PSO
-pso_fn = function(x, mat, details=FALSE){
-  fit <- 0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
-  constraint <- - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
-  if(!details){
-    return(fit + constraint)
-  }else{
-    return(list(
-      "fit" = fit,
-      "constraint" = constraint
-    ))
-  }
+##########################################
+
+pso_fn = function(x){
+  fit <- objectiv_fitness(x, mat)
+  constraint <- constraint_check(x, mat)
+
+  return(fit + constraint)
 }
+
 pso <- psoptim(
   par = rep(1/ncol(mat$Dmat), ncol(mat$Dmat)),
   fn = pso_fn,
-  mat = mat,
   lower = 0,
   upper = 1,
   control = list(
@@ -96,54 +127,43 @@ pso <- psoptim(
     p = 1
   )
 )
-pso$value
-pso_res <- pso_fn(pso$par, mat, T)
-pso_res$fit
-pso_res$constraint
+
 
 
 pso_port_returns_train <- xts(asset_returns_train %*% pso$par, order.by = index(asset_returns_train)) %>% `colnames<-`(., "pso_port_returns_train")
 pso_port_returns_test <- xts(asset_returns_test %*% pso$par, order.by = index(asset_returns_test)) %>% `colnames<-`(., "pso_port_returns_test")
 
-pso_MSE <- sqrt(sum((ret_to_cumret(pso_port_returns_train)-ret_to_cumret(bm_returns_train))^2))
+pso_alpha_train <- ret_to_cumret(pso_port_returns_train) - ret_to_cumret(bm_returns_train)
+pso_alpha_test <- ret_to_cumret(pso_port_returns_test) - ret_to_cumret(bm_returns_test)
 
+info <- bind_rows(
+  info,
+  data.frame(
+    "date" = date,
+    "optimizer" = "PSO",
+    "type" = "train",
+    "objectiv_fitness" = objectiv_fitness(pso$par, mat),
+    "constraint_check" = constraint_check(pso$par, mat),
+    "MSE_train" = MSE(pso_alpha_train),
+    "MSE_test" = MSE(pso_alpha_test),
+  )
+)
 
+##########################################
+# PSO with MSE objectiv
+##########################################
 
-p0("QP-fitness: ",qp$value, "   PSO-fitness: ", pso$value)
+pso_fn_mse = function(x){
+  fit <- objectiv_fitness(x, mat)
+  constraint <- constraint_check(x, mat)
+  mse <-  MSE(ret_to_cumret(xts(asset_returns_train %*% x, order.by=index(asset_returns_train))) - ret_to_cumret(bm_returns_train))
 
-p0("QP-MSE: ", qp_MSE, "   PSO-MSE: ", pso_MSE)
-
-
-plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_train, pso_port_returns_train, bm_returns_train))) %>% layout(title="train")
-plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_returns_test, bm_returns_test))) %>% layout(title="test")
-
-
-
-
-# PSO 2 with MSE
-
-# PSO
-pso_fn_mse = function(x, ...,  details = FALSE){
-  fit <-  0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
-  constraint <-  - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
-  mse <- 1/100 * sqrt(sum((ret_to_cumret(xts(asset_returns_train %*% x, order.by=index(asset_returns_train))) - ret_to_cumret(bm_returns_train))^2))
-  if(!details){
-    return(fit + constraint + mse)
-  }else{
-    return(list(
-      "fit" = fit,
-      "constraint" = constraint,
-      "mse" = mse
-    ))
-  }
+  return(fit + constraint + 0.01 * mse)
 }
 
 pso_mse <- psoptim(
   par = rep(1/ncol(mat$Dmat), ncol(mat$Dmat)),
   fn = pso_fn_mse,
-  mat,
-  asset_returns_train,
-  bm_returns_train,
   lower = 0,
   upper = 1,
   control = list(
@@ -153,23 +173,32 @@ pso_mse <- psoptim(
     p = 1
   )
 )
-pso_mse$value
-pso_mse_res <- pso_fn_mse(pso_mse$par, details=T)
-pso_mse_res$fit
-pso_mse_res$constraint
-pso_mse_res$mse
 
 pso_mse_port_returns_train <- xts(asset_returns_train %*% pso_mse$par, order.by = index(asset_returns_train)) %>% `colnames<-`(., "pso_mse_port_returns_train")
 pso_mse_port_returns_test <- xts(asset_returns_test %*% pso_mse$par, order.by = index(asset_returns_test)) %>% `colnames<-`(., "pso_mse_port_returns_test")
 
-pso_mse_MSE <- sqrt(sum(( ret_to_cumret(pso_mse_port_returns_train) - ret_to_cumret(bm_returns_train) )^2))
+pso_mse_alpha_train <- ret_to_cumret(pso_mse_port_returns_train) - ret_to_cumret(bm_returns_train)
+pso_mse_alpha_test <- ret_to_cumret(pso_mse_port_returns_test) - ret_to_cumret(bm_returns_test)
+
+info <- bind_rows(
+  info,
+  data.frame(
+    "date" = date,
+    "optimizer" = "PSO_MSE",
+    "type" = "train",
+    "objectiv_fitness" = objectiv_fitness(pso_mse$par, mat),
+    "constraint_check" = constraint_check(pso_mse$par, mat),
+    "MSE_train" = MSE(pso_mse_alpha_train),
+    "MSE_test" = MSE(pso_mse_alpha_test),
+  )
+)
 
 
+##########################################
+# Visualize
+##########################################
 
-p0("QP-fitness: ",qp$value, "   PSO-fitness: ", pso$value, "   PSO-MSE-fitness: ", pso_mse$value)
-
-p0("QP-MSE: ", qp_MSE, "   PSO-MSE: ", pso_MSE, "   PSO-MSE-MSE:", pso_mse_MSE)
-
+info
 
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_train, pso_port_returns_train, pso_mse_port_returns_train, bm_returns_train))) %>% layout(title="train")
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_returns_test, pso_mse_port_returns_test, bm_returns_test))) %>% layout(title="test")
