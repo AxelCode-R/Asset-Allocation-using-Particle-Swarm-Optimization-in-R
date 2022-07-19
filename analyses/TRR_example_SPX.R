@@ -36,8 +36,8 @@ beta_vec <- cov(asset_returns_train, bm_returns_train)/as.numeric(var(bm_returns
 lambda <- 0
 mat <- list(
     Dmat = cov(asset_returns_train, asset_returns_train),
-    dvec = as.numeric(var(bm_returns_train)) * t(beta_vec) +
-      lambda * (asset_mean_ret - bm_mean_ret)^2,
+    dvec = as.vector(as.numeric(var(bm_returns_train)) * t(beta_vec) +
+      lambda * (asset_mean_ret - bm_mean_ret)^2),
     Amat = t(rbind(
       rep(1, ncol(asset_returns_train)), # sum up to 1
       diag(1, nrow=ncol(asset_returns_train), ncol=ncol(asset_returns_train)) # long only
@@ -77,9 +77,10 @@ plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns_test, bm_returns_test
 
 # PSO
 pso <- psoptim(
-  par = rep(NA, ncol(mat$Dmat)),
-  fn = function(x){
-    fit <-
+  par = rep(1/ncol(mat$Dmat), ncol(mat$Dmat)),
+  fn = function(x, mat){
+    fit <- 0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
+    constraint <- sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
   }
 )
 
