@@ -61,15 +61,15 @@ if(!is.positive.definite(mat$Dmat)){
 ##########################################
 
 objectiv_fitness <- function(x, mat){
-  0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
+  as.numeric(0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x)
 }
 
 constraint_check <- function(x, mat){
-  - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
+  as.numeric(- sum(pmin(0, t(mat$Amat) %*% x - mat$bvec)))
 }
 
 MSE <- function(x){
-  sqrt(sum(( x )^2))
+  as.numeric(sqrt(sum(( x )^2)))
 }
 
 ##########################################
@@ -82,7 +82,9 @@ info <- NULL
 # solve.QP
 ##########################################
 
-qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+time_it <- system.time({
+  qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+})
 
 
 qp_port_returns_train <- xts(asset_returns_train %*% qp$solution, order.by = index(asset_returns_train)) %>% `colnames<-`(., "qp_port_returns_train")
@@ -96,11 +98,11 @@ info <- bind_rows(
   data.frame(
     "date" = date,
     "optimizer" = "QP",
-    "type" = "train",
     "objectiv_fitness" = objectiv_fitness(qp$solution, mat),
     "constraint_check" = constraint_check(qp$solution, mat),
     "MSE_train" = MSE(qp_alpha_train),
     "MSE_test" = MSE(qp_alpha_test),
+    "time" = time_it[3]
   )
 )
 
@@ -114,20 +116,20 @@ pso_fn = function(x){
 
   return(fit + constraint)
 }
-
-pso <- psoptim(
-  par = rep(1/ncol(mat$Dmat), ncol(mat$Dmat)),
-  fn = pso_fn,
-  lower = 0,
-  upper = 1,
-  control = list(
-    trace = 1,
-    maxit = 50,
-    s = 200,
-    p = 1
+time_it <- system.time({
+  pso <- psoptim(
+    par = rep(1/ncol(mat$Dmat), ncol(mat$Dmat)),
+    fn = pso_fn,
+    lower = 0,
+    upper = 1,
+    control = list(
+      trace = 1,
+      maxit = 50,
+      s = 200,
+      p = 1
+    )
   )
-)
-
+})
 
 
 pso_port_returns_train <- xts(asset_returns_train %*% pso$par, order.by = index(asset_returns_train)) %>% `colnames<-`(., "pso_port_returns_train")
@@ -141,11 +143,11 @@ info <- bind_rows(
   data.frame(
     "date" = date,
     "optimizer" = "PSO",
-    "type" = "train",
     "objectiv_fitness" = objectiv_fitness(pso$par, mat),
     "constraint_check" = constraint_check(pso$par, mat),
     "MSE_train" = MSE(pso_alpha_train),
     "MSE_test" = MSE(pso_alpha_test),
+    "time" = time_it[3]
   )
 )
 
@@ -161,18 +163,20 @@ pso_fn_mse = function(x){
   return(fit + constraint + 0.01 * mse)
 }
 
-pso_mse <- psoptim(
-  par = rep(1/ncol(mat$Dmat), ncol(mat$Dmat)),
-  fn = pso_fn_mse,
-  lower = 0,
-  upper = 1,
-  control = list(
-    trace = 1,
-    maxit = 50,
-    s = 200,
-    p = 1
+time_it <- system.time({
+  pso_mse <- psoptim(
+    par = rep(1/ncol(mat$Dmat), ncol(mat$Dmat)),
+    fn = pso_fn_mse,
+    lower = 0,
+    upper = 1,
+    control = list(
+      trace = 1,
+      maxit = 50,
+      s = 200,
+      p = 1
+    )
   )
-)
+})
 
 pso_mse_port_returns_train <- xts(asset_returns_train %*% pso_mse$par, order.by = index(asset_returns_train)) %>% `colnames<-`(., "pso_mse_port_returns_train")
 pso_mse_port_returns_test <- xts(asset_returns_test %*% pso_mse$par, order.by = index(asset_returns_test)) %>% `colnames<-`(., "pso_mse_port_returns_test")
@@ -185,11 +189,11 @@ info <- bind_rows(
   data.frame(
     "date" = date,
     "optimizer" = "PSO_MSE",
-    "type" = "train",
     "objectiv_fitness" = objectiv_fitness(pso_mse$par, mat),
     "constraint_check" = constraint_check(pso_mse$par, mat),
     "MSE_train" = MSE(pso_mse_alpha_train),
     "MSE_test" = MSE(pso_mse_alpha_test),
+    "time" = time_it[3]
   )
 )
 
@@ -198,6 +202,7 @@ info <- bind_rows(
 # Visualize
 ##########################################
 
+rownames(info) <- NULL
 info
 
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_train, pso_port_returns_train, pso_mse_port_returns_train, bm_returns_train))) %>% layout(title="train")
