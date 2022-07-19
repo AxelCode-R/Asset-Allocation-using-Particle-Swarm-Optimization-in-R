@@ -62,10 +62,10 @@ qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bve
 qp$value
 
 
-qp_port_returns_train <- setNames(asset_returns_train %*% qp$solution, "qp_port_returns_train")
-qp_port_returns_test <- setNames(asset_returns_test %*% qp$solution, "qp_port_returns_test")
+qp_port_returns_train <- xts(asset_returns_train %*% qp$solution, order.by = index(asset_returns_train)) %>% `colnames<-`(., "qp_port_returns_train")
+qp_port_returns_test <- xts(asset_returns_test %*% qp$solution, order.by = index(asset_returns_test)) %>% `colnames<-`(., "qp_port_returns_test")
 
-qp_MSE <- sqrt(sum((qp_port_returns_train-bm_returns_train)^2))
+qp_MSE <- sqrt(sum(( ret_to_cumret(qp_port_returns_train) - ret_to_cumret(bm_returns_train) )^2))
 
 
 
@@ -102,10 +102,10 @@ pso_res$fit
 pso_res$constraint
 
 
-pso_port_returns_train <- setNames(asset_returns_train %*% pso$par, "pso_port_returns_train")
-pso_port_returns_test <- setNames(asset_returns_test %*% pso$par, "pso_port_returns_test")
+pso_port_returns_train <- xts(asset_returns_train %*% pso$par, order.by = index(asset_returns_train)) %>% `colnames<-`(., "pso_port_returns_train")
+pso_port_returns_test <- xts(asset_returns_test %*% pso$par, order.by = index(asset_returns_test)) %>% `colnames<-`(., "pso_port_returns_test")
 
-pso_MSE <- sqrt(sum((pso_port_returns_train-bm_returns_train)^2))
+pso_MSE <- sqrt(sum((ret_to_cumret(pso_port_returns_train)-ret_to_cumret(bm_returns_train))^2))
 
 
 
@@ -126,7 +126,7 @@ plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_ret
 pso_fn_mse = function(x, ...,  details = FALSE){
   fit <- 0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
   constraint <- - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
-  mse <- sqrt(sum((asset_returns_train %*% x - bm_returns_train)^2))
+  mse <- sqrt(sum((ret_to_cumret(xts(asset_returns_train %*% x, order.by=index(asset_returns_train))) - ret_to_cumret(bm_returns_train))^2))
   if(!details){
     return(fit + constraint + mse)
   }else{
@@ -154,15 +154,15 @@ pso_mse <- psoptim(
   )
 )
 pso_mse$value
-pso_mse_res <- pso_fn_mse(pso_mse$par, mat, T)
+pso_mse_res <- pso_fn_mse(pso_mse$par, details=T)
 pso_mse_res$fit
 pso_mse_res$constraint
+pso_mse_res$mse
 
+pso_mse_port_returns_train <- xts(asset_returns_train %*% pso_mse$par, order.by = index(asset_returns_train)) %>% `colnames<-`(., "pso_mse_port_returns_train")
+pso_mse_port_returns_test <- xts(asset_returns_test %*% pso_mse$par, order.by = index(asset_returns_test)) %>% `colnames<-`(., "pso_mse_port_returns_test")
 
-pso_mse_port_returns_train <- setNames(asset_returns_train %*% pso_mse$par, "pso_mse_port_returns_train")
-pso_mse_port_returns_test <- setNames(asset_returns_test %*% pso_mse$par, "pso_mse_port_returns_test")
-
-pso_mse_MSE <- sqrt(sum((pso_mse_port_returns_train-bm_returns_train)^2))
+pso_mse_MSE <- sqrt(sum(( ret_to_cumret(pso_mse_port_returns_train) - ret_to_cumret(bm_returns_train) )^2))
 
 
 
