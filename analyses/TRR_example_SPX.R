@@ -45,7 +45,7 @@ mat <- list(
     )),
     bvec = c(
       1, # sum up to 1
-      rep(0, ncol(asset_returns_train))
+      rep(0, ncol(asset_returns_train)) # long only
     ),
     meq = 1
 )
@@ -101,8 +101,10 @@ info <- bind_rows(
     "optimizer" = "QP",
     "objectiv_fitness" = objectiv_fitness(qp$solution, mat),
     "constraint_check" = constraint_check(qp$solution, mat),
-    "MSE_train" = MSE(qp_alpha_train),
-    "MSE_test" = MSE(qp_alpha_test),
+    "real_MSE_train" = MSE(qp_alpha_train),
+    "real_MSE_test" = MSE(qp_alpha_test),
+    "raw_MSE_train" = MSE(qp_port_returns_train - bm_returns_train),
+    "raw_MSE_test" = MSE(qp_port_returns_test - bm_returns_test),
     "time" = time_it[3]
   )
 )
@@ -146,8 +148,10 @@ info <- bind_rows(
     "optimizer" = "PSO",
     "objectiv_fitness" = objectiv_fitness(pso$par, mat),
     "constraint_check" = constraint_check(pso$par, mat),
-    "MSE_train" = MSE(pso_alpha_train),
-    "MSE_test" = MSE(pso_alpha_test),
+    "real_MSE_train" = MSE(pso_alpha_train),
+    "real_MSE_test" = MSE(pso_alpha_test),
+    "raw_MSE_train" = MSE(pso_port_returns_train - bm_returns_train),
+    "raw_MSE_test" = MSE(pso_port_returns_test - bm_returns_test),
     "time" = time_it[3]
   )
 )
@@ -192,8 +196,10 @@ info <- bind_rows(
     "optimizer" = "PSO_MSE",
     "objectiv_fitness" = objectiv_fitness(pso_mse$par, mat),
     "constraint_check" = constraint_check(pso_mse$par, mat),
-    "MSE_train" = MSE(pso_mse_alpha_train),
-    "MSE_test" = MSE(pso_mse_alpha_test),
+    "real_MSE_train" = MSE(pso_mse_alpha_train),
+    "real_MSE_test" = MSE(pso_mse_alpha_test),
+    "raw_MSE_train" = MSE(pso_mse_port_returns_train - bm_returns_train),
+    "raw_MSE_test" = MSE(pso_mse_port_returns_test - bm_returns_test),
     "time" = time_it[3]
   )
 )
