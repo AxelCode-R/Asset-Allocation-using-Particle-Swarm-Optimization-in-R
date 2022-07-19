@@ -59,6 +59,7 @@ if(!is.positive.definite(mat$Dmat)){
 
 # solve.QP
 qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+qp$value
 
 qp_port_returns_train <- setNames(asset_returns_train %*% qp$solution, "qp_port_returns_train")
 qp_port_returns_test <- setNames(asset_returns_test %*% qp$solution, "qp_port_returns_test")
@@ -67,35 +68,48 @@ qp_port_returns_test <- setNames(asset_returns_test %*% qp$solution, "qp_port_re
 
 
 # PSO
+pso_fn = function(x, mat, details=FALSE){
+  fit <- 0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
+  constraint <- - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
+  if(!details){
+    return(fit + constraint)
+  }else{
+    return(list(
+      "fit" = fit,
+      "constraint" = constraint
+    ))
+  }
+}
 pso <- psoptim(
   par = rep(1/ncol(mat$Dmat), ncol(mat$Dmat)),
-  fn = function(x, mat){
-    fit <- 0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
-    constraint <- - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
-    return(fit + constraint)
-  },
+  fn = pso_fn,
   mat = mat,
   lower = 0,
   upper = 1,
   control = list(
     trace = 1,
-    maxit = 50
+    maxit = 50,
+    s = 200,
+    p = 1
   )
 )
-
+pso$value
+pso_res <- pso_fn(pso$par, mat, T)
+pso_res$fit
+pso_res$constraint
 
 pso_port_returns_train <- setNames(asset_returns_train %*% pso$par, "pso_port_returns_train")
 pso_port_returns_test <- setNames(asset_returns_test %*% pso$par, "pso_port_returns_test")
 
 
 
+p0("QP: ",qp$value, "   PSO: ", pso$value)
 
 
 
 
-
-plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_train, pso_port_returns_train, bm_returns_train)))
-plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_returns_test, bm_returns_test)))
+plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_train, pso_port_returns_train, bm_returns_train))) %>% layout(title="train")
+plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_returns_test, bm_returns_test))) %>% layout(title="test")
 
 
 
