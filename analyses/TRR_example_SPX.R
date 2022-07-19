@@ -33,11 +33,12 @@ asset_mean_ret <- (last(asset_prices_train)/first(coredata(asset_prices_train)))
 bm_mean_ret <- as.numeric((last(bm_prices_train)/first(coredata(bm_prices_train))))^(1/(nrow(bm_prices_train)-1))-1
 beta_vec <- cov(asset_returns_train, bm_returns_train)/as.numeric(var(bm_returns_train))
 
-lambda <- 0
+
 mat <- list(
     Dmat = cov(asset_returns_train, asset_returns_train),
-    dvec = as.vector(as.numeric(var(bm_returns_train)) * t(beta_vec) +
-      lambda * (asset_mean_ret - bm_mean_ret)^2),
+    dvec = as.vector(as.numeric(var(bm_returns_train)) * t(beta_vec) + # file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/tr2_16.pdf
+      0 * t(bm_returns_train) %*% asset_returns_train + # MSE file:///C:/Users/Axel/Downloads/jcssp.2014.2450.2463.pdf
+      0 * (asset_mean_ret - bm_mean_ret)^2),
     Amat = t(rbind(
       rep(1, ncol(asset_returns_train)), # sum up to 1
       diag(1, nrow=ncol(asset_returns_train), ncol=ncol(asset_returns_train)) # long only
