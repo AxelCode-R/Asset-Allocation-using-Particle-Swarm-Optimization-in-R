@@ -12,6 +12,7 @@ library(quadprog)
 library(Matrix)
 library(matrixcalc)
 library(plotly)
+library(pso)
 
 # alphavantage API-KEY
 api_key <- Sys.getenv("api_key")

@@ -72,7 +72,7 @@ save(spx_daily_adj_data, file="data/spx_daily_adj_data.rdata")
 
 # GET REFERENCE INDEX iShares Core S&P 500 ETF
 spx_index_daily_adj_data <- get_prices_and_returns_av(
-  choosen_tickers = "IVV",
+  choosen_tickers = "SPY",#"IVV",
   min_date = min_date,
   max_date = max_date,
   min_date_history = days(0)
@@ -82,16 +82,25 @@ save(spx_index_daily_adj_data, file="data/spx_index_daily_adj_data.rdata")
 
 
 
-
-
-
-
-
-
-
-
-
-
+#
+# library(tidyquant)
+# res <- tidyquant::tq_get("SPX", from = min_date, to=max_date)
+#
+# sp500 <- new.env()
+# getSymbols("^GSPC", env=sp500, src = "yahoo", from = min_date, to = max_date)
+# GSPC <- sp500$GSPC
+#
+# GSPC <- data.frame("Date"=index(GSPC),coredata(GSPC))
+# GSPC <- GSPC %>%
+#   mutate(
+#     "return_adj_close" = GSPC.Adjusted/dplyr::lag(GSPC.Adjusted, order_by = Date)-1
+#   ) %>%
+#   filter(!is.na(return_adj_close))
+#
+# spx_index_daily_adj_data <- list(
+#   daily_prices = xts(GSPC$GSPC.Adjusted, order.by=GSPC$Date),
+#   daily_returns = xts(GSPC$return_adj_close, order.by=GSPC$Date)
+# )
 
 
 
