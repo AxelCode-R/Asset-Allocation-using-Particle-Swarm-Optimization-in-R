@@ -61,8 +61,11 @@ if(!is.positive.definite(mat$Dmat)){
 qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
 qp$value
 
+
 qp_port_returns_train <- setNames(asset_returns_train %*% qp$solution, "qp_port_returns_train")
 qp_port_returns_test <- setNames(asset_returns_test %*% qp$solution, "qp_port_returns_test")
+
+qp_MSE <- sqrt(sum((qp_port_returns_train-bm_returns_train)^2))
 
 
 
@@ -98,14 +101,17 @@ pso_res <- pso_fn(pso$par, mat, T)
 pso_res$fit
 pso_res$constraint
 
+
 pso_port_returns_train <- setNames(asset_returns_train %*% pso$par, "pso_port_returns_train")
 pso_port_returns_test <- setNames(asset_returns_test %*% pso$par, "pso_port_returns_test")
 
+pso_MSE <- sqrt(sum((pso_port_returns_train-bm_returns_train)^2))
 
 
-p0("QP: ",qp$value, "   PSO: ", pso$value)
 
+p0("QP-fitness: ",qp$value, "   PSO-fitness: ", pso$value)
 
+p0("QP-MSE: ", qp_MSE, "   PSO-MSE: ", pso_MSE)
 
 
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_train, pso_port_returns_train, bm_returns_train))) %>% layout(title="train")
@@ -113,6 +119,60 @@ plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_ret
 
 
 
+
+# PSO 2 with MSE
+
+# PSO
+pso_fn_mse = function(x, ...,  details = FALSE){
+  fit <- 0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
+  constraint <- - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
+  mse <- sqrt(sum((asset_returns_train %*% x - bm_returns_train)^2))
+  if(!details){
+    return(fit + constraint + mse)
+  }else{
+    return(list(
+      "fit" = fit,
+      "constraint" = constraint,
+      "mse" = mse
+    ))
+  }
+}
+
+pso_mse <- psoptim(
+  par = rep(1/ncol(mat$Dmat), ncol(mat$Dmat)),
+  fn = pso_fn_mse,
+  mat,
+  asset_returns_train,
+  bm_returns_train,
+  lower = 0,
+  upper = 1,
+  control = list(
+    trace = 1,
+    maxit = 50,
+    s = 200,
+    p = 1
+  )
+)
+pso_mse$value
+pso_mse_res <- pso_fn_mse(pso_mse$par, mat, T)
+pso_mse_res$fit
+pso_mse_res$constraint
+
+
+pso_mse_port_returns_train <- setNames(asset_returns_train %*% pso_mse$par, "pso_mse_port_returns_train")
+pso_mse_port_returns_test <- setNames(asset_returns_test %*% pso_mse$par, "pso_mse_port_returns_test")
+
+pso_mse_MSE <- sqrt(sum((pso_mse_port_returns_train-bm_returns_train)^2))
+
+
+
+p0("QP-fitness: ",qp$value, "   PSO-fitness: ", pso$value, "   PSO-MSE-fitness: ", pso_mse$value)
+
+p0("QP-MSE: ", qp_MSE, "   PSO-MSE: ", pso_MSE, "   PSO-MSE-MSE:", pso_mse_MSE)
+
+
+plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_train, pso_port_returns_train, pso_mse_port_returns_train, bm_returns_train))) %>% layout(title="train")
+plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_returns_test, pso_mse_port_returns_test, bm_returns_test))) %>% layout(title="test")
 
 
 
