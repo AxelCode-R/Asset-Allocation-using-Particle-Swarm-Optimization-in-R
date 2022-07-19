@@ -124,9 +124,9 @@ plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_ret
 
 # PSO
 pso_fn_mse = function(x, ...,  details = FALSE){
-  fit <- 0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
-  constraint <- - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
-  mse <- sqrt(sum((ret_to_cumret(xts(asset_returns_train %*% x, order.by=index(asset_returns_train))) - ret_to_cumret(bm_returns_train))^2))
+  fit <-  0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
+  constraint <-  - sum(pmin(0, t(mat$Amat) %*% x - mat$bvec))
+  mse <- 1/100 * sqrt(sum((ret_to_cumret(xts(asset_returns_train %*% x, order.by=index(asset_returns_train))) - ret_to_cumret(bm_returns_train))^2))
   if(!details){
     return(fit + constraint + mse)
   }else{
