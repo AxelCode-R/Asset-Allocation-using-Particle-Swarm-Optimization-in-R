@@ -13,7 +13,7 @@ load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/data/spx_composition
 # formeln: tr2_16.pdf
 train_months <- 6
 test_months <- 3
-date <- as.Date("2017-02-01")
+date <- as.Date("2018-02-01")
 
 
 train_period_xts <- paste0(date-months(train_months), "/", date-days(1))
@@ -31,12 +31,12 @@ asset_prices_train <- spx_daily_adj_data$daily_prices[train_period_xts, valid_ti
 bm_prices_train <- spx_index_daily_adj_data$daily_prices[train_period_xts, ]
 asset_mean_ret <- (last(asset_prices_train)/first(coredata(asset_prices_train)))^(1/(nrow(asset_prices_train)-1))-1
 bm_mean_ret <- as.numeric((last(bm_prices_train)/first(coredata(bm_prices_train))))^(1/(nrow(bm_prices_train)-1))-1
-beta_vec <- cov(asset_returns_train, bm_returns_train)/as.numeric(var(bm_returns_train))
-
+beta_vec_train <- cov(asset_returns_train, bm_returns_train)/as.numeric(var(bm_returns_train))
+beta_vec_test <- cov(asset_returns_test, bm_returns_test)/as.numeric(var(bm_returns_test))
 
 mat <- list(
     Dmat = cov(asset_returns_train, asset_returns_train),
-    dvec = as.vector(as.numeric(var(bm_returns_train)) * t(beta_vec) + # file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/tr2_16.pdf
+    dvec = as.vector(as.numeric(var(bm_returns_train)) * t(beta_vec_train) + # file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/tr2_16.pdf
       0 * t(bm_returns_train) %*% asset_returns_train + # MSE file:///C:/Users/Axel/Downloads/jcssp.2014.2450.2463.pdf
       0 * (asset_mean_ret - bm_mean_ret)^2),
     Amat = t(rbind(
@@ -73,6 +73,11 @@ MSE <- function(x){
   as.numeric(sqrt(sum(( x )^2)))
 }
 
+
+
+info_all <- NULL
+for(i in 1:10){
+
 ##########################################
 # Information Datastructure
 ##########################################
@@ -105,6 +110,8 @@ info <- bind_rows(
     "real_MSE_test" = MSE(qp_alpha_test),
     "raw_MSE_train" = MSE(qp_port_returns_train - bm_returns_train),
     "raw_MSE_test" = MSE(qp_port_returns_test - bm_returns_test),
+    "beta_train" = t(beta_vec_train) %*% qp$solution,
+    "beta_test" = t(beta_vec_test) %*% qp$solution,
     "time" = time_it[3]
   )
 )
@@ -152,6 +159,8 @@ info <- bind_rows(
     "real_MSE_test" = MSE(pso_alpha_test),
     "raw_MSE_train" = MSE(pso_port_returns_train - bm_returns_train),
     "raw_MSE_test" = MSE(pso_port_returns_test - bm_returns_test),
+    "beta_train" = t(beta_vec_train) %*% pso$par,
+    "beta_test" = t(beta_vec_test) %*% pso$par,
     "time" = time_it[3]
   )
 )
@@ -200,6 +209,8 @@ info <- bind_rows(
     "real_MSE_test" = MSE(pso_mse_alpha_test),
     "raw_MSE_train" = MSE(pso_mse_port_returns_train - bm_returns_train),
     "raw_MSE_test" = MSE(pso_mse_port_returns_test - bm_returns_test),
+    "beta_train" = t(beta_vec_train) %*% pso_mse$par,
+    "beta_test" = t(beta_vec_test) %*% pso_mse$par,
     "time" = time_it[3]
   )
 )
@@ -212,10 +223,31 @@ info <- bind_rows(
 rownames(info) <- NULL
 info
 
+
+info_all <- bind_rows(info_all, info)
+}
+#save(info_all, file="analyses/info_all.rdata")
+info_all %>% group_by(optimizer) %>% summarise_all(., function(x){if(is.numeric(x)){quantile(x, 0.5)}else{unique(x)}})
+info_all %>% group_by(optimizer) %>% summarise_all(., function(x){if(is.numeric(x)){quantile(x, 0.9)}else{unique(x)}})
+info_all %>% group_by(optimizer) %>% summarise_all(., function(x){if(is.numeric(x)){quantile(x, 0.1)}else{unique(x)}})
+
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_train, pso_port_returns_train, pso_mse_port_returns_train, bm_returns_train))) %>% layout(title="train")
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_returns_test, pso_mse_port_returns_test, bm_returns_test))) %>% layout(title="test")
 
 
+p1 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~real_MSE_train, name=~optimizer) %>% layout(yaxis=list(title="real_MSE_train"), showlegend=FALSE)
+p2 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~real_MSE_test, name=~optimizer) %>% layout(yaxis=list(title="real_MSE_test"), showlegend=FALSE)
+p3 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~raw_MSE_train, name=~optimizer) %>% layout(yaxis=list(title="raw_MSE_train"), showlegend=FALSE)
+p4 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~raw_MSE_test, name=~optimizer) %>% layout(yaxis=list(title="raw_MSE_test"), showlegend=FALSE)
+
+subplot(
+  p1,
+  p2,
+  p3,
+  p4,
+  nrows = 2,
+  titleY = T
+)
 
 
 
