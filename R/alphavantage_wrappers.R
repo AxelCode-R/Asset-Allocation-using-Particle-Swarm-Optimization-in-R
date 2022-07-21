@@ -1,5 +1,5 @@
 
-get_listing_status_av <- function(choosen_tickers, max_date, min_date, min_date_history){
+get_listing_status_av <- function(choosen_tickers = NULL, max_date, min_date, min_date_history = days(0)){
   if(!exists("api_key")){
     warning("no api_key found in GlobalEnv.")
     return(NULL)
@@ -45,7 +45,7 @@ my_spread <- function(data, date_col, key, value){
 
 
 
-get_prices_and_returns_av <- function(choosen_tickers, max_date, min_date, min_date_history){
+get_prices_and_returns_av <- function(choosen_tickers, max_date, min_date, min_date_history = days(0)){
   if(!exists("api_key")){
     warning("no api_key found in GlobalEnv.")
     return(NULL)
@@ -131,7 +131,7 @@ get_prices_and_returns_av <- function(choosen_tickers, max_date, min_date, min_d
 
 
 
-get_indicator_av <- function(indicator = "RSI", indicator_string = "function=RSI&interval=daily&time_period=10&series_type=open", choosen_tickers, max_date, min_date, min_date_history){
+get_indicator_av <- function(indicator = "RSI", indicator_string = "function=RSI&interval=daily&time_period=10&series_type=open", choosen_tickers, max_date, min_date, min_date_history = days(0)){
   if(!exists("api_key")){
     warning("no api_key found in GlobalEnv.")
     return(NULL)

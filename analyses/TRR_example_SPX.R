@@ -13,7 +13,7 @@ load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/data/spx_composition
 # formeln: tr2_16.pdf
 train_months <- 6
 test_months <- 3
-date <- as.Date("2018-02-01")
+date <- as.Date("2017-02-01")
 
 
 train_period_xts <- paste0(date-months(train_months), "/", date-days(1))
@@ -235,10 +235,10 @@ plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_train, pso_port_re
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(qp_port_returns_test, pso_port_returns_test, pso_mse_port_returns_test, bm_returns_test))) %>% layout(title="test")
 
 
-p1 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~real_MSE_train, name=~optimizer) %>% layout(yaxis=list(title="real_MSE_train"), showlegend=FALSE)
-p2 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~real_MSE_test, name=~optimizer) %>% layout(yaxis=list(title="real_MSE_test"), showlegend=FALSE)
-p3 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~raw_MSE_train, name=~optimizer) %>% layout(yaxis=list(title="raw_MSE_train"), showlegend=FALSE)
-p4 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~raw_MSE_test, name=~optimizer) %>% layout(yaxis=list(title="raw_MSE_test"), showlegend=FALSE)
+p1 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~real_MSE_train, name=~optimizer) %>% layout(yaxis=list(title="real_MSE_train", range=c(0,max(info_all$real_MSE_train)*1.1)), showlegend=FALSE)
+p2 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~real_MSE_test, name=~optimizer) %>% layout(yaxis=list(title="real_MSE_test", range=c(0,max(info_all$real_MSE_test)*1.1)), showlegend=FALSE)
+p3 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~raw_MSE_train, name=~optimizer) %>% layout(yaxis=list(title="raw_MSE_train", range=c(0,max(info_all$raw_MSE_train)*1.1)), showlegend=FALSE)
+p4 <- plot_ly(data = info_all, type = "box") %>% add_trace(y = ~raw_MSE_test, name=~optimizer) %>% layout(yaxis=list(title="raw_MSE_test", range=c(0,max(info_all$raw_MSE_test)*1.1)), showlegend=FALSE)
 
 subplot(
   p1,
