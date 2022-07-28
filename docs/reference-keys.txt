@@ -6,3 +6,7 @@ analytical_solver
 simple_particle_swarm_optimization
 activ-versus-passiv-investing
 activ-vs-passiv-investing
+challenges-of-passiv-investing
+mean-variance-portfolio-mvp
+mvp-formulation
+index-tracking-portfolio-itp

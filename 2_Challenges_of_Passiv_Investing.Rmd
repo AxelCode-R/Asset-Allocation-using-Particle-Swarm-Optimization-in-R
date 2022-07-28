@@ -1,12 +1,23 @@
-# Challenges_of_Passiv_Investing
+# Challenges of Passiv Investing
 
-explain the problems and challenges
-and create examples
+In this Chapter we will discuss two common problems of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio from markowitz which is simply said an optimal allocation of `n` asssets for a given risk or a given return. The secound problem is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
 
+## Mean-variance portfolio (MVP)
+`file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/Grossi-Laurini2011_Article_RobustEstimationOfEfficientMea.pdf`
 
+Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theorie which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier. 
+
+### MVP formulation
+We have $N$ assets and its returns on $T$ diffrent days which creates a return matrix $R$. Each element $R_{i,t}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\sum$ and the expected returns are $\mu$. The MVP with risk aversion parameter $\lambda$ is minimizes the following problem:
+
+`https://bookdown.org/shenjian0824/portr/port-opt.html`
+$$
+\underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - w^T\mu
+$$
 
 ```{r example1}
 
 ```
 
 
+## Index-tracking portfolio (ITP)

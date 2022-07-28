@@ -13,6 +13,8 @@ library(Matrix)
 library(matrixcalc)
 library(plotly)
 library(pso)
+library(data.table)
+library(corrr)
 
 # alphavantage API-KEY
 api_key <- Sys.getenv("api_key")
