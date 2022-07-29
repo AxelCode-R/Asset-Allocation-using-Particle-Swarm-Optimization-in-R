@@ -22,9 +22,13 @@ The risk aversion parameter $\lambda$ defines the trade-off between risk and ret
 ```{r example_1}
 returns <- get_prices_and_returns_av(choosen_tickers = c("IBM", "GOOG", "AAPL"), min_date = as.Date("2020-01-01"), max_date = as.Date("2021-01-01"))[["daily_returns"]]
 
+plotly_line_chart_xts(ret_to_cumret(returns))
+
+
 mu <- as.vector((last(ret_to_cumret(returns))/100)^(1/nrow(returns))-1)
 cov <- as.matrix(nearPD(cov(returns))$mat)
 
+portfolios <- data.frame()
 mu_and_var <- NULL
 for(lambda in seq(0.01,1, 0.01)){
     mat <- list(
@@ -49,10 +53,21 @@ for(lambda in seq(0.01,1, 0.01)){
       mu_and_var,
       data.frame("lambda" = lambda, "mu" = mu %*% qp$solution, "sd" = sqrt(t(qp$solution) %*% cov %*% qp$solution))
     )
+    portfolios <- rbind(
+      portfolios,
+      qp$solution
+    )
 }
+portfolios <- data.frame(portfolios)
+colnames(portfolios) <- colnames(returns)
+
+# annualize
+mu_and_var$mu <- (1+mu_and_var$mu)^252-1
+mu_and_var$sd <- mu_and_var$sd * sqrt(252)
 
 plot_ly(data = mu_and_var) %>% 
-  add_lines(y = ~mu, x = ~sd) %>% 
+  add_lines(y = ~mu, x = ~sd, name = "efficient frontier") %>% 
+  add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps") %>% 
   layout(
     title = "3-Asset MVP",
     yaxis = list(range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
@@ -65,6 +80,14 @@ plot_ly(data = mu_and_var) %>%
         pad = 4
     )
   ) 
+
+p <- plot_ly(type="bar") %>% layout(barmode="stack")
+for(i in 1:ncol(portfolios)){
+  p <- p %>% 
+  add_trace(x=1:nrow(portfolios), y=portfolios[, i], name = colnames(portfolios)[i])
+}
+p
+
 ```
 
 
