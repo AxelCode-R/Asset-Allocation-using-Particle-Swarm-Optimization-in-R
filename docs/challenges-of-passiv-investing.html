@@ -55,6 +55,28 @@
 
 
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -107,23 +129,31 @@
             <section class="normal" id="section-">
 <div id="challenges-of-passiv-investing" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Challenges of Passiv Investing<a href="challenges-of-passiv-investing.html#challenges-of-passiv-investing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>In this Chapter we will discuss two common problems of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio from markowitz which is simply said an optimal allocation of <code>n</code> asssets for a given risk or a given return. The secound problem is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.</p>
+<p>In this Chapter we will discuss two common problems of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio from markowitz which is simply said an optimal allocation of assets regarding risk or return. The secound problem is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.</p>
 <div id="mean-variance-portfolio-mvp" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Mean-variance portfolio (MVP)<a href="challenges-of-passiv-investing.html#mean-variance-portfolio-mvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><code>file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/Grossi-Laurini2011_Article_RobustEstimationOfEfficientMea.pdf</code></p>
 <p>Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theorie which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier.</p>
 <div id="mvp-formulation" class="section level3 hasAnchor" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> MVP formulation<a href="challenges-of-passiv-investing.html#mvp-formulation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>We have <span class="math inline">\(N\)</span> assets and its returns on <span class="math inline">\(T\)</span> diffrent days which creates a return matrix <span class="math inline">\(R\)</span>. Each element <span class="math inline">\(R_{i,t}\)</span> contains the return of the <span class="math inline">\(i\)</span>-th asset on day <span class="math inline">\(t\)</span>. The covariance matrix of the returns is <span class="math inline">\(\sum\)</span> and the expected returns are <span class="math inline">\(\mu\)</span>. The following MVP with risk aversion parameter <span class="math inline">\(\lambda\)</span> is:</p>
-<p><code>https://bookdown.org/shenjian0824/portr/port-opt.html</code>
+<p>We have <span class="math inline">\(N\)</span> assets and its returns on <span class="math inline">\(T\)</span> diffrent days which creates a return matrix <span class="math inline">\(R\)</span>. Each element <span class="math inline">\(R_{t,i}\)</span> contains the return of the <span class="math inline">\(i\)</span>-th asset on day <span class="math inline">\(t\)</span>. The covariance matrix of the returns is <span class="math inline">\(\textstyle\sum\)</span> and the expected returns are <span class="math inline">\(\mu\)</span>. The MVP with risk aversion parameter <span class="math inline">\(\lambda\)</span> like shown in <span class="citation">(<a href="#ref-Mar2005" role="doc-biblioref">Maringer 2005</a>)</span> minimizes the following problem:</p>
+<p><code>file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/Maringer2005_Book_PortfolioManagementWithHeurist.pdf</code>
+<code>https://bookdown.org/shenjian0824/portr/port-opt.html</code>
 <span class="math display">\[
-\underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - w^T\mu
-\]</span></p>
+\underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ w^T\mu
+\]</span>
+The risk aversion parameter <span class="math inline">\(\lambda\)</span> defines the trade-off between risk and return. <span class="math inline">\(\lambda = 1\)</span> results in a minimum variance portfolio and <span class="math inline">\(\lambda = 0\)</span> results in a maximum return portfolio. All possible <span class="math inline">\(\lambda \in [0, 1]\)</span> represent the efficient frontier.</p>
 </div>
 </div>
 <div id="index-tracking-portfolio-itp" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Index-tracking portfolio (ITP)<a href="challenges-of-passiv-investing.html#index-tracking-portfolio-itp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Mar2005" class="csl-entry">
+Maringer, Dientmar. 2005. <em>Portfolio Management with Heuristic Optimization</em>.
 </div>
 </div>
             </section>
