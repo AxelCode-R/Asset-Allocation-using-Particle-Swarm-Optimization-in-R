@@ -1,33 +1,46 @@
+```{r, include=FALSE}
+source("global.R")
+```
+
 # Challenges of Passiv Investing
 
 In this Chapter we will discuss two common challenges of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
 
-## Mean-variance portfolio
+## Mean-variance portfolio (MVP)
 Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theorie which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier. 
 
-### Mean-variance portfolio calculation
+### MVP calculation
 We have $N$ assets and its returns on $T$ diffrent days which creates a return matrix $R$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum$ and the expected returns are $\mu$. The MVP with risk aversion parameter $\lambda$ like shown in [@Mar2005] minimizes the following problem:
 
 `file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/Maringer2005_Book_PortfolioManagementWithHeurist.pdf`
 `https://bookdown.org/shenjian0824/portr/port-opt.html`
-$$
+\begin{equation} 
 \underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ w^T\mu
-$$
+(\#eq:MVP)
+\end{equation} 
+
 The risk aversion parameter $\lambda$ defines the trade-off between risk and return. $\lambda = 1$ results in a minimum variance portfolio and $\lambda = 0$ results in a maximum return portfolio. All possible $\lambda \in [0, 1]$ represent the efficient frontier.
 
 
 
-
-
-```{r example_1}
+### MVP example
+We will analyse a small example to understand the meaning of the efficient frontier without going into detail how it was solved. First of all we are pulling the daily returns of 3 tickers (IBM, Google and Apple). 
+```{r}
 returns <- get_prices_and_returns_av(choosen_tickers = c("IBM", "GOOG", "AAPL"), min_date = as.Date("2020-01-01"), max_date = as.Date("2021-01-01"))[["daily_returns"]]
 
 plotly_line_chart_xts(ret_to_cumret(returns))
-
-
+```
+Now we can calculate the expected daily returns and the covariance matrix for the 3 assets:
+```{r}
 mu <- as.vector((last(ret_to_cumret(returns))/100)^(1/nrow(returns))-1)
-cov <- as.matrix(nearPD(cov(returns))$mat)
+mu
 
+cov <- as.matrix(nearPD(cov(returns))$mat)
+cov
+```
+At this moment we have all the needed data to solve the MVP \@ref(eq:MVP) with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. Afterwords we calculate the annual returns and standard deviation and draw the efficient frontier and the composition of the portfolios:
+
+```{r, echo=F, warning=F, message=F}
 portfolios <- data.frame()
 mu_and_var <- NULL
 for(lambda in seq(0.01,1, 0.01)){
@@ -81,10 +94,10 @@ plot_ly(data = mu_and_var) %>%
     )
   ) 
 
-p <- plot_ly(type="bar") %>% layout(barmode="stack")
+p <- plot_ly(type="bar") %>% layout(title="Portfolio compositions", barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="wgt"))
 for(i in 1:ncol(portfolios)){
   p <- p %>% 
-  add_trace(x=1:nrow(portfolios), y=portfolios[, i], name = colnames(portfolios)[i])
+  add_trace(x=seq(0.01,1, 0.01), y=portfolios[, i], name = colnames(portfolios)[i])
 }
 p
 

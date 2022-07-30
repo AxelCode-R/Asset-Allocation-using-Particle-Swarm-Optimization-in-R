@@ -28,6 +28,8 @@ bookdown::render_book('index.Rmd', 'bookdown::gitbook', new_session = TRUE)
 # devtools::install_github("crsh/citr")
 # citr::insert_citation()
 # git add .
+
+source("global.R")
 ```
 
 # About GitBooks
