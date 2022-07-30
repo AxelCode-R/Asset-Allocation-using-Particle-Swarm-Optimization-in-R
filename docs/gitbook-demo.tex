@@ -41,6 +41,46 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -84,7 +124,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-07-12}
+\date{2022-07-30}
 
 \begin{document}
 \maketitle
@@ -98,22 +138,108 @@
 
 asdasdasd
 22222
+333333
+555555
 
 \hypertarget{abstract}{%
 \chapter{Abstract}\label{abstract}}
 
 Things about this book.
 
-\hypertarget{activ_vs_passiv_investing}{%
-\chapter{Activ\_vs\_Passiv\_Investing}\label{activ_vs_passiv_investing}}
+\hypertarget{activ-vs-passiv-investing}{%
+\chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
 
-Pros and Cons of this
+The fundation of each Asset Management
 
-\hypertarget{challenges_of_passiv_investing}{%
-\chapter{Challenges\_of\_Passiv\_Investing}\label{challenges_of_passiv_investing}}
+passiv vs activ studie
+\texttt{https://www.scirp.org/journal/paperinformation.aspx?paperid=92983}
 
-explain the problems and challenges
-and create examples
+gut gut
+\url{file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel\%20was\%20beantwortet\%20werden\%20soll/Quellen\%20nur\%20wichtige/Rasmussen2003_Book_QuantitativePortfolioOptimisat.pdf}
+
+\hypertarget{challenges-of-passiv-investing}{%
+\chapter{Challenges of Passiv Investing}\label{challenges-of-passiv-investing}}
+
+In this Chapter we will discuss two common challenges of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
+
+\hypertarget{mean-variance-portfolio-mvp}{%
+\section{Mean-variance portfolio (MVP)}\label{mean-variance-portfolio-mvp}}
+
+Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theorie which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier.
+
+\hypertarget{mvp-calculation}{%
+\subsection{MVP calculation}\label{mvp-calculation}}
+
+We have \(N\) assets and its returns on \(T\) diffrent days which creates a return matrix \(R\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The covariance matrix of the returns is \(\textstyle\sum\) and the expected returns are \(\mu\). The MVP with risk aversion parameter \(\lambda\) like shown in \citep{Mar2005} minimizes the following problem:
+
+\texttt{file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel\%20was\%20beantwortet\%20werden\%20soll/Quellen\%20nur\%20wichtige/Maringer2005\_Book\_PortfolioManagementWithHeurist.pdf}
+\texttt{https://bookdown.org/shenjian0824/portr/port-opt.html}
+\begin{equation} 
+\underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ w^T\mu
+\label{eq:MVP}
+\end{equation}
+
+The risk aversion parameter \(\lambda\) defines the trade-off between risk and return. \(\lambda = 1\) results in a minimum variance portfolio and \(\lambda = 0\) results in a maximum return portfolio. All possible \(\lambda \in [0, 1]\) represent the efficient frontier.
+
+\hypertarget{mvp-example}{%
+\subsection{MVP example}\label{mvp-example}}
+
+We will analyse a small example to understand the meaning of the efficient frontier without going into detail how it was solved. First of all we are pulling the daily returns of 3 tickers (IBM, Google and Apple).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\textasciigrave{}\textasciigrave{}\textasciigrave{}\{r, fig.asp=0.4, fig.align=\textquotesingle{}center\textquotesingle{}, out.width="100\%"\}}
+\NormalTok{returns }\OtherTok{\textless{}{-}} \FunctionTok{get\_prices\_and\_returns\_av}\NormalTok{(}\AttributeTok{choosen\_tickers =} \FunctionTok{c}\NormalTok{(}\StringTok{"IBM"}\NormalTok{, }\StringTok{"GOOG"}\NormalTok{, }\StringTok{"AAPL"}\NormalTok{), }\AttributeTok{min\_date =} \FunctionTok{as.Date}\NormalTok{(}\StringTok{"2020{-}01{-}01"}\NormalTok{), }\AttributeTok{max\_date =} \FunctionTok{as.Date}\NormalTok{(}\StringTok{"2021{-}01{-}01"}\NormalTok{))[[}\StringTok{"daily\_returns"}\NormalTok{]]}
+
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{plotly\_line\_chart\_xts}\NormalTok{(}\FunctionTok{ret\_to\_cumret}\NormalTok{(returns))}
+
+\CommentTok{\# if(pandoc\_to()=="html")\{}
+\CommentTok{\#   p}
+\CommentTok{\# \}else\{}
+\NormalTok{htmlwidgets}\SpecialCharTok{::}\FunctionTok{saveWidget}\NormalTok{(p, }\StringTok{"p.html"}\NormalTok{)}
+\NormalTok{webshot2}\SpecialCharTok{::}\FunctionTok{webshot}\NormalTok{(}\StringTok{"p.html"}\NormalTok{, }\StringTok{"p.png"}\NormalTok{, }\AttributeTok{delay=}\DecValTok{1}\NormalTok{, }\AttributeTok{zoom=}\DecValTok{4}\NormalTok{, }\AttributeTok{vheight=}\DecValTok{300}\NormalTok{, }\AttributeTok{vwidth =} \DecValTok{600}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-3-1.png}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\}}
+\end{Highlighting}
+\end{Shaded}
+
+Now we can calculate the expected daily returns and the covariance matrix for the 3 assets:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{((}\FunctionTok{last}\NormalTok{(}\FunctionTok{ret\_to\_cumret}\NormalTok{(returns))}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns))}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}
+\NormalTok{mu}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  0.00229618042  0.00098381820 -0.00008817616
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov}\NormalTok{(returns))}\SpecialCharTok{$}\NormalTok{mat)}
+\NormalTok{cov}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              AAPL         GOOG          IBM
+## AAPL 0.0008653837 0.0005341920 0.0004365885
+## GOOG 0.0005341920 0.0005832308 0.0004094512
+## IBM  0.0004365885 0.0004094512 0.0006647623
+\end{verbatim}
+
+At this moment we have all the needed data to solve the MVP \eqref{eq:MVP} with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). Afterwords we calculate the annual returns and standard deviation and draw the efficient frontier and the composition of the portfolios:
+
+\hypertarget{index-tracking-portfolio-itp}{%
+\section{Index-tracking portfolio (ITP)}\label{index-tracking-portfolio-itp}}
 
 \hypertarget{analytical_solver}{%
 \chapter{Analytical\_Solver}\label{analytical_solver}}

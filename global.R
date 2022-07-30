@@ -15,6 +15,12 @@ library(plotly)
 library(pso)
 library(data.table)
 library(corrr)
+library(webshot2)
+#library(knitr)
+# install.packages("webshot2")
+# install.packages("webshot")
+# webshot::install_phantomjs()
+
 
 # alphavantage API-KEY
 api_key <- Sys.getenv("api_key")

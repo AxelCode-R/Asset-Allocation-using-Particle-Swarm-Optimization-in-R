@@ -45,7 +45,7 @@ my_spread <- function(data, date_col, key, value){
 
 
 
-get_prices_and_returns_av <- function(choosen_tickers, max_date, min_date, min_date_history = days(0)){
+get_prices_and_returns_av <- function(choosen_tickers, max_date, min_date, min_date_history = days(0), print=F){
   if(!exists("api_key")){
     warning("no api_key found in GlobalEnv.")
     return(NULL)
@@ -60,12 +60,10 @@ get_prices_and_returns_av <- function(choosen_tickers, max_date, min_date, min_d
 
 
 
-  print(" ")
-  print("daily_data")
   daily_data_raw <- list()
   for(i in 1:length(choosen_tickers)){
     ticker <- choosen_tickers[i]
-    if(i%%10==0){
+    if(i%%10==0 && print){
       print(i)
     }
 
@@ -90,10 +88,10 @@ get_prices_and_returns_av <- function(choosen_tickers, max_date, min_date, min_d
           )
           break
         }else if(substr(temp_daily_return,8,11) == "Note" && !"Error.Message" %in% names(temp_daily_return)){
-          cat("+")
+          if(print){cat("+")}
           Sys.sleep(1)
         }else{
-          print("Not found!")
+          if(print){print("Not found!")}
           break
         }
       })

@@ -1,5 +1,11 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ```{r, include=FALSE}
 source("global.R")
+#knitr::opts_chunk$set(fig.width=8, fig.height=4) 
 ```
 
 # Challenges of Passiv Investing
@@ -25,10 +31,18 @@ The risk aversion parameter $\lambda$ defines the trade-off between risk and ret
 
 ### MVP example
 We will analyse a small example to understand the meaning of the efficient frontier without going into detail how it was solved. First of all we are pulling the daily returns of 3 tickers (IBM, Google and Apple). 
-```{r}
+```{r, fig.asp=0.5}
+#```{r, fig.asp=0.4, fig.align='center', out.width="100%"}
 returns <- get_prices_and_returns_av(choosen_tickers = c("IBM", "GOOG", "AAPL"), min_date = as.Date("2020-01-01"), max_date = as.Date("2021-01-01"))[["daily_returns"]]
 
-plotly_line_chart_xts(ret_to_cumret(returns))
+p <- plotly_line_chart_xts(ret_to_cumret(returns))
+
+# if(pandoc_to()=="html"){
+#   p
+# }else{
+htmlwidgets::saveWidget(p, "p.html")
+webshot2::webshot("p.html", "p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
+#}
 ```
 Now we can calculate the expected daily returns and the covariance matrix for the 3 assets:
 ```{r}
@@ -40,66 +54,66 @@ cov
 ```
 At this moment we have all the needed data to solve the MVP \@ref(eq:MVP) with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. Afterwords we calculate the annual returns and standard deviation and draw the efficient frontier and the composition of the portfolios:
 
-```{r, echo=F, warning=F, message=F}
-portfolios <- data.frame()
-mu_and_var <- NULL
-for(lambda in seq(0.01,1, 0.01)){
-    mat <- list(
-      Dmat = lambda * cov,
-      dvec = (1 - lambda) * mu,
-      Amat = t(rbind(
-        rep(1, ncol(returns)), # sum up to 1
-        diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
-      )),
-      bvec = c(
-        1, # sum up to 1
-        rep(0, ncol(returns)) # long only
-      ),
-      meq = 1
-    )
-    
-    qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
-    
-    port <- xts(returns %*% qp$solution, order.by=index(returns))
-    
-    mu_and_var <- rbind(
-      mu_and_var,
-      data.frame("lambda" = lambda, "mu" = mu %*% qp$solution, "sd" = sqrt(t(qp$solution) %*% cov %*% qp$solution))
-    )
-    portfolios <- rbind(
-      portfolios,
-      qp$solution
-    )
-}
-portfolios <- data.frame(portfolios)
-colnames(portfolios) <- colnames(returns)
-
-# annualize
-mu_and_var$mu <- (1+mu_and_var$mu)^252-1
-mu_and_var$sd <- mu_and_var$sd * sqrt(252)
-
-plot_ly(data = mu_and_var) %>% 
-  add_lines(y = ~mu, x = ~sd, name = "efficient frontier") %>% 
-  add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps") %>% 
-  layout(
-    title = "3-Asset MVP",
-    yaxis = list(range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
-    xaxis = list(range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05)),
-    margin = list(
-        l = 10,
-        r = 10,
-        b = 70,
-        t = 50,
-        pad = 4
-    )
-  ) 
-
-p <- plot_ly(type="bar") %>% layout(title="Portfolio compositions", barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="wgt"))
-for(i in 1:ncol(portfolios)){
-  p <- p %>% 
-  add_trace(x=seq(0.01,1, 0.01), y=portfolios[, i], name = colnames(portfolios)[i])
-}
-p
+```{r, echo=F, warning=F, message=F, fig.width=8}
+# portfolios <- data.frame()
+# mu_and_var <- NULL
+# for(lambda in seq(0.01,1, 0.01)){
+#     mat <- list(
+#       Dmat = lambda * cov,
+#       dvec = (1 - lambda) * mu,
+#       Amat = t(rbind(
+#         rep(1, ncol(returns)), # sum up to 1
+#         diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+#       )),
+#       bvec = c(
+#         1, # sum up to 1
+#         rep(0, ncol(returns)) # long only
+#       ),
+#       meq = 1
+#     )
+#     
+#     qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+#     
+#     port <- xts(returns %*% qp$solution, order.by=index(returns))
+#     
+#     mu_and_var <- rbind(
+#       mu_and_var,
+#       data.frame("lambda" = lambda, "mu" = mu %*% qp$solution, "sd" = sqrt(t(qp$solution) %*% cov %*% qp$solution))
+#     )
+#     portfolios <- rbind(
+#       portfolios,
+#       qp$solution
+#     )
+# }
+# portfolios <- data.frame(portfolios)
+# colnames(portfolios) <- colnames(returns)
+# 
+# # annualize
+# mu_and_var$mu <- (1+mu_and_var$mu)^252-1
+# mu_and_var$sd <- mu_and_var$sd * sqrt(252)
+# 
+# plot_ly(data = mu_and_var) %>% 
+#   add_lines(y = ~mu, x = ~sd, name = "efficient frontier") %>% 
+#   add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps") %>% 
+#   layout(
+#     title = "3-Asset MVP",
+#     yaxis = list(range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
+#     xaxis = list(range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05)),
+#     margin = list(
+#         l = 10,
+#         r = 10,
+#         b = 70,
+#         t = 50,
+#         pad = 4
+#     )
+#   ) 
+# 
+# p <- plot_ly(type="bar") %>% layout(title="Portfolio compositions", barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="wgt"))
+# for(i in 1:ncol(portfolios)){
+#   p <- p %>% 
+#   add_trace(x=seq(0.01,1, 0.01), y=portfolios[, i], name = colnames(portfolios)[i])
+# }
+# p
 
 ```
 
