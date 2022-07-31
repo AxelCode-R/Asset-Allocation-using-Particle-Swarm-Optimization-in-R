@@ -124,7 +124,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-07-30}
+\date{2022-07-31}
 
 \begin{document}
 \maketitle
@@ -133,18 +133,15 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{about-gitbooks}{%
-\chapter{About GitBooks}\label{about-gitbooks}}
-
-asdasdasd
-22222
-333333
-555555
-
 \hypertarget{abstract}{%
 \chapter{Abstract}\label{abstract}}
 
-Things about this book.
+Things about this thesis. why and what question should be answered. and what are the answers. (zusammenfassung)
+
+\hypertarget{software-information-and-conventions}{%
+\chapter{Software information and conventions}\label{software-information-and-conventions}}
+
+What R and packages do i mainly use, what do i use to write this book
 
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
@@ -238,8 +235,24 @@ Now we can calculate the expected daily returns and the covariance matrix for th
 
 At this moment we have all the needed data to solve the MVP \eqref{eq:MVP} with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). Afterwords we calculate the annual returns and standard deviation and draw the efficient frontier and the composition of the portfolios:
 
+\includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-5-1.pdf} \includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-5-2.pdf}
+
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-tracking portfolio (ITP)}\label{index-tracking-portfolio-itp}}
+
+Indices are baskets of assets which are used to track the performance of a specific group of assets. For example tracks the good known Standard and Poor's 500 index (short: S\&P 500) the largest 500 equitys in the United States. All indices are not investible and only serve for the visualisation of the performance of these groups of assets without transaction costs. Asset managements adopted these indices as benchmarks to compare there fund performances. Each fund has its own benchmark which contains roughly the same assets that could be purchased by the manager. If the fund under performs his benchmark, it could be a indicator for a bad decision from the fund manager. Thats why all fund managers are eager to beat there benchmarks with wisely choosen investments. The past has proven that this is rearly achived with activ managemnt after costs (quelle studie activ passiv). This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. Exactly this can be archived with Index-tracking portfolios (ITP) which aim to replicate the performance of a benchmark. This can be done by either full-replication or sparse-replication. A full-replication, which produces the exact performance we aim for, isn't possible in most cases because not all assets of a index are investable. And if so it wouldnt be wise ether because benchmarks with multiple indices can contain more than ten thousand single assets which will produce a huge amount of transaction costs. The most common way to go is a sparse replication of the performance. To do this the portfolio manager has to define his benchmark which has a great overlap with his investment universe of his fund. Afterwards he will reduce this universe by some rules of the investor, liqudity and avalability. Now he can start to optimize a portfolio, including the investors constraint, to replicate the benchmark performance. Usually, this is done by reducing the difference between the daily returns of the ITP and the benchmark:
+
+\[
+ minimize \ \ Var(r_{p}-r_{bm})
+\]
+First we need to substitude \(r_{p}\) to get the portfolio weights \(w\) as follows:
+\[
+  r_{p} = R * w
+\]
+Afterwards we solve the Variance:
+\[
+ Var(r_{p}-r_{bm}) = Var(R * w - r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Var(r_{bm}) \cdot \beta^T * w 
+\]
 
 \hypertarget{analytical_solver}{%
 \chapter{Analytical\_Solver}\label{analytical_solver}}

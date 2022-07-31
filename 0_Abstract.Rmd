@@ -1,4 +1,8 @@
 # Abstract
 
-Things about this book.
+Things about this thesis. why and what question should be answered. and what are the answers. (zusammenfassung)
+
+# Software information and conventions
+
+What R and packages do i mainly use, what do i use to write this book
 

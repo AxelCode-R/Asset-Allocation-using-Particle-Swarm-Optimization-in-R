@@ -31,9 +31,3 @@ bookdown::render_book('index.Rmd', 'bookdown::gitbook', new_session = F)
 
 source("global.R")
 ```
-
-# About GitBooks
-asdasdasd
-22222
-333333
-555555
