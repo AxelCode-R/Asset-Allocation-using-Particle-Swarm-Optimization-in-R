@@ -110,6 +110,7 @@
 \setcounter{secnumdepth}{5}
 \usepackage{booktabs}
 \usepackage{amsthm}
+\usepackage{amsmath}
 \makeatletter
 \def\thm@space@setup{%
   \thm@preskip=8pt plus 2pt minus 4pt
@@ -124,7 +125,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-07-31}
+\date{2022-08-02}
 
 \begin{document}
 \maketitle
@@ -198,7 +199,7 @@ We will analyse a small example to understand the meaning of the efficient front
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-3-1.png}
+\includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-4-1.png}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -216,7 +217,7 @@ Now we can calculate the expected daily returns and the covariance matrix for th
 \end{Shaded}
 
 \begin{verbatim}
-## [1]  0.00229618042  0.00098381820 -0.00008817616
+## [1]  0.00237647165  0.00106873765 -0.00004734503
 \end{verbatim}
 
 \begin{Shaded}
@@ -228,19 +229,19 @@ Now we can calculate the expected daily returns and the covariance matrix for th
 
 \begin{verbatim}
 ##              AAPL         GOOG          IBM
-## AAPL 0.0008653837 0.0005341920 0.0004365885
-## GOOG 0.0005341920 0.0005832308 0.0004094512
-## IBM  0.0004365885 0.0004094512 0.0006647623
+## AAPL 0.0008635447 0.0005337733 0.0004356540
+## GOOG 0.0005337733 0.0005827306 0.0004086774
+## IBM  0.0004356540 0.0004086774 0.0006625236
 \end{verbatim}
 
 At this moment we have all the needed data to solve the MVP \eqref{eq:MVP} with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). Afterwords we calculate the annual returns and standard deviation and draw the efficient frontier and the composition of the portfolios:
 
-\includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-5-1.pdf} \includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-5-2.pdf}
+\includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-6-1.pdf} \includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-6-2.pdf}
 
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-tracking portfolio (ITP)}\label{index-tracking-portfolio-itp}}
 
-Indices are baskets of assets which are used to track the performance of a specific group of assets. For example tracks the good known Standard and Poor's 500 index (short: S\&P 500) the largest 500 equitys in the United States. All indices are not investible and only serve for the visualisation of the performance of these groups of assets without transaction costs. Asset managements adopted these indices as benchmarks to compare there fund performances. Each fund has its own benchmark which contains roughly the same assets that could be purchased by the manager. If the fund under performs his benchmark, it could be a indicator for a bad decision from the fund manager. Thats why all fund managers are eager to beat there benchmarks with wisely choosen investments. The past has proven that this is rearly achived with activ managemnt after costs (quelle studie activ passiv). This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. Exactly this can be archived with Index-tracking portfolios (ITP) which aim to replicate the performance of a benchmark. This can be done by either full-replication or sparse-replication. A full-replication, which produces the exact performance we aim for, isn't possible in most cases because not all assets of a index are investable. And if so it wouldnt be wise ether because benchmarks with multiple indices can contain more than ten thousand single assets which will produce a huge amount of transaction costs. The most common way to go is a sparse replication of the performance. To do this the portfolio manager has to define his benchmark which has a great overlap with his investment universe of his fund. Afterwards he will reduce this universe by some rules of the investor, liqudity and avalability. Now he can start to optimize a portfolio, including the investors constraint, to replicate the benchmark performance. Usually, this is done by reducing the difference between the daily returns of the ITP and the benchmark:
+Indices are baskets of assets which are used to track the performance of a specific group of assets. For example tracks the good known Standard and Poor's 500 index (short: S\&P 500) the largest 500 equitys in the United States. All indices are not investible and only serve for the visualisation of the performance of these groups of assets without transaction costs. Asset managements adopted these indices as benchmarks to compare there fund performances. Each fund has its own benchmark which contains roughly the same assets that could be purchased by the manager. If the fund under performs his benchmark, it could be a indicator for a bad decision from the fund manager. Thats why all fund managers are eager to beat there benchmarks with wisely choosen investments. The past has proven that this is rearly achived with activ managemnt after costs (quelle studie activ passiv). This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. Exactly this can be archived with Index-tracking portfolios (ITP) which aim to replicate the performance of a benchmark. This can be done by either full-replication or sparse-replication. A full-replication, which produces the exact performance we aim for, isn't possible in most cases because not all assets of a index are investable. And if so it wouldnt be wise because benchmarks with multiple indices can contain more than ten thousand single assets which will produce a huge amount of transaction costs. The most common way to go is a sparse replication of the performance. To do so the portfolio manager has to define his benchmark which has a overlap with his investment universe of his fund. Afterwards he will reduce this universe by some rules of the investor, liqudity and availability. Now he can start to optimize a portfolio, including the investors constraint, to replicate the benchmark performance. Usually, this is done by reducing the difference between the daily returns of the ITP and the benchmark:
 
 \[
  minimize \ \ Var(r_{p}-r_{bm})
@@ -249,10 +250,95 @@ First we need to substitude \(r_{p}\) to get the portfolio weights \(w\) as foll
 \[
   r_{p} = R * w
 \]
-Afterwards we solve the Variance:
+Afterwards we solve the Variance until it is displayed as a quadratic problem of \(w\):
 \[
- Var(r_{p}-r_{bm}) = Var(R * w - r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Var(r_{bm}) \cdot \beta^T * w 
+ Var(r_{p}-r_{bm}) = Var(R * w - r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm}) 
 \]
+Now we need to solve each of the 3 terms, startign with the simplest
+
+\[
+Var(r_{bm}) = \sigma_{bm}^2 = constant
+\]
+
+The variance of the portfolio can be solved by looking at the proof in {[}\url{http://www.math.kent.edu/~reichel/courses/monte.carlo/alt4.7d.pdf} (proof auch selber machen){]} at the linear combination of random variables section:
+\[
+Var(R * w) = w^T * Cov(R) * w
+\]
+
+And the last term can be solved in general as (\url{https://bookdown.org/compfinezbook/introcompfinr/Multivariate-Probability-Distributions-Using-Matrix-Algebra.html} 3.6.5):
+\[
+  Cov(A*a, b) = Cov(b, A*a) = Cov(b, A)^T * a
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{A }\OtherTok{=} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{10}\NormalTok{), }\AttributeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\NormalTok{a }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\FloatTok{0.8}\NormalTok{)}
+\NormalTok{b }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{7}\NormalTok{)}
+
+\FunctionTok{cov}\NormalTok{(A }\SpecialCharTok{\%*\%}\NormalTok{ a, b)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1]
+## [1,] 2.15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t}\NormalTok{(a) }\SpecialCharTok{\%*\%} \FunctionTok{cov}\NormalTok{(A, b)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1]
+## [1,] 2.15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t}\NormalTok{(}\FunctionTok{cov}\NormalTok{(A, b)) }\SpecialCharTok{\%*\%}\NormalTok{ a }\CommentTok{\# das hier wird gebraucht}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1]
+## [1,] 2.15
+\end{verbatim}
+
+This results in the final formula of the ITP:
+
+\begin{equation}
+  \begin{split}
+   Var(r_{p}-r_{bm}) & = Var(R \times w - r_{bm}) \\
+   & = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
+   & = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
+   \end{split}
+   \label{eq:ITP}
+\end{equation}
+
+The minimization problem of the ITP in the general strcture which all optimizers need is:
+\[
+  min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
+\]
+Because it is a minimization we can ignore constants and stretchings and still find the same minimum. This results in the general substitution of the ITP as follows:
+\[
+  D = Cov(R)
+\]
+and
+\[
+d = Cov(r_{bm}, R)
+\]
+
+Now we need to add some basic constraints like in the MVP, to sum up the weights to 1 und beeing long only.
+
+\hypertarget{example-itp}{%
+\subsection{Example ITP}\label{example-itp}}
+
+We will show the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
+22223333334444
+\includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-8-1.png}
 
 \hypertarget{analytical_solver}{%
 \chapter{Analytical\_Solver}\label{analytical_solver}}

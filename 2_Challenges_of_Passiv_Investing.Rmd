@@ -120,7 +120,7 @@ p
 
 
 ## Index-tracking portfolio (ITP)
-Indices are baskets of assets which are used to track the performance of a specific group of assets. For example tracks the good known Standard and Poor's 500 index (short: S&P 500) the largest 500 equitys in the United States. All indices are not investible and only serve for the visualisation of the performance of these groups of assets without transaction costs. Asset managements adopted these indices as benchmarks to compare there fund performances. Each fund has its own benchmark which contains roughly the same assets that could be purchased by the manager. If the fund under performs his benchmark, it could be a indicator for a bad decision from the fund manager. Thats why all fund managers are eager to beat there benchmarks with wisely choosen investments. The past has proven that this is rearly achived with activ managemnt after costs (quelle studie activ passiv). This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. Exactly this can be archived with Index-tracking portfolios (ITP) which aim to replicate the performance of a benchmark. This can be done by either full-replication or sparse-replication. A full-replication, which produces the exact performance we aim for, isn't possible in most cases because not all assets of a index are investable. And if so it wouldnt be wise ether because benchmarks with multiple indices can contain more than ten thousand single assets which will produce a huge amount of transaction costs. The most common way to go is a sparse replication of the performance. To do this the portfolio manager has to define his benchmark which has a great overlap with his investment universe of his fund. Afterwards he will reduce this universe by some rules of the investor, liqudity and avalability. Now he can start to optimize a portfolio, including the investors constraint, to replicate the benchmark performance. Usually, this is done by reducing the difference between the daily returns of the ITP and the benchmark:
+Indices are baskets of assets which are used to track the performance of a specific group of assets. For example tracks the good known Standard and Poor's 500 index (short: S&P 500) the largest 500 equitys in the United States. All indices are not investible and only serve for the visualisation of the performance of these groups of assets without transaction costs. Asset managements adopted these indices as benchmarks to compare there fund performances. Each fund has its own benchmark which contains roughly the same assets that could be purchased by the manager. If the fund under performs his benchmark, it could be a indicator for a bad decision from the fund manager. Thats why all fund managers are eager to beat there benchmarks with wisely choosen investments. The past has proven that this is rearly achived with activ managemnt after costs (quelle studie activ passiv). This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. Exactly this can be archived with Index-tracking portfolios (ITP) which aim to replicate the performance of a benchmark. This can be done by either full-replication or sparse-replication. A full-replication, which produces the exact performance we aim for, isn't possible in most cases because not all assets of a index are investable. And if so it wouldnt be wise because benchmarks with multiple indices can contain more than ten thousand single assets which will produce a huge amount of transaction costs. The most common way to go is a sparse replication of the performance. To do so the portfolio manager has to define his benchmark which has a overlap with his investment universe of his fund. Afterwards he will reduce this universe by some rules of the investor, liqudity and availability. Now he can start to optimize a portfolio, including the investors constraint, to replicate the benchmark performance. Usually, this is done by reducing the difference between the daily returns of the ITP and the benchmark:
 
 $$
  minimize \ \ Var(r_{p}-r_{bm})
@@ -129,16 +129,105 @@ First we need to substitude $r_{p}$ to get the portfolio weights $w$ as follows:
 $$
   r_{p} = R * w
 $$
-Afterwards we solve the Variance:
+Afterwards we solve the Variance until it is displayed as a quadratic problem of $w$:
 $$
- Var(r_{p}-r_{bm}) = Var(R * w - r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Var(r_{bm}) \cdot \beta^T * w 
+ Var(r_{p}-r_{bm}) = Var(R * w - r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm}) 
+$$
+Now we need to solve each of the 3 terms, startign with the simplest
+
+$$
+Var(r_{bm}) = \sigma_{bm}^2 = constant
+$$
+
+The variance of the portfolio can be solved by looking at the proof in [http://www.math.kent.edu/~reichel/courses/monte.carlo/alt4.7d.pdf (proof auch selber machen)] at the linear combination of random variables section:
+$$
+Var(R * w) = w^T * Cov(R) * w
+$$
+
+And the last term can be solved in general as (https://bookdown.org/compfinezbook/introcompfinr/Multivariate-Probability-Distributions-Using-Matrix-Algebra.html 3.6.5):
+$$
+  Cov(A*a, b) = Cov(b, A*a) = Cov(b, A)^T * a
 $$
 
 
+```{r}
+A = matrix(c(1,4,2,4,6,3,8,4,4,10), ncol=2)
+a = c(0.2, 0.8)
+b = c(4,4,5,5,7)
+
+cov(A %*% a, b)
+t(a) %*% cov(A, b)
+t(cov(A, b)) %*% a # das hier wird gebraucht
+
+```
+
+This results in the final formula of the ITP:
+
+\begin{equation}
+  \begin{split}
+   Var(r_{p}-r_{bm}) & = Var(R \times w - r_{bm}) \\
+   & = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
+   & = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
+   \end{split}
+   (\#eq:ITP)
+\end{equation}
+
+The minimization problem of the ITP in the general strcture which all optimizers need is:
+$$
+  min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
+$$
+Because it is a minimization we can ignore constants and stretchings and still find the same minimum. This results in the general substitution of the ITP as follows:
+$$
+  D = Cov(R)
+$$
+and
+$$
+d = Cov(r_{bm}, R)
+$$
+
+Now we need to add some basic constraints like in the MVP, to sum up the weights to 1 und beeing long only. 
+
+### Example ITP
+We will show the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
+222233333344445
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+returns <- get_prices_and_returns_av(choosen_tickers = c("IBM", "GOOG", "AAPL"), min_date = as.Date("2020-01-01"), max_date = as.Date("2021-01-01"))[["daily_returns"]]
+
+load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/data/spx_index_daily_adj_data.rdata")
+spx_returns <- spx_index_daily_adj_data$daily_returns["2020-01-01/2021-01-01",]
+
+mat <- list(
+    Dmat = cov(returns),
+    dvec = cov(returns, spx_returns),
+    Amat = t(rbind(
+      rep(1, ncol(returns)), # sum up to 1
+      diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+    )),
+    bvec = c(
+      1, # sum up to 1
+      rep(0, ncol(returns)) # long only
+    ),
+    meq = 1
+)
+
+qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+
+port_returns <- xts(returns %*% qp$solution, order.by=index(returns)) %>% setNames(., "tracking portfolio")
+
+p <- plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns, spx_returns)))
+
+```
+
+```{r, echo = F}
+htmlwidgets::saveWidget(p, "p2.html")
+webshot2::webshot("p2.html", "p2.png", delay=1, zoom=4, vheight=300, vwidth = 600)
+```
 
 
 
 
 
-
-
+```{r, echo=FALSE, results='asis'}
+cat(paste0("<style> \n",paste0(readr::read_lines("my_style.css"), collapse = " \n")," </style>"))
+cat(paste0("<script type='text/javascript'> \n",paste0(readr::read_lines("script.js"), collapse = " \n")," </script>"))
+```

@@ -1,4 +1,5 @@
 eq:MVP
+eq:ITP
 abstract
 software-information-and-conventions
 activ-vs-passiv-investing
@@ -7,5 +8,6 @@ mean-variance-portfolio-mvp
 mvp-calculation
 mvp-example
 index-tracking-portfolio-itp
+example-itp
 analytical_solver
 simple_particle_swarm_optimization

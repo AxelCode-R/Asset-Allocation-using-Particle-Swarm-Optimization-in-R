@@ -82,7 +82,7 @@ get_prices_and_returns_av <- function(choosen_tickers, max_date, min_date, min_d
             temp_daily_return %>%
               read_csv() %>%
               filter(
-                timestamp >= min_date-min_date_history,
+                lag(timestamp) >= min_date-min_date_history,
                 timestamp <= max_date
               )
           )
