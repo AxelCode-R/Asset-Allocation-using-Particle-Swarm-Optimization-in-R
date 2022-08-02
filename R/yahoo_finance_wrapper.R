@@ -8,8 +8,10 @@ get_prices_and_returns_yf <- function(tickers, from="2020-01-01", to="2021-01-01
   e <- new.env()
 
   #getSymbols("%5EGSPC", src="yahoo", env = e)
-  getSymbols(tickers, src="yahoo", env = e, from = as.Date(from)-days(5), to = to)
-
+  try({
+    info <- suppressMessages(suppressWarnings(quantmod::getSymbols(tickers, env = e, from = as.Date(from)-days(5), to = to)))
+    if(print){print(info)}
+  },silent = T)
 
   prices <- NULL
   for(name in names(e)){
@@ -23,14 +25,12 @@ get_prices_and_returns_yf <- function(tickers, from="2020-01-01", to="2021-01-01
   if(is.null(prices)){
     return("No Prices found!")
   }else{
-    returns <- prices/lag.xts(prices) - 1
-
+    returns <- pri_to_ret(prices)
 
     data <- list(
       "prices" = prices[paste0(from,"/",to),],
       "returns" = returns[paste0(from,"/",to),]
     )
-
 
     return(data)
   }

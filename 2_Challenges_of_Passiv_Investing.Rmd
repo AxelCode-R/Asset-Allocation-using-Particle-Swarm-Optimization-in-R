@@ -33,17 +33,13 @@ The risk aversion parameter $\lambda$ defines the trade-off between risk and ret
 ### MVP example
 We will analyse a small example to understand the meaning of the efficient frontier without going into detail how it was solved. First of all we are pulling the daily returns of 3 tickers (IBM, Google and Apple). 
 ```{r, fig.asp=0.5, cache=TRUE}
-#```{r, fig.asp=0.4, fig.align='center', out.width="100%"}
-returns <- get_prices_and_returns_av(choosen_tickers = c("IBM", "GOOG", "AAPL"), min_date = as.Date("2020-01-01"), max_date = as.Date("2021-01-01"))[["daily_returns"]]
+returns <- get_prices_and_returns_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns
+
 
 p <- plotly_line_chart_xts(ret_to_cumret(returns))
 
-# if(pandoc_to()=="html"){
-#   p
-# }else{
 htmlwidgets::saveWidget(p, "p.html")
 webshot2::webshot("p.html", "p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
-#}
 ```
 Now we can calculate the expected daily returns and the covariance matrix for the 3 assets:
 ```{r}
@@ -191,34 +187,31 @@ Now we need to add some basic constraints like in the MVP, to sum up the weights
 We will show the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
 222233333344445
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
-returns <- get_prices_and_returns_av(choosen_tickers = c("IBM", "GOOG", "AAPL"), min_date = as.Date("2020-01-01"), max_date = as.Date("2021-01-01"))[["daily_returns"]]
+pool_returns <- get_prices_and_returns_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns
 
-load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/data/spx_index_daily_adj_data.rdata")
-spx_returns <- spx_index_daily_adj_data$daily_returns["2020-01-01/2021-01-01",]
-
-
+bm_returns <- setNames(get_prices_and_returns_yf(tickers = "%5EGSPC", from = "2020-01-01", to = "2021-01-01")$returns, "S&P 500")
 
 mat <- list(
-    Dmat = cov(returns),
-    dvec = cov(returns, spx_returns),
+    Dmat = cov(pool_returns),
+    dvec = cov(pool_returns, bm_returns),
     Amat = t(rbind(
-      rep(1, ncol(returns)), # sum up to 1
-      diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+      rep(1, ncol(pool_returns)), # sum up to 1
+      diag(1, nrow=ncol(pool_returns), ncol=ncol(pool_returns)) # long only
     )),
     bvec = c(
       1, # sum up to 1
-      rep(0, ncol(returns)) # long only
+      rep(0, ncol(pool_returns)) # long only
     ),
     meq = 1
 )
 
 qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
 
-port_returns <- xts(returns %*% qp$solution, order.by=index(returns)) %>% setNames(., "tracking portfolio")
+port_returns <- xts(pool_returns %*% qp$solution, order.by=index(pool_returns)) %>% setNames(., "tracking portfolio")
 
-p <- plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns, spx_returns)))
+p <- plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns, bm_returns)))
 
-setNames(qp$solution, colnames(returns))
+setNames(qp$solution, colnames(pool_returns))
 ```
 
 ```{r, echo = F}
