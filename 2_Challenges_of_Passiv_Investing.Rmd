@@ -33,7 +33,10 @@ The risk aversion parameter $\lambda$ defines the trade-off between risk and ret
 ### MVP example
 We will analyse a small example to understand the meaning of the efficient frontier without going into detail how it was solved. First of all we are pulling the daily returns of 3 tickers (IBM, Google and Apple). 
 ```{r, fig.asp=0.5, cache=TRUE}
-returns <- get_prices_and_returns_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns
+returns <- buffer(
+  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns, 
+  "data/3_assets"
+)
 
 
 p <- plotly_line_chart_xts(ret_to_cumret(returns))
@@ -187,9 +190,16 @@ Now we need to add some basic constraints like in the MVP, to sum up the weights
 We will show the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
 222233333344445
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
-pool_returns <- get_prices_and_returns_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns
+pool_returns <- buffer(
+  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns, 
+  "data/3_assets"
+)
 
-bm_returns <- setNames(get_prices_and_returns_yf(tickers = "%5EGSPC", from = "2020-01-01", to = "2021-01-01")$returns, "S&P 500")
+bm_returns <- buffer(
+  setNames(get_yf(tickers = "%5EGSPC", from = "2020-01-01", to = "2021-01-01")$returns, "S&P 500"), 
+  "data/sp500"
+)
+
 
 mat <- list(
     Dmat = cov(pool_returns),

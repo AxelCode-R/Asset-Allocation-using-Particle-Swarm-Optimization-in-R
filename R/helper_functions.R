@@ -26,3 +26,16 @@ m0 <- function(...){
 w0 <- function(...){
   warning(paste0(...))
 }
+
+
+
+buffer <- function(expr, rdata_file, force = FALSE){
+  file <- if(rdata_file %like% ".rdata"){rdata_file}else{paste0(rdata_file,".rdata")}
+  if(file.exists(file) && !force){
+    load(file)
+  }else{
+    temp <- eval(expr)
+    save(temp, file=file)
+  }
+  return(temp)
+}

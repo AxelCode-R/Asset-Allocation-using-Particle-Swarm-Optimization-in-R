@@ -1,5 +1,5 @@
 
-get_prices_and_returns_yf <- function(tickers, from="2020-01-01", to="2021-01-01", type="adjusted", print=F){
+get_yf <- function(tickers, from="2020-01-01", to="2021-01-01", type="adjusted", print=F){
   # load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/data/spx_composition.rdata")
   # tickers <- unique(spx_composition$Ticker)
   # from <- "2020-01-01"
