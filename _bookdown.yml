@@ -4,7 +4,8 @@ rmd_files: ["index.Rmd",
             "1_Activ_vs_Passiv_Investing.Rmd",
             "2_Challenges_of_Passiv_Investing.Rmd",
             "3_Analytical_Solver.Rmd",
-            "4_Simple_Particle_Swarm_Optimization.Rmd"]
+            "4_Simple_Particle_Swarm_Optimization.Rmd",
+            "references.Rmd"]
 output_dir: "docs"
 language:
   ui:

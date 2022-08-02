@@ -1,7 +1,7 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 ```{r, include=FALSE, echo=FALSE}
 source("global.R")
@@ -151,13 +151,13 @@ $$
 
 
 ```{r}
-A = matrix(c(1,4,2,4,6,3,8,4,4,10), ncol=2)
-a = c(0.2, 0.8)
-b = c(4,4,5,5,7)
-
-cov(A %*% a, b)
-t(a) %*% cov(A, b)
-t(cov(A, b)) %*% a # das hier wird gebraucht
+# A = matrix(c(1,4,2,4,6,3,8,4,4,10), ncol=2)
+# a = c(0.2, 0.8)
+# b = c(4,4,5,5,7)
+# 
+# cov(A %*% a, b)
+# t(a) %*% cov(A, b)
+# t(cov(A, b)) %*% a # das hier wird gebraucht
 
 ```
 
@@ -172,11 +172,11 @@ This results in the final formula of the ITP:
    (\#eq:ITP)
 \end{equation}
 
-The minimization problem of the ITP in the general strcture which all optimizers need is:
+The minimization problem of the ITP in the general stricture which all optimizers need is:
 $$
   min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
 $$
-Because it is a minimization we can ignore constants and stretchings and still find the same minimum. This results in the general substitution of the ITP as follows:
+Because it is a minimization we can ignore constant terms and stretching coefficients and still find the same minimum. This results in the general substitution of the ITP as follows:
 $$
   D = Cov(R)
 $$
@@ -185,7 +185,7 @@ $$
 d = Cov(r_{bm}, R)
 $$
 
-Now we need to add some basic constraints like in the MVP, to sum up the weights to 1 und beeing long only. 
+Now we need to add some basic constraints like in the MVP, to sum up the weights to 1 and being long only. 
 
 ### Example ITP
 We will show the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
@@ -195,6 +195,8 @@ returns <- get_prices_and_returns_av(choosen_tickers = c("IBM", "GOOG", "AAPL"),
 
 load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/data/spx_index_daily_adj_data.rdata")
 spx_returns <- spx_index_daily_adj_data$daily_returns["2020-01-01/2021-01-01",]
+
+
 
 mat <- list(
     Dmat = cov(returns),
@@ -216,6 +218,7 @@ port_returns <- xts(returns %*% qp$solution, order.by=index(returns)) %>% setNam
 
 p <- plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns, spx_returns)))
 
+setNames(qp$solution, colnames(returns))
 ```
 
 ```{r, echo = F}

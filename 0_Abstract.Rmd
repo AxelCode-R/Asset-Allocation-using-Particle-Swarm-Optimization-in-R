@@ -4,5 +4,8 @@ Things about this thesis. why and what question should be answered. and what are
 
 # Software information and conventions
 
-What R and packages do i mainly use, what do i use to write this book
+What R and packages do i mainly use, what do i use to write this book. Mathematical conventions and why i prefere the matrix notations. And used functions.
 
+# Data Sources
+
+What source do i use and what functions do exist for it

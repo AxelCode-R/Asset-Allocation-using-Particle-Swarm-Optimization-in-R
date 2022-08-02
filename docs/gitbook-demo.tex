@@ -142,7 +142,12 @@ Things about this thesis. why and what question should be answered. and what are
 \hypertarget{software-information-and-conventions}{%
 \chapter{Software information and conventions}\label{software-information-and-conventions}}
 
-What R and packages do i mainly use, what do i use to write this book
+What R and packages do i mainly use, what do i use to write this book. Mathematical conventions and why i prefere the matrix notations. And used functions.
+
+\hypertarget{data-sources}{%
+\chapter{Data Sources}\label{data-sources}}
+
+What source do i use and what functions do exist for it
 
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
@@ -272,40 +277,15 @@ And the last term can be solved in general as (\url{https://bookdown.org/compfin
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{A }\OtherTok{=} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{10}\NormalTok{), }\AttributeTok{ncol=}\DecValTok{2}\NormalTok{)}
-\NormalTok{a }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\FloatTok{0.8}\NormalTok{)}
-\NormalTok{b }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{7}\NormalTok{)}
-
-\FunctionTok{cov}\NormalTok{(A }\SpecialCharTok{\%*\%}\NormalTok{ a, b)}
+\CommentTok{\# A = matrix(c(1,4,2,4,6,3,8,4,4,10), ncol=2)}
+\CommentTok{\# a = c(0.2, 0.8)}
+\CommentTok{\# b = c(4,4,5,5,7)}
+\CommentTok{\# }
+\CommentTok{\# cov(A \%*\% a, b)}
+\CommentTok{\# t(a) \%*\% cov(A, b)}
+\CommentTok{\# t(cov(A, b)) \%*\% a \# das hier wird gebraucht}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##      [,1]
-## [1,] 2.15
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{t}\NormalTok{(a) }\SpecialCharTok{\%*\%} \FunctionTok{cov}\NormalTok{(A, b)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##      [,1]
-## [1,] 2.15
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{t}\NormalTok{(}\FunctionTok{cov}\NormalTok{(A, b)) }\SpecialCharTok{\%*\%}\NormalTok{ a }\CommentTok{\# das hier wird gebraucht}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##      [,1]
-## [1,] 2.15
-\end{verbatim}
 
 This results in the final formula of the ITP:
 
@@ -318,11 +298,11 @@ This results in the final formula of the ITP:
    \label{eq:ITP}
 \end{equation}
 
-The minimization problem of the ITP in the general strcture which all optimizers need is:
+The minimization problem of the ITP in the general stricture which all optimizers need is:
 \[
   min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
 \]
-Because it is a minimization we can ignore constants and stretchings and still find the same minimum. This results in the general substitution of the ITP as follows:
+Because it is a minimization we can ignore constant terms and stretching coefficients and still find the same minimum. This results in the general substitution of the ITP as follows:
 \[
   D = Cov(R)
 \]
@@ -331,14 +311,20 @@ and
 d = Cov(r_{bm}, R)
 \]
 
-Now we need to add some basic constraints like in the MVP, to sum up the weights to 1 und beeing long only.
+Now we need to add some basic constraints like in the MVP, to sum up the weights to 1 and being long only.
 
 \hypertarget{example-itp}{%
 \subsection{Example ITP}\label{example-itp}}
 
 We will show the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
-22223333334444
-\includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-8-1.png}
+222233333344445
+
+\begin{verbatim}
+##      AAPL      GOOG       IBM 
+## 0.2597104 0.3308051 0.4094845
+\end{verbatim}
+
+\includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-9-1.png}
 
 \hypertarget{analytical_solver}{%
 \chapter{Analytical\_Solver}\label{analytical_solver}}
