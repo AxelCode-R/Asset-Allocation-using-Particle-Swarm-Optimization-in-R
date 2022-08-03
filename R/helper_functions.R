@@ -30,7 +30,11 @@ w0 <- function(...){
 
 
 buffer <- function(expr, rdata_file, force = FALSE){
+  if(!dir.exists("buffer_data")){
+    dir.create("buffer_data")
+  }
   file <- if(rdata_file %like% ".rdata"){rdata_file}else{paste0(rdata_file,".rdata")}
+  file <- paste0("buffer_data/", file)
   if(file.exists(file) && !force){
     load(file)
   }else{

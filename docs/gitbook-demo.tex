@@ -125,7 +125,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-08-02}
+\date{2022-08-03}
 
 \begin{document}
 \maketitle
@@ -193,7 +193,7 @@ We will analyse a small example to understand the meaning of the efficient front
 \begin{Highlighting}[]
 \NormalTok{returns }\OtherTok{\textless{}{-}} \FunctionTok{buffer}\NormalTok{(}
   \FunctionTok{get\_yf}\NormalTok{(}\AttributeTok{tickers =} \FunctionTok{c}\NormalTok{(}\StringTok{"IBM"}\NormalTok{, }\StringTok{"GOOG"}\NormalTok{, }\StringTok{"AAPL"}\NormalTok{), }\AttributeTok{from =} \StringTok{"2020{-}01{-}01"}\NormalTok{, }\AttributeTok{to =} \StringTok{"2021{-}01{-}01"}\NormalTok{)}\SpecialCharTok{$}\NormalTok{returns, }
-  \StringTok{"data/ex\_MVP\_3\_assets"}
+  \StringTok{"3\_assets"}
 \NormalTok{)}
 
 
@@ -215,7 +215,7 @@ Now we can calculate the expected daily returns and the covariance matrix for th
 \end{Shaded}
 
 \begin{verbatim}
-## [1]  0.00237641766 -0.00004622068  0.00106873786
+## [1]  0.00237641721 -0.00004622149  0.00106873786
 \end{verbatim}
 
 \begin{Shaded}
@@ -227,9 +227,9 @@ Now we can calculate the expected daily returns and the covariance matrix for th
 
 \begin{verbatim}
 ##              AAPL          IBM         GOOG
-## AAPL 0.0008635697 0.0004356283 0.0005337720
-## IBM  0.0004356283 0.0006626220 0.0004086728
-## GOOG 0.0005337720 0.0004086728 0.0005827306
+## AAPL 0.0008635696 0.0004356282 0.0005337719
+## IBM  0.0004356282 0.0006626219 0.0004086728
+## GOOG 0.0005337719 0.0004086728 0.0005827306
 \end{verbatim}
 
 At this moment we have all the needed data to solve the MVP \eqref{eq:MVP} with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). Afterwords we calculate the annual returns and standard deviation and draw the efficient frontier and the composition of the portfolios:
@@ -270,15 +270,40 @@ And the last term can be solved in general as (\url{https://bookdown.org/compfin
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# A = matrix(c(1,4,2,4,6,3,8,4,4,10), ncol=2)}
-\CommentTok{\# a = c(0.2, 0.8)}
-\CommentTok{\# b = c(4,4,5,5,7)}
-\CommentTok{\# }
-\CommentTok{\# cov(A \%*\% a, b)}
-\CommentTok{\# t(a) \%*\% cov(A, b)}
-\CommentTok{\# t(cov(A, b)) \%*\% a \# das hier wird gebraucht}
+\NormalTok{A }\OtherTok{=} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{10}\NormalTok{), }\AttributeTok{ncol=}\DecValTok{2}\NormalTok{)}
+\NormalTok{a }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\FloatTok{0.8}\NormalTok{)}
+\NormalTok{b }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{7}\NormalTok{)}
+
+\FunctionTok{cov}\NormalTok{(A }\SpecialCharTok{\%*\%}\NormalTok{ a, b)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+##      [,1]
+## [1,] 2.15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t}\NormalTok{(a) }\SpecialCharTok{\%*\%} \FunctionTok{cov}\NormalTok{(A, b)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1]
+## [1,] 2.15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t}\NormalTok{(}\FunctionTok{cov}\NormalTok{(A, b)) }\SpecialCharTok{\%*\%}\NormalTok{ a }\CommentTok{\# das hier wird gebraucht}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1]
+## [1,] 2.15
+\end{verbatim}
 
 This results in the final formula of the ITP:
 
@@ -314,7 +339,7 @@ We will show the results of tracking the S\&P 500 with a tracking portfolio that
 
 \begin{verbatim}
 ##      AAPL       IBM      GOOG 
-## 0.2677927 0.4041881 0.3280193
+## 0.2677928 0.4041880 0.3280192
 \end{verbatim}
 
 \includegraphics{gitbook-demo_files/figure-latex/unnamed-chunk-9-1.png}

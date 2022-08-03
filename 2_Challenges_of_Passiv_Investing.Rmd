@@ -35,7 +35,7 @@ We will analyse a small example to understand the meaning of the efficient front
 ```{r, fig.asp=0.5, cache=TRUE}
 returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns, 
-  "data/3_assets"
+  "3_assets"
 )
 
 
@@ -150,13 +150,13 @@ $$
 
 
 ```{r}
-# A = matrix(c(1,4,2,4,6,3,8,4,4,10), ncol=2)
-# a = c(0.2, 0.8)
-# b = c(4,4,5,5,7)
-# 
-# cov(A %*% a, b)
-# t(a) %*% cov(A, b)
-# t(cov(A, b)) %*% a # das hier wird gebraucht
+A = matrix(c(1,4,2,4,6,3,8,4,4,10), ncol=2)
+a = c(0.2, 0.8)
+b = c(4,4,5,5,7)
+
+cov(A %*% a, b)
+t(a) %*% cov(A, b)
+t(cov(A, b)) %*% a # das hier wird gebraucht
 
 ```
 
@@ -192,12 +192,12 @@ We will show the results of tracking the S&P 500 with a tracking portfolio that 
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 pool_returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns, 
-  "data/3_assets"
+  "3_assets"
 )
 
 bm_returns <- buffer(
   setNames(get_yf(tickers = "%5EGSPC", from = "2020-01-01", to = "2021-01-01")$returns, "S&P 500"), 
-  "data/sp500"
+  "sp500"
 )
 
 
