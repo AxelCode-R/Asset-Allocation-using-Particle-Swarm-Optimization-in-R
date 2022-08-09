@@ -43,3 +43,10 @@ buffer <- function(expr, rdata_file, force = FALSE){
   }
   return(temp)
 }
+
+
+
+plotly_save <- function(plotly_plot, ...){
+  htmlwidgets::saveWidget(plotly_plot, "p.html")
+  webshot2::webshot("p.html", "p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
+}

@@ -1,12 +1,13 @@
 ---
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 ```{r, include=FALSE, echo=FALSE}
 source("global.R")
 # knitr::opts_chunk$set(fig.width=8, fig.height=4)
 # bookdown::preview_chapter(input="2_Challenges_of_Passiv_Investing.Rmd")
+knitr::opts_chunk$set(cache = T)
 ```
 
 # Challenges of Passiv Investing
@@ -16,45 +17,47 @@ In this Chapter we will discuss two common challenges of Passiv-Investing and cr
 ## Mean-variance portfolio (MVP)
 Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theorie which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier. 
 
-### MVP calculation
-We have $N$ assets and its returns on $T$ diffrent days which creates a return matrix $R$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum$ and the expected returns are $\mu$. The MVP with risk aversion parameter $\lambda$ like shown in [@Mar2005] minimizes the following problem:
-
-`file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/Maringer2005_Book_PortfolioManagementWithHeurist.pdf`
-`https://bookdown.org/shenjian0824/portr/port-opt.html`
+### MVP
+We have $N$ assets and its returns on $T$ different days which creates a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP with risk aversion parameter $\lambda \in [0,1]$ like shown in [@Mar2005] can be formalized as follows:
 \begin{equation} 
-\underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ w^T\mu
+\underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 (\#eq:MVP)
 \end{equation} 
 
-The risk aversion parameter $\lambda$ defines the trade-off between risk and return. $\lambda = 1$ results in a minimum variance portfolio and $\lambda = 0$ results in a maximum return portfolio. All possible $\lambda \in [0, 1]$ represent the efficient frontier.
-
+The risk aversion parameter $\lambda$ defines the trade-off between risk and return. With $\lambda = 1$, the minimization problem only contains the the variance term and so on results in a minimum variance portfolio and $\lambda = 0$ transforms the problem to a minimization of the negative expected returns so on results in a maximum return portfolio. All possible $\lambda \in [0, 1]$ represent the efficient frontier.
 
 
 ### MVP example
-We will analyse a small example to understand the meaning of the efficient frontier without going into detail how it was solved. First of all we are pulling the daily returns of 3 tickers (IBM, Google and Apple). 
-```{r, fig.asp=0.5, cache=TRUE}
+
+We will analyze a small example to understand the meaning of the efficient frontier without going into detail how it was solved. First of all we are loading the daily returns of IBM, Google and Apple from the year 2020. 
+```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 returns <- buffer(
-  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns, 
+  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2020-12-31")$returns, 
   "3_assets"
 )
+``` 
+The cumulated daily returns are:
 
+```{r, echo = F}
+plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
+  plotly_save()
 
-p <- plotly_line_chart_xts(ret_to_cumret(returns))
-
-htmlwidgets::saveWidget(p, "p.html")
-webshot2::webshot("p.html", "p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
 ```
+
 Now we can calculate the expected daily returns and the covariance matrix for the 3 assets:
+
 ```{r}
-mu <- as.vector((last(ret_to_cumret(returns))/100)^(1/nrow(returns))-1)
+mu <- as.vector((last(ret_to_cumret(returns))/100)^(1/nrow(returns))-1) %>% 
+  setNames(., colnames(returns))
 mu
 
 cov <- as.matrix(nearPD(cov(returns))$mat)
 cov
 ```
-At this moment we have all the needed data to solve the MVP \@ref(eq:MVP) with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. Afterwords we calculate the annual returns and standard deviation and draw the efficient frontier and the composition of the portfolios:
 
-```{r, echo=F, warning=F, message=F, fig.width=8, cache=TRUE}
+We now have all the necessary data to solve the MVP \@ref(eq:MVP) with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. We calculate all 100 portfolios by solving the quadratic minimization problem for each $\lambda$.
+
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
 portfolios <- data.frame()
 mu_and_var <- NULL
 for(lambda in seq(0.01,1, 0.01)){
@@ -88,9 +91,14 @@ for(lambda in seq(0.01,1, 0.01)){
 portfolios <- data.frame(portfolios)
 colnames(portfolios) <- colnames(returns)
 
+```
+
+Following that, we convert the daily returns and standard deviation to yearly returns and standard deviation before plotting the efficient frontier.
+
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
 # annualize
-mu_and_var$mu <- (1+mu_and_var$mu)^252-1
-mu_and_var$sd <- mu_and_var$sd * sqrt(252)
+mu_and_var$mu <- (1+mu_and_var$mu)^250-1
+mu_and_var$sd <- mu_and_var$sd * sqrt(250)
 
 plot_ly(data = mu_and_var) %>%
   add_lines(y = ~mu, x = ~sd, name = "efficient frontier") %>%
@@ -106,29 +114,39 @@ plot_ly(data = mu_and_var) %>%
         t = 50,
         pad = 4
     )
-  )
+  ) %>% 
+  plotly_save()
 
+```
+
+
+
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
 p <- plot_ly(type="bar") %>% layout(title="Portfolio compositions", barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="wgt"))
 for(i in 1:ncol(portfolios)){
   p <- p %>%
   add_trace(x=seq(0.01,1, 0.01), y=portfolios[, i], name = colnames(portfolios)[i])
 }
-p
+p %>% plotly_save()
 
 ```
 
 
 ## Index-tracking portfolio (ITP)
-Indices are baskets of assets which are used to track the performance of a specific group of assets. For example tracks the good known Standard and Poor's 500 index (short: S&P 500) the largest 500 equitys in the United States. All indices are not investible and only serve for the visualisation of the performance of these groups of assets without transaction costs. Asset managements adopted these indices as benchmarks to compare there fund performances. Each fund has its own benchmark which contains roughly the same assets that could be purchased by the manager. If the fund under performs his benchmark, it could be a indicator for a bad decision from the fund manager. Thats why all fund managers are eager to beat there benchmarks with wisely choosen investments. The past has proven that this is rearly achived with activ managemnt after costs (quelle studie activ passiv). This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. Exactly this can be archived with Index-tracking portfolios (ITP) which aim to replicate the performance of a benchmark. This can be done by either full-replication or sparse-replication. A full-replication, which produces the exact performance we aim for, isn't possible in most cases because not all assets of a index are investable. And if so it wouldnt be wise because benchmarks with multiple indices can contain more than ten thousand single assets which will produce a huge amount of transaction costs. The most common way to go is a sparse replication of the performance. To do so the portfolio manager has to define his benchmark which has a overlap with his investment universe of his fund. Afterwards he will reduce this universe by some rules of the investor, liqudity and availability. Now he can start to optimize a portfolio, including the investors constraint, to replicate the benchmark performance. Usually, this is done by reducing the difference between the daily returns of the ITP and the benchmark:
+Indices are asset baskets that are used to track the performance of a specific asset group. The well-known Standard and Poor's 500 index (short: S&P 500), for example, tracks the top 500 stocks in the United States. All indices are not investible and only serve to visualize the performance of these asset groups without incurring transaction costs. Asset managers use such indices as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made a poor decision. That is why all fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rearly achived with activ managemnt after costs [@Desm2016]. This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. This is why passively managed funds with the purpose of tracking their benchmarks are becoming more common. This can be accomplished through either full or sparse replication. In most circumstances, a full replication that achieves the exact performance we seek is not achievable because not all assets in an index are investable. And, if so, it would be unwise because benchmarks with numerous indexes can contain over ten thousand separate assets, resulting in a massive amount of transaction costs. A sparse replication of the performance is the most prevalent approach. To do so, the portfolio manager must define his benchmark, which should overlap with his fund's investing universe. Following that, he will reduce this universe using investor principles such as liquidity and availability. Now he can begin to optimize a portfolio, taking into account the investor constraints, in order to match the benchmark performance. Typically, this is accomplished by lowering the difference between the ITP's daily returns and the benchmark:
 
 $$
  minimize \ \ Var(r_{p}-r_{bm})
 $$
+
 First we need to substitude $r_{p}$ to get the portfolio weights $w$ as follows:
+
 $$
   r_{p} = R * w
 $$
+
 Afterwards we solve the Variance until it is displayed as a quadratic problem of $w$:
+
 $$
  Var(r_{p}-r_{bm}) = Var(R * w - r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm}) 
 $$
@@ -139,11 +157,13 @@ Var(r_{bm}) = \sigma_{bm}^2 = constant
 $$
 
 The variance of the portfolio can be solved by looking at the proof in [http://www.math.kent.edu/~reichel/courses/monte.carlo/alt4.7d.pdf (proof auch selber machen)] at the linear combination of random variables section:
+
 $$
 Var(R * w) = w^T * Cov(R) * w
 $$
 
 And the last term can be solved in general as (https://bookdown.org/compfinezbook/introcompfinr/Multivariate-Probability-Distributions-Using-Matrix-Algebra.html 3.6.5):
+
 $$
   Cov(A*a, b) = Cov(b, A*a) = E[(b-\mu_{b})(A*a-\mu_{A}*a)] = E[(b-\mu_{b})(A-\mu_{A})*a] = E[(b-\mu_{b})(A-\mu_{A})]*a = Cov(A,b) * a
 $$
@@ -171,14 +191,19 @@ This results in the final formula of the ITP:
 \end{equation}
 
 The minimization problem of the ITP in the general stricture which all optimizers need is:
+
 $$
   min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
 $$
+
 Because it is a minimization we can ignore constant terms and stretching coefficients and still find the same minimum. This results in the general substitution of the ITP as follows:
+
 $$
   D = Cov(R)
 $$
+
 and
+
 $$
 d = Cov(r_{bm}, R)
 $$
@@ -187,17 +212,17 @@ Now we need to add some basic constraints like in the MVP, to sum up the weights
 
 ### Example ITP
 We will show the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
-222233333344445
+
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 pool_returns <- buffer(
-  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2021-01-01")$returns, 
+  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2020-12-31")$returns, 
   "3_assets"
 )
 
 bm_returns <- buffer(
-  setNames(get_yf(tickers = "%5EGSPC", from = "2020-01-01", to = "2021-01-01")$returns, "S&P 500"), 
+  get_yf(tickers = "%5EGSPC", from = "2020-01-01", to = "2020-12-31")$returns, 
   "sp500"
-)
+) %>% setNames(., "S&P 500")
 
 
 mat <- list(
@@ -216,7 +241,8 @@ mat <- list(
 
 qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
 
-port_returns <- xts(pool_returns %*% qp$solution, order.by=index(pool_returns)) %>% setNames(., "tracking portfolio")
+port_returns <- xts(pool_returns %*% qp$solution, order.by=index(pool_returns)) %>% 
+  setNames(., "tracking portfolio")
 
 p <- plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns, bm_returns)))
 
