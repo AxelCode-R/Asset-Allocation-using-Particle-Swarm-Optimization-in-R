@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.7.30) (preloaded format=pdflatex 2022.8.5)  9 AUG 2022 12:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.7.30) (preloaded format=pdflatex 2022.8.5)  9 AUG 2022 14:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -639,11 +639,11 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 {C:/Users/Axel Roth/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] (gitbook
 -demo.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 6.
+(Font)              <10> on input line 5.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 6.
+(Font)              <7> on input line 5.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 6.
+(Font)              <5> on input line 5.
 )
 \tf@toc=\write4
 \openout4 = `gitbook-demo.toc'.
@@ -670,61 +670,73 @@ Chapter 3.
 
 ]
 Chapter 4.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-58.
-(C:\Users\Axel Roth\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Overfull \hbox (86.75098pt too wide) in paragraph at lines 157--159
-[]\T1/lmr/m/n/10 (-20) passiv vs ac-tiv studie \T1/lmtt/m/n/10 https://www.scir
-p.org/journal/paperinformation.aspx?paperid=92983 
- []
-
 [5
 
 ]
 Chapter 5.
-
-Package natbib Warning: Citation `Mar2005' on page 6 undefined on input line 17
-6.
-
 [6
 
 ]
-<gitbook-demo_files/figure-latex/unnamed-chunk-5-1.png, id=76, 2409.0pt x 1204.
-5pt>
+Chapter 6.
+[7
+
+]
+Chapter 7.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
+87.
+(C:\Users\Axel Roth\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Overfull \hbox (86.75098pt too wide) in paragraph at lines 186--188
+[]\T1/lmr/m/n/10 (-20) passiv vs ac-tiv studie \T1/lmtt/m/n/10 https://www.scir
+p.org/journal/paperinformation.aspx?paperid=92983 
+ []
+
+[8
+
+]
+Chapter 8.
+
+Package natbib Warning: Citation `Mar2005' on page 9 undefined on input line 20
+5.
+
+[9
+
+]
+<gitbook-demo_files/figure-latex/unnamed-chunk-5-1.png, id=108, 2409.0pt x 1204
+.5pt>
 File: gitbook-demo_files/figure-latex/unnamed-chunk-5-1.png Graphic file (type 
 png)
 <use gitbook-demo_files/figure-latex/unnamed-chunk-5-1.png>
 Package pdftex.def Info: gitbook-demo_files/figure-latex/unnamed-chunk-5-1.png 
- used on input line 191.
+ used on input line 220.
 (pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
 
-Underfull \hbox (badness 2384) in paragraph at lines 222--223
+Underfull \hbox (badness 2384) in paragraph at lines 251--252
 []\T1/lmr/m/n/10 (+20) We now have all the nec-es-sary data to solve the MVP []
  with
  []
 
-[7 <./gitbook-demo_files/figure-latex/unnamed-chunk-5-1.png>]
-<gitbook-demo_files/figure-latex/unnamed-chunk-8-1.png, id=87, 2409.0pt x 1204.
-5pt>
+[10 <./gitbook-demo_files/figure-latex/unnamed-chunk-5-1.png>]
+<gitbook-demo_files/figure-latex/unnamed-chunk-8-1.png, id=119, 2409.0pt x 1204
+.5pt>
 File: gitbook-demo_files/figure-latex/unnamed-chunk-8-1.png Graphic file (type 
 png)
 <use gitbook-demo_files/figure-latex/unnamed-chunk-8-1.png>
 Package pdftex.def Info: gitbook-demo_files/figure-latex/unnamed-chunk-8-1.png 
- used on input line 226.
+ used on input line 255.
 (pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
-<gitbook-demo_files/figure-latex/unnamed-chunk-9-1.png, id=88, 2409.0pt x 1204.
-5pt>
+<gitbook-demo_files/figure-latex/unnamed-chunk-9-1.png, id=120, 2409.0pt x 1204
+.5pt>
 File: gitbook-demo_files/figure-latex/unnamed-chunk-9-1.png Graphic file (type 
 png)
 <use gitbook-demo_files/figure-latex/unnamed-chunk-9-1.png>
 Package pdftex.def Info: gitbook-demo_files/figure-latex/unnamed-chunk-9-1.png 
- used on input line 228.
+ used on input line 257.
 (pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
-[8 <./gitbook-demo_files/figure-latex/unnamed-chunk-8-1.png> <./gitbook-demo_fi
-les/figure-latex/unnamed-chunk-9-1.png>]
-Overfull \hbox (156.6038pt too wide) detected at line 266
+[11 <./gitbook-demo_files/figure-latex/unnamed-chunk-8-1.png> <./gitbook-demo_f
+iles/figure-latex/unnamed-chunk-9-1.png>]
+Overfull \hbox (156.6038pt too wide) detected at line 295
 \OML/lmm/m/it/10 Cov\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 A \OMS/lmsy/m/n/10 ^^C \O
 ML/lmm/m/it/10 a; b\OT1/lmr/m/n/10 ) = \OML/lmm/m/it/10 Cov\OT1/lmr/m/n/10 (\OM
 L/lmm/m/it/10 b; A \OMS/lmsy/m/n/10 ^^C \OML/lmm/m/it/10 a\OT1/lmr/m/n/10 ) = \
@@ -742,43 +754,43 @@ ML/lmm/m/it/10 Cov\OT1/lmr/m/n/10 (\OML/lmm/m/it/10 A; b\OT1/lmr/m/n/10 ) \OMS/
 lmsy/m/n/10 ^^C \OML/lmm/m/it/10 a
  []
 
-[9] [10]
-<gitbook-demo_files/figure-latex/unnamed-chunk-12-1.png, id=116, 2409.0pt x 120
+[12] [13]
+<gitbook-demo_files/figure-latex/unnamed-chunk-12-1.png, id=150, 2409.0pt x 120
 4.5pt>
 File: gitbook-demo_files/figure-latex/unnamed-chunk-12-1.png Graphic file (type
  png)
 <use gitbook-demo_files/figure-latex/unnamed-chunk-12-1.png>
 Package pdftex.def Info: gitbook-demo_files/figure-latex/unnamed-chunk-12-1.png
-  used on input line 346.
+  used on input line 375.
 (pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
-[11 <./gitbook-demo_files/figure-latex/unnamed-chunk-12-1.png>]
-Chapter 6.
-[12
+[14 <./gitbook-demo_files/figure-latex/unnamed-chunk-12-1.png>]
+Chapter 9.
+[15
 
 ]
-Chapter 7.
+Chapter 10.
 
-Overfull \hbox (130.38184pt too wide) in paragraph at lines 354--354
+Overfull \hbox (130.38184pt too wide) in paragraph at lines 383--383
 []\T1/lmr/bx/n/24.88 (-20) Simple_Particle_Swarm_Optimization  
  []
 
-(gitbook-demo.bbl [13
+(gitbook-demo.bbl [16
 
 ])
 
 Package natbib Warning: There were undefined citations.
 
-[14
+[17
 
 ] (gitbook-demo.aux) ) 
 Here is how much of TeX's memory you used:
- 14331 strings out of 478337
- 232366 string characters out of 2834743
- 563625 words of memory out of 3000000
- 32360 multiletter control sequences out of 15000+600000
- 534853 words of font info for 125 fonts, out of 8000000 for 9000
+ 14372 strings out of 478337
+ 232939 string characters out of 2834743
+ 563969 words of memory out of 3000000
+ 32378 multiletter control sequences out of 15000+600000
+ 539376 words of font info for 128 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 74i,15n,81p,2050b,480s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 74i,15n,81p,2048b,480s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/e
 nc/dvips/lm/lm-ec.enc}{C:/Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/e
 nc/dvips/lm/lm-rm.enc}{C:/Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/e
@@ -794,16 +806,17 @@ a/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/Axel Roth/App
 Data/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/Axel Roth/
 AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/Axel Ro
 th/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/Axel 
-Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmro10.pfb><C:/Users/A
-xel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Use
-rs/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/
-Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb>
-<C:/Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtti10
-.pfb><C:/Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfo
-nts/symbols/msbm10.pfb>
-Output written on gitbook-demo.pdf (15 pages, 663105 bytes).
+Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/A
+xel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmro10.pfb><C:/Use
+rs/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:
+/Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb>
+<C:/Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.
+pfb><C:/Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmt
+ti10.pfb><C:/Users/Axel Roth/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
+msfonts/symbols/msbm10.pfb>
+Output written on gitbook-demo.pdf (18 pages, 689890 bytes).
 PDF statistics:
- 248 PDF objects out of 1000 (max. 8388607)
- 44 named destinations out of 1000 (max. 500000)
- 36957 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 307 PDF objects out of 1000 (max. 8388607)
+ 62 named destinations out of 1000 (max. 500000)
+ 39053 words of extra memory for PDF output out of 42996 (max. 10000000)
 

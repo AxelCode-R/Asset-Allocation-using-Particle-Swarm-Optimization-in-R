@@ -1,10 +1,13 @@
-book_filename: "gitbook-demo"
+book_filename: "Master Thesis"
 rmd_files: ["index.Rmd",
             "0_Abstract.Rmd",
-            "1_Activ_vs_Passiv_Investing.Rmd",
-            "2_Challenges_of_Passiv_Investing.Rmd",
-            "3_Analytical_Solver.Rmd",
-            "4_Simple_Particle_Swarm_Optimization.Rmd",
+            "1_Software_information_and_usage.Rmd",
+            "2_Open_Data_Sources.Rmd",
+            "3_Matrix_Algebra_for_Finance.Rmd",
+            "4_Activ_vs_Passiv_Investing.Rmd",
+            "5_Challenges_of_Passiv_Investing.Rmd",
+            "6_Analytical_Solver.Rmd",
+            "7_Simple_Particle_Swarm_Optimization.Rmd",
             "references.Rmd"]
 output_dir: "docs"
 language:

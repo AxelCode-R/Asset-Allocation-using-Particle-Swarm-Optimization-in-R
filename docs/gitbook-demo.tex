@@ -149,6 +149,35 @@ What R and packages do i mainly use, what do i use to write this book. Mathemati
 
 What source do i use and what functions do exist for it
 
+\hypertarget{software-information-and-usage}{%
+\chapter{Software information and usage}\label{software-information-and-usage}}
+
+wie ich das buch schreibe, R markodwn bookdown und so und welche versionen ich nutze
+
+\hypertarget{r-version-and-packages}{%
+\section{R-Version and Packages}\label{r-version-and-packages}}
+
+\hypertarget{reproducibility}{%
+\section{reproducibility}\label{reproducibility}}
+
+github und code im bookdown
+
+\hypertarget{r-functions}{%
+\section{R-functions}\label{r-functions}}
+
+zb plotly\_save
+
+\hypertarget{open-data-sources}{%
+\chapter{Open Data Sources}\label{open-data-sources}}
+
+yahoo finance
+
+\hypertarget{r-functions-1}{%
+\subsection{R-functions}\label{r-functions-1}}
+
+\hypertarget{matrix-algebra-for-finance}{%
+\chapter{Matrix Algebra for Finance}\label{matrix-algebra-for-finance}}
+
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
 
@@ -230,30 +259,30 @@ Following that, we convert the daily returns and standard deviation to yearly re
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-tracking portfolio (ITP)}\label{index-tracking-portfolio-itp}}
 
-Indices are asset baskets that are used to track the performance of a specific asset group. The well-known Standard and Poor's 500 index (short: S\&P 500), for example, tracks the top 500 stocks in the United States. All indices are not investible and only serve to visualize the performance of these asset groups without incurring transaction costs. Asset managers use such indices as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made a poor decision. That is why all fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rearly achived with activ managemnt after costs \citep{Desm2016}. This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. This is why passively managed funds with the purpose of tracking their benchmarks are becoming more common. This can be accomplished through either full or sparse replication. In most circumstances, a full replication that achieves the exact performance we seek is not achievable because not all assets in an index are investable. And, if so, it would be unwise because benchmarks with numerous indexes can contain over ten thousand separate assets, resulting in a massive amount of transaction costs. A sparse replication of the performance is the most prevalent approach. To do so, the portfolio manager must define his benchmark, which should overlap with his fund's investing universe. Following that, he will reduce this universe using investor principles such as liquidity and availability. Now he can begin to optimize a portfolio, taking into account the investor constraints, in order to match the benchmark performance. Typically, this is accomplished by lowering the difference between the ITP's daily returns and the benchmark:
+Indices are asset baskets that are used to track the performance of a specific asset group. The well-known Standard and Poor's 500 index (short: S\&P 500), for example, tracks the top 500 stocks in the United States. All indices are not investible and only serve to visualize the performance of these asset groups without incurring transaction costs. Asset managers use such indices as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made a poor decision. That is why all fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rearly achived with activ managemnt after costs \citep{Desm2016}. This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. This is why passively managed funds with the purpose of tracking their benchmarks are becoming more common. This can be accomplished through either full or sparse replication. In most circumstances, a full replication that achieves the exact performance we seek is not achievable because not all assets in an index are investable. And, if so, it would be unwise because benchmarks with numerous indexes can contain over ten thousand separate assets, resulting in a massive amount of transaction costs. A sparse replication of the performance is the most prevalent approach. To do so, the portfolio manager must define his benchmark, which should overlap with his fund's investing universe. Following that, he will reduce this universe using investor principles such as liquidity and availability. Now he can begin to optimize a portfolio, taking into account the investor constraints, in order to match the benchmark performance. Typically, this is accomplished by lowering the variance between the ITP's daily returns and the benchmark:
 
 \[
  minimize \ \ Var(r_{p}-r_{bm})
 \]
 
-First we need to substitude \(r_{p}\) to get the portfolio weights \(w\) as follows:
+To obtain the portfolio weights \(w\), we must first substitute \(r_{p}\) as shown below:
 
 \[
   r_{p} = R * w
 \]
 
-Afterwards we solve the Variance until it is displayed as a quadratic problem of \(w\):
+The Variance is then solved up until a quadratic problem dependent on the portfolio weights \(w\) is represented:
 
 \[
  Var(r_{p}-r_{bm}) = Var(R * w - r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm}) 
 \]
-Now we need to solve each of the 3 terms, startign with the simplest
+We must now solve each of the three terms, beginning with the easiest.
 
 \[
 Var(r_{bm}) = \sigma_{bm}^2 = constant
 \]
 
-The variance of the portfolio can be solved by looking at the proof in {[}\url{http://www.math.kent.edu/~reichel/courses/monte.carlo/alt4.7d.pdf} (proof auch selber machen){]} at the linear combination of random variables section:
+The variance of the portfolio can be solved by looking at the Portfolio math Using Matrix Algebra section in \citep{Eric2021}:
 
 \[
 Var(R * w) = w^T * Cov(R) * w

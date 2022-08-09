@@ -1,0 +1,10 @@
+# Software information and usage
+wie ich das buch schreibe, R markodwn bookdown und so und welche versionen ich nutze
+
+## R-Version and Packages
+
+## reproducibility
+github und code im bookdown
+
+## R-functions
+zb plotly_save

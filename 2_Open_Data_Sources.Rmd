@@ -1,0 +1,7 @@
+# Open Data Sources
+yahoo finance
+
+## R-functions
+
+
+

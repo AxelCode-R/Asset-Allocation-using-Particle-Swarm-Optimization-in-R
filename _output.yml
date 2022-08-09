@@ -3,10 +3,10 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">A GitBook for Teaching</a></li>
+        <li><a href="./">Master Thesis Axel Roth</a></li>
       after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/cjvanlissa/gitbook-demo/edit/master/%s
+        <li><a href="https://github.com/AxelCode-R/Master-Thesis" target="blank">GitHub Repository</a></li>
+    edit: https://github.com/AxelCode-R/Master-Thesis/edit/master/%s
     download: ["pdf"]
 bookdown::pdf_book:
   includes:
