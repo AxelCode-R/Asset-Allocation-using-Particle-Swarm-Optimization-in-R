@@ -46,7 +46,11 @@ buffer <- function(expr, rdata_file, force = FALSE){
 
 
 
-plotly_save <- function(plotly_plot, ...){
-  htmlwidgets::saveWidget(plotly_plot, "p.html")
-  webshot2::webshot("p.html", "p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
+html_save <- function(html_chart, ...){
+  if(!knitr::is_html_output() && !knitr::is_latex_output()){
+    html_chart
+  }else{
+    htmlwidgets::saveWidget(html_chart, "p.html")
+    webshot2::webshot("p.html", "p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
+  }
 }

@@ -3,12 +3,11 @@ output:
   pdf_document: default
   html_document: default
 ---
-```{r, include=FALSE, echo=FALSE}
+```{r}
 source("global.R")
-# knitr::opts_chunk$set(fig.width=8, fig.height=4)
-# bookdown::preview_chapter(input="2_Challenges_of_Passiv_Investing.Rmd")
-knitr::opts_chunk$set(cache = T)
+knitr::opts_chunk$set(cache = T, warning=F, message=F)
 ```
+
 
 # Challenges of Passiv Investing
 
@@ -18,7 +17,7 @@ In this Chapter we will discuss two common challenges of Passiv-Investing and cr
 Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theorie which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier. 
 
 ### MVP
-We have $N$ assets and its returns on $T$ different days which creates a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP with risk aversion parameter $\lambda \in [0,1]$ like shown in [@Mar2005] can be formalized as follows:
+We have $N$ assets and its returns on $T$ different days which creates a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP with risk aversion parameter $\lambda \in [0,1]$ like shown in [@Mari2005] can be formalized as follows:
 \begin{equation} 
 \underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 (\#eq:MVP)
@@ -40,7 +39,7 @@ The cumulated daily returns are:
 
 ```{r, echo = F}
 plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
-  plotly_save()
+  html_save()
 
 ```
 
@@ -57,7 +56,7 @@ cov
 
 We now have all the necessary data to solve the MVP \@ref(eq:MVP) with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. We calculate all 100 portfolios by solving the quadratic minimization problem for each $\lambda$.
 
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 portfolios <- data.frame()
 mu_and_var <- NULL
 for(lambda in seq(0.01,1, 0.01)){
@@ -115,7 +114,7 @@ plot_ly(data = mu_and_var) %>%
         pad = 4
     )
   ) %>% 
-  plotly_save()
+  html_save()
 
 ```
 
@@ -127,7 +126,7 @@ for(i in 1:ncol(portfolios)){
   p <- p %>%
   add_trace(x=seq(0.01,1, 0.01), y=portfolios[, i], name = colnames(portfolios)[i])
 }
-p %>% plotly_save()
+p %>% html_save()
 
 ```
 

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Matrix Algebra | Master-Thesis</title>
+  <meta name="description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Matrix Algebra | Master-Thesis" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
+  <meta name="github-repo" content="AxelCode-R/Master-Thesis" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Matrix Algebra | Master-Thesis" />
+  
+  <meta name="twitter:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
+  
+
+<meta name="author" content="Axel Roth" />
+
+
+<meta name="date" content="2022-08-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="open-data-sources.html"/>
+<link rel="next" href="activ-vs-passiv-investing.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Master Thesis Axel Roth</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="abstract.html"><a href="abstract.html"><i class="fa fa-check"></i><b>1</b> Abstract</a></li>
+<li class="chapter" data-level="2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html"><i class="fa fa-check"></i><b>2</b> Software information and usage</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-version-and-packages"><i class="fa fa-check"></i><b>2.1</b> R-Version and Packages</a></li>
+<li class="chapter" data-level="2.2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#reproducibility"><i class="fa fa-check"></i><b>2.2</b> reproducibility</a></li>
+<li class="chapter" data-level="2.3" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-functions"><i class="fa fa-check"></i><b>2.3</b> R-functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="open-data-sources.html"><a href="open-data-sources.html"><i class="fa fa-check"></i><b>3</b> Open Data Sources</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="open-data-sources.html"><a href="open-data-sources.html#r-functions-1"><i class="fa fa-check"></i><b>3.1</b> R-functions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="matrix-algebra.html"><a href="matrix-algebra.html"><i class="fa fa-check"></i><b>4</b> Matrix Algebra</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#basic-operators"><i class="fa fa-check"></i><b>4.1</b> Basic Operators</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>5</b> Activ vs Passiv Investing</a></li>
+<li class="chapter" data-level="6" data-path="challenges-of-passiv-investing.html"><a href="challenges-of-passiv-investing.html"><i class="fa fa-check"></i><b>6</b> Challenges of Passiv Investing</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="challenges-of-passiv-investing.html"><a href="challenges-of-passiv-investing.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>6.1</b> Mean-variance portfolio (MVP)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="challenges-of-passiv-investing.html"><a href="challenges-of-passiv-investing.html#mvp"><i class="fa fa-check"></i><b>6.1.1</b> MVP</a></li>
+<li class="chapter" data-level="6.1.2" data-path="challenges-of-passiv-investing.html"><a href="challenges-of-passiv-investing.html#mvp-example"><i class="fa fa-check"></i><b>6.1.2</b> MVP example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="challenges-of-passiv-investing.html"><a href="challenges-of-passiv-investing.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>6.2</b> Index-tracking portfolio (ITP)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="challenges-of-passiv-investing.html"><a href="challenges-of-passiv-investing.html#example-itp"><i class="fa fa-check"></i><b>6.2.1</b> Example ITP</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="analytical_solver.html"><a href="analytical_solver.html"><i class="fa fa-check"></i><b>7</b> Analytical_Solver</a></li>
+<li class="chapter" data-level="8" data-path="simple_particle_swarm_optimization.html"><a href="simple_particle_swarm_optimization.html"><i class="fa fa-check"></i><b>8</b> Simple_Particle_Swarm_Optimization</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/AxelCode-R/Master-Thesis" target="blank">GitHub Repository</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Master-Thesis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="matrix-algebra" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Matrix Algebra</h1>
+<p>This chapter is a summary of the mathematical calculations and conventions used in this Thesis. Its importent to note that all mathematical formulars are notated in a matrix notation. Most of the time this will result in a direct translation into R-code.</p>
+<div id="basic-operators" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Basic Operators</h2>
+<p>The following table is a little compendium which will compare the used mathimatical symbols to R-code and its meanings:
+<img src="Master-Thesis_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="open-data-sources.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="activ-vs-passiv-investing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/AxelCode-R/Master-Thesis/edit/master/3_Matrix_Algebra_for_Finance.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Master Thesis.pdf"],
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

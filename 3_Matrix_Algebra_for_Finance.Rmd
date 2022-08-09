@@ -1,1 +1,26 @@
-# Matrix Algebra for Finance
+# Matrix Algebra
+This chapter is a summary of the mathematical calculations and conventions used in this Thesis. Its importent to note that all mathematical formulars are notated in a matrix notation. Most of the time this will result in a direct translation into R-code.
+
+```{r, include=F}
+source("global.R")
+knitr::opts_chunk$set(cache = T, warning=F, message=F)
+```
+
+## Basic Operators
+The following table is a little compendium which will compare the used mathimatical symbols to R-code and its meanings:
+```{r, echo=F}
+reactable(
+  data.frame(
+    "Latex" = c("&#215;", 'A<sup>T</sup>'),
+    "R"= c("%*%", "t(A)"),
+    "Meaning" = c("Matrix or vector multiplication", "transpose of Matrix or vector")
+  ), 
+  columns <- list(
+    Latex = colDef(name = "Latex/Displayed", html = T),
+    R = colDef(name="R-Code")
+  ),
+  style = list(fontFamily="arial", fontSize=13)
+) %>% 
+  html_save()
+```
+

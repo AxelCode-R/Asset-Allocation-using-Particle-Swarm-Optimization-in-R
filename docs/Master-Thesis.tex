@@ -134,20 +134,21 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
+\hypertarget{preface}{%
+\chapter*{Preface}\label{preface}}
+\addcontentsline{toc}{chapter}{Preface}
+
+\renewcommand{\chaptermark}[1]{\markboth{\uppercase{#1}}{\uppercase{#1}}}
+\markboth{\uppercase{Preface}}{\uppercase{Preface}}
+
+Blah blah blah
+
+\renewcommand{\chaptermark}[1]{\markboth{\uppercase{\thechapter. \ #1}}{}}
+
 \hypertarget{abstract}{%
 \chapter{Abstract}\label{abstract}}
 
 Things about this thesis. why and what question should be answered. and what are the answers. (zusammenfassung)
-
-\hypertarget{software-information-and-conventions}{%
-\chapter{Software information and conventions}\label{software-information-and-conventions}}
-
-What R and packages do i mainly use, what do i use to write this book. Mathematical conventions and why i prefere the matrix notations. And used functions.
-
-\hypertarget{data-sources}{%
-\chapter{Data Sources}\label{data-sources}}
-
-What source do i use and what functions do exist for it
 
 \hypertarget{software-information-and-usage}{%
 \chapter{Software information and usage}\label{software-information-and-usage}}
@@ -173,10 +174,18 @@ zb plotly\_save
 yahoo finance
 
 \hypertarget{r-functions-1}{%
-\subsection{R-functions}\label{r-functions-1}}
+\section{R-functions}\label{r-functions-1}}
 
-\hypertarget{matrix-algebra-for-finance}{%
-\chapter{Matrix Algebra for Finance}\label{matrix-algebra-for-finance}}
+\hypertarget{matrix-algebra}{%
+\chapter{Matrix Algebra}\label{matrix-algebra}}
+
+This chapter is a summary of the mathematical calculations and conventions used in this Thesis. Its importent to note that all mathematical formulars are notated in a matrix notation. Most of the time this will result in a direct translation into R-code.
+
+\hypertarget{basic-operators}{%
+\section{Basic Operators}\label{basic-operators}}
+
+The following table is a little compendium which will compare the used mathimatical symbols to R-code and its meanings:
+\includegraphics{Master-Thesis_files/figure-latex/unnamed-chunk-4-1.png}
 
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
@@ -188,6 +197,13 @@ passiv vs activ studie
 
 gut gut
 \url{file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel\%20was\%20beantwortet\%20werden\%20soll/Quellen\%20nur\%20wichtige/Rasmussen2003_Book_QuantitativePortfolioOptimisat.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{source}\NormalTok{(}\StringTok{"global.R"}\NormalTok{)}
+\NormalTok{knitr}\SpecialCharTok{::}\NormalTok{opts\_chunk}\SpecialCharTok{$}\FunctionTok{set}\NormalTok{(}\AttributeTok{cache =}\NormalTok{ T, }\AttributeTok{warning=}\NormalTok{F, }\AttributeTok{message=}\NormalTok{F)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{challenges-of-passiv-investing}{%
 \chapter{Challenges of Passiv Investing}\label{challenges-of-passiv-investing}}
@@ -202,7 +218,7 @@ Markowitz has shown that diversifying the risk on multiple assets will reduce th
 \hypertarget{mvp}{%
 \subsection{MVP}\label{mvp}}
 
-We have \(N\) assets and its returns on \(T\) different days which creates a return matrix \(R \in \mathbb{R}^{T \times N}\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The covariance matrix of the returns is \(\textstyle\sum \in \mathbb{R}^{N \times N}\) and the expected returns are \(\mu \in \mathbb{R}^{N}\). The MVP with risk aversion parameter \(\lambda \in [0,1]\) like shown in \citep{Mar2005} can be formalized as follows:
+We have \(N\) assets and its returns on \(T\) different days which creates a return matrix \(R \in \mathbb{R}^{T \times N}\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The covariance matrix of the returns is \(\textstyle\sum \in \mathbb{R}^{N \times N}\) and the expected returns are \(\mu \in \mathbb{R}^{N}\). The MVP with risk aversion parameter \(\lambda \in [0,1]\) like shown in \citep{Mari2005} can be formalized as follows:
 \begin{equation} 
 \underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 \label{eq:MVP}
@@ -217,7 +233,7 @@ We will analyze a small example to understand the meaning of the efficient front
 
 The cumulated daily returns are:
 
-\includegraphics{Master-Thesis_files/figure-latex/unnamed-chunk-5-1.png}
+\includegraphics{Master-Thesis_files/figure-latex/unnamed-chunk-7-1.png}
 
 Now we can calculate the expected daily returns and the covariance matrix for the 3 assets:
 
@@ -252,9 +268,9 @@ We now have all the necessary data to solve the MVP \eqref{eq:MVP} with \(\lambd
 
 Following that, we convert the daily returns and standard deviation to yearly returns and standard deviation before plotting the efficient frontier.
 
-\includegraphics{Master-Thesis_files/figure-latex/unnamed-chunk-8-1.png}
+\includegraphics{Master-Thesis_files/figure-latex/unnamed-chunk-10-1.png}
 
-\includegraphics{Master-Thesis_files/figure-latex/unnamed-chunk-9-1.png}
+\includegraphics{Master-Thesis_files/figure-latex/unnamed-chunk-11-1.png}
 
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-tracking portfolio (ITP)}\label{index-tracking-portfolio-itp}}
@@ -372,7 +388,7 @@ We will show the results of tracking the S\&P 500 with a tracking portfolio that
 ## 0.2677928 0.4041880 0.3280192
 \end{verbatim}
 
-\includegraphics{Master-Thesis_files/figure-latex/unnamed-chunk-12-1.png}
+\includegraphics{Master-Thesis_files/figure-latex/unnamed-chunk-14-1.png}
 
 \hypertarget{analytical_solver}{%
 \chapter{Analytical\_Solver}\label{analytical_solver}}

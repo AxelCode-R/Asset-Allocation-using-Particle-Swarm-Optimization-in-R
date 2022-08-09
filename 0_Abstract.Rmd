@@ -2,10 +2,3 @@
 
 Things about this thesis. why and what question should be answered. and what are the answers. (zusammenfassung)
 
-# Software information and conventions
-222222222
-What R and packages do i mainly use, what do i use to write this book. Mathematical conventions and why i prefere the matrix notations. And used functions.
-
-# Data Sources
-
-What source do i use and what functions do exist for it
