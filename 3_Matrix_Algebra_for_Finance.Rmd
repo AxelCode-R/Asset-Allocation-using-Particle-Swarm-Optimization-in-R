@@ -7,13 +7,13 @@ knitr::opts_chunk$set(cache = T, warning=F, message=F)
 ```
 
 ## Basic Operators
-The following table is a little compendium which will compare the used mathimatical symbols to R-code and its meanings:
+The following table is a compendium which will compare the used mathematical symbols to R-code and its meanings:
 ```{r, echo=F}
 reactable(
   data.frame(
     "Latex" = c("&#215;", 'A<sup>T</sup>'),
     "R"= c("%*%", "t(A)"),
-    "Meaning" = c("Matrix or vector multiplication", "transpose of Matrix or vector")
+    "Meaning" = c("Matrix or vector multiplication", "transpose of Matrix or vector A")
   ), 
   columns <- list(
     Latex = colDef(name = "Latex/Displayed", html = T),
@@ -23,4 +23,29 @@ reactable(
 ) %>% 
   html_save()
 ```
+
+## Return calculation
+Returns are fundamental for any portfolio optimization approach based on historical information. These returns reflect the percentage change from one point in time to another and are calculated from prices. Return enable the comparison of assets with each other and are fundamental to analyse dependencies. 
+
+### daily returns
+We use exclusivly simple returns in this thesis and the default timeframe for all rawdata is one workday. Additionaly we are calculating the returns from adjusted closing prices that are reflecting the actual profit made because assets splits and dividends are reflected historicaly. Supose we have the adjusted closing price $P$ of one asset on workday $t_i$ and $t_{i+1}$ so the simple returns can be calculated as follows:
+$$
+  R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
+$$
+
+### annual returns
+
+
+## Portfolio Math
+This Section will provide proofs for the basic calculations needed for portfolio optimization like shown in [@Eric2021]. Hopefully this will enable all readers to understand the stated formulas completely.
+
+### expected portfolio return
+Let $R \in \mathbb{R}^{N}$ denote a vector of jointly normally distributed random variables.
+
+### portfolio return
+Let $R \in \mathbb{R}^{T \times N}$ denote a return Matrix of $N$ assets and $T$ days. 
+
+
+
+
 
