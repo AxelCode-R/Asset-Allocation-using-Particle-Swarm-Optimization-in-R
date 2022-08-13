@@ -2,9 +2,6 @@
 title: "Master-Thesis"
 author: "Axel Roth"
 date: "`r Sys.Date()`"
-output:
-  html_document:
-    df_print: paged
 documentclass: book
 classoption: oneside
 github-repo: AxelCode-R/Master-Thesis

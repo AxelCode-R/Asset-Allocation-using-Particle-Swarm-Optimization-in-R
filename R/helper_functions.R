@@ -50,6 +50,9 @@ html_save <- function(html_chart, ...){
   if(!knitr::is_html_output() && !knitr::is_latex_output()){
     html_chart
   }else{
+    if(!dir.exists("docs/")){
+      dir.create("docs/")
+    }
     htmlwidgets::saveWidget(html_chart, "p.html")
     webshot2::webshot("p.html", "p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
   }

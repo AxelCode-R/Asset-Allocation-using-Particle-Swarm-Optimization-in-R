@@ -1,8 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 ```{r}
 source("global.R")
 knitr::opts_chunk$set(cache = T, warning=F, message=F)
@@ -243,21 +238,10 @@ qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bve
 port_returns <- xts(pool_returns %*% qp$solution, order.by=index(pool_returns)) %>% 
   setNames(., "tracking portfolio")
 
-p <- plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns, bm_returns)))
 
 setNames(qp$solution, colnames(pool_returns))
+
+plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns, bm_returns))) %>% 
+  html_save()
 ```
 
-```{r, echo = F}
-htmlwidgets::saveWidget(p, "p2.html")
-webshot2::webshot("p2.html", "p2.png", delay=1, zoom=4, vheight=300, vwidth = 600)
-```
-
-
-
-
-
-```{r, echo=FALSE, results='asis'}
-cat(paste0("<style> \n",paste0(readr::read_lines("my_style.css"), collapse = " \n")," </style>"))
-cat(paste0("<script type='text/javascript'> \n",paste0(readr::read_lines("script.js"), collapse = " \n")," </script>"))
-```
