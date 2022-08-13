@@ -1,4 +1,4 @@
-book_filename: "Master Thesis"
+book_filename: "Master_Thesis"
 rmd_files: ["index.Rmd",
             "0_Abstract.Rmd",
             "1_Software_information_and_usage.Rmd",

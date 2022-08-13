@@ -1,13 +1,14 @@
-# Matrix Algebra
-This chapter is a summary of the mathematical calculations and conventions used in this Thesis. Its importent to note that all mathematical formulars are notated in a matrix notation. Most of the time this will result in a direct translation into R-code.
-
 ```{r, include=F}
 source("global.R")
 knitr::opts_chunk$set(cache = T, warning=F, message=F)
 ```
 
+# Mathematical Fundations
+This chapter is a summary of mathematical calculations and conventions used in this Thesis. Its impotent to note that most mathematical formulas are expressed in matrix notation. Most of the time this will result in a direct translation into R-code. Additionally we state all assumptions needed for the modeled return structure, that can be easily used. It is important to say that the reality is too complex and can only partially be modeled. That is why we use fundamental and simple models that do not hold in practice. Nonetheless these models or improvements of it are widely used in finance and have proven to be useful. Additionally do these basic models produce more complex problems to solve by the PSO because for example factor models are often reduce the dimension of the dependency that are modeled.
+
 ## Basic Operators
 The following table is a compendium which will compare the used mathematical symbols to R-code and its meanings:
+
 ```{r, echo=F}
 reactable(
   data.frame(
@@ -25,19 +26,48 @@ reactable(
 ```
 
 ## Return calculation
-Returns are fundamental for any portfolio optimization approach based on historical information. These returns reflect the percentage change from one point in time to another and are calculated from prices. Return enable the comparison of assets with each other and are fundamental to analyse dependencies. 
+Returns are fundamental for any portfolio optimization approach based on historical information. These returns reflect the percentage change from one point in time to another and are calculated from [adjusted closing prices](https://www.investopedia.com/terms/a/adjusted_closing_price.asp). Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns enable the comparison of assets and are fundamental to analyze dependencies.
 
 ### daily returns
-We use exclusivly simple returns in this thesis and the default timeframe for all rawdata is one workday. Additionaly we are calculating the returns from adjusted closing prices that are reflecting the actual profit made because assets splits and dividends are reflected historicaly. Supose we have the adjusted closing price $P$ of one asset on workday $t_i$ and $t_{i+1}$ so the simple returns can be calculated as follows:
+We use exclusively simple returns in this thesis and the default timeframe for all rawdata is one workday. Suppose we have the adjusted closing price $P$ of one asset on workday $t_i$ and $t_{i+1}$ so the simple returns can be calculated as follows:
 $$
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 $$
 
-### annual returns
+### annualized returns
 
+## Markowitz Modern Portfolio Theory (MPT)
+Harry Markowitz published his first groundbreaking work at 1952 and had a huge impact on the current financial point of view. Mainly by describing the impact of diversification and efficient portfolios. Efficient portfolios are those who have minimum risk for the given expected return or maximum expected return for a given risk target. Diversification can be described as "a portfolio has the same return but less variance as the sum of its parts". This holds if the assets are not perfectly correlated because bad and good movers can compensate each other which will result in a reduction of extreme situations. More detailed information can be found at [@Mari2005].
+
+### Assumptions of Markowitz Portfolio Theory
+A good summarirization of Markowitz assumptions can be found in [@Mari2005]:
+\begin{enumerate}
+    \item perfect market without taxes or transaction costs.
+    \item short sales are disallowed.
+    \item assets are infinitely divisible.
+    \item Expected Returns, Variances and Covariances contain all information.
+    \item Investors are risk-adverse, they will only accept greater risk if they
+are compensated with a higher expected return.
+\end{enumerate}
+It is not necessary to assume that the returns are normally distributed, but we will use it here, to simplify the problem. More information about the conditions for using other distributions can be found in [@Mari2005]. It is clear that these assumption do not hold in practice.
 
 ## Portfolio Math
-This Section will provide proofs for the basic calculations needed for portfolio optimization like shown in [@Eric2021]. Hopefully this will enable all readers to understand the stated formulas completely.
+This Section will provide proofs for the basic calculations needed for portfolio optimization like shown in [@Eric2021]. Hopefully this will enable all readers to understand the stated formulas completely. We prefer a different notation of the returns than in most sources, because its the common data-format used in practice. The used notations are the random return vector $R$ and the portfolio weights $w$ for $n$ assets:
+$$
+  R = 
+  \begin{bmatrix}
+    R_{1} & R_{2} & \cdots & R_{n}  
+ \end{bmatrix}
+ , \ \ 
+ w = 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \cdots \\
+    w_{n}  
+ \end{bmatrix}
+$$
+
 
 ### expected portfolio return
 Let $R \in \mathbb{R}^{N}$ denote a vector of jointly normally distributed random variables.
