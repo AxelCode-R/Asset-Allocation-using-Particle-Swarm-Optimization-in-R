@@ -185,8 +185,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#portfolio-math"><i class="fa fa-check"></i><b>4.4</b> Portfolio Math</a>
 <ul>
-<li class="chapter" data-level="4.4.1" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#expected-portfolio-return"><i class="fa fa-check"></i><b>4.4.1</b> expected portfolio return</a></li>
-<li class="chapter" data-level="4.4.2" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#portfolio-return"><i class="fa fa-check"></i><b>4.4.2</b> portfolio return</a></li>
+<li class="chapter" data-level="4.4.1" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#expected-returns"><i class="fa fa-check"></i><b>4.4.1</b> expected returns</a></li>
+<li class="chapter" data-level="4.4.2" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#portfolio-returns"><i class="fa fa-check"></i><b>4.4.2</b> portfolio returns</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>5</b> Activ vs Passiv Investing</a></li>
@@ -258,14 +258,85 @@ A good summarirization of Markowitz assumptions can be found in <span class="cit
 </div>
 <div id="portfolio-math" class="section level2" number="4.4">
 <h2><span class="header-section-number">4.4</span> Portfolio Math</h2>
-<p>This Section will provide proofs for the basic calculations needed for portfolio optimization like shown in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span>. Hopefully this will enable all readers to understand the stated formulas completely.</p>
-<div id="expected-portfolio-return" class="section level3" number="4.4.1">
-<h3><span class="header-section-number">4.4.1</span> expected portfolio return</h3>
-<p>Let <span class="math inline">\(R \in \mathbb{R}^{N}\)</span> denote a vector of jointly normally distributed random variables.</p>
+<p>This Section will provide proofs for the basic calculations needed for portfolio optimization like shown in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span>. Hopefully this will enable all readers to understand the stated formulas completely. We prefer a different notation of the returns than in most sources, because its the common data-format used in practice. The used notations are the random return vector <span class="math inline">\(R\)</span> and the portfolio weights <span class="math inline">\(w\)</span> for <span class="math inline">\(N\)</span> assets:
+<span class="math display">\[
+  R = 
+  \begin{bmatrix}
+    R_{1} &amp; R_{2} &amp; \cdots &amp; R_{N}  
+ \end{bmatrix}
+ , \ \ 
+ w = 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \cdots \\
+    w_{N}  
+ \end{bmatrix}
+\]</span>
+And we simplify each return to be normally distributed with <span class="math inline">\(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\)</span> in this thesis. QUELLLLEEEEE It follows that linear combinations of normally distributed random variables are jointly normal distributed and can be fully described by its mean, variance and covariance.</p>
+<div id="expected-returns" class="section level3" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> expected returns</h3>
+<p>The expected returns of the vector of normal distributed random variables <span class="math inline">\(R \in \mathbb{R}^{N}\)</span> can be calculated as follows:
+<span class="math display">\[
+  E[R] =
+  \begin{bmatrix}
+    E[R_{1}] &amp; E[R_{2}] &amp; \cdots &amp; E[R_{N}]  
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+    E[\mu_{1}] &amp; E[\mu_{2}] &amp; \cdots &amp; E[\mu_{N}]  
+ \end{bmatrix}
+ =
+ \mu
+\]</span>
+### expected portfolio return
+The linear combination of the expected returns <span class="math inline">\(\mu\)</span> with a weighting vector <span class="math inline">\(w\)</span> (e.g. portfolio weights) can be calculated as follows:
+<span class="math display">\[
+ \mu \times w =
+  \begin{bmatrix}
+    E[\mu_{1}] &amp; E[\mu_{2}] &amp; \cdots &amp; E[\mu_{N}]
+ \end{bmatrix}
+  \times 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \cdots \\
+    w_{N}  
+ \end{bmatrix}
+ =
+ E[\mu_{1}] \cdot w_1 + E[\mu_{2}] \cdot w_2 + \cdots + E[\mu_{N}] \cdot w_{N} 
+ =
+ \mu_P
+\]</span></p>
 </div>
-<div id="portfolio-return" class="section level3" number="4.4.2">
-<h3><span class="header-section-number">4.4.2</span> portfolio return</h3>
-<p>Let <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span> denote a return Matrix of <span class="math inline">\(N\)</span> assets and <span class="math inline">\(T\)</span> days.</p>
+<div id="portfolio-returns" class="section level3" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> portfolio returns</h3>
+<p>Let <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span> denote a realized return Matrix of <span class="math inline">\(N\)</span> assets and <span class="math inline">\(T\)</span> days in the past. The portfolio return on each day can be calculated with the formula of the expected portfolio return. On all days <span class="math inline">\(T\)</span> can this be done by:
+<span class="math display">\[
+  R \times w = 
+  \begin{bmatrix}
+    R_{1, 1} &amp; R_{1, 2} &amp; \cdots &amp; R_{1, N} \\
+    R_{2, 1} &amp; R_{2, 2} &amp; \cdots &amp; R_{2, N} \\
+    \cdots \\
+    R_{T, 1} &amp; R_{T, 2} &amp; \cdots &amp; R_{T, N} \\
+ \end{bmatrix}
+  \times 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \cdots \\
+    w_{N}  
+ \end{bmatrix}
+ =
+   \begin{bmatrix}
+    R_{1}^P \\ 
+    R_{2}^P \\
+    \cdots \\
+    R_{N}^P  
+ \end{bmatrix}
+ =
+ R_P
+\]</span></p>
 
 </div>
 </div>

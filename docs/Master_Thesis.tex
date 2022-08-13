@@ -228,17 +228,88 @@ It is not necessary to assume that the returns are normally distributed, but we 
 \hypertarget{portfolio-math}{%
 \section{Portfolio Math}\label{portfolio-math}}
 
-This Section will provide proofs for the basic calculations needed for portfolio optimization like shown in \citep{Eric2021}. Hopefully this will enable all readers to understand the stated formulas completely.
+This Section will provide proofs for the basic calculations needed for portfolio optimization like shown in \citep{Eric2021}. Hopefully this will enable all readers to understand the stated formulas completely. We prefer a different notation of the returns than in most sources, because its the common data-format used in practice. The used notations are the random return vector \(R\) and the portfolio weights \(w\) for \(N\) assets:
+\[
+  R = 
+  \begin{bmatrix}
+    R_{1} & R_{2} & \cdots & R_{N}  
+ \end{bmatrix}
+ , \ \ 
+ w = 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \cdots \\
+    w_{N}  
+ \end{bmatrix}
+\]
+And we simplify each return to be normally distributed with \(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\) in this thesis. QUELLLLEEEEE It follows that linear combinations of normally distributed random variables are jointly normal distributed and can be fully described by its mean, variance and covariance.
 
-\hypertarget{expected-portfolio-return}{%
-\subsection{expected portfolio return}\label{expected-portfolio-return}}
+\hypertarget{expected-returns}{%
+\subsection{expected returns}\label{expected-returns}}
 
-Let \(R \in \mathbb{R}^{N}\) denote a vector of jointly normally distributed random variables.
+The expected returns of the vector of normal distributed random variables \(R \in \mathbb{R}^{N}\) can be calculated as follows:
+\[
+  E[R] =
+  \begin{bmatrix}
+    E[R_{1}] & E[R_{2}] & \cdots & E[R_{N}]  
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+    E[\mu_{1}] & E[\mu_{2}] & \cdots & E[\mu_{N}]  
+ \end{bmatrix}
+ =
+ \mu
+\]
+\#\#\# expected portfolio return
+The linear combination of the expected returns \(\mu\) with a weighting vector \(w\) (e.g.~portfolio weights) can be calculated as follows:
+\[
+ \mu \times w =
+  \begin{bmatrix}
+    E[\mu_{1}] & E[\mu_{2}] & \cdots & E[\mu_{N}]
+ \end{bmatrix}
+  \times 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \cdots \\
+    w_{N}  
+ \end{bmatrix}
+ =
+ E[\mu_{1}] \cdot w_1 + E[\mu_{2}] \cdot w_2 + \cdots + E[\mu_{N}] \cdot w_{N} 
+ =
+ \mu_P
+\]
 
-\hypertarget{portfolio-return}{%
-\subsection{portfolio return}\label{portfolio-return}}
+\hypertarget{portfolio-returns}{%
+\subsection{portfolio returns}\label{portfolio-returns}}
 
-Let \(R \in \mathbb{R}^{T \times N}\) denote a return Matrix of \(N\) assets and \(T\) days.
+Let \(R \in \mathbb{R}^{T \times N}\) denote a realized return Matrix of \(N\) assets and \(T\) days in the past. The portfolio return on each day can be calculated with the formula of the expected portfolio return. On all days \(T\) can this be done by:
+\[
+  R \times w = 
+  \begin{bmatrix}
+    R_{1, 1} & R_{1, 2} & \cdots & R_{1, N} \\
+    R_{2, 1} & R_{2, 2} & \cdots & R_{2, N} \\
+    \cdots \\
+    R_{T, 1} & R_{T, 2} & \cdots & R_{T, N} \\
+ \end{bmatrix}
+  \times 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \cdots \\
+    w_{N}  
+ \end{bmatrix}
+ =
+   \begin{bmatrix}
+    R_{1}^P \\ 
+    R_{2}^P \\
+    \cdots \\
+    R_{N}^P  
+ \end{bmatrix}
+ =
+ R_P
+\]
 
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
