@@ -228,18 +228,18 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="mathematical-fundations" class="section level1" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Mathematical Fundations</h1>
-<p>This chapter is a summary of mathematical calculations and conventions used in this Thesis. Its impotent to note that most mathematical formulas are expressed in matrix notation. Most of the time this will result in a direct translation into R-code. Additionally we state all assumptions needed for the modeled return structure, that can be easily used. It is important to say that the reality is too complex and can only partially be modeled. That is why we use fundamental and simple models that do not hold in practice. Nonetheless these models or improvements of it are widely used in finance and have proven to be useful. Additionally do these basic models produce more complex problems to solve by the PSO because for example factor models are often reduce the dimension of the dependency that are modeled.</p>
+<p>This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It’s important to note that the majority of mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. We also provide all necessary assumptions for the modeled return structure. It is crucial to note that reality is too complicated and can only be partially modeled. We employ simplistic, basic models that don’t hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. Additionally, because factor models commonly reduce the dimension of the modeled dependencies, these fundamental models result in more complex problems for the PSO to solve.</p>
 <div id="basic-operators" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Basic Operators</h2>
-<p>The following table is a compendium which will compare the used mathematical symbols to R-code and its meanings:</p>
+<p>A compendium that compares commonly used mathematical symbols to R-code and its meanings can be found in the table below:</p>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="return-calculation" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Return calculation</h2>
-<p>Returns are fundamental for any portfolio optimization approach based on historical information. These returns reflect the percentage change from one point in time to another and are calculated from <a href="https://www.investopedia.com/terms/a/adjusted_closing_price.asp">adjusted closing prices</a>. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns enable the comparison of assets and are fundamental to analyze dependencies.</p>
+<p>Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using <a href="https://www.investopedia.com/terms/a/adjusted%20closing%20price.asp">adjusted closing prices</a>, which show the percentage change over time. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns are essential for comparing assets and for analyzing dependencies.</p>
 <div id="daily-returns" class="section level3" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> daily returns</h3>
-<p>We use exclusively simple returns in this thesis and the default timeframe for all rawdata is one workday. Suppose we have the adjusted closing price <span class="math inline">\(P\)</span> of one asset on workday <span class="math inline">\(t_i\)</span> and <span class="math inline">\(t_{i+1}\)</span> so the simple returns can be calculated as follows:
+<p>The default timeframe for all raw data in this thesis is one workday, and we only use simple returns. The simple returns can be calculated as follows if we know the adjusted closing price <span class="math inline">\(P\)</span> of one asset on workdays <span class="math inline">\(t_i\)</span> and <span class="math inline">\(t_{i+1}\)</span>:
 <span class="math display">\[
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 \]</span></p>
@@ -250,16 +250,17 @@ div.csl-indent {
 </div>
 <div id="markowitz-modern-portfolio-theory-mpt" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Markowitz Modern Portfolio Theory (MPT)</h2>
-<p>Harry Markowitz published his first groundbreaking work at 1952 and had a huge impact on the current financial point of view. Mainly by describing the impact of diversification and efficient portfolios. Efficient portfolios are those who have minimum risk for the given expected return or maximum expected return for a given risk target. Diversification can be described as “a portfolio has the same return but less variance as the sum of its parts.” This holds if the assets are not perfectly correlated because bad and good movers can compensate each other which will result in a reduction of extreme situations. More detailed information can be found at <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
+<p>In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance. primarily by outlining the effects of diversification and efficient portfolio. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for the given expected return. “A portfolio has the same return but less variance than the sum of its parts” is a simple definition of diversification. This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. You can find more specific information at <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
 <div id="assumptions-of-markowitz-portfolio-theory" class="section level3" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> Assumptions of Markowitz Portfolio Theory</h3>
-A good summarirization of Markowitz assumptions can be found in <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>:
+The following are the Markowitz assumptions that can be combined, according to <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>:
 <p>It is not necessary to assume that the returns are normally distributed, but we will use it here, to simplify the problem. More information about the conditions for using other distributions can be found in <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>. It is clear that these assumption do not hold in practice.</p>
+<p>The assumption that the returns are normally distributed is not required, but we’ll assume it in this case to make the problem simpler. <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span> has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in practice.</p>
 </div>
 </div>
 <div id="portfolio-math" class="section level2" number="4.4">
 <h2><span class="header-section-number">4.4</span> Portfolio Math</h2>
-<p>This Section will provide proofs for the basic calculations needed for portfolio optimization like shown in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span>. Hopefully this will enable all readers to understand the stated formulas completely. We prefer a different notation of the returns than in most sources, because its the common data-format used in practice. The used notations are the random return vector <span class="math inline">\(R\)</span> and the portfolio weights <span class="math inline">\(w\)</span> for <span class="math inline">\(N\)</span> assets:
+<p>Proofs for the fundamental calculations required for portfolio optimization as shown in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span> will be provided in this section. I’m hoping that everyone who reads this will be able to comprehend the formulas in their entirety. Since this is the most widely used data format in practice, we prefer to represent the returns differently than most sources. The portfolio weights for <span class="math inline">\(N\)</span> assets are denoted by <span class="math inline">\(w\)</span> and the random return vector <span class="math inline">\(R\)</span>, respectively:
 <span class="math display">\[
   R = 
   \begin{bmatrix}
@@ -274,10 +275,10 @@ A good summarirization of Markowitz assumptions can be found in <span class="cit
     w_{N}  
  \end{bmatrix}
 \]</span>
-And we simplify each return to be normally distributed with <span class="math inline">\(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\)</span> in this thesis. QUELLLLEEEEE It follows that linear combinations of normally distributed random variables are jointly normal distributed and can be fully described by its mean, variance and covariance.</p>
+In this thesis, we also simplify each return to be normally distributed with <span class="math inline">\(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\)</span>. As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.</p>
 <div id="expected-returns" class="section level3" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> expected returns</h3>
-<p>The expected returns of the vector of normal distributed random variables <span class="math inline">\(R \in \mathbb{R}^{N}\)</span> can be calculated as follows:
+<p>The following formula can be used to get the expected returns of a vector with normally distributed random variables <span class="math inline">\(R \in \mathbb{R}^{N}\)</span>:
 <span class="math display">\[
   E[R] =
   \begin{bmatrix}
@@ -291,7 +292,7 @@ And we simplify each return to be normally distributed with <span class="math in
  \mu
 \]</span>
 ### expected portfolio return
-The linear combination of the expected returns <span class="math inline">\(\mu\)</span> with a weighting vector <span class="math inline">\(w\)</span> (e.g. portfolio weights) can be calculated as follows:
+The following equation can be used to get the linear combination of expected returns <span class="math inline">\(mu\)</span> and a weighting vector <span class="math inline">\(w\)</span> (for example, portfolio weights):
 <span class="math display">\[
  \mu \times w =
   \begin{bmatrix}
@@ -312,7 +313,7 @@ The linear combination of the expected returns <span class="math inline">\(\mu\)
 </div>
 <div id="portfolio-returns" class="section level3" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> portfolio returns</h3>
-<p>Let <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span> denote a realized return Matrix of <span class="math inline">\(N\)</span> assets and <span class="math inline">\(T\)</span> days in the past. The portfolio return on each day can be calculated with the formula of the expected portfolio return. On all days <span class="math inline">\(T\)</span> can this be done by:
+<p>Let <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span> denote a realized return Matrix of <span class="math inline">\(N\)</span> assets and <span class="math inline">\(T\)</span> days in the past. The portfolio return on each day can be calculated with the formula of the expected portfolio return. This is possible on all days <span class="math inline">\(T\)</span> by:
 <span class="math display">\[
   R \times w = 
   \begin{bmatrix}
