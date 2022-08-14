@@ -53,7 +53,9 @@ html_save <- function(html_chart, ...){
     if(!dir.exists("docs/")){
       dir.create("docs/")
     }
-    htmlwidgets::saveWidget(html_chart, "p.html")
-    webshot2::webshot("p.html", "p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
+    suppressMessages({
+      htmlwidgets::saveWidget(html_chart, "docs/p.html")
+      webshot2::webshot("docs/p.html", "docs/p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
+    })
   }
 }

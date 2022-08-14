@@ -1,9 +1,3 @@
-```{r}
-source("global.R")
-knitr::opts_chunk$set(cache = T, warning=F, message=F)
-```
-
-
 # Challenges of Passiv Investing
 
 In this Chapter we will discuss two common challenges of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
@@ -244,4 +238,5 @@ setNames(qp$solution, colnames(pool_returns))
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns, bm_returns))) %>% 
   html_save()
 ```
+
 

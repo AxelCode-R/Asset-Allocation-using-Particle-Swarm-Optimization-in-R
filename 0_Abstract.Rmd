@@ -1,3 +1,9 @@
+```{r}
+source("global.R")
+knitr::opts_chunk$set(cache = T, warning=F, message=F)
+```
+
+
 # Abstract
 
 Things about this thesis. why and what question should be answered. and what are the answers. (zusammenfassung)

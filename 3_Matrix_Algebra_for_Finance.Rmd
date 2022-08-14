@@ -1,8 +1,3 @@
-```{r, include=F}
-source("global.R")
-knitr::opts_chunk$set(cache = T, warning=F, message=F)
-```
-
 # Mathematical Fundations
 This chapter is a summary of mathematical calculations and conventions used in this Thesis. Its impotent to note that most mathematical formulas are expressed in matrix notation. Most of the time this will result in a direct translation into R-code. Additionally we state all assumptions needed for the modeled return structure, that can be easily used. It is important to say that the reality is too complex and can only partially be modeled. That is why we use fundamental and simple models that do not hold in practice. Nonetheless these models or improvements of it are widely used in finance and have proven to be useful. Additionally do these basic models produce more complex problems to solve by the PSO because for example factor models are often reduce the dimension of the dependency that are modeled.
 
