@@ -79,6 +79,7 @@ The following formula can be used to get the expected returns of a vector with n
  =
  \mu
 \end{align*}
+and $\mu_i$ can be estimated in R with the base-function `mean()` of historical data.
 
 ### expected portfolio return
 The following equation can be used to get the linear combination of expected returns $mu$ and a weighting vector $w$ (for example, portfolio weights):
@@ -144,6 +145,23 @@ The general formula of the covariance matrix $\sum$ of a random vector $R$ with 
 and can be estimated in R with the base-function `cov()` of historical data.
 
 ### Portfolio Variance
+Let $R$ be a random vector with $N$ normally distributed elements and $w$ a weighting vector. Suppose the covariance matrix $\sum$ of $R$ is known, then the variance of the linear combination of $R$ can be calculated as:
+\begin{align*}
+  Var(R \times w) &= E[(R \times w - \mu \times w)^2] \\
+  &= E[((R - \mu) \times w)^2]
+\end{align*}
+
+Since $(R - \mu) \times w$ is a scalar we can transform $((R - \mu) \times w)^2$ to $((R - \mu) \times w)^T \times ((R - \mu) \times w)$ which results in:
+\begin{align*}
+  Var(R \times w) &= E[((R - \mu) \times w)^T \times ((R - \mu) \times w)]\\ 
+  &= E[(w^T \times (R - \mu)^T) \times ((R - \mu) \times w)]\\ 
+  &= w^T \times E[(R - \mu)^T \times (R - \mu)] \times w \\
+  &= w^T \times \sum \times w
+\end{align*}
+
+The same hold for a estimation of $\sum$.
+
+
 
 
 

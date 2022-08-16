@@ -125,7 +125,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-08-14}
+\date{2022-08-16}
 
 \begin{document}
 \maketitle
@@ -179,7 +179,7 @@ yahoo finance
 \hypertarget{mathematical-fundations}{%
 \chapter{Mathematical Fundations}\label{mathematical-fundations}}
 
-This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that the majority of mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. We also provide all necessary assumptions for the modeled return structure. It is crucial to note that reality is too complicated and can only be partially modeled. We employ simplistic, basic models that don't hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. Additionally, because factor models commonly reduce the dimension of the modeled dependencies, these fundamental models result in more complex problems for the PSO to solve.
+This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. Additionally, because factor models commonly reduce the dimension of the modeled dependencies, these fundamental models result in more complex problems for the PSO to solve.
 
 \hypertarget{basic-operators}{%
 \section{Basic Operators}\label{basic-operators}}
@@ -207,7 +207,7 @@ The default timeframe for all raw data in this thesis is one workday, and we onl
 \hypertarget{markowitz-modern-portfolio-theory-mpt}{%
 \section{Markowitz Modern Portfolio Theory (MPT)}\label{markowitz-modern-portfolio-theory-mpt}}
 
-In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance. primarily by outlining the effects of diversification and efficient portfolio. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for the given expected return. ``A portfolio has the same return but less variance than the sum of its parts'' is a simple definition of diversification. This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. You can find more specific information at \citep{Mari2005}.
+In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolio. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for the given expected return target. A simple quote to define diversification could be: ``A portfolio has the same return but less variance than the sum of its parts''. This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. You can find more specific information at \citep{Mari2005}.
 
 \hypertarget{assumptions-of-markowitz-portfolio-theory}{%
 \subsection{Assumptions of Markowitz Portfolio Theory}\label{assumptions-of-markowitz-portfolio-theory}}
@@ -223,14 +223,12 @@ The following are the Markowitz assumptions that can be combined, according to \
 are compensated with a higher expected return.
 \end{enumerate}
 
-It is not necessary to assume that the returns are normally distributed, but we will use it here, to simplify the problem. More information about the conditions for using other distributions can be found in \citep{Mari2005}. It is clear that these assumption do not hold in practice.
-
-The assumption that the returns are normally distributed is not required, but we'll assume it in this case to make the problem simpler. \citep{Mari2005} has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in practice.
+The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. \citep{Mari2005} has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in real-life.
 
 \hypertarget{portfolio-math}{%
 \section{Portfolio Math}\label{portfolio-math}}
 
-Proofs for the fundamental calculations required for portfolio optimization as shown in \citep{Eric2021} will be provided in this section. I'm hoping that everyone who reads this will be able to comprehend the formulas in their entirety. Since this is the most widely used data format in practice, we prefer to represent the returns differently than most sources. The portfolio weights for \(N\) assets are denoted by \(w\) and the random return vector \(R\), respectively:
+Proofs for the fundamental calculations required for portfolio optimization as shown in \citep{Eric2021} will be provided in this section. The returns are presented differently than in most sources, because its the most common data-format used in practice. Suppose there are \(N\) assets that are described by a return vector \(R\) of random variables and a portfolio weight vector \(w\), respectively:
 \[
   R = 
   \begin{bmatrix}
@@ -245,28 +243,33 @@ Proofs for the fundamental calculations required for portfolio optimization as s
     w_{N}  
  \end{bmatrix}
 \]
-In this thesis, we also simplify each return to be normally distributed with \(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\). As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.
+
+Each return is additionally simplified in this thesis so that it is normally distributed with \(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\). As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.
 
 \hypertarget{expected-returns}{%
 \subsection{expected returns}\label{expected-returns}}
 
 The following formula can be used to get the expected returns of a vector with normally distributed random variables \(R \in \mathbb{R}^{N}\):
-\[
-  E[R] =
+\begin{align*}
+  E[R] &=
   \begin{bmatrix}
     E[R_{1}] & E[R_{2}] & \cdots & E[R_{N}]  
- \end{bmatrix}
- =
+ \end{bmatrix}\\
+ &=
  \begin{bmatrix}
-    E[\mu_{1}] & E[\mu_{2}] & \cdots & E[\mu_{N}]  
+    \mu_{1} & \mu_{2} & \cdots & \mu_{N} 
  \end{bmatrix}
  =
  \mu
-\]
-\#\#\# expected portfolio return
+\end{align*}
+and \(\mu_i\) can be estimated in R with the base-function \texttt{mean()} of historical data.
+
+\hypertarget{expected-portfolio-return}{%
+\subsection{expected portfolio return}\label{expected-portfolio-return}}
+
 The following equation can be used to get the linear combination of expected returns \(mu\) and a weighting vector \(w\) (for example, portfolio weights):
-\[
- \mu \times w =
+\begin{align*}
+ \mu \times w &=
   \begin{bmatrix}
     E[\mu_{1}] & E[\mu_{2}] & \cdots & E[\mu_{N}]
  \end{bmatrix}
@@ -276,12 +279,12 @@ The following equation can be used to get the linear combination of expected ret
     w_{2} \\
     \cdots \\
     w_{N}  
- \end{bmatrix}
- =
+ \end{bmatrix} \\
+ &=
  E[\mu_{1}] \cdot w_1 + E[\mu_{2}] \cdot w_2 + \cdots + E[\mu_{N}] \cdot w_{N} 
  =
  \mu_P
-\]
+\end{align*}
 
 \hypertarget{portfolio-returns}{%
 \subsection{portfolio returns}\label{portfolio-returns}}
@@ -292,26 +295,61 @@ Let \(R \in \mathbb{R}^{T \times N}\) denote a realized return Matrix of \(N\) a
   \begin{bmatrix}
     R_{1, 1} & R_{1, 2} & \cdots & R_{1, N} \\
     R_{2, 1} & R_{2, 2} & \cdots & R_{2, N} \\
-    \cdots \\
+    \vdots  & \vdots & \ddots & \vdots \\
     R_{T, 1} & R_{T, 2} & \cdots & R_{T, N} \\
  \end{bmatrix}
   \times 
   \begin{bmatrix}
     w_{1} \\ 
     w_{2} \\
-    \cdots \\
+    \vdots \\
     w_{N}  
  \end{bmatrix}
  =
    \begin{bmatrix}
     R_{1}^P \\ 
     R_{2}^P \\
-    \cdots \\
+    \vdots \\
     R_{N}^P  
  \end{bmatrix}
  =
  R_P
 \]
+
+\hypertarget{covariance}{%
+\subsection{Covariance}\label{covariance}}
+
+The general formula of the covariance matrix \(\sum\) of a random vector \(R\) with \(N\) normally distributed elements and \(\sigma_{i,j}\) as correlation of two unique assets is described as:
+\begin{align*}
+  Cov(R) &= E[(R-\mu)^T \times (R-\mu)] \\
+  &=   \begin{bmatrix}
+    \sigma_1^2 & \sigma_{1,2} & \cdots & \sigma_{1,N} \\
+    \sigma_{2, 1} & \sigma_2^2 & \cdots & \sigma_{2, N} \\
+    \vdots  & \vdots & \ddots & \vdots \\
+    \sigma_{N, 1} & \sigma_{N, 2} & \cdots & \sigma_N^2 \\
+ \end{bmatrix}\\
+  &=\sum
+\end{align*}
+and can be estimated in R with the base-function \texttt{cov()} of historical data.
+
+\hypertarget{portfolio-variance}{%
+\subsection{Portfolio Variance}\label{portfolio-variance}}
+
+Let \(R\) be a random vector with \(N\) normally distributed elements and \(w\) a weighting vector. Suppose the covariance matrix \(\sum\) of \(R\) is known, then the variance of the linear combination of \(R\) can be calculated as:
+\begin{align*}
+  Var(R \times w) &= E[(R \times w - \mu \times w)^2] \\
+  &= E[((R - \mu) \times w)^2]
+\end{align*}
+
+Since \((R - \mu) \times w\) is a scalar we can transform \(((R - \mu) \times w)^2\) to \(((R - \mu) \times w)^T \times ((R - \mu) \times w)\) which results in:
+\begin{align*}
+  Var(R \times w) &= E[((R - \mu) \times w)^T \times ((R - \mu) \times w)]\\ 
+  &= E[(w^T \times (R - \mu)^T) \times ((R - \mu) \times w)]\\ 
+  &= w^T \times E[(R - \mu)^T \times (R - \mu)] \times w \\
+  &= w^T \times \sum \times w
+\end{align*}
+
+The same hold for a estimation of \(\sum\).
 
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
