@@ -1,5 +1,5 @@
 # Mathematical Fundations
-This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that the majority of mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. We also provide all necessary assumptions for the modeled return structure. It is crucial to note that reality is too complicated and can only be partially modeled. We employ simplistic, basic models that don't hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. Additionally, because factor models commonly reduce the dimension of the modeled dependencies, these fundamental models result in more complex problems for the PSO to solve.
+This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. Additionally, because factor models commonly reduce the dimension of the modeled dependencies, these fundamental models result in more complex problems for the PSO to solve.
 
 ## Basic Operators
 A compendium that compares commonly used mathematical symbols to R-code and its meanings can be found in the table below:
@@ -32,7 +32,7 @@ $$
 ### annualized returns
 
 ## Markowitz Modern Portfolio Theory (MPT)
-In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance. primarily by outlining the effects of diversification and efficient portfolio. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for the given expected return. "A portfolio has the same return but less variance than the sum of its parts" is a simple definition of diversification. This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. You can find more specific information at [@Mari2005].
+In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolio. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for the given expected return target. A simple quote to define diversification could be: "A portfolio has the same return but less variance than the sum of its parts". This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. You can find more specific information at [@Mari2005].
 
 ### Assumptions of Markowitz Portfolio Theory
 The following are the Markowitz assumptions that can be combined, according to [@Mari2005]:
@@ -44,12 +44,10 @@ The following are the Markowitz assumptions that can be combined, according to [
     \item Investors are risk-adverse, they will only accept greater risk if they
 are compensated with a higher expected return.
 \end{enumerate}
-It is not necessary to assume that the returns are normally distributed, but we will use it here, to simplify the problem. More information about the conditions for using other distributions can be found in [@Mari2005]. It is clear that these assumption do not hold in practice.
-
-The assumption that the returns are normally distributed is not required, but we'll assume it in this case to make the problem simpler. [@Mari2005] has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in practice.
+The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. [@Mari2005] has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in real-life.
 
 ## Portfolio Math
-Proofs for the fundamental calculations required for portfolio optimization as shown in [@Eric2021] will be provided in this section. I'm hoping that everyone who reads this will be able to comprehend the formulas in their entirety. Since this is the most widely used data format in practice, we prefer to represent the returns differently than most sources. The portfolio weights for $N$ assets are denoted by $w$ and the random return vector $R$, respectively:
+Proofs for the fundamental calculations required for portfolio optimization as shown in [@Eric2021] will be provided in this section. The returns are presented differently than in most sources, because its the most common data-format used in practice. Suppose there are $N$ assets that are described by a return vector $R$ of random variables and a portfolio weight vector $w$, respectively:
 $$
   R = 
   \begin{bmatrix}
@@ -64,26 +62,28 @@ $$
     w_{N}  
  \end{bmatrix}
 $$
-In this thesis, we also simplify each return to be normally distributed with $R_i = \mathcal{N}(\mu_i, \sigma_i^2)$. As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.
+
+Each return is additionally simplified in this thesis so that it is normally distributed  with $R_i = \mathcal{N}(\mu_i, \sigma_i^2)$. As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.
 
 ### expected returns
 The following formula can be used to get the expected returns of a vector with normally distributed random variables $R \in \mathbb{R}^{N}$:
-$$
-  E[R] =
+\begin{align*}
+  E[R] &=
   \begin{bmatrix}
     E[R_{1}] & E[R_{2}] & \cdots & E[R_{N}]  
- \end{bmatrix}
- =
+ \end{bmatrix}\\
+ &=
  \begin{bmatrix}
-    E[\mu_{1}] & E[\mu_{2}] & \cdots & E[\mu_{N}]  
+    \mu_{1} & \mu_{2} & \cdots & \mu_{N} 
  \end{bmatrix}
  =
  \mu
-$$
+\end{align*}
+
 ### expected portfolio return
 The following equation can be used to get the linear combination of expected returns $mu$ and a weighting vector $w$ (for example, portfolio weights):
-$$
- \mu \times w =
+\begin{align*}
+ \mu \times w &=
   \begin{bmatrix}
     E[\mu_{1}] & E[\mu_{2}] & \cdots & E[\mu_{N}]
  \end{bmatrix}
@@ -93,12 +93,12 @@ $$
     w_{2} \\
     \cdots \\
     w_{N}  
- \end{bmatrix}
- =
+ \end{bmatrix} \\
+ &=
  E[\mu_{1}] \cdot w_1 + E[\mu_{2}] \cdot w_2 + \cdots + E[\mu_{N}] \cdot w_{N} 
  =
  \mu_P
-$$
+\end{align*}
 
 ### portfolio returns
 Let $R \in \mathbb{R}^{T \times N}$ denote a realized return Matrix of $N$ assets and $T$ days in the past. The portfolio return on each day can be calculated with the formula of the expected portfolio return. This is possible on all days $T$ by:
@@ -107,21 +107,21 @@ $$
   \begin{bmatrix}
     R_{1, 1} & R_{1, 2} & \cdots & R_{1, N} \\
     R_{2, 1} & R_{2, 2} & \cdots & R_{2, N} \\
-    \cdots \\
+    \vdots  & \vdots & \ddots & \vdots \\
     R_{T, 1} & R_{T, 2} & \cdots & R_{T, N} \\
  \end{bmatrix}
   \times 
   \begin{bmatrix}
     w_{1} \\ 
     w_{2} \\
-    \cdots \\
+    \vdots \\
     w_{N}  
  \end{bmatrix}
  =
    \begin{bmatrix}
     R_{1}^P \\ 
     R_{2}^P \\
-    \cdots \\
+    \vdots \\
     R_{N}^P  
  \end{bmatrix}
  =
@@ -129,7 +129,21 @@ $$
 $$
 
 
+### Covariance
+The general formula of the covariance matrix $\sum$ of a random vector $R$ with $N$ normally distributed elements and $\sigma_{i,j}$ as correlation of two unique assets is described as:
+\begin{align*}
+  Cov(R) &= E[(R-\mu)^T \times (R-\mu)] \\
+  &=   \begin{bmatrix}
+    \sigma_1^2 & \sigma_{1,2} & \cdots & \sigma_{1,N} \\
+    \sigma_{2, 1} & \sigma_2^2 & \cdots & \sigma_{2, N} \\
+    \vdots  & \vdots & \ddots & \vdots \\
+    \sigma_{N, 1} & \sigma_{N, 2} & \cdots & \sigma_N^2 \\
+ \end{bmatrix}\\
+  &=\sum
+\end{align*}
+and can be estimated in R with the base-function `cov()` of historical data.
 
+### Portfolio Variance
 
 
 
