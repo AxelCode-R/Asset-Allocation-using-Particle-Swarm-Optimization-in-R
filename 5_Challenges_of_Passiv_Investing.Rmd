@@ -1,12 +1,12 @@
 # Challenges of Passiv Investing
 
-In this Chapter we will discuss two common challenges of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
+This Chapter will analyse two common challenges of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
 
 ## Mean-variance portfolio (MVP)
 Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theorie which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier. 
 
 ### MVP
-We have $N$ assets and its returns on $T$ different days which creates a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP with risk aversion parameter $\lambda \in [0,1]$ like shown in [@Mari2005] can be formalized as follows:
+Let there be $N$ assets and its returns on $T$ different days which creates a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP with risk aversion parameter $\lambda \in [0,1]$ like shown in [@Mari2005] can be formalized as follows:
 \begin{equation} 
 \underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 (\#eq:MVP)
@@ -32,14 +32,16 @@ plotly_line_chart_xts(ret_to_cumret(returns)) %>%
 
 ```
 
-Now we can calculate the expected daily returns and the covariance matrix for the 3 assets:
+The calculated expected daily returns and the covariance matrix for the 3 assets are:
 
 ```{r}
 mu <- as.vector((last(ret_to_cumret(returns))/100)^(1/nrow(returns))-1) %>% 
   setNames(., colnames(returns))
+p0("expected daily return estimation")
 mu
 
 cov <- as.matrix(nearPD(cov(returns))$mat)
+p0("covariance estimation")
 cov
 ```
 

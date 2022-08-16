@@ -79,7 +79,7 @@ The following formula can be used to get the expected returns of a vector with n
  =
  \mu
 \end{align*}
-and $\mu_i$ can be estimated in R with the base-function `mean()` of historical data.
+and $\mu_i$ can be estimated in R with the base-function `mean()` and historical data.
 
 ### expected portfolio return
 The following equation can be used to get the linear combination of expected returns $mu$ and a weighting vector $w$ (for example, portfolio weights):
@@ -142,7 +142,7 @@ The general formula of the covariance matrix $\sum$ of a random vector $R$ with 
  \end{bmatrix}\\
   &=\sum
 \end{align*}
-and can be estimated in R with the base-function `cov()` of historical data.
+and can be estimated in R with the base-function `cov()` and historical data.
 
 ### Portfolio Variance
 Let $R$ be a random vector with $N$ normally distributed elements and $w$ a weighting vector. Suppose the covariance matrix $\sum$ of $R$ is known, then the variance of the linear combination of $R$ can be calculated as:
