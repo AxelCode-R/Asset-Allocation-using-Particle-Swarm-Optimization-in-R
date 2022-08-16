@@ -2,15 +2,17 @@
 The benefits and drawbacks of analytical solvers for quadratic problems will be discussed in this chapter after chapter 5's discussion of some common problems and their solutions. Because it would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the application and analysis are discussed here.
 
 ## Quadratic Programs (QP)
-In general is a quadratic program some function to minimize that returns a scalar and consists of an quadratic term and an linear term dependent on the variable of interest. Additionaly can the problem be constrained by some linear inequalities. The formal formulation is to find the $x$ that minizimes the following problem
+A quadratic program is specifically a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term dependent on the variable of interest. Additionally can the problem be constrained by some linear inequalities. The formal formulation is to find $x$ that minimizes the following problem:
 $$
   min \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
 $$
-and holds under the following linear constraints
+and holds under the following linear constraints:
 $$
-  A^T \times x >= a_0
+  A^T \times x >= b_0
 $$
-Some other sources notate the problems with different signs, factors or formalizing it as an maximization problem what is all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly on the computational time on different problems and the requirements to use it. Some commercial QP-solvers do additionally accept more complex constraints than linear but will increase the ram needed enormously.
+with a symmetric positive definite matrix $D$. \\
+
+Some other sources notate the problems with different signs, factors or formalizing it as an maximization problem what is all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly on the computational time on different problems and the requirements to use it. Some commercial QP-solvers do additionally accept more complex constraints like absolute (e.g. $|A^T\times x| >= a_0$) or mixed-integer (e.g. $x \in N$). But this will result in a enormously increase of memory space necessary.
 
 ### QP Solver from quadprog
 All modern programming languages do have solvers for quadratic problem. Most of them
