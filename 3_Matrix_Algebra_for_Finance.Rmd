@@ -24,7 +24,7 @@ reactable(
 Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices](https://www.investopedia.com/terms/a/adjusted closing price.asp), which show the percentage change over time. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns are essential for comparing assets and for analyzing dependencies.
 
 ### daily returns
-The default timeframe for all raw data in this thesis is one workday, and we only use simple returns. The simple returns can be calculated as follows if we know the adjusted closing price $P$ of one asset on workdays $t_i$ and $t_{i+1}$:
+The default timeframe for all raw data in this thesis is one workday and only simple returns are used. The simple returns can be calculated as follows if we know the adjusted closing price $P$ of one asset on workdays $t_i$ and $t_{i+1}$:
 $$
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 $$
@@ -152,7 +152,7 @@ Let $R$ be a random vector with $N$ normally distributed elements and $w$ a weig
   &= E[((R - \mu) \times w)^2]
 \end{align*}
 
-Since $(R - \mu) \times w$ is a scalar we can transform $((R - \mu) \times w)^2$ to $((R - \mu) \times w)^T \times ((R - \mu) \times w)$ which results in:
+Since $(R - \mu) \times w$ is a scalar, it can be transformed from $((R - \mu) \times w)^2$ to $((R - \mu) \times w)^T \times ((R - \mu) \times w)$ and results in:
 \begin{align*}
   Var(R \times w) &= E[((R - \mu) \times w)^T \times ((R - \mu) \times w)]\\ 
   &= E[(w^T \times (R - \mu)^T) \times ((R - \mu) \times w)]\\ 
