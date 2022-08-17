@@ -12,7 +12,19 @@ $$
 $$
 with a symmetric positive definite matrix $D$. \\
 
-Some other sources notate the problems with different signs, factors or formalizing it as an maximization problem what is all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly on the computational time on different problems and the requirements to use it. Some commercial QP-solvers do additionally accept more complex constraints like absolute (e.g. $|A^T\times x| >= a_0$) or mixed-integer (e.g. $x \in N$). But this will result in a enormously increase of memory space necessary.
+Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly on the computational time on different problems and the requirements to use it. Some commercial QP-solvers do additionally accept more complex constraints like absolute (e.g. $|A^T \times x| >= a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). But specially the mixed-integer constraint will result in a enormously increase of memory.
 
 ### QP Solver from quadprog
-All modern programming languages do have solvers for quadratic problem. Most of them
+All modern programming languages do have solvers for quadratic programs. Most of them
+
+
+$$
+ a \ddddot b
+$$
+
+
+
+
+
+
+

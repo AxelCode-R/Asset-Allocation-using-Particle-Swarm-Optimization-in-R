@@ -1,5 +1,5 @@
 # Mathematical Fundations
-This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. Additionally, because factor models commonly reduce the dimension of the modeled dependencies, these fundamental models result in more complex problems for the PSO to solve.
+This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter \@ref(challenges).
 
 ## Basic Operators
 A compendium that compares commonly used mathematical symbols to R-code and its meanings can be found in the table below:
@@ -9,7 +9,7 @@ reactable(
   data.frame(
     "Latex" = c("&#215;", 'A<sup>T</sup>', "&middot;"),
     "R"= c("%*%", "t(A)", "*"),
-    "Meaning" = c("Matrix or vector multiplication", "transpose of Matrix or vector A", "Scalar or elementwise vector multiplication")
+    "Meaning" = c("Matrix or vector multiplication and cross-product", "transpose of Matrix or vector A", "Scalar or elementwise vector multiplication")
   ), 
   columns <- list(
     Latex = colDef(name = "Latex/Displayed", html = T),
@@ -36,14 +36,15 @@ In 1952, Harry Markowitz published his first ground-breaking work, which had a s
 
 ### Assumptions of Markowitz Portfolio Theory
 The following are the Markowitz assumptions that can be combined, according to [@Mari2005]:
-\begin{enumerate}
-    \item Perfect market without taxes or transaction costs.
-    \item Short sales are disallowed.
-    \item Assets are infinitely divisible.
-    \item Expected Returns, Variances and Covariances contain all information.
-    \item Investors are risk-adverse, they will only accept greater risk if they
+
++ Perfect market without taxes or transaction costs.
++ Short sales are disallowed.
++ Assets are infinitely divisible.
++ Expected Returns, Variances and Covariances contain all information.
++ Investors are risk-adverse, they will only accept greater risk if they
 are compensated with a higher expected return.
-\end{enumerate}
+
+
 The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. [@Mari2005] has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in real-life.
 
 ## Portfolio Math

@@ -125,7 +125,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-08-16}
+\date{2022-08-17}
 
 \begin{document}
 \maketitle
@@ -179,7 +179,7 @@ yahoo finance
 \hypertarget{mathematical-fundations}{%
 \chapter{Mathematical Fundations}\label{mathematical-fundations}}
 
-This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. Additionally, because factor models commonly reduce the dimension of the modeled dependencies, these fundamental models result in more complex problems for the PSO to solve.
+This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter \ref{challenges}.
 
 \hypertarget{basic-operators}{%
 \section{Basic Operators}\label{basic-operators}}
@@ -214,14 +214,20 @@ In 1952, Harry Markowitz published his first ground-breaking work, which had a s
 
 The following are the Markowitz assumptions that can be combined, according to \citep{Mari2005}:
 
-\begin{enumerate}
-    \item Perfect market without taxes or transaction costs.
-    \item Short sales are disallowed.
-    \item Assets are infinitely divisible.
-    \item Expected Returns, Variances and Covariances contain all information.
-    \item Investors are risk-adverse, they will only accept greater risk if they
-are compensated with a higher expected return.
-\end{enumerate}
+\begin{itemize}
+\tightlist
+\item
+  Perfect market without taxes or transaction costs.
+\item
+  Short sales are disallowed.
+\item
+  Assets are infinitely divisible.
+\item
+  Expected Returns, Variances and Covariances contain all information.
+\item
+  Investors are risk-adverse, they will only accept greater risk if they
+  are compensated with a higher expected return.
+\end{itemize}
 
 The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. \citep{Mari2005} has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in real-life.
 
@@ -262,7 +268,7 @@ The following formula can be used to get the expected returns of a vector with n
  =
  \mu
 \end{align*}
-and \(\mu_i\) can be estimated in R with the base-function \texttt{mean()} of historical data.
+and \(\mu_i\) can be estimated in R with the base-function \texttt{mean()} and historical data.
 
 \hypertarget{expected-portfolio-return}{%
 \subsection{expected portfolio return}\label{expected-portfolio-return}}
@@ -330,7 +336,7 @@ The general formula of the covariance matrix \(\sum\) of a random vector \(R\) w
  \end{bmatrix}\\
   &=\sum
 \end{align*}
-and can be estimated in R with the base-function \texttt{cov()} of historical data.
+and can be estimated in R with the base-function \texttt{cov()} and historical data.
 
 \hypertarget{portfolio-variance}{%
 \subsection{Portfolio Variance}\label{portfolio-variance}}
@@ -354,7 +360,7 @@ The same hold for a estimation of \(\sum\).
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
 
-The fundation of each Asset Management
+The fundation of Asset Management
 
 passiv vs activ studie
 \texttt{https://www.scirp.org/journal/paperinformation.aspx?paperid=92983}
@@ -362,10 +368,10 @@ passiv vs activ studie
 gut gut
 \url{file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel\%20was\%20beantwortet\%20werden\%20soll/Quellen\%20nur\%20wichtige/Rasmussen2003_Book_QuantitativePortfolioOptimisat.pdf}
 
-\hypertarget{challenges-of-passiv-investing}{%
-\chapter{Challenges of Passiv Investing}\label{challenges-of-passiv-investing}}
+\hypertarget{challenges}{%
+\chapter{Challenges of Passiv Investing}\label{challenges}}
 
-In this Chapter we will discuss two common challenges of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
+This Chapter will analyse two common challenges of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
 
 \hypertarget{mean-variance-portfolio-mvp}{%
 \section{Mean-variance portfolio (MVP)}\label{mean-variance-portfolio-mvp}}
@@ -375,7 +381,7 @@ Markowitz has shown that diversifying the risk on multiple assets will reduce th
 \hypertarget{mvp}{%
 \subsection{MVP}\label{mvp}}
 
-We have \(N\) assets and its returns on \(T\) different days which creates a return matrix \(R \in \mathbb{R}^{T \times N}\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The covariance matrix of the returns is \(\textstyle\sum \in \mathbb{R}^{N \times N}\) and the expected returns are \(\mu \in \mathbb{R}^{N}\). The MVP with risk aversion parameter \(\lambda \in [0,1]\) like shown in \citep{Mari2005} can be formalized as follows:
+Let there be \(N\) assets and its returns on \(T\) different days which creates a return matrix \(R \in \mathbb{R}^{T \times N}\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The covariance matrix of the returns is \(\textstyle\sum \in \mathbb{R}^{N \times N}\) and the expected returns are \(\mu \in \mathbb{R}^{N}\). The MVP with risk aversion parameter \(\lambda \in [0,1]\) like shown in \citep{Mari2005} can be formalized as follows:
 \begin{equation} 
 \underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 \label{eq:MVP}
@@ -392,12 +398,22 @@ The cumulated daily returns are:
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-6-1.png}
 
-Now we can calculate the expected daily returns and the covariance matrix for the 3 assets:
+The calculated expected daily returns and the covariance matrix for the 3 assets are:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{((}\FunctionTok{last}\NormalTok{(}\FunctionTok{ret\_to\_cumret}\NormalTok{(returns))}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns))}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
   \FunctionTok{setNames}\NormalTok{(., }\FunctionTok{colnames}\NormalTok{(returns))}
+\FunctionTok{p0}\NormalTok{(}\StringTok{"expected daily return estimation"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "expected daily return estimation"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{mu}
 \end{Highlighting}
 \end{Shaded}
@@ -410,6 +426,16 @@ Now we can calculate the expected daily returns and the covariance matrix for th
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov}\NormalTok{(returns))}\SpecialCharTok{$}\NormalTok{mat)}
+\FunctionTok{p0}\NormalTok{(}\StringTok{"covariance estimation"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "covariance estimation"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{cov}
 \end{Highlighting}
 \end{Shaded}
@@ -547,10 +573,34 @@ We will show the results of tracking the S\&P 500 with a tracking portfolio that
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
 
-\hypertarget{analytical_solver}{%
-\chapter{Analytical\_Solver}\label{analytical_solver}}
+\hypertarget{analytical-solver-for-quadratic-problems}{%
+\chapter{Analytical Solver for Quadratic Problems}\label{analytical-solver-for-quadratic-problems}}
 
-example to solve problems with analytical solvers
+The benefits and drawbacks of analytical solvers for quadratic problems will be discussed in this chapter after chapter 5's discussion of some common problems and their solutions. Because it would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the application and analysis are discussed here.
+
+\hypertarget{quadratic-programs-qp}{%
+\section{Quadratic Programs (QP)}\label{quadratic-programs-qp}}
+
+A quadratic program is specifically a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term dependent on the variable of interest. Additionally can the problem be constrained by some linear inequalities. The formal formulation is to find \(x\) that minimizes the following problem:
+\[
+  min \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
+\]
+and holds under the following linear constraints:
+\[
+  A^T \times x >= b_0
+\]
+with a symmetric positive definite matrix \(D\). \textbackslash{}
+
+Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package \texttt{quadprog} which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly on the computational time on different problems and the requirements to use it. Some commercial QP-solvers do additionally accept more complex constraints like absolute (e.g.~\(|A^T \times x| >= a_0\)) or mixed-integer (e.g.~\(x \in \mathbb{N}\)). But specially the mixed-integer constraint will result in a enormously increase of memory.
+
+\hypertarget{qp-solver-from-quadprog}{%
+\subsection{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
+
+All modern programming languages do have solvers for quadratic programs. Most of them
+
+\[
+ a \ddddot b
+\]
 
 \hypertarget{simple_particle_swarm_optimization}{%
 \chapter{Simple\_Particle\_Swarm\_Optimization}\label{simple_particle_swarm_optimization}}
