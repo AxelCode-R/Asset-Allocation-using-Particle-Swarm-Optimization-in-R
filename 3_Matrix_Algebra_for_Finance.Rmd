@@ -164,5 +164,7 @@ The same hold for a estimation of $\sum$.
 
 
 
+## Created R-Functions
 
+### pri_to_ret {#pri_to_ret}
 

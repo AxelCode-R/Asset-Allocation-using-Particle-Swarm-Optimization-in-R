@@ -1,5 +1,5 @@
 
-get_yf <- function(tickers, from="2020-01-01", to="2021-01-01", type="adjusted", print=F){
+get_yf <- function(tickers, from="2020-01-01", to="2021-01-01", prices_type="close", return_type="adjusted", print=F){
   # load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/data/spx_composition.rdata")
   # tickers <- unique(spx_composition$Ticker)
   # from <- "2020-01-01"
@@ -16,24 +16,24 @@ get_yf <- function(tickers, from="2020-01-01", to="2021-01-01", type="adjusted",
   prices <- NULL
   for(name in names(e)){
     x = e[[name]]
-    if(nrow(x) > 0 && sum(toupper(colnames(x)) %like% toupper(type))==1){
+    if(nrow(x) > 0 && sum(toupper(colnames(x)) %like% toupper(prices_type))==1){
       x = data.frame(x)
-      prices <- cbind.xts(prices, setNames(xts(x[,toupper(colnames(x)) %like% toupper(type)], order.by = as.Date(rownames(x))), name))
+      prices <- cbind.xts(prices, setNames(xts(x[,toupper(colnames(x)) %like% toupper(prices_type)], order.by = as.Date(rownames(x))), name))
+      prices_for_returns <- cbind.xts(prices, setNames(xts(x[,toupper(colnames(x)) %like% toupper(return_type)], order.by = as.Date(rownames(x))), name))
     }
   }
 
-  if(is.null(prices)){
-    return("No Prices found!")
-  }else{
-    returns <- pri_to_ret(prices)
+  data <- list()
 
-    data <- list(
-      "prices" = prices[paste0(from,"/",to),],
-      "returns" = returns[paste0(from,"/",to),]
-    )
-
-    return(data)
+  if(!is.null(prices_for_returns)){
+    data$returns <- pri_to_ret(prices_for_returns)[paste0(from,"/",to),]
   }
+
+  if(!is.null(prices)){
+    data$prices <- prices[paste0(from,"/",to),]
+  }
+
+  return(data)
 
 }
 

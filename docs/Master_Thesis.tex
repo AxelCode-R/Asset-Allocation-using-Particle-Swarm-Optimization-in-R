@@ -125,7 +125,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-08-17}
+\date{2022-08-18}
 
 \begin{document}
 \maketitle
@@ -171,10 +171,38 @@ zb plotly\_save
 \hypertarget{open-data-sources}{%
 \chapter{Open Data Sources}\label{open-data-sources}}
 
-yahoo finance
+To increase the reproducibility, all data is free and can be loaded with the function \texttt{getSymbols} from the quantmod R-Package. There can be chosen between different data-sources like yahoo-finance (default), alpha-vantage, google and more.
 
 \hypertarget{r-functions-1}{%
 \section{R-functions}\label{r-functions-1}}
+
+The following functions are created to increase the simplicity of data-gathering with the quantmod R-package that can be found in the directory named \texttt{R/} in the attached \href{https://github.com/AxelCode-R/Master-Thesis}{github repository}.
+
+\hypertarget{get_yf}{%
+\subsection{\texorpdfstring{\texttt{get\_yf}}{get\_yf}}\label{get_yf}}
+
+This function is the main wrapper for gathering data with \texttt{getSymbols} from yahoo-finance and transforms prices to returns with the \texttt{pri\_to\_ret} function explained in \ref{pri_to_ret}. The output is a list that contains prices and returns as a (xts)\{\url{https://cran.r-project.org/web/packages/xts/xts.pdf}\} object. The arguments that can be passed to \texttt{get\_yf} are:
+
+\begin{itemize}
+\tightlist
+\item
+  tickers: Vector of symbols like APPL, IBM, GOOG
+\item
+  from =``2020-01-01'': R-Date
+\item
+  to = ``2021-01-01'': R-Date
+\item
+  prices\_type = ``close'': Type of prices to gather (e.g ``open'', ``high'', ``low'', ``close'', ``adjusted'')
+\item
+  return\_type = ``adjusted'': Type of returns to gather (e.g ``open'', ``high'', ``low'', ``close'', ``adjusted'')
+\item
+  print = F: Should the function print the return of \texttt{getSymbols}
+\end{itemize}
+
+\hypertarget{buffer}{%
+\subsection{\texorpdfstring{\texttt{buffer}}{buffer}}\label{buffer}}
+
+To make data reusable and decrease compiling time, this thesis saves all data gathered with \texttt{get\_yf}. It takes an R expression, evaluates it and saves it in the \texttt{buffer\_data/} directory with the given name. If this name already exists it will load the R-object from the RData-file without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with \texttt{force=T}.
 
 \hypertarget{mathematical-fundations}{%
 \chapter{Mathematical Fundations}\label{mathematical-fundations}}
@@ -196,7 +224,7 @@ Any portfolio optimization strategy based on historical data must start with ret
 \hypertarget{daily-returns}{%
 \subsection{daily returns}\label{daily-returns}}
 
-The default timeframe for all raw data in this thesis is one workday, and we only use simple returns. The simple returns can be calculated as follows if we know the adjusted closing price \(P\) of one asset on workdays \(t_i\) and \(t_{i+1}\):
+The default timeframe for all raw data in this thesis is one workday and only simple returns are used. The simple returns can be calculated as follows if we know the adjusted closing price \(P\) of one asset on workdays \(t_i\) and \(t_{i+1}\):
 \[
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 \]
@@ -347,7 +375,7 @@ Let \(R\) be a random vector with \(N\) normally distributed elements and \(w\) 
   &= E[((R - \mu) \times w)^2]
 \end{align*}
 
-Since \((R - \mu) \times w\) is a scalar we can transform \(((R - \mu) \times w)^2\) to \(((R - \mu) \times w)^T \times ((R - \mu) \times w)\) which results in:
+Since \((R - \mu) \times w\) is a scalar, it can be transformed from \(((R - \mu) \times w)^2\) to \(((R - \mu) \times w)^T \times ((R - \mu) \times w)\) and results in:
 \begin{align*}
   Var(R \times w) &= E[((R - \mu) \times w)^T \times ((R - \mu) \times w)]\\ 
   &= E[(w^T \times (R - \mu)^T) \times ((R - \mu) \times w)]\\ 
@@ -356,6 +384,12 @@ Since \((R - \mu) \times w\) is a scalar we can transform \(((R - \mu) \times w)
 \end{align*}
 
 The same hold for a estimation of \(\sum\).
+
+\hypertarget{created-r-functions}{%
+\section{Created R-Functions}\label{created-r-functions}}
+
+\hypertarget{pri_to_ret}{%
+\subsection{pri\_to\_ret}\label{pri_to_ret}}
 
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
@@ -392,28 +426,27 @@ The risk aversion parameter \(\lambda\) defines the trade-off between risk and r
 \hypertarget{mvp-example}{%
 \subsection{MVP example}\label{mvp-example}}
 
-We will analyze a small example to understand the meaning of the efficient frontier without going into detail how it was solved. First of all we are loading the daily returns of IBM, Google and Apple from the year 2020.
+All possible MVPs combined create the efficient frontier, that is analyzed in this section without going into the details of its calculation. This example uses three assets (equitys: IBM, Google, Apple) and calculates the solution of \ref{eq:MVP} for each \(\lambda\). First of all are the daily returns of these three assets are loaded from the year 2020.
 
 The cumulated daily returns are:
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-6-1.png}
 
-The calculated expected daily returns and the covariance matrix for the 3 assets are:
+The expected daily returns and the covariance matrix for the 3 assets can be calculated with:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{((}\FunctionTok{last}\NormalTok{(}\FunctionTok{ret\_to\_cumret}\NormalTok{(returns))}\SpecialCharTok{/}\DecValTok{100}\NormalTok{)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns))}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{setNames}\NormalTok{(., }\FunctionTok{colnames}\NormalTok{(returns))}
-\FunctionTok{p0}\NormalTok{(}\StringTok{"expected daily return estimation"}\NormalTok{)}
+\FunctionTok{p0}\NormalTok{(}\StringTok{"estimation of expected daily returns"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "expected daily return estimation"
+## [1] "estimation of expected daily returns"
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{((}\DecValTok{1}\SpecialCharTok{+}\NormalTok{returns), prod)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns))}\SpecialCharTok{{-}}\DecValTok{1}
 \NormalTok{mu}
 \end{Highlighting}
 \end{Shaded}
@@ -425,17 +458,17 @@ The calculated expected daily returns and the covariance matrix for the 3 assets
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov}\NormalTok{(returns))}\SpecialCharTok{$}\NormalTok{mat)}
-\FunctionTok{p0}\NormalTok{(}\StringTok{"covariance estimation"}\NormalTok{)}
+\FunctionTok{p0}\NormalTok{(}\StringTok{"estimation of positiv definite covariance matrix"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "covariance estimation"
+## [1] "estimation of positiv definite covariance matrix"
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov}\NormalTok{(returns))}\SpecialCharTok{$}\NormalTok{mat)}
 \NormalTok{cov}
 \end{Highlighting}
 \end{Shaded}
@@ -447,24 +480,26 @@ The calculated expected daily returns and the covariance matrix for the 3 assets
 ## GOOG 0.0005337719 0.0004086728 0.0005827306
 \end{verbatim}
 
-We now have all the necessary data to solve the MVP \eqref{eq:MVP} with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). We calculate all 100 portfolios by solving the quadratic minimization problem for each \(\lambda\).
+These are all the necessary data to solve the MVP \eqref{eq:MVP} with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). All 100 portfolios are calculated by solving a quadratic minimization problem with long only constraint.
 
-Following that, we convert the daily returns and standard deviation to yearly returns and standard deviation before plotting the efficient frontier.
+The resulting daily returns and standard deviation are transformed to annual returns and standard deviation and are plotted to create the efficient frontier:
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
+
+The portfolio compositions for each \(\lambda\) are:
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
 
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-tracking portfolio (ITP)}\label{index-tracking-portfolio-itp}}
 
-Indices are asset baskets that are used to track the performance of a specific asset group. The well-known Standard and Poor's 500 index (short: S\&P 500), for example, tracks the top 500 stocks in the United States. All indices are not investible and only serve to visualize the performance of these asset groups without incurring transaction costs. Asset managers use such indices as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made a poor decision. That is why all fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rearly achived with activ managemnt after costs \citep{Desm2016}. This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. This is why passively managed funds with the purpose of tracking their benchmarks are becoming more common. This can be accomplished through either full or sparse replication. In most circumstances, a full replication that achieves the exact performance we seek is not achievable because not all assets in an index are investable. And, if so, it would be unwise because benchmarks with numerous indexes can contain over ten thousand separate assets, resulting in a massive amount of transaction costs. A sparse replication of the performance is the most prevalent approach. To do so, the portfolio manager must define his benchmark, which should overlap with his fund's investing universe. Following that, he will reduce this universe using investor principles such as liquidity and availability. Now he can begin to optimize a portfolio, taking into account the investor constraints, in order to match the benchmark performance. Typically, this is accomplished by lowering the variance between the ITP's daily returns and the benchmark:
+Indices are asset baskets that are used to track the performance of a specific asset group. The well-known Standard and Poor's 500 index (short: S\&P 500), for example, tracks the top 500 stocks in the United States. All indices are not investible and only serve to visualize the performance of these asset groups without incurring transaction costs. Asset managers use such indices as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made a poor decision. That is why all fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rearly achived with activ managemnt after costs \citep{Desm2016}. This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. This is why passively managed funds with the purpose of tracking their benchmarks are becoming more common. This can be accomplished through either full or sparse replication. In most circumstances, using a full replication that achieves the exact performance is not achievable, because not all assets in an index are investable. And, if so, it would be unwise because benchmarks with numerous indexes can contain over ten thousand separate assets, resulting in a massive amount of transaction costs. A sparse replication of the performance is the most prevalent approach. To do so, the portfolio manager must define his benchmark, which should overlap with his fund's investing universe. Following that, he will reduce this universe using investor principles such as liquidity and availability. Now he can begin to optimize a portfolio, taking into account the investor constraints, in order to match the benchmark performance. Typically, this is accomplished by lowering the variance between the ITP's daily returns and the benchmark:
 
 \[
  minimize \ \ Var(r_{p}-r_{bm})
 \]
 
-To obtain the portfolio weights \(w\), we must first substitute \(r_{p}\) as shown below:
+To obtain the portfolio weights \(w\), its necessary to substitute \(r_{p}\) as shown below:
 
 \[
   r_{p} = R * w
@@ -475,7 +510,7 @@ The Variance is then solved up until a quadratic problem dependent on the portfo
 \[
  Var(r_{p}-r_{bm}) = Var(R * w - r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm}) 
 \]
-We must now solve each of the three terms, beginning with the easiest.
+Now the three terms can be solved, beginning with the easiest.
 
 \[
 Var(r_{bm}) = \sigma_{bm}^2 = constant
@@ -547,7 +582,7 @@ The minimization problem of the ITP in the general stricture which all optimizer
   min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
 \]
 
-Because it is a minimization we can ignore constant terms and stretching coefficients and still find the same minimum. This results in the general substitution of the ITP as follows:
+Minimization problems can ignore constant terms and global stretching coefficients and still find the same minimum. This results in the general substitution of the ITP as follows:
 
 \[
   D = Cov(R)
@@ -559,12 +594,12 @@ and
 d = Cov(r_{bm}, R)
 \]
 
-Now we need to add some basic constraints like in the MVP, to sum up the weights to 1 and being long only.
+Its possible to add some basic constraints like in the MVP, to sum up the weights to 1 and being long only.
 
 \hypertarget{example-itp}{%
 \subsection{Example ITP}\label{example-itp}}
 
-We will show the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
+This section will show the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
 
 \begin{verbatim}
 ##      AAPL       IBM      GOOG 
@@ -573,34 +608,41 @@ We will show the results of tracking the S\&P 500 with a tracking portfolio that
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
 
-\hypertarget{analytical-solver-for-quadratic-problems}{%
-\chapter{Analytical Solver for Quadratic Problems}\label{analytical-solver-for-quadratic-problems}}
+\hypertarget{analytic-solver-for-quadratic-programming-problems}{%
+\chapter{Analytic Solver for Quadratic Programming Problems}\label{analytic-solver-for-quadratic-programming-problems}}
 
-The benefits and drawbacks of analytical solvers for quadratic problems will be discussed in this chapter after chapter 5's discussion of some common problems and their solutions. Because it would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the application and analysis are discussed here.
+The benefits and drawbacks of analytic solvers for quadratic programming problems will be discussed in this chapter after chapter \ref{challenges}'s discussion of some common problems and their solutions. It would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the applications and analysis are discussed here. The foremost reason of addressing quadratic programming solvers is to use it as a benchmark for the PSO.
 
-\hypertarget{quadratic-programs-qp}{%
-\section{Quadratic Programs (QP)}\label{quadratic-programs-qp}}
+\hypertarget{quadratic-programming-qp}{%
+\section{Quadratic Programming (QP)}\label{quadratic-programming-qp}}
 
-A quadratic program is specifically a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term dependent on the variable of interest. Additionally can the problem be constrained by some linear inequalities. The formal formulation is to find \(x\) that minimizes the following problem:
+A quadratic program is a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term dependent on the variable of interest. Additionally can the problem be simply constrained by several linear inequalities that restrict the solution. The general formulation used, is to find \(x\) that minimizes the following problem:
 \[
   min \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
 \]
-and holds under the following linear constraints:
+and holds under the linear constraints:
 \[
   A^T \times x >= b_0
 \]
-with a symmetric positive definite matrix \(D\). \textbackslash{}
 
-Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package \texttt{quadprog} which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly on the computational time on different problems and the requirements to use it. Some commercial QP-solvers do additionally accept more complex constraints like absolute (e.g.~\(|A^T \times x| >= a_0\)) or mixed-integer (e.g.~\(x \in \mathbb{N}\)). But specially the mixed-integer constraint will result in a enormously increase of memory.
+Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package \texttt{quadprog} which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g.~\(|A^T \times x| >= a_0\)) or mixed-integer (e.g.~\(x \in \mathbb{N}\)). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
 
 \hypertarget{qp-solver-from-quadprog}{%
 \subsection{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
 
-All modern programming languages do have solvers for quadratic programs. Most of them
+The most common free QP-solver used in R is \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(x^T D x > 0 \forall x \in R^N and D\in R^{N \times N}\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\sum\) with the function \texttt{nearPD} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \ \%\), which is negligible for the context of this thesis. The \texttt{solve.QP} functions for a \(N\) dimensional vector of interest, has the following arguments that can be found in the above stated formulation of a QP:
++ Dmat: Symmetric positive definite matrix \(D \in R^{N \times N}\) of the quadratic term.
++ dvec: Vector \(d \in R^{N}\) of the linear term
++ Amat: Constraint matrix \(A\)
++ bvec: Constraint vector \(b_0\)
++ meq = 1: means that the first row of \(A\) is treated as equality constraint (used to achieve fully invested portfolios)
 
-\[
- a \ddddot b
-\]
+The return of \texttt{solve.QP} is a list and contains among other things the following attributes of interest:
++ solution: Vector containing the solution \(x\) of the quadratic programming problem. (e.g.~portfolio weights)
++ value: Scalar, the value of the quadratic function at the solution
+
+\hypertarget{solving-mvp-with-solve.qp}{%
+\subsection{\texorpdfstring{Solving MVP with \texttt{solve.QP}}{Solving MVP with solve.QP}}\label{solving-mvp-with-solve.qp}}
 
 \hypertarget{simple_particle_swarm_optimization}{%
 \chapter{Simple\_Particle\_Swarm\_Optimization}\label{simple_particle_swarm_optimization}}

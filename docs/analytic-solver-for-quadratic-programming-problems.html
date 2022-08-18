@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Activ vs Passiv Investing | Master-Thesis</title>
+  <title>Chapter 7 Analytic Solver for Quadratic Programming Problems | Master-Thesis</title>
   <meta name="description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Activ vs Passiv Investing | Master-Thesis" />
+  <meta property="og:title" content="Chapter 7 Analytic Solver for Quadratic Programming Problems | Master-Thesis" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="AxelCode-R/Master-Thesis" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Activ vs Passiv Investing | Master-Thesis" />
+  <meta name="twitter:title" content="Chapter 7 Analytic Solver for Quadratic Programming Problems | Master-Thesis" />
   
   <meta name="twitter:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="mathematical-fundations.html"/>
-<link rel="next" href="challenges.html"/>
+<link rel="prev" href="challenges.html"/>
+<link rel="next" href="simple_particle_swarm_optimization.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -244,14 +244,46 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="activ-vs-passiv-investing" class="section level1" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Activ vs Passiv Investing</h1>
-<p>The fundation of Asset Management</p>
-<p>passiv vs activ studie
-<code>https://www.scirp.org/journal/paperinformation.aspx?paperid=92983</code></p>
-<p>gut gut
-<a href="file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/Rasmussen2003_Book_QuantitativePortfolioOptimisat.pdf" class="uri">file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/Rasmussen2003_Book_QuantitativePortfolioOptimisat.pdf</a></p>
+<div id="analytic-solver-for-quadratic-programming-problems" class="section level1" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Analytic Solver for Quadratic Programming Problems</h1>
+<p>The benefits and drawbacks of analytic solvers for quadratic programming problems will be discussed in this chapter after chapter ’s discussion of some common problems and their solutions. It would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the applications and analysis are discussed here. The foremost reason of addressing quadratic programming solvers is to use it as a benchmark for the PSO.</p>
+<div id="quadratic-programming-qp" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Quadratic Programming (QP)</h2>
+<p>A quadratic program is a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term dependent on the variable of interest. Additionally can the problem be simply constrained by several linear inequalities that restrict the solution. The general formulation used, is to find <span class="math inline">\(x\)</span> that minimizes the following problem:
+<span class="math display">\[
+  min \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
+\]</span>
+and holds under the linear constraints:
+<span class="math display">\[
+  A^T \times x &gt;= b_0
+\]</span></p>
+<p>Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package <code>quadprog</code> which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. <span class="math inline">\(|A^T \times x| &gt;= a_0\)</span>) or mixed-integer (e.g. <span class="math inline">\(x \in \mathbb{N}\)</span>). Specially the mixed-integer constraint problems will result in a enormously increase of memory.</p>
+<div id="qp-solver-from-quadprog" class="section level3" number="7.1.1">
+<h3><span class="header-section-number">7.1.1</span> QP Solver from quadprog</h3>
+<p>The most common free QP-solver used in R is <a href="https://cran.r-project.org/web/packages/quadprog/quadprog.pdf">quadprog</a> which consists of a single function named <code>solve.QP</code>. Its implementation routine is the dual method of Goldfarb and Idnani that was published in <span class="citation">(<a href="#ref-GoId1982" role="doc-biblioref">Goldfarb and Idnani 1982</a>)</span> and <span class="citation">(<a href="#ref-GoId1983" role="doc-biblioref">Goldfarb and Idnani 1983</a>)</span>. It uses the above stated QP with the requirement that <span class="math inline">\(D\)</span> needs to be a symmetric positive definite matrix. It means that <span class="math inline">\(x^T D x &gt; 0 \forall x \in R^N and D\in R^{N \times N}\)</span> which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix <span class="math inline">\(\sum\)</span>, but its possible to find the nearest positive definite matrix of <span class="math inline">\(\sum\)</span> with the function <code>nearPD</code> from the <a href="https://cran.r-project.org/web/packages/Matrix/Matrix.pdf">Matrix</a> R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above <span class="math inline">\(10^{-15} \ \%\)</span>, which is negligible for the context of this thesis. The <code>solve.QP</code> functions for a <span class="math inline">\(N\)</span> dimensional vector of interest, has the following arguments that can be found in the above stated formulation of a QP:
++ Dmat: Symmetric positive definite matrix <span class="math inline">\(D \in R^{N \times N}\)</span> of the quadratic term.
++ dvec: Vector <span class="math inline">\(d \in R^{N}\)</span> of the linear term
++ Amat: Constraint matrix <span class="math inline">\(A\)</span>
++ bvec: Constraint vector <span class="math inline">\(b_0\)</span>
++ meq = 1: means that the first row of <span class="math inline">\(A\)</span> is treated as equality constraint (used to achieve fully invested portfolios)</p>
+<p>The return of <code>solve.QP</code> is a list and contains among other things the following attributes of interest:
++ solution: Vector containing the solution <span class="math inline">\(x\)</span> of the quadratic programming problem. (e.g. portfolio weights)
++ value: Scalar, the value of the quadratic function at the solution</p>
+</div>
+<div id="solving-mvp-with-solve.qp" class="section level3" number="7.1.2">
+<h3><span class="header-section-number">7.1.2</span> Solving MVP with <code>solve.QP</code></h3>
 
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-GoId1982" class="csl-entry">
+Goldfarb, D., and A. Idnani. 1982. <span>“Dual and Primal-Dual Methods for Solving Strictly Convex Quadratic Programs.”</span>
+</div>
+<div id="ref-GoId1983" class="csl-entry">
+———. 1983. <span>“A Numerically Stable Dual Method for Solving Strictly Convex Quadratic Programs.”</span>
+</div>
 </div>
 <script src="script.js"></script>
             </section>
@@ -259,8 +291,8 @@ div.csl-indent {
           </div>
         </div>
       </div>
-<a href="mathematical-fundations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="challenges.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="challenges.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="simple_particle_swarm_optimization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -292,7 +324,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/AxelCode-R/Master-Thesis/edit/master/4_Activ_vs_Passiv_Investing.Rmd",
+"link": "https://github.com/AxelCode-R/Master-Thesis/edit/master/6_Analytical_Solver.Rmd",
 "text": "Edit"
 },
 "history": {

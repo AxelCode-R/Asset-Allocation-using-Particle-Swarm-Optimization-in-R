@@ -1,7 +1,20 @@
 # Open Data Sources
-yahoo finance
+To increase the reproducibility, all data is free and can be loaded with the function `getSymbols` from the quantmod R-Package. There can be chosen between different data-sources like yahoo-finance (default), alpha-vantage, google and more. 
 
 ## R-functions
+The following functions are created to increase the simplicity of data-gathering with the quantmod R-package that can be found in the directory named `R/` in the attached [github repository](https://github.com/AxelCode-R/Master-Thesis).
 
+### `get_yf`
+This function is the main wrapper for gathering data with `getSymbols` from yahoo-finance and transforms prices to returns with the `pri_to_ret` function explained in \ref{pri_to_ret}. The output is a list that contains prices and returns as a (xts){https://cran.r-project.org/web/packages/xts/xts.pdf} object. The arguments that can be passed to `get_yf` are:
+
++ `tickers`: Vector of symbols like APPL, IBM, GOOG
++ `from ="2020-01-01"`: R-Date
++ `to = "2021-01-01"`: R-Date
++ `prices_type = "close"`: Type of prices to gather (e.g "open", "high", "low", "close", "adjusted")
++ `return_type = "adjusted"`: Type of returns to gather (e.g "open", "high", "low", "close", "adjusted")
++ `print = F`: Should the function print the return of `getSymbols`
+
+### `buffer`
+To make data reusable and decrease compiling time, this thesis saves all data gathered with `get_yf`. It takes an R expression, evaluates it and saves it in the `buffer_data/` directory with the given name. If this name already exists it will load the R-object from the RData-file without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with `force=T`.
 
 
