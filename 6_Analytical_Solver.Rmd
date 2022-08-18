@@ -1,27 +1,20 @@
 # Analytical Solver for Quadratic Problems
-The benefits and drawbacks of analytical solvers for quadratic problems will be discussed in this chapter after chapter 5's discussion of some common problems and their solutions. Because it would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the application and analysis are discussed here.
+The benefits and drawbacks of analytical solvers for quadratic problems will be discussed in this chapter after chapter 5's discussion of some common problems and their solutions. It would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the applications and analysis are discussed here. The foremost reason of addressing  QP-solvers is to use it as a benchmark for the PSO.
 
 ## Quadratic Programs (QP)
-A quadratic program is specifically a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term dependent on the variable of interest. Additionally can the problem be constrained by some linear inequalities. The formal formulation is to find $x$ that minimizes the following problem:
+A quadratic program is specifically a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term dependent on the variable of interest. Additionally can the problem be simply constrained by several linear inequalities that restrict the solution. The formal formulation used, is to find $x$ that minimizes the following problem:
 $$
   min \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
 $$
-and holds under the following linear constraints:
+and holds under the linear constraints:
 $$
   A^T \times x >= b_0
 $$
-with a symmetric positive definite matrix $D$. \\
 
-Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly on the computational time on different problems and the requirements to use it. Some commercial QP-solvers do additionally accept more complex constraints like absolute (e.g. $|A^T \times x| >= a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). But specially the mixed-integer constraint will result in a enormously increase of memory.
+Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly on the computational time on different problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. $|A^T \times x| >= a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
 
 ### QP Solver from quadprog
-All modern programming languages do have solvers for quadratic programs. Most of them
-
-
-$$
- a \ddddot b
-$$
-
+The most common free QP-solver used in R is [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with requirement that $D$ is a symmetric positive definite matrix. It means that $x^T D x > 0 \forall x \in R^N and D\in R^{N \times N}$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not archived by using the estimation of the covariance matrix $\sum$, but its possible to find the nearest positive matrix of $\sum$ with the function `nearPD` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs is printed and often do not exceed a percentage change of elements in the matrix above $10^{-15}$, which is negligible for the context of this thesis. 
 
 
 
