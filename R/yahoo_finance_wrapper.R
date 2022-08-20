@@ -14,12 +14,13 @@ get_yf <- function(tickers, from="2020-01-01", to="2021-01-01", prices_type="clo
   },silent = T)
 
   prices <- NULL
+  prices_for_returns <- NULL
   for(name in names(e)){
     x = e[[name]]
     if(nrow(x) > 0 && sum(toupper(colnames(x)) %like% toupper(prices_type))==1){
       x = data.frame(x)
       prices <- cbind.xts(prices, setNames(xts(x[,toupper(colnames(x)) %like% toupper(prices_type)], order.by = as.Date(rownames(x))), name))
-      prices_for_returns <- cbind.xts(prices, setNames(xts(x[,toupper(colnames(x)) %like% toupper(return_type)], order.by = as.Date(rownames(x))), name))
+      prices_for_returns <- cbind.xts(prices_for_returns, setNames(xts(x[,toupper(colnames(x)) %like% toupper(return_type)], order.by = as.Date(rownames(x))), name))
     }
   }
 

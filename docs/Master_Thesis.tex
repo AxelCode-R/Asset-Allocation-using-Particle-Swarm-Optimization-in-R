@@ -125,7 +125,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-08-18}
+\date{2022-08-19}
 
 \begin{document}
 \maketitle
@@ -186,17 +186,17 @@ This function is the main wrapper for gathering data with \texttt{getSymbols} fr
 \begin{itemize}
 \tightlist
 \item
-  tickers: Vector of symbols like APPL, IBM, GOOG
+  \texttt{tickers}: Vector of symbols like APPL, IBM, GOOG
 \item
-  from =``2020-01-01'': R-Date
+  \texttt{from\ ="2020-01-01"}: R-Date
 \item
-  to = ``2021-01-01'': R-Date
+  \texttt{to\ =\ "2021-01-01"}: R-Date
 \item
-  prices\_type = ``close'': Type of prices to gather (e.g ``open'', ``high'', ``low'', ``close'', ``adjusted'')
+  \texttt{prices\_type\ =\ "close"}: Type of prices to gather (e.g ``open'', ``high'', ``low'', ``close'', ``adjusted'')
 \item
-  return\_type = ``adjusted'': Type of returns to gather (e.g ``open'', ``high'', ``low'', ``close'', ``adjusted'')
+  \texttt{return\_type\ =\ "adjusted"}: Type of returns to gather (e.g ``open'', ``high'', ``low'', ``close'', ``adjusted'')
 \item
-  print = F: Should the function print the return of \texttt{getSymbols}
+  \texttt{print\ =\ F}: Should the function print the return of \texttt{getSymbols}
 \end{itemize}
 
 \hypertarget{buffer}{%
@@ -628,7 +628,7 @@ and holds under the linear constraints:
 Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package \texttt{quadprog} which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g.~\(|A^T \times x| >= a_0\)) or mixed-integer (e.g.~\(x \in \mathbb{N}\)). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
 
 \hypertarget{qp-solver-from-quadprog}{%
-\subsection{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
+\section{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
 
 The most common free QP-solver used in R is \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(x^T D x > 0 \forall x \in R^N and D\in R^{N \times N}\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\sum\) with the function \texttt{nearPD} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \ \%\), which is negligible for the context of this thesis. The \texttt{solve.QP} functions for a \(N\) dimensional vector of interest, has the following arguments that can be found in the above stated formulation of a QP:
 + Dmat: Symmetric positive definite matrix \(D \in R^{N \times N}\) of the quadratic term.
@@ -641,8 +641,8 @@ The return of \texttt{solve.QP} is a list and contains among other things the fo
 + solution: Vector containing the solution \(x\) of the quadratic programming problem. (e.g.~portfolio weights)
 + value: Scalar, the value of the quadratic function at the solution
 
-\hypertarget{solving-mvp-with-solve.qp}{%
-\subsection{\texorpdfstring{Solving MVP with \texttt{solve.QP}}{Solving MVP with solve.QP}}\label{solving-mvp-with-solve.qp}}
+\hypertarget{example-solving-mvp-with-solve.qp}{%
+\subsection{\texorpdfstring{Example: Solving MVP with \texttt{solve.QP}}{Example: Solving MVP with solve.QP}}\label{example-solving-mvp-with-solve.qp}}
 
 \hypertarget{simple_particle_swarm_optimization}{%
 \chapter{Simple\_Particle\_Swarm\_Optimization}\label{simple_particle_swarm_optimization}}

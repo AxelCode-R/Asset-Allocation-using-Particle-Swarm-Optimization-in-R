@@ -24,7 +24,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-08-18" />
+<meta name="date" content="2022-08-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -216,10 +216,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="7" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html"><i class="fa fa-check"></i><b>7</b> Analytic Solver for Quadratic Programming Problems</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a>
+<li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
+<li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.1.1</b> QP Solver from quadprog</a></li>
-<li class="chapter" data-level="7.1.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#solving-mvp-with-solve.qp"><i class="fa fa-check"></i><b>7.1.2</b> Solving MVP with <code>solve.QP</code></a></li>
+<li class="chapter" data-level="7.2.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-mvp-with-solve.qp"><i class="fa fa-check"></i><b>7.2.1</b> Example: Solving MVP with <code>solve.QP</code></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="simple_particle_swarm_optimization.html"><a href="simple_particle_swarm_optimization.html"><i class="fa fa-check"></i><b>8</b> Simple_Particle_Swarm_Optimization</a></li>
@@ -258,8 +258,9 @@ and holds under the linear constraints:
   A^T \times x &gt;= b_0
 \]</span></p>
 <p>Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package <code>quadprog</code> which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. <span class="math inline">\(|A^T \times x| &gt;= a_0\)</span>) or mixed-integer (e.g. <span class="math inline">\(x \in \mathbb{N}\)</span>). Specially the mixed-integer constraint problems will result in a enormously increase of memory.</p>
-<div id="qp-solver-from-quadprog" class="section level3" number="7.1.1">
-<h3><span class="header-section-number">7.1.1</span> QP Solver from quadprog</h3>
+</div>
+<div id="qp-solver-from-quadprog" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> QP Solver from quadprog</h2>
 <p>The most common free QP-solver used in R is <a href="https://cran.r-project.org/web/packages/quadprog/quadprog.pdf">quadprog</a> which consists of a single function named <code>solve.QP</code>. Its implementation routine is the dual method of Goldfarb and Idnani that was published in <span class="citation">(<a href="#ref-GoId1982" role="doc-biblioref">Goldfarb and Idnani 1982</a>)</span> and <span class="citation">(<a href="#ref-GoId1983" role="doc-biblioref">Goldfarb and Idnani 1983</a>)</span>. It uses the above stated QP with the requirement that <span class="math inline">\(D\)</span> needs to be a symmetric positive definite matrix. It means that <span class="math inline">\(x^T D x &gt; 0 \forall x \in R^N and D\in R^{N \times N}\)</span> which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix <span class="math inline">\(\sum\)</span>, but its possible to find the nearest positive definite matrix of <span class="math inline">\(\sum\)</span> with the function <code>nearPD</code> from the <a href="https://cran.r-project.org/web/packages/Matrix/Matrix.pdf">Matrix</a> R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above <span class="math inline">\(10^{-15} \ \%\)</span>, which is negligible for the context of this thesis. The <code>solve.QP</code> functions for a <span class="math inline">\(N\)</span> dimensional vector of interest, has the following arguments that can be found in the above stated formulation of a QP:
 + Dmat: Symmetric positive definite matrix <span class="math inline">\(D \in R^{N \times N}\)</span> of the quadratic term.
 + dvec: Vector <span class="math inline">\(d \in R^{N}\)</span> of the linear term
@@ -269,9 +270,8 @@ and holds under the linear constraints:
 <p>The return of <code>solve.QP</code> is a list and contains among other things the following attributes of interest:
 + solution: Vector containing the solution <span class="math inline">\(x\)</span> of the quadratic programming problem. (e.g. portfolio weights)
 + value: Scalar, the value of the quadratic function at the solution</p>
-</div>
-<div id="solving-mvp-with-solve.qp" class="section level3" number="7.1.2">
-<h3><span class="header-section-number">7.1.2</span> Solving MVP with <code>solve.QP</code></h3>
+<div id="example-solving-mvp-with-solve.qp" class="section level3" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Example: Solving MVP with <code>solve.QP</code></h3>
 
 </div>
 </div>

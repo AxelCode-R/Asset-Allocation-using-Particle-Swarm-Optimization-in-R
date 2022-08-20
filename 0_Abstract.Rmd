@@ -1,6 +1,7 @@
 ```{r, include=F}
 source("global.R")
 knitr::opts_chunk$set(cache = F, warning=F, message=F)
+global_buffer_force <- F
 ```
 
 

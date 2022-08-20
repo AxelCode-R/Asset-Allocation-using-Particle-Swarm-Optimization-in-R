@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Analytic Solver for Quadratic Programming Problems
 The benefits and drawbacks of analytic solvers for quadratic programming problems will be discussed in this chapter after chapter \ref{challenges}'s discussion of some common problems and their solutions. It would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the applications and analysis are discussed here. The foremost reason of addressing quadratic programming solvers is to use it as a benchmark for the PSO.
 
@@ -13,7 +18,7 @@ $$
 
 Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. $|A^T \times x| >= a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
 
-### QP Solver from quadprog
+## QP Solver from quadprog
 The most common free QP-solver used in R is [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with the requirement that $D$ needs to be a symmetric positive definite matrix. It means that $x^T D x > 0 \forall x \in R^N and D\in R^{N \times N}$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix $\sum$, but its possible to find the nearest positive definite matrix of $\sum$ with the function `nearPD` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above $10^{-15} \ \%$, which is negligible for the context of this thesis. The `solve.QP` functions for a $N$ dimensional vector of interest, has the following arguments that can be found in the above stated formulation of a QP:
 + Dmat: Symmetric positive definite matrix $D \in R^{N \times N}$ of the quadratic term.
 + dvec: Vector $d \in R^{N}$ of the linear term
@@ -25,7 +30,159 @@ The return of `solve.QP` is a list and contains among other things the following
 + solution: Vector containing the solution $x$ of the quadratic programming problem. (e.g. portfolio weights)
 + value: Scalar, the value of the quadratic function at the solution
 
-### Solving MVP with `solve.QP`
+## Example: Solving MVP with `solve.QP`
+This section provides insights into the effect of diversification and the use of `solve.QP`. 
+
+
+```{r}
+returns_raw <- buffer(
+  get_yf(
+    tickers = c("IBM", "GOOG", "AAPL", "MSFT", "AMZN", "NVDA", "JPM", "META", "V", "WMT"), 
+    from = "2016-01-01", 
+    to = "2021-12-31",
+    print=T
+  )$returns, 
+  "10_assets",
+  force=T
+)
+
+vars <- sapply(returns_raw, var)
+
+returns_raw <- returns_raw[, order(vars, decreasing = F)]
+vars <- vars[order(vars, decreasing = F)]
+
+
+# mvp <- function(returns, lambda){
+#   tc <- tryCatch({
+#     mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
+# 
+#     cov <- as.matrix(nearPD(cov(returns))$mat)
+# 
+#     mat <- list(
+#       Dmat = lambda * cov,
+#       dvec = (1-lambda) * mu,
+#       Amat = t(rbind(
+#         rep(1, ncol(returns))#, # sum up to 1
+#         #diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+#       )),
+#       bvec = c(
+#         1#, # sum up to 1
+#         #rep(0, ncol(returns)) # long only
+#       ),
+#       meq = 1
+#     )
+#   
+#     qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+#     
+#     res <- list(
+#       "mu" = mu %*% qp$solution,
+#       "var" = t(qp$solution) %*% cov %*% qp$solution,
+#       "composition" = setNames(qp$solution, colnames(returns))
+#     )
+#     TRUE
+#   }, error = function(e){FALSE})
+#   
+# 
+#   if(tc){
+#     return(res)
+#   }else{
+#     return(list(
+#       "mu" = NA,
+#       "var" = NA,
+#       "composition" = NA
+#     ))
+#   }
+# }
+
+# df <- NULL
+# for(i in 2:ncol(returns_raw)){
+#   returns <- returns_raw[, 1:10]
+#   temp <- NULL
+#   for(lambda in seq(0.01, 1, 0.01)){
+#     res <- mvp(returns, lambda)
+#     
+#     temp <- cbind(temp, res$var)
+#   }
+#   df <- rbind(df, temp)
+# }
+# colnames(df) <- paste0("l_", seq(0.01, 1, 0.01))
+# rownames(df) <- paste0("n_", 2:ncol(returns_raw))
+
+
+
+mvp <- function(returns, return_target){
+  tc <- tryCatch({
+    mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
+
+    cov <- as.matrix(nearPD(cov(returns))$mat)
+
+    mat <- list(
+      Dmat = 1 * cov,
+      dvec = 0 * mu,
+      Amat = t(rbind(
+        rep(1, ncol(returns)), # sum up to 1
+        diag(1, nrow=ncol(returns), ncol=ncol(returns)), # long only
+        mu,
+        -mu
+      )),
+      bvec = c(
+        1, # sum up to 1
+        rep(0, ncol(returns)), # long only
+        return_target * 0.95,
+        -return_target * 1.05
+      ),
+      meq = 1
+    )
+  
+    qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+    
+    res <- list(
+      "mu" = mu %*% qp$solution,
+      "var" = t(qp$solution) %*% cov %*% qp$solution,
+      "composition" = setNames(qp$solution, colnames(returns))
+    )
+    TRUE
+  }, error = function(e){FALSE})
+  
+
+  if(tc){
+    return(res)
+  }else{
+    return(list(
+      "mu" = NA,
+      "var" = NA,
+      "composition" = NA
+    ))
+  }
+}
+
+df <- NULL
+for(i in 2:ncol(returns_raw)){
+  returns <- returns_raw[, 1:i]
+  for(return_target in seq(0.0004,0.0012, 0.00001)){
+    res <- mvp(returns, return_target)
+    
+    df <- rbind(df, data.frame("index"=i, "return_target"=return_target, "var"=res$var, "return" = res$mu))
+  }
+  df <- df %>% filter(!is.na(return))
+  min_return <- df %>% filter(index==i) %>% filter(var == min(var)) %>% pull(return) %>% min()
+  df <- df %>% filter(index != i | (index == i & return >= min_return))
+}
+
+
+#library(RColorBrewer)
+# palette <- colorRampPalette(c("black","grey","darkblue", "blue", "lightblue1",
+#                               "green","yellow", "red", "darkred","brown","black"))
+
+# df_ <- df[8:9,]
+# plot_ly(x=colnames(df_), y=rownames(df_), z=sqrt(df_), colors = palette(50), type = "heatmap", zauto=F, zmin=0, zmax=0.08)
+
+# df_ <- df#[8:9,]
+# plot_ly(x=colnames(df_), y=rownames(df_), z=sqrt(df_), type = "heatmap", zauto=F, zmax=0.5)
+
+plot_ly(data = df %>% filter(!is.na(return)), x=~sqrt(var), y=~return, name=~index, mode="lines", type = 'scatter')
+
+```
 
 
 

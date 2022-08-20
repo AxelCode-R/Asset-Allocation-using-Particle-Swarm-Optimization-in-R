@@ -30,6 +30,9 @@ w0 <- function(...){
 
 
 buffer <- function(expr, rdata_file, force = FALSE){
+  if(exists("global_buffer_force")){
+    force = global_buffer_force || force
+  }
   if(!dir.exists("buffer_data")){
     dir.create("buffer_data")
   }
