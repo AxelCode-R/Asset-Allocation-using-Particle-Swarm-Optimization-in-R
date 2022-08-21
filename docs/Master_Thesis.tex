@@ -452,8 +452,8 @@ The expected daily returns and the covariance matrix for the 3 assets can be cal
 \end{Shaded}
 
 \begin{verbatim}
-##           AAPL            IBM           GOOG 
-##  0.00237641721 -0.00004622149  0.00106873786
+##          AAPL           IBM          GOOG 
+##  0.0024166167 -0.0000952478  0.0010448549
 \end{verbatim}
 
 \begin{Shaded}
@@ -475,9 +475,9 @@ The expected daily returns and the covariance matrix for the 3 assets can be cal
 
 \begin{verbatim}
 ##              AAPL          IBM         GOOG
-## AAPL 0.0008635696 0.0004356282 0.0005337719
-## IBM  0.0004356282 0.0006626219 0.0004086728
-## GOOG 0.0005337719 0.0004086728 0.0005827306
+## AAPL 0.0008665678 0.0004378721 0.0005361398
+## IBM  0.0004378721 0.0006646758 0.0004100227
+## GOOG 0.0005361398 0.0004100227 0.0005849202
 \end{verbatim}
 
 These are all the necessary data to solve the MVP \eqref{eq:MVP} with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). All 100 portfolios are calculated by solving a quadratic minimization problem with long only constraint.
@@ -603,7 +603,7 @@ This section will show the results of tracking the S\&P 500 with a tracking port
 
 \begin{verbatim}
 ##      AAPL       IBM      GOOG 
-## 0.2677928 0.4041880 0.3280192
+## 0.2681058 0.4040352 0.3278591
 \end{verbatim}
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
@@ -611,7 +611,7 @@ This section will show the results of tracking the S\&P 500 with a tracking port
 \hypertarget{analytic-solver-for-quadratic-programming-problems}{%
 \chapter{Analytic Solver for Quadratic Programming Problems}\label{analytic-solver-for-quadratic-programming-problems}}
 
-The benefits and drawbacks of analytic solvers for quadratic programming problems will be discussed in this chapter after chapter \ref{challenges} \href{challenges}{6}'s discussion of some common problems and their solutions. It would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the applications and analysis are discussed here. The foremost reason of addressing quadratic programming solvers is to use it as a benchmark for the PSO.
+The benefits and drawbacks of analytic solvers for quadratic programming problems will be discussed in this chapter after chapter \href{challenges}{6}'s discussion of some common problems and their solutions. It would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the applications and analysis are discussed here. The foremost reason of addressing quadratic programming solvers is to use it as a benchmark for the PSO.
 
 \hypertarget{quadratic-programming-qp}{%
 \section{Quadratic Programming (QP)}\label{quadratic-programming-qp}}
@@ -630,12 +630,21 @@ Some other sources notate the problems with different signs or coefficients that
 \hypertarget{qp-solver-from-quadprog}{%
 \section{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
 
-The most common free QP-solver used in R is \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(x^T D x > 0 \forall x \in R^N and D\in R^{N \times N}\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\sum\) with the function \texttt{nearPD} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \ \%\), which is negligible for the context of this thesis. The \texttt{solve.QP} functions for a \(N\) dimensional vector of interest, has the following arguments that can be found in the above stated formulation of a QP:
-+ Dmat: Symmetric positive definite matrix \(D \in R^{N \times N}\) of the quadratic term.
-+ dvec: Vector \(d \in R^{N}\) of the linear term
-+ Amat: Constraint matrix \(A\)
-+ bvec: Constraint vector \(b_0\)
-+ meq = 1: means that the first row of \(A\) is treated as equality constraint (used to achieve fully invested portfolios)
+The most common free QP-solver used in R is \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(x^T D x > 0 \ \forall \ x \in R^N\) and \(D\in R^{N \times N}\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\sum\) with the function \texttt{nearPD} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \ \%\), which is negligible for the context of this thesis. The \texttt{solve.QP} functions for a \(N\) dimensional vector of interest, has the following arguments that can be found in the above stated formulation of a QP:
+
+\begin{itemize}
+\tightlist
+\item
+  Dmat: Symmetric positive definite matrix \(D \in R^{N \times N}\) of the quadratic term.
+\item
+  dvec: Vector \(d \in R^{N}\) of the linear term
+\item
+  Amat: Constraint matrix \(A\)
+\item
+  bvec: Constraint vector \(b_0\)
+\item
+  meq = 1: means that the first row of \(A\) is treated as equality constraint (used to achieve fully invested portfolios)
+\end{itemize}
 
 The return of \texttt{solve.QP} is a list and contains among other things the following attributes of interest:
 + solution: Vector containing the solution \(x\) of the quadratic programming problem. (e.g.~portfolio weights)
@@ -652,105 +661,33 @@ This section provides insights into the effect of diversification and the use of
   \FunctionTok{get\_yf}\NormalTok{(}
     \AttributeTok{tickers =} \FunctionTok{c}\NormalTok{(}\StringTok{"IBM"}\NormalTok{, }\StringTok{"GOOG"}\NormalTok{, }\StringTok{"AAPL"}\NormalTok{, }\StringTok{"MSFT"}\NormalTok{, }\StringTok{"AMZN"}\NormalTok{, }\StringTok{"NVDA"}\NormalTok{, }\StringTok{"JPM"}\NormalTok{, }\StringTok{"META"}\NormalTok{, }\StringTok{"V"}\NormalTok{, }\StringTok{"WMT"}\NormalTok{), }
     \AttributeTok{from =} \StringTok{"2016{-}01{-}01"}\NormalTok{, }
-    \AttributeTok{to =} \StringTok{"2021{-}12{-}31"}\NormalTok{,}
-    \AttributeTok{print=}\NormalTok{T}
+    \AttributeTok{to =} \StringTok{"2021{-}12{-}31"}
 \NormalTok{  )}\SpecialCharTok{$}\NormalTok{returns, }
-  \StringTok{"10\_assets"}\NormalTok{,}
-  \AttributeTok{force=}\NormalTok{T}
+  \StringTok{"AS\_10\_assets"}
 \NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-##  [1] "IBM"  "GOOG" "AAPL" "MSFT" "AMZN" "NVDA" "JPM"  "META" "V"    "WMT"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
+\CommentTok{\# re{-}arrange: low var first}
 \NormalTok{vars }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(returns\_raw, var)}
-
 \NormalTok{returns\_raw }\OtherTok{\textless{}{-}}\NormalTok{ returns\_raw[, }\FunctionTok{order}\NormalTok{(vars, }\AttributeTok{decreasing =}\NormalTok{ F)]}
 \NormalTok{vars }\OtherTok{\textless{}{-}}\NormalTok{ vars[}\FunctionTok{order}\NormalTok{(vars, }\AttributeTok{decreasing =}\NormalTok{ F)]}
 
 
-\CommentTok{\# mvp \textless{}{-} function(returns, lambda)\{}
-\CommentTok{\#   tc \textless{}{-} tryCatch(\{}
-\CommentTok{\#     mu \textless{}{-} sapply((1+returns), prod)\^{}(1/nrow(returns)){-}1}
-\CommentTok{\# }
-\CommentTok{\#     cov \textless{}{-} as.matrix(nearPD(cov(returns))$mat)}
-\CommentTok{\# }
-\CommentTok{\#     mat \textless{}{-} list(}
-\CommentTok{\#       Dmat = lambda * cov,}
-\CommentTok{\#       dvec = (1{-}lambda) * mu,}
-\CommentTok{\#       Amat = t(rbind(}
-\CommentTok{\#         rep(1, ncol(returns))\#, \# sum up to 1}
-\CommentTok{\#         \#diag(1, nrow=ncol(returns), ncol=ncol(returns)) \# long only}
-\CommentTok{\#       )),}
-\CommentTok{\#       bvec = c(}
-\CommentTok{\#         1\#, \# sum up to 1}
-\CommentTok{\#         \#rep(0, ncol(returns)) \# long only}
-\CommentTok{\#       ),}
-\CommentTok{\#       meq = 1}
-\CommentTok{\#     )}
-\CommentTok{\#   }
-\CommentTok{\#     qp \textless{}{-} solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)}
-\CommentTok{\#     }
-\CommentTok{\#     res \textless{}{-} list(}
-\CommentTok{\#       "mu" = mu \%*\% qp$solution,}
-\CommentTok{\#       "var" = t(qp$solution) \%*\% cov \%*\% qp$solution,}
-\CommentTok{\#       "composition" = setNames(qp$solution, colnames(returns))}
-\CommentTok{\#     )}
-\CommentTok{\#     TRUE}
-\CommentTok{\#   \}, error = function(e)\{FALSE\})}
-\CommentTok{\#   }
-\CommentTok{\# }
-\CommentTok{\#   if(tc)\{}
-\CommentTok{\#     return(res)}
-\CommentTok{\#   \}else\{}
-\CommentTok{\#     return(list(}
-\CommentTok{\#       "mu" = NA,}
-\CommentTok{\#       "var" = NA,}
-\CommentTok{\#       "composition" = NA}
-\CommentTok{\#     ))}
-\CommentTok{\#   \}}
-\CommentTok{\# \}}
-
-\CommentTok{\# df \textless{}{-} NULL}
-\CommentTok{\# for(i in 2:ncol(returns\_raw))\{}
-\CommentTok{\#   returns \textless{}{-} returns\_raw[, 1:10]}
-\CommentTok{\#   temp \textless{}{-} NULL}
-\CommentTok{\#   for(lambda in seq(0.01, 1, 0.01))\{}
-\CommentTok{\#     res \textless{}{-} mvp(returns, lambda)}
-\CommentTok{\#     }
-\CommentTok{\#     temp \textless{}{-} cbind(temp, res$var)}
-\CommentTok{\#   \}}
-\CommentTok{\#   df \textless{}{-} rbind(df, temp)}
-\CommentTok{\# \}}
-\CommentTok{\# colnames(df) \textless{}{-} paste0("l\_", seq(0.01, 1, 0.01))}
-\CommentTok{\# rownames(df) \textless{}{-} paste0("n\_", 2:ncol(returns\_raw))}
-
-
-
-\NormalTok{mvp }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(returns, return\_target)\{}
+\NormalTok{mvp }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(returns, lambda)\{}
 \NormalTok{  tc }\OtherTok{\textless{}{-}} \FunctionTok{tryCatch}\NormalTok{(\{}
 \NormalTok{    mu }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{((}\DecValTok{1}\SpecialCharTok{+}\NormalTok{returns), prod)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns))}\SpecialCharTok{{-}}\DecValTok{1}
 
 \NormalTok{    cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov}\NormalTok{(returns))}\SpecialCharTok{$}\NormalTok{mat)}
 
 \NormalTok{    mat }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
-      \AttributeTok{Dmat =} \DecValTok{1} \SpecialCharTok{*}\NormalTok{ cov,}
-      \AttributeTok{dvec =} \DecValTok{0} \SpecialCharTok{*}\NormalTok{ mu,}
+      \AttributeTok{Dmat =}\NormalTok{ lambda }\SpecialCharTok{*}\NormalTok{ cov,}
+      \AttributeTok{dvec =}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{lambda) }\SpecialCharTok{*}\NormalTok{ mu,}
       \AttributeTok{Amat =} \FunctionTok{t}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}
         \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(returns)), }\CommentTok{\# sum up to 1}
-        \FunctionTok{diag}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{nrow=}\FunctionTok{ncol}\NormalTok{(returns), }\AttributeTok{ncol=}\FunctionTok{ncol}\NormalTok{(returns)), }\CommentTok{\# long only}
-\NormalTok{        mu,}
-        \SpecialCharTok{{-}}\NormalTok{mu}
+        \FunctionTok{diag}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{nrow=}\FunctionTok{ncol}\NormalTok{(returns), }\AttributeTok{ncol=}\FunctionTok{ncol}\NormalTok{(returns)) }\CommentTok{\# long only}
 \NormalTok{      )),}
       \AttributeTok{bvec =} \FunctionTok{c}\NormalTok{(}
         \DecValTok{1}\NormalTok{, }\CommentTok{\# sum up to 1}
-        \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(returns)), }\CommentTok{\# long only}
-\NormalTok{        return\_target }\SpecialCharTok{*} \FloatTok{0.95}\NormalTok{,}
-        \SpecialCharTok{{-}}\NormalTok{return\_target }\SpecialCharTok{*} \FloatTok{1.05}
+        \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(returns)) }\CommentTok{\# long only}
 \NormalTok{      ),}
       \AttributeTok{meq =} \DecValTok{1}
 \NormalTok{    )}
@@ -777,35 +714,108 @@ This section provides insights into the effect of diversification and the use of
 \NormalTok{  \}}
 \NormalTok{\}}
 
+
 \NormalTok{df }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\FunctionTok{ncol}\NormalTok{(returns\_raw))\{}
 \NormalTok{  returns }\OtherTok{\textless{}{-}}\NormalTok{ returns\_raw[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{i]}
-  \ControlFlowTok{for}\NormalTok{(return\_target }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(}\FloatTok{0.0004}\NormalTok{,}\FloatTok{0.0012}\NormalTok{, }\FloatTok{0.00001}\NormalTok{))\{}
-\NormalTok{    res }\OtherTok{\textless{}{-}} \FunctionTok{mvp}\NormalTok{(returns, return\_target)}
+  \ControlFlowTok{for}\NormalTok{(lambda }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.01}\NormalTok{))\{}
+\NormalTok{    res }\OtherTok{\textless{}{-}} \FunctionTok{mvp}\NormalTok{(returns, lambda)}
     
-\NormalTok{    df }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(df, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"index"}\OtherTok{=}\NormalTok{i, }\StringTok{"return\_target"}\OtherTok{=}\NormalTok{return\_target, }\StringTok{"var"}\OtherTok{=}\NormalTok{res}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"return"} \OtherTok{=}\NormalTok{ res}\SpecialCharTok{$}\NormalTok{mu))}
+\NormalTok{    df }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(df, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"index"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{res}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"return"} \OtherTok{=}\NormalTok{ res}\SpecialCharTok{$}\NormalTok{mu))}
 \NormalTok{  \}}
-\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(return))}
-\NormalTok{  min\_return }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(index}\SpecialCharTok{==}\NormalTok{i) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(var }\SpecialCharTok{==} \FunctionTok{min}\NormalTok{(var)) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{pull}\NormalTok{(return) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{min}\NormalTok{()}
-\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(index }\SpecialCharTok{!=}\NormalTok{ i }\SpecialCharTok{|}\NormalTok{ (index }\SpecialCharTok{==}\NormalTok{ i }\SpecialCharTok{\&}\NormalTok{ return }\SpecialCharTok{\textgreater{}=}\NormalTok{ min\_return))}
 \NormalTok{\}}
 
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(return)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{distinct}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{name =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"n\_"}\NormalTok{, index)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(name) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{name =} \FunctionTok{factor}\NormalTok{(name, }\AttributeTok{levels=}\FunctionTok{paste0}\NormalTok{(}\StringTok{"n\_"}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\FunctionTok{ncol}\NormalTok{(returns\_raw))))}
 
-\CommentTok{\#library(RColorBrewer)}
-\CommentTok{\# palette \textless{}{-} colorRampPalette(c("black","grey","darkblue", "blue", "lightblue1",}
-\CommentTok{\#                               "green","yellow", "red", "darkred","brown","black"))}
 
-\CommentTok{\# df\_ \textless{}{-} df[8:9,]}
-\CommentTok{\# plot\_ly(x=colnames(df\_), y=rownames(df\_), z=sqrt(df\_), colors = palette(50), type = "heatmap", zauto=F, zmin=0, zmax=0.08)}
+\NormalTok{max\_show\_sd }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(index) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{max\_x =} \FunctionTok{max}\NormalTok{(var)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pull}\NormalTok{(max\_x) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mean}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{sqrt}\NormalTok{()}
 
-\CommentTok{\# df\_ \textless{}{-} df\#[8:9,]}
-\CommentTok{\# plot\_ly(x=colnames(df\_), y=rownames(df\_), z=sqrt(df\_), type = "heatmap", zauto=F, zmax=0.5)}
-
-\FunctionTok{plot\_ly}\NormalTok{(}\AttributeTok{data =}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(return)), }\AttributeTok{x=}\SpecialCharTok{\textasciitilde{}}\FunctionTok{sqrt}\NormalTok{(var), }\AttributeTok{y=}\SpecialCharTok{\textasciitilde{}}\NormalTok{return, }\AttributeTok{name=}\SpecialCharTok{\textasciitilde{}}\NormalTok{index, }\AttributeTok{mode=}\StringTok{"lines"}\NormalTok{, }\AttributeTok{type =} \StringTok{\textquotesingle{}scatter\textquotesingle{}}\NormalTok{)}
+\FunctionTok{plot\_ly}\NormalTok{(}\AttributeTok{data =}\NormalTok{ df, }\AttributeTok{x=}\SpecialCharTok{\textasciitilde{}}\FunctionTok{sqrt}\NormalTok{(var), }\AttributeTok{y=}\SpecialCharTok{\textasciitilde{}}\NormalTok{return, }\AttributeTok{name=}\SpecialCharTok{\textasciitilde{}}\NormalTok{name, }\AttributeTok{mode=}\StringTok{"lines"}\NormalTok{, }\AttributeTok{type =} \StringTok{\textquotesingle{}scatter\textquotesingle{}}\NormalTok{, }\AttributeTok{color =} \SpecialCharTok{\textasciitilde{}}\NormalTok{name, }\AttributeTok{colors =} \FunctionTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{layout}\NormalTok{(}\AttributeTok{xaxis=}\FunctionTok{list}\NormalTok{(}\AttributeTok{range=}\FunctionTok{c}\NormalTok{(}\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{min}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{var))}\SpecialCharTok{*}\FloatTok{0.9}\NormalTok{, max\_show\_sd), }\AttributeTok{title=}\StringTok{"standard deviation"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{html\_save}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.pdf}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{from }\OtherTok{\textless{}{-}} \StringTok{"2016{-}01{-}01"}
+\NormalTok{to }\OtherTok{\textless{}{-}} \StringTok{"2021{-}12{-}31"}
+
+\NormalTok{spx\_composition }\OtherTok{\textless{}{-}} \FunctionTok{buffer}\NormalTok{(}
+  \FunctionTok{get\_spx\_composition}\NormalTok{(),}
+  \StringTok{"AS\_spx\_composition"}
+\NormalTok{)}
+
+
+\NormalTok{pool\_returns\_raw }\OtherTok{\textless{}{-}} \FunctionTok{buffer}\NormalTok{(}
+  \FunctionTok{get\_yf}\NormalTok{(}
+    \AttributeTok{tickers =}\NormalTok{ spx\_composition }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(Date}\SpecialCharTok{\textless{}=}\NormalTok{to) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(Date}\SpecialCharTok{==}\FunctionTok{max}\NormalTok{(Date)) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{pull}\NormalTok{(Ticker), }
+    \AttributeTok{from =}\NormalTok{ from, }
+    \AttributeTok{to =}\NormalTok{ to}
+\NormalTok{  )}\SpecialCharTok{$}\NormalTok{returns, }
+  \StringTok{"AS\_sp500\_assets"}
+\NormalTok{)}
+\NormalTok{pool\_returns\_raw }\OtherTok{\textless{}{-}}\NormalTok{ pool\_returns\_raw[, }\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(pool\_returns\_raw))}\SpecialCharTok{==}\DecValTok{0}\NormalTok{]}
+
+
+\NormalTok{bm\_returns }\OtherTok{\textless{}{-}} \FunctionTok{buffer}\NormalTok{(}
+  \FunctionTok{get\_yf}\NormalTok{(}\AttributeTok{tickers =} \StringTok{"\%5EGSPC"}\NormalTok{, }\AttributeTok{from =}\NormalTok{ from, }\AttributeTok{to =}\NormalTok{ to)}\SpecialCharTok{$}\NormalTok{returns, }
+  \StringTok{"AS\_sp500"}
+\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{setNames}\NormalTok{(., }\StringTok{"S\&P 500"}\NormalTok{)}
+
+
+\NormalTok{itp }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pool\_returns, bm\_returns)\{}
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+    \AttributeTok{Dmat =} \FunctionTok{cov}\NormalTok{(pool\_returns),}
+    \AttributeTok{dvec =} \FunctionTok{cov}\NormalTok{(pool\_returns, bm\_returns),}
+    \AttributeTok{Amat =} \FunctionTok{t}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}
+      \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns)), }\CommentTok{\# sum up to 1}
+      \FunctionTok{diag}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{nrow=}\FunctionTok{ncol}\NormalTok{(pool\_returns), }\AttributeTok{ncol=}\FunctionTok{ncol}\NormalTok{(pool\_returns)) }\CommentTok{\# long only}
+\NormalTok{    )),}
+    \AttributeTok{bvec =} \FunctionTok{c}\NormalTok{(}
+      \DecValTok{1}\NormalTok{, }\CommentTok{\# sum up to 1}
+      \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns)) }\CommentTok{\# long only}
+\NormalTok{    ),}
+    \AttributeTok{meq =} \DecValTok{1}
+\NormalTok{  )}
+  
+\NormalTok{  qp }\OtherTok{\textless{}{-}} \FunctionTok{solve.QP}\NormalTok{(}\AttributeTok{Dmat =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{Dmat, }\AttributeTok{dvec =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{dvec, }\AttributeTok{Amat =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{Amat, }\AttributeTok{bvec =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{bvec, }\AttributeTok{meq =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{meq)}
+
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+    \StringTok{"var"} \OtherTok{=} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{var}\NormalTok{(pool\_returns }\SpecialCharTok{\%*\%}\NormalTok{ qp}\SpecialCharTok{$}\NormalTok{solution }\SpecialCharTok{{-}}\NormalTok{ bm\_returns)),}
+    \StringTok{"solution"} \OtherTok{=} \FunctionTok{setNames}\NormalTok{(qp}\SpecialCharTok{$}\NormalTok{solution, }\FunctionTok{colnames}\NormalTok{(pool\_returns))}
+\NormalTok{  )}
+\NormalTok{\}}
+
+
+\NormalTok{res }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{rev}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{5}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw), }\DecValTok{5}\NormalTok{)))\{}
+  \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{==}\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw))\{}
+\NormalTok{    temp }\OtherTok{\textless{}{-}} \FunctionTok{itp}\NormalTok{(pool\_returns\_raw, bm\_returns)}
+\NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{}
+\NormalTok{    temp }\OtherTok{\textless{}{-}} \FunctionTok{itp}\NormalTok{(pool\_returns\_raw[, }\FunctionTok{names}\NormalTok{(}\FunctionTok{sort}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{solution, }\AttributeTok{decreasing =}\NormalTok{ T)[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{i])], bm\_returns)}
+\NormalTok{  \}}
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(res, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"N"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{temp}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"sd"}\OtherTok{=}\FunctionTok{sqrt}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{var), }\AttributeTok{row.names =} \ConstantTok{NULL}\NormalTok{))}
+\NormalTok{\}}
+
+
+\FunctionTok{plot\_ly}\NormalTok{(}\AttributeTok{data=}\NormalTok{res, }\AttributeTok{x=}\SpecialCharTok{\textasciitilde{}}\NormalTok{N, }\AttributeTok{y=}\SpecialCharTok{\textasciitilde{}}\NormalTok{sd, }\AttributeTok{mode=}\StringTok{"lines"}\NormalTok{, }\AttributeTok{type =} \StringTok{\textquotesingle{}scatter\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{layout}\NormalTok{(}\AttributeTok{yaxis=}\FunctionTok{list}\NormalTok{(}\AttributeTok{range=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{mean}\NormalTok{(}\FunctionTok{max}\NormalTok{(res}\SpecialCharTok{$}\NormalTok{sd),}\FunctionTok{mean}\NormalTok{(res}\SpecialCharTok{$}\NormalTok{sd)) ))) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{html\_save}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-14-1.png}
 
 \hypertarget{simple_particle_swarm_optimization}{%
 \chapter{Simple\_Particle\_Swarm\_Optimization}\label{simple_particle_swarm_optimization}}

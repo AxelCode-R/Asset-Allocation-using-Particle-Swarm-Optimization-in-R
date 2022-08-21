@@ -42,7 +42,7 @@ returns_raw <- buffer(
     from = "2016-01-01", 
     to = "2021-12-31"
   )$returns, 
-  "10_assets"
+  "AS_10_assets"
 )
 
 # re-arrange: low var first
@@ -136,28 +136,29 @@ to <- "2021-12-31"
 
 spx_composition <- buffer(
   get_spx_composition(),
-  "spx_composition"
+  "AS_spx_composition"
 )
 
 
-pool_returns <- buffer(
+pool_returns_raw <- buffer(
   get_yf(
     tickers = spx_composition %>% filter(Date<=to) %>% filter(Date==max(Date)) %>% pull(Ticker), 
     from = from, 
     to = to
   )$returns, 
-  "spx_assets",
-  force=T
+  "AS_sp500_assets"
 )
+pool_returns_raw <- pool_returns_raw[, colSums(is.na(pool_returns_raw))==0]
 
 
 bm_returns <- buffer(
   get_yf(tickers = "%5EGSPC", from = from, to = to)$returns, 
-  "sp500"
+  "AS_sp500"
 ) %>% setNames(., "S&P 500")
 
 
-mat <- list(
+itp <- function(pool_returns, bm_returns){
+  mat <- list(
     Dmat = cov(pool_returns),
     dvec = cov(pool_returns, bm_returns),
     Amat = t(rbind(
@@ -169,88 +170,29 @@ mat <- list(
       rep(0, ncol(pool_returns)) # long only
     ),
     meq = 1
-)
-
-qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
-
-
-
-
-
-# re-arrange: low var first
-vars <- sapply(returns_raw, var)
-returns_raw <- returns_raw[, order(vars, decreasing = F)]
-vars <- vars[order(vars, decreasing = F)]
-
-
-mvp <- function(returns, lambda){
-  tc <- tryCatch({
-    mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
-
-    cov <- as.matrix(nearPD(cov(returns))$mat)
-
-    mat <- list(
-      Dmat = lambda * cov,
-      dvec = (1-lambda) * mu,
-      Amat = t(rbind(
-        rep(1, ncol(returns)), # sum up to 1
-        diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
-      )),
-      bvec = c(
-        1, # sum up to 1
-        rep(0, ncol(returns)) # long only
-      ),
-      meq = 1
-    )
+  )
   
-    qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
-    
-    res <- list(
-      "mu" = mu %*% qp$solution,
-      "var" = t(qp$solution) %*% cov %*% qp$solution,
-      "composition" = setNames(qp$solution, colnames(returns))
-    )
-    TRUE
-  }, error = function(e){FALSE})
-  
+  qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
 
-  if(tc){
-    return(res)
+  res <- list(
+    "var" = as.numeric(var(pool_returns %*% qp$solution - bm_returns)),
+    "solution" = setNames(qp$solution, colnames(pool_returns))
+  )
+}
+
+
+res <- NULL
+for(i in rev(seq(5, ncol(pool_returns_raw), 5))){
+  if(i==ncol(pool_returns_raw)){
+    temp <- itp(pool_returns_raw, bm_returns)
   }else{
-    return(list(
-      "mu" = NA,
-      "var" = NA,
-      "composition" = NA
-    ))
+    temp <- itp(pool_returns_raw[, names(sort(temp$solution, decreasing = T)[1:i])], bm_returns)
   }
+  res <- rbind(res, data.frame("N"=i, "var"=temp$var, "sd"=sqrt(temp$var), row.names = NULL))
 }
 
 
-df <- NULL
-for(i in 2:ncol(returns_raw)){
-  returns <- returns_raw[, 1:i]
-  for(lambda in seq(0.01, 1, 0.01)){
-    res <- mvp(returns, lambda)
-    
-    df <- rbind(df, data.frame("index"=i, "var"=res$var, "return" = res$mu))
-  }
-}
-
-df <- df %>% 
-  filter(!is.na(return)) %>% 
-  distinct() %>% 
-  mutate(name = paste0("n_", index)) %>% 
-  arrange(name) %>% 
-  mutate(name = factor(name, levels=paste0("n_", 1:ncol(returns_raw))))
-
-
-max_show_sd <- df %>% 
-  group_by(index) %>% 
-  summarise(max_x = max(var)) %>% 
-  pull(max_x) %>% mean() %>% sqrt()
-
-plot_ly(data = df, x=~sqrt(var), y=~return, name=~name, mode="lines", type = 'scatter', color = ~name, colors = c("red", "green")) %>% 
-  layout(xaxis=list(range=c(sqrt(min(df$var))*0.9, max_show_sd), title="standard deviation")) %>% 
+plot_ly(data=res, x=~N, y=~sd, mode="lines", type = 'scatter') %>% 
+  layout(yaxis=list(range=c(0, mean(max(res$sd),mean(res$sd)) ))) %>% 
   html_save()
-
 ```

@@ -26,7 +26,7 @@ All possible MVPs combined create the efficient frontier, that is analyzed in th
 ```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2020-12-31")$returns, 
-  "3_assets"
+  "CPI_3_assets"
 )
 ``` 
 The cumulated daily returns are:
@@ -210,12 +210,12 @@ This section will show the results of tracking the S&P 500 with a tracking portf
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 pool_returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2020-12-31")$returns, 
-  "3_assets"
+  "CPI_3_assets"
 )
 
 bm_returns <- buffer(
   get_yf(tickers = "%5EGSPC", from = "2020-01-01", to = "2020-12-31")$returns, 
-  "sp500"
+  "CPI_sp500"
 ) %>% setNames(., "S&P 500")
 
 

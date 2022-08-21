@@ -52,13 +52,6 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -240,7 +233,7 @@ div.csl-indent {
 <p>All possible MVPs combined create the efficient frontier, that is analyzed in this section without going into the details of its calculation. This example uses three assets (equitys: IBM, Google, Apple) and calculates the solution of <span class="math inline">\(\ref{eq:MVP}\)</span> for each <span class="math inline">\(\lambda\)</span>. First of all are the daily returns of these three assets are loaded from the year 2020.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb1-1"><a href="challenges.html#cb1-1" aria-hidden="true" tabindex="-1"></a>returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb1-2"><a href="challenges.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
-<span id="cb1-3"><a href="challenges.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;3_assets&quot;</span></span>
+<span id="cb1-3"><a href="challenges.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_3_assets&quot;</span></span>
 <span id="cb1-4"><a href="challenges.html#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>The cumulated daily returns are:</p>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
@@ -249,16 +242,16 @@ div.csl-indent {
 <pre><code>## [1] &quot;estimation of expected daily returns&quot;</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="challenges.html#cb4-1" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">sapply</span>((<span class="dv">1</span><span class="sc">+</span>returns), prod)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">nrow</span>(returns))<span class="sc">-</span><span class="dv">1</span></span>
 <span id="cb4-2"><a href="challenges.html#cb4-2" aria-hidden="true" tabindex="-1"></a>mu</span></code></pre></div>
-<pre><code>##           AAPL            IBM           GOOG 
-##  0.00237641721 -0.00004622149  0.00106873786</code></pre>
+<pre><code>##          AAPL           IBM          GOOG 
+##  0.0024166167 -0.0000952478  0.0010448549</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="challenges.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p0</span>(<span class="st">&quot;estimation of positiv definite covariance matrix&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;estimation of positiv definite covariance matrix&quot;</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="challenges.html#cb8-1" aria-hidden="true" tabindex="-1"></a>cov <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">nearPD</span>(<span class="fu">cov</span>(returns))<span class="sc">$</span>mat)</span>
 <span id="cb8-2"><a href="challenges.html#cb8-2" aria-hidden="true" tabindex="-1"></a>cov</span></code></pre></div>
 <pre><code>##              AAPL          IBM         GOOG
-## AAPL 0.0008635696 0.0004356282 0.0005337719
-## IBM  0.0004356282 0.0006626219 0.0004086728
-## GOOG 0.0005337719 0.0004086728 0.0005827306</code></pre>
+## AAPL 0.0008665678 0.0004378721 0.0005361398
+## IBM  0.0004378721 0.0006646758 0.0004100227
+## GOOG 0.0005361398 0.0004100227 0.0005849202</code></pre>
 <p>These are all the necessary data to solve the MVP <a href="challenges.html#eq:MVP">(6.1)</a> with <span class="math inline">\(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\)</span>. All 100 portfolios are calculated by solving a quadratic minimization problem with long only constraint.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb10-1"><a href="challenges.html#cb10-1" aria-hidden="true" tabindex="-1"></a>portfolios <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
 <span id="cb10-2"><a href="challenges.html#cb10-2" aria-hidden="true" tabindex="-1"></a>mu_and_var <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
@@ -390,12 +383,12 @@ d = Cov(r_{bm}, R)
 <p>This section will show the results of tracking the S&amp;P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb19-1"><a href="challenges.html#cb19-1" aria-hidden="true" tabindex="-1"></a>pool_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb19-2"><a href="challenges.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
-<span id="cb19-3"><a href="challenges.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;3_assets&quot;</span></span>
+<span id="cb19-3"><a href="challenges.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_3_assets&quot;</span></span>
 <span id="cb19-4"><a href="challenges.html#cb19-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb19-5"><a href="challenges.html#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-6"><a href="challenges.html#cb19-6" aria-hidden="true" tabindex="-1"></a>bm_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb19-7"><a href="challenges.html#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="st">&quot;%5EGSPC&quot;</span>, <span class="at">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
-<span id="cb19-8"><a href="challenges.html#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;sp500&quot;</span></span>
+<span id="cb19-8"><a href="challenges.html#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_sp500&quot;</span></span>
 <span id="cb19-9"><a href="challenges.html#cb19-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">setNames</span>(., <span class="st">&quot;S&amp;P 500&quot;</span>)</span>
 <span id="cb19-10"><a href="challenges.html#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-11"><a href="challenges.html#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
@@ -421,7 +414,7 @@ d = Cov(r_{bm}, R)
 <span id="cb19-31"><a href="challenges.html#cb19-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-32"><a href="challenges.html#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(pool_returns))</span></code></pre></div>
 <pre><code>##      AAPL       IBM      GOOG 
-## 0.2677928 0.4041880 0.3280192</code></pre>
+## 0.2681058 0.4040352 0.3278591</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb21-1"><a href="challenges.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotly_line_chart_xts</span>(<span class="fu">ret_to_cumret</span>(<span class="fu">cbind.xts</span>(port_returns, bm_returns))) <span class="sc">%&gt;%</span> </span>
 <span id="cb21-2"><a href="challenges.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>

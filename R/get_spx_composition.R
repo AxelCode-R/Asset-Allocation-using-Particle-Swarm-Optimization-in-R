@@ -1,5 +1,5 @@
 
-get_sqx_composition <- function(){
+get_spx_composition <- function(){
 
   # GET COMPOSITION OF STX
   wikispx <- read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
@@ -49,7 +49,7 @@ get_sqx_composition <- function(){
 
     lastrunstocks <- thismonth
   }
-  spx_composition <- spxstocks %>% filter(Date >= as.Date(min_date))
+  spx_composition <- spxstocks # %>% filter(Date >= as.Date(min_date))
 
   return(spx_composition)
 }
