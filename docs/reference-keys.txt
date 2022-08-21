@@ -1,3 +1,5 @@
+eq:MVP
+eq:ITP
 abstract
 software-information-and-usage
 r-version-and-packages

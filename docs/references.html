@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>References | Master-Thesis</title>
   <meta name="description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
   <meta property="og:title" content="References | Master-Thesis" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   <meta name="github-repo" content="AxelCode-R/Master-Thesis" />
@@ -24,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-08-19" />
+<meta name="date" content="2022-08-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,8 +32,8 @@
   
 <link rel="prev" href="simple_particle_swarm_optimization.html"/>
 
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -50,9 +49,16 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -170,57 +176,27 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3" data-path="open-data-sources.html"><a href="open-data-sources.html"><i class="fa fa-check"></i><b>3</b> Open Data Sources</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="open-data-sources.html"><a href="open-data-sources.html#r-functions-1"><i class="fa fa-check"></i><b>3.1</b> R-functions</a>
-<ul>
-<li class="chapter" data-level="3.1.1" data-path="open-data-sources.html"><a href="open-data-sources.html#get_yf"><i class="fa fa-check"></i><b>3.1.1</b> <code>get_yf</code></a></li>
-<li class="chapter" data-level="3.1.2" data-path="open-data-sources.html"><a href="open-data-sources.html#buffer"><i class="fa fa-check"></i><b>3.1.2</b> <code>buffer</code></a></li>
-</ul></li>
+<li class="chapter" data-level="3.1" data-path="open-data-sources.html"><a href="open-data-sources.html#r-functions-1"><i class="fa fa-check"></i><b>3.1</b> R-functions</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html"><i class="fa fa-check"></i><b>4</b> Mathematical Fundations</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#basic-operators"><i class="fa fa-check"></i><b>4.1</b> Basic Operators</a></li>
-<li class="chapter" data-level="4.2" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#return-calculation"><i class="fa fa-check"></i><b>4.2</b> Return calculation</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#daily-returns"><i class="fa fa-check"></i><b>4.2.1</b> daily returns</a></li>
-<li class="chapter" data-level="4.2.2" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#annualized-returns"><i class="fa fa-check"></i><b>4.2.2</b> annualized returns</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#markowitz-modern-portfolio-theory-mpt"><i class="fa fa-check"></i><b>4.3</b> Markowitz Modern Portfolio Theory (MPT)</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#assumptions-of-markowitz-portfolio-theory"><i class="fa fa-check"></i><b>4.3.1</b> Assumptions of Markowitz Portfolio Theory</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#portfolio-math"><i class="fa fa-check"></i><b>4.4</b> Portfolio Math</a>
-<ul>
-<li class="chapter" data-level="4.4.1" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#expected-returns"><i class="fa fa-check"></i><b>4.4.1</b> expected returns</a></li>
-<li class="chapter" data-level="4.4.2" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#expected-portfolio-return"><i class="fa fa-check"></i><b>4.4.2</b> expected portfolio return</a></li>
-<li class="chapter" data-level="4.4.3" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#portfolio-returns"><i class="fa fa-check"></i><b>4.4.3</b> portfolio returns</a></li>
-<li class="chapter" data-level="4.4.4" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#covariance"><i class="fa fa-check"></i><b>4.4.4</b> Covariance</a></li>
-<li class="chapter" data-level="4.4.5" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#portfolio-variance"><i class="fa fa-check"></i><b>4.4.5</b> Portfolio Variance</a></li>
-</ul></li>
-<li class="chapter" data-level="4.5" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#created-r-functions"><i class="fa fa-check"></i><b>4.5</b> Created R-Functions</a>
-<ul>
-<li class="chapter" data-level="4.5.1" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#pri_to_ret"><i class="fa fa-check"></i><b>4.5.1</b> pri_to_ret</a></li>
-</ul></li>
+<li class="chapter" data-level="4.2" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#return-calculation"><i class="fa fa-check"></i><b>4.2</b> Return calculation</a></li>
+<li class="chapter" data-level="4.3" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#markowitz-modern-portfolio-theory-mpt"><i class="fa fa-check"></i><b>4.3</b> Markowitz Modern Portfolio Theory (MPT)</a></li>
+<li class="chapter" data-level="4.4" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#portfolio-math"><i class="fa fa-check"></i><b>4.4</b> Portfolio Math</a></li>
+<li class="chapter" data-level="4.5" data-path="mathematical-fundations.html"><a href="mathematical-fundations.html#created-r-functions"><i class="fa fa-check"></i><b>4.5</b> Created R-Functions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>5</b> Activ vs Passiv Investing</a></li>
 <li class="chapter" data-level="6" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>6</b> Challenges of Passiv Investing</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>6.1</b> Mean-variance portfolio (MVP)</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="challenges.html"><a href="challenges.html#mvp"><i class="fa fa-check"></i><b>6.1.1</b> MVP</a></li>
-<li class="chapter" data-level="6.1.2" data-path="challenges.html"><a href="challenges.html#mvp-example"><i class="fa fa-check"></i><b>6.1.2</b> MVP example</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>6.2</b> Index-tracking portfolio (ITP)</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="challenges.html"><a href="challenges.html#example-itp"><i class="fa fa-check"></i><b>6.2.1</b> Example ITP</a></li>
-</ul></li>
+<li class="chapter" data-level="6.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>6.1</b> Mean-variance portfolio (MVP)</a></li>
+<li class="chapter" data-level="6.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>6.2</b> Index-tracking portfolio (ITP)</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html"><i class="fa fa-check"></i><b>7</b> Analytic Solver for Quadratic Programming Problems</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
-<li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a>
-<ul>
-<li class="chapter" data-level="7.2.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-mvp-with-solve.qp"><i class="fa fa-check"></i><b>7.2.1</b> Example: Solving MVP with <code>solve.QP</code></a></li>
-</ul></li>
+<li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a></li>
+<li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-mvp-with-solve.qp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP</code></a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="simple_particle_swarm_optimization.html"><a href="simple_particle_swarm_optimization.html"><i class="fa fa-check"></i><b>8</b> Simple_Particle_Swarm_Optimization</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -244,8 +220,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="references" class="section level1 unnumbered">
-<h1>References</h1>
+<div id="references" class="section level1 unnumbered hasAnchor">
+<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div class="csl-entry">
@@ -276,7 +252,6 @@ Zivot, Eric. 2021. <em>Introduction to Computational Finance and Financial Econo
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -317,7 +292,7 @@ gitbook.start({
 },
 "download": ["Master_Thesis.pdf"],
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
@@ -333,7 +308,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
