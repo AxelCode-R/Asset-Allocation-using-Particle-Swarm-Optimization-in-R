@@ -16,7 +16,7 @@ $$
   A^T \times x >= b_0
 $$
 
-Some other sources notate the problems with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. $|A^T \times x| >= a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
+Some other sources notate the problem with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. $|A^T \times x| >= a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
 
 ## QP Solver from quadprog
 The most common free QP-solver used in R is [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with the requirement that $D$ needs to be a symmetric positive definite matrix. It means that $x^T D x > 0 \ \forall \ x \in R^N$ and $D\in R^{N \times N}$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix $\sum$, but its possible to find the nearest positive definite matrix of $\sum$ with the function `nearPD` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above $10^{-15} \ \%$, which is negligible for the context of this thesis. The `solve.QP` functions for a $N$ dimensional vector of interest, has the following arguments that can be found in the above stated formulation of a QP:
@@ -32,8 +32,7 @@ The return of `solve.QP` is a list and contains among other things the following
 + value: Scalar, the value of the quadratic function at the solution
 
 ## Example: Solving MVP with `solve.QP`
-This section provides insights into the effect of diversification and the use of `solve.QP`. 
-
+This section provides insights into the effects of diversification and the use of `solve.QP`, by creating ten diffrent efficient frontiers from a pool of ten assets. Each efficient frontier $i$ consists of $N_i = i$ assets and is created by adding the next smallest variance first. After loading returns for ten of the biggest equitys in the US market, the variance is calculated to arrange all columns ascending, like shown in the code bellow:
 
 ```{r}
 returns_raw <- buffer(
@@ -48,9 +47,10 @@ returns_raw <- buffer(
 # re-arrange: low var first
 vars <- sapply(returns_raw, var)
 returns_raw <- returns_raw[, order(vars, decreasing = F)]
-vars <- vars[order(vars, decreasing = F)]
+```
+The next step is to create a function `mvp` that has the arguments `return` and `lambda`. It calculates the expected returns `mu` and the estimated positive definite covariance `cov`. Afterwards it solves a MVP with the constraints $\sum w = 1$ and $w>=0$, which returns key features `mu`, `var` and `composition` of the portfolio. 
 
-
+```{r}
 mvp <- function(returns, lambda){
   tc <- tryCatch({
     mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
@@ -92,9 +92,12 @@ mvp <- function(returns, lambda){
     ))
   }
 }
+```
 
+Each $lambda \in {0.01, 0.02, \cdots, 1}$ and each combination of ascending number of assets produces one portfolio that can be generated with two for loops.
 
-df <- NULL
+```{r}
+df <- data.frame("index"=1, "var"=as.numeric(var(returns_raw[, 1])), "return" = prod(1+returns_raw[, 1])^(1/nrow(returns_raw))-1, row.names=NULL)
 for(i in 2:ncol(returns_raw)){
   returns <- returns_raw[, 1:i]
   for(lambda in seq(0.01, 1, 0.01)){
@@ -104,30 +107,56 @@ for(i in 2:ncol(returns_raw)){
   }
 }
 
+```
+
+The result gets filtered and names are added that represent the number of assets. Now can the plot be genarated:
+
+```{r}
 df <- df %>% 
   filter(!is.na(return)) %>% 
   distinct() %>% 
   mutate(name = paste0("n_", index)) %>% 
   arrange(name) %>% 
-  mutate(name = factor(name, levels=paste0("n_", 1:ncol(returns_raw))))
+  mutate(name = factor(name, levels=paste0("n_", ncol(returns_raw):1)))
 
 
 max_show_sd <- df %>% 
   group_by(index) %>% 
   summarise(max_x = max(var)) %>% 
-  pull(max_x) %>% mean() %>% sqrt()
+  pull(max_x) %>% 
+  mean() %>% 
+  sqrt()
 
-plot_ly(data = df, x=~sqrt(var), y=~return, name=~name, mode="lines", type = 'scatter', color = ~name, colors = c("red", "green")) %>% 
-  layout(xaxis=list(range=c(sqrt(min(df$var))*0.9, max_show_sd), title="standard deviation")) %>% 
+plot_ly(
+    data = df[df$index!=1,], 
+    x=~sqrt(var), 
+    y=~return, 
+    name=~name, 
+    mode="lines", 
+    type = 'scatter', 
+    color = ~name, 
+    colors = c("green", "red")
+  ) %>% 
+  add_trace(
+    data=df[df$index==1,],  
+    x=~sqrt(var), 
+    y=~return, 
+    showlegend=T, 
+    marker=list(color="red"), 
+    mode="markers", 
+    name="n_1") %>% 
+  layout(
+    xaxis=list(range=c(sqrt(min(df$var))*0.9, max_show_sd), title="standard deviation"),
+    yaxis=list(range=c(min(df$return)*0.9, (max(df$return)+mean(df$return))*0.5), title="return")) %>% 
   html_save()
 
 ```
+It can be seen, that each asset added results in a minimum variance portfolio with smaller standard deviation. Nonetheless that it starter with the asset that has the smallest standard deviation of `r min(vars)`. This is the effect of diversification mentioned by Markowitz.
 
 
 
 
-
-
+## Example: Solving ITP with `solve.QP`
 
 
 ```{r}
