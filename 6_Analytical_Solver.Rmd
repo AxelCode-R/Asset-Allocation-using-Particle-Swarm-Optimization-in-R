@@ -32,7 +32,7 @@ The return of `solve.QP` is a list and contains among other things the following
 + value: Scalar, the value of the quadratic function at the solution
 
 ## Example: Solving MVP with `solve.QP`
-This section provides insights into the effects of diversification and the use of `solve.QP`, by creating ten diffrent efficient frontiers from a pool of ten assets. Each efficient frontier $i$ consists of $N_i = i$ assets and is created by adding the next smallest variance first. After loading returns for ten of the biggest equitys in the US market, the variance is calculated to arrange all columns ascending, like shown in the code bellow:
+This section provides insights into the effects of diversification and the use of `solve.QP`, by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier $i \in {1, 2, \cdots, 10}$ consists of $N_i = i$ assets and is created by adding the next smallest variance first. After loading returns for ten of the biggest equity's in the US market, the variance is calculated to arrange all columns ascending, like shown in the code bellow:
 
 ```{r}
 returns_raw <- buffer(
@@ -157,7 +157,7 @@ It can be seen, that each asset added results in a minimum variance portfolio wi
 
 
 ## Example: Solving ITP with `solve.QP`
-
+This example will analyse how many assets are needed to minimize the variance between the replication and the S&P 500 returns from `2016-01-01` to `2021-12-31`. The constraints are set to be long only and the weights should sum up to one. To step-wise reduce the number of assets, the five assets with the least weights gets discarded and acts as the new asset pool for the next replication until only five assets are left. At first the needed data can be downloaded with existing functions from the `R/` directory. The function `get_spx_composition` uses web scrapping to read the constituents of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and transforms it in monthly compositions of the S&P 500. All assets that are in the S&P 500 at the last month of the timeframe are considered as pool, if they do have no missing values. The code below, loads pool returns and the returns of the S&P 500:
 
 ```{r}
 from <- "2016-01-01"
@@ -185,6 +185,9 @@ bm_returns <- buffer(
   "AS_sp500"
 ) %>% setNames(., "S&P 500")
 
+```
+Now are all needed data present and the function for the ITP can be created. It needs `pool_returns` with variable number of columns and the `bm_returns`.
+```{r}
 
 itp <- function(pool_returns, bm_returns){
   mat <- list(
@@ -208,8 +211,11 @@ itp <- function(pool_returns, bm_returns){
     "solution" = setNames(qp$solution, colnames(pool_returns))
   )
 }
+```
 
+Now can the replication and successive discarding of assets beginn. The results are saved in `res` and used to plot the results.
 
+```{r}
 res <- NULL
 for(i in rev(seq(5, ncol(pool_returns_raw), 5))){
   if(i==ncol(pool_returns_raw)){
@@ -225,3 +231,10 @@ plot_ly(data=res, x=~N, y=~sd, mode="lines", type = 'scatter') %>%
   layout(yaxis=list(range=c(0, mean(max(res$sd),mean(res$sd)) ))) %>% 
   html_save()
 ```
+
+
+It can be seen that the standard deviation stagnates at $N=100$. This could mean that it needs about $1/5$ to minimize the variance of returns and more assets are not needed.
+
+
+
+
