@@ -5,10 +5,10 @@ editor_options:
 ---
 # Challenges of Passiv Investing {#challenges}
 
-This Chapter will analyse two common challenges of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
+This Chapter will analyse two common challenges of Passiv-Investing and creates simple use-cases to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio with minimal tracking error to a given benchmark.
 
-## Mean-variance portfolio (MVP)
-Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theorie which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier. 
+## Mean-Variance Portfolio (MVP)
+Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theory which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier. 
 
 ### MVP
 Let there be $N$ assets and its returns on $T$ different days which creates a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP with risk aversion parameter $\lambda \in [0,1]$ like shown in [@Mari2005] can be formalized as follows:
@@ -17,11 +17,11 @@ Let there be $N$ assets and its returns on $T$ different days which creates a re
 (\#eq:MVP)
 \end{equation} 
 
-The risk aversion parameter $\lambda$ defines the trade-off between risk and return. With $\lambda = 1$, the minimization problem only contains the the variance term and so on results in a minimum variance portfolio and $\lambda = 0$ transforms the problem to a minimization of the negative expected returns so on results in a maximum return portfolio. All possible $\lambda \in [0, 1]$ represent the efficient frontier.
+The risk aversion parameter $\lambda$ defines the trade-off between risk and return. With $\lambda = 1$, the minimization problem only contains the the variance term and so on results in a minimum variance portfolio and $\lambda = 0$ transforms the problem to a minimization of the negative expected returns which results in a maximum return portfolio. All possible $\lambda \in [0, 1]$ represent the efficient frontier.
 
 
 ### MVP example
-All possible MVPs combined create the efficient frontier, that is analyzed in this section without going into the details of its calculation. This example uses three assets (equitys: IBM, Google, Apple) and calculates the solution of \ref{eq:MVP} for each $\lambda$. First of all are the daily returns of these three assets are loaded from the year 2020.
+All possible MVPs combined create the efficient frontier, that is analyzed in this section without going into the details of its calculation. This example uses three assets (equitys: IBM, Google, Apple) and calculates the solution of the MVP for each $\lambda$. First of all are the daily returns of these three assets are loaded from the year 2020.
 
 ```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 returns <- buffer(
@@ -29,7 +29,7 @@ returns <- buffer(
   "CPI_3_assets"
 )
 ``` 
-The cumulated daily returns are:
+The cummulated daily returns are:
 
 ```{r, echo = F}
 plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
@@ -37,9 +37,9 @@ plotly_line_chart_xts(ret_to_cumret(returns)) %>%
 
 ```
 
-The expected daily returns and the covariance matrix for the 3 assets can be calculated with:
+The expected daily returns and the covariance matrix for the 3 assets can be estimated with the code below:
 
-```{r}
+```{r, results = "hold"}
 p0("estimation of expected daily returns")
 mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
 mu
@@ -49,7 +49,7 @@ cov <- as.matrix(nearPD(cov(returns))$mat)
 cov
 ```
 
-These are all the necessary data to solve the MVP \@ref(eq:MVP) with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are calculated by solving a quadratic minimization problem with long only constraint.
+These are all the necessary data to solve the MVP with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are calculated by solving a quadratic minimization problem with long only constraint and the weights should sum up to 1.
 
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 portfolios <- data.frame()
@@ -126,8 +126,8 @@ p %>% html_save()
 ```
 
 
-## Index-tracking portfolio (ITP)
-Indices are asset baskets that are used to track the performance of a specific asset group. The well-known Standard and Poor's 500 index (short: S&P 500), for example, tracks the top 500 stocks in the United States. All indices are not investible and only serve to visualize the performance of these asset groups without incurring transaction costs. Asset managers use such indices as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made a poor decision. That is why all fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rearly achived with activ managemnt after costs [@Desm2016]. This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. This is why passively managed funds with the purpose of tracking their benchmarks are becoming more common. This can be accomplished through either full or sparse replication. In most circumstances, using a full replication that achieves the exact performance is not achievable, because not all assets in an index are investable. And, if so, it would be unwise because benchmarks with numerous indexes can contain over ten thousand separate assets, resulting in a massive amount of transaction costs. A sparse replication of the performance is the most prevalent approach. To do so, the portfolio manager must define his benchmark, which should overlap with his fund's investing universe. Following that, he will reduce this universe using investor principles such as liquidity and availability. Now he can begin to optimize a portfolio, taking into account the investor constraints, in order to match the benchmark performance. Typically, this is accomplished by lowering the variance between the ITP's daily returns and the benchmark:
+## Index-Tracking Portfolio (ITP)
+Indices are baskets of assets that are used to track the performance of a specific asset group. For example, the well-known Standard and Poor's 500 index (short: S&P 500), tracks the 500 largest companies in the United States. Indices are not purchasable and only serve to visualize the performance of there asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made poor decisions. That is why fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rarely achieved with active management after costs [@Desm2016]. This resulted in a growing popularity of passive managed funds with its goal to track there benchmarks as close as possible. It can be accomplished through either full or sparse replication. A full replication is a portfolio that has all assets contained in the benchmark, with the same weights. The resulting performance with neglecting transaction costs, would be exactly the benchmark performance. The first problem is that a benchmark can contain inliquid or not purchasable assets. The second problem would be the weighting scheme of indices, because they are often weighted by its market capitalization which will change daily. This would result in daily work of rebalancing and increasing transaction costs to mimic the benchmarks performance as close as possible. To prevent this, sparse replications are used, that contain a fraction of its benchmarks assets. To do so, the portfolio manager must define his benchmark, which should overlap with his fund's investment universe. Following that, he will reduce this universe using the investors constraints and availability, to create a pool of possible assets. A example pool to track the S&P 500 could consist of the top hundred highest weighted assets in the S&P 500. Now is the time to optimize a portfolio with the goal of matching the benchmark performance and taking into account the investors constraints like ratings, asset sectors and more. Typically, this is accomplished by lowering the variance between the portfolio and benchmark returns:
 
 $$
  minimize \ \ Var(r_{p}-r_{bm})
@@ -150,28 +150,17 @@ $$
 Var(r_{bm}) = \sigma_{bm}^2 = constant
 $$
 
-The variance of the portfolio can be solved by looking at the Portfolio math Using Matrix Algebra section in [@Eric2021]:
+The variance of the portfolio can be solved with \@ref(portvar):
 
 $$
 Var(R * w) = w^T * Cov(R) * w
 $$
-
-And the last term can be solved in general as (https://bookdown.org/compfinezbook/introcompfinr/Multivariate-Probability-Distributions-Using-Matrix-Algebra.html 3.6.5):
+[@Eric2021]
+And the last term can be solved the same way as in [@Eric2021]:
 
 $$
-  Cov(A*a, b) = Cov(b, A*a) = E[(b-\mu_{b})(A*a-\mu_{A}*a)] = E[(b-\mu_{b})(A-\mu_{A})*a] = E[(b-\mu_{b})(A-\mu_{A})]*a = Cov(A,b) * a
+  Cov(A \times a, b) = Cov(b, A \times a) = E[(b-\mu_{b})(A \times a-\mu_{A} \times a)] = E[(b-\mu_{b})(A-\mu_{A}) \times a] = E[(b-\mu_{b})(A-\mu_{A})] \times a = Cov(A,b) \times a
 $$
-
-```{r}
-A = matrix(c(1,4,2,4,6,3,8,4,4,10), ncol=2)
-a = c(0.2, 0.8)
-b = c(4,4,5,5,7)
-
-cov(A %*% a, b)
-t(a) %*% cov(A, b)
-t(cov(A, b)) %*% a # das hier wird gebraucht
-
-```
 
 This results in the final formula of the ITP:
 
@@ -184,7 +173,7 @@ This results in the final formula of the ITP:
    (\#eq:ITP)
 \end{equation}
 
-The minimization problem of the ITP in the general stricture which all optimizers need is:
+The minimization problem of the ITP in the general structure needed by many optimizers is:
 
 $$
   min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
@@ -205,7 +194,7 @@ $$
 Its possible to add some basic constraints like in the MVP, to sum up the weights to 1 and being long only. 
 
 ### Example ITP
-This section will show the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
+This example will show the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is the year 2020 and the goal is to minimize the variance between the portfolios and benchmarks historical returns.
 
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 pool_returns <- buffer(

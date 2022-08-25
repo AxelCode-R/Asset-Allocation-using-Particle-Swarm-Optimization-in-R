@@ -125,7 +125,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-08-23}
+\date{2022-08-25}
 
 \begin{document}
 \maketitle
@@ -171,58 +171,58 @@ zb plotly\_save
 \hypertarget{open-data-sources}{%
 \chapter{Open Data Sources}\label{open-data-sources}}
 
-To increase the reproducibility, all data is free and can be loaded with the function \texttt{getSymbols} from the quantmod R-Package. There can be chosen between different data-sources like yahoo-finance (default), alpha-vantage, google and more.
+To increase the reproducibility, all data is free and can be loaded with the function \texttt{getSymbols()} from the quantmod R-Package. There can be chosen between different data-sources like yahoo-finance (default), alpha-vantage, google and more.
 
 \hypertarget{r-functions-1}{%
-\section{R-functions}\label{r-functions-1}}
+\section{R-Functions}\label{r-functions-1}}
 
-The following functions are created to increase the simplicity of data-gathering with the quantmod R-package that can be found in the directory named \texttt{R/} in the attached \href{https://github.com/AxelCode-R/Master-Thesis}{github repository}.
+The following functions are created to increase the simplicity of data-gathering with the quantmod R-package, that can be found in the directory named \texttt{R/} in the attached \href{https://github.com/AxelCode-R/Master-Thesis}{github repository}.
 
 \hypertarget{get_yf}{%
-\subsection{\texorpdfstring{\texttt{get\_yf}}{get\_yf}}\label{get_yf}}
+\subsection{\texorpdfstring{\texttt{get\_yf()}}{get\_yf()}}\label{get_yf}}
 
-This function is the main wrapper for gathering data with \texttt{getSymbols} from yahoo-finance and transforms prices to returns with the \texttt{pri\_to\_ret} function explained in \ref{pri_to_ret}. The output is a list that contains prices and returns as a (xts)\{\url{https://cran.r-project.org/web/packages/xts/xts.pdf}\} object. The arguments that can be passed to \texttt{get\_yf} are:
+This function is the main wrapper for gathering data with \texttt{getSymbols()} from yahoo-finance and transforms prices to returns with the \texttt{pri\_to\_ret} function explained in \ref{pritoret}. The output is a list that contains prices and returns as a \href{https://cran.r-project.org/web/packages/xts/xts.pdf}{xts} object. The arguments that can be passed to \texttt{get\_yf}, are:
 
 \begin{itemize}
 \tightlist
 \item
-  \texttt{tickers}: Vector of symbols like APPL, IBM, GOOG
+  \texttt{tickers}: Vector of symbols (asset identifiers e.g.~``APPL'', ``GOOG'', \ldots)
 \item
   \texttt{from\ ="2020-01-01"}: R-Date
 \item
   \texttt{to\ =\ "2021-01-01"}: R-Date
 \item
-  \texttt{prices\_type\ =\ "close"}: Type of prices to gather (e.g ``open'', ``high'', ``low'', ``close'', ``adjusted'')
+  \texttt{price\_type\ =\ "close"}: Type of prices to gather (e.g.~``open'', ``high'', ``low'', ``close'', ``adjusted'')
 \item
-  \texttt{return\_type\ =\ "adjusted"}: Type of returns to gather (e.g ``open'', ``high'', ``low'', ``close'', ``adjusted'')
+  \texttt{return\_type\ =\ "adjusted"}: Type of returns to gather (e.g.~``open'', ``high'', ``low'', ``close'', ``adjusted'')
 \item
-  \texttt{print\ =\ F}: Should the function print the return of \texttt{getSymbols}
+  \texttt{print\ =\ F}: Should the function print the return of \texttt{getSymbols()}
 \end{itemize}
 
 \hypertarget{buffer}{%
-\subsection{\texorpdfstring{\texttt{buffer}}{buffer}}\label{buffer}}
+\subsection{\texorpdfstring{\texttt{buffer()}}{buffer()}}\label{buffer}}
 
-To make data reusable and decrease compiling time, this thesis saves all data gathered with \texttt{get\_yf}. It takes an R expression, evaluates it and saves it in the \texttt{buffer\_data/} directory with the given name. If this name already exists it will load the R-object from the RData-file without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with \texttt{force=T}.
+To make data reusable and decrease compiling time, this thesis saves all data gathered with \texttt{get\_yf()}. It takes an R expression, evaluates it and saves it in the \texttt{buffer\_data/} directory with the given name. If this name already exists it will load the R-object from the RData-file without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with \texttt{force=T}.
 
-\hypertarget{mathematical-fundations}{%
-\chapter{Mathematical Fundations}\label{mathematical-fundations}}
+\hypertarget{mathfundations}{%
+\chapter{Mathematical Fundations}\label{mathfundations}}
 
-This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations on them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter \ref{challenges}.
+This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations of them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter \ref{challenges}.
 
 \hypertarget{basic-operators}{%
 \section{Basic Operators}\label{basic-operators}}
 
 A compendium that compares commonly used mathematical symbols to R-code and its meanings can be found in the table below:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png}
 
 \hypertarget{return-calculation}{%
-\section{Return calculation}\label{return-calculation}}
+\section{Return Calculation}\label{return-calculation}}
 
 Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using \href{https://www.investopedia.com/terms/a/adjusted\%20closing\%20price.asp}{adjusted closing prices}, which show the percentage change over time. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns are essential for comparing assets and for analyzing dependencies.
 
 \hypertarget{daily-returns}{%
-\subsection{daily returns}\label{daily-returns}}
+\subsection{Daily Returns}\label{daily-returns}}
 
 The default timeframe for all raw data in this thesis is one workday and only simple returns are used. The simple returns can be calculated as follows if we know the adjusted closing price \(P\) of one asset on workdays \(t_i\) and \(t_{i+1}\):
 \[
@@ -230,17 +230,17 @@ The default timeframe for all raw data in this thesis is one workday and only si
 \]
 
 \hypertarget{annualized-returns}{%
-\subsection{annualized returns}\label{annualized-returns}}
+\subsection{Annualized Returns}\label{annualized-returns}}
 
 \hypertarget{markowitz-modern-portfolio-theory-mpt}{%
 \section{Markowitz Modern Portfolio Theory (MPT)}\label{markowitz-modern-portfolio-theory-mpt}}
 
-In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolio. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for the given expected return target. A simple quote to define diversification could be: ``A portfolio has the same return but less variance than the sum of its parts''. This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. You can find more specific information at \citep{Mari2005}.
+In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: ``A portfolio has the same return but less variance than the sum of its parts''. This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. More specific information can be found at \citep{Mari2005}.
 
 \hypertarget{assumptions-of-markowitz-portfolio-theory}{%
 \subsection{Assumptions of Markowitz Portfolio Theory}\label{assumptions-of-markowitz-portfolio-theory}}
 
-The following are the Markowitz assumptions that can be combined, according to \citep{Mari2005}:
+The following list contains all Markowitz assumptions according to \citep{Mari2005}:
 
 \begin{itemize}
 \tightlist
@@ -281,7 +281,7 @@ Proofs for the fundamental calculations required for portfolio optimization as s
 Each return is additionally simplified in this thesis so that it is normally distributed with \(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\). As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.
 
 \hypertarget{expected-returns}{%
-\subsection{expected returns}\label{expected-returns}}
+\subsection{Expected Returns}\label{expected-returns}}
 
 The following formula can be used to get the expected returns of a vector with normally distributed random variables \(R \in \mathbb{R}^{N}\):
 \begin{align*}
@@ -298,10 +298,10 @@ The following formula can be used to get the expected returns of a vector with n
 \end{align*}
 and \(\mu_i\) can be estimated in R with the base-function \texttt{mean()} and historical data.
 
-\hypertarget{expected-portfolio-return}{%
-\subsection{expected portfolio return}\label{expected-portfolio-return}}
+\hypertarget{expected-portfolio-returns}{%
+\subsection{Expected Portfolio Returns}\label{expected-portfolio-returns}}
 
-The following equation can be used to get the linear combination of expected returns \(mu\) and a weighting vector \(w\) (for example, portfolio weights):
+The following equation can be used to get the linear combination of expected returns \(\mu\) and a weighting vector \(w\) (e.g.~portfolio weights):
 \begin{align*}
  \mu \times w &=
   \begin{bmatrix}
@@ -321,7 +321,7 @@ The following equation can be used to get the linear combination of expected ret
 \end{align*}
 
 \hypertarget{portfolio-returns}{%
-\subsection{portfolio returns}\label{portfolio-returns}}
+\subsection{Portfolio Returns}\label{portfolio-returns}}
 
 Let \(R \in \mathbb{R}^{T \times N}\) denote a realized return Matrix of \(N\) assets and \(T\) days in the past. The portfolio return on each day can be calculated with the formula of the expected portfolio return. This is possible on all days \(T\) by:
 \[
@@ -353,7 +353,7 @@ Let \(R \in \mathbb{R}^{T \times N}\) denote a realized return Matrix of \(N\) a
 \hypertarget{covariance}{%
 \subsection{Covariance}\label{covariance}}
 
-The general formula of the covariance matrix \(\sum\) of a random vector \(R\) with \(N\) normally distributed elements and \(\sigma_{i,j}\) as correlation of two unique assets is described as:
+The general formula of the covariance matrix \(\textstyle\sum\) of a random vector \(R\) with \(N\) normally distributed elements and \(\sigma_{i,j}\) as correlation of two unique assets is described as:
 \begin{align*}
   Cov(R) &= E[(R-\mu)^T \times (R-\mu)] \\
   &=   \begin{bmatrix}
@@ -362,12 +362,12 @@ The general formula of the covariance matrix \(\sum\) of a random vector \(R\) w
     \vdots  & \vdots & \ddots & \vdots \\
     \sigma_{N, 1} & \sigma_{N, 2} & \cdots & \sigma_N^2 \\
  \end{bmatrix}\\
-  &=\sum
+  &=\textstyle\sum
 \end{align*}
 and can be estimated in R with the base-function \texttt{cov()} and historical data.
 
-\hypertarget{portfolio-variance}{%
-\subsection{Portfolio Variance}\label{portfolio-variance}}
+\hypertarget{portvar}{%
+\subsection{Portfolio Variance}\label{portvar}}
 
 Let \(R\) be a random vector with \(N\) normally distributed elements and \(w\) a weighting vector. Suppose the covariance matrix \(\sum\) of \(R\) is known, then the variance of the linear combination of \(R\) can be calculated as:
 \begin{align*}
@@ -380,16 +380,23 @@ Since \((R - \mu) \times w\) is a scalar, it can be transformed from \(((R - \mu
   Var(R \times w) &= E[((R - \mu) \times w)^T \times ((R - \mu) \times w)]\\ 
   &= E[(w^T \times (R - \mu)^T) \times ((R - \mu) \times w)]\\ 
   &= w^T \times E[(R - \mu)^T \times (R - \mu)] \times w \\
-  &= w^T \times \sum \times w
+  &= w^T \times \textstyle\sum \times w
 \end{align*}
 
-The same hold for a estimation of \(\sum\).
+The same holds for a estimation of \(\textstyle\sum\).
 
-\hypertarget{created-r-functions}{%
-\section{Created R-Functions}\label{created-r-functions}}
+\hypertarget{r-functions-2}{%
+\section{R-Functions}\label{r-functions-2}}
 
-\hypertarget{pri_to_ret}{%
-\subsection{pri\_to\_ret}\label{pri_to_ret}}
+asdad
+
+\hypertarget{pritoret}{%
+\subsection{\texorpdfstring{\texttt{pri\_to\_ret()}}{pri\_to\_ret()}}\label{pritoret}}
+
+asdasd
+
+\hypertarget{ret_to_cumret}{%
+\subsection{\texorpdfstring{\texttt{ret\_to\_cumret()}}{ret\_to\_cumret()}}\label{ret_to_cumret}}
 
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
@@ -405,12 +412,12 @@ gut gut
 \hypertarget{challenges}{%
 \chapter{Challenges of Passiv Investing}\label{challenges}}
 
-This Chapter will analyse two common challenges of Passiv-Investing and create simple examples to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio which has a minimal tracking error to a given benchmark.
+This Chapter will analyse two common challenges of Passiv-Investing and creates simple use-cases to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio with minimal tracking error to a given benchmark.
 
 \hypertarget{mean-variance-portfolio-mvp}{%
-\section{Mean-variance portfolio (MVP)}\label{mean-variance-portfolio-mvp}}
+\section{Mean-Variance Portfolio (MVP)}\label{mean-variance-portfolio-mvp}}
 
-Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theorie which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier.
+Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theory which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier.
 
 \hypertarget{mvp}{%
 \subsection{MVP}\label{mvp}}
@@ -421,79 +428,56 @@ Let there be \(N\) assets and its returns on \(T\) different days which creates 
 \label{eq:MVP}
 \end{equation}
 
-The risk aversion parameter \(\lambda\) defines the trade-off between risk and return. With \(\lambda = 1\), the minimization problem only contains the the variance term and so on results in a minimum variance portfolio and \(\lambda = 0\) transforms the problem to a minimization of the negative expected returns so on results in a maximum return portfolio. All possible \(\lambda \in [0, 1]\) represent the efficient frontier.
+The risk aversion parameter \(\lambda\) defines the trade-off between risk and return. With \(\lambda = 1\), the minimization problem only contains the the variance term and so on results in a minimum variance portfolio and \(\lambda = 0\) transforms the problem to a minimization of the negative expected returns which results in a maximum return portfolio. All possible \(\lambda \in [0, 1]\) represent the efficient frontier.
 
 \hypertarget{mvp-example}{%
 \subsection{MVP example}\label{mvp-example}}
 
-All possible MVPs combined create the efficient frontier, that is analyzed in this section without going into the details of its calculation. This example uses three assets (equitys: IBM, Google, Apple) and calculates the solution of \ref{eq:MVP} for each \(\lambda\). First of all are the daily returns of these three assets are loaded from the year 2020.
+All possible MVPs combined create the efficient frontier, that is analyzed in this section without going into the details of its calculation. This example uses three assets (equitys: IBM, Google, Apple) and calculates the solution of the MVP for each \(\lambda\). First of all are the daily returns of these three assets are loaded from the year 2020.
 
-The cumulated daily returns are:
+The cummulated daily returns are:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-6-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-5-1.png}
 
-The expected daily returns and the covariance matrix for the 3 assets can be calculated with:
+The expected daily returns and the covariance matrix for the 3 assets can be estimated with the code below:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{p0}\NormalTok{(}\StringTok{"estimation of expected daily returns"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] "estimation of expected daily returns"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{((}\DecValTok{1}\SpecialCharTok{+}\NormalTok{returns), prod)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns))}\SpecialCharTok{{-}}\DecValTok{1}
 \NormalTok{mu}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-##          AAPL           IBM          GOOG 
-##  0.0024166167 -0.0000952478  0.0010448549
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \FunctionTok{p0}\NormalTok{(}\StringTok{"estimation of positiv definite covariance matrix"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] "estimation of positiv definite covariance matrix"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov}\NormalTok{(returns))}\SpecialCharTok{$}\NormalTok{mat)}
 \NormalTok{cov}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
+## [1] "estimation of expected daily returns"
+##          AAPL           IBM          GOOG 
+##  0.0024166167 -0.0000952478  0.0010448549 
+## [1] "estimation of positiv definite covariance matrix"
 ##              AAPL          IBM         GOOG
 ## AAPL 0.0008665678 0.0004378721 0.0005361398
 ## IBM  0.0004378721 0.0006646758 0.0004100227
 ## GOOG 0.0005361398 0.0004100227 0.0005849202
 \end{verbatim}
 
-These are all the necessary data to solve the MVP \eqref{eq:MVP} with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). All 100 portfolios are calculated by solving a quadratic minimization problem with long only constraint.
+These are all the necessary data to solve the MVP with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). All 100 portfolios are calculated by solving a quadratic minimization problem with long only constraint and the weights should sum up to 1.
 
 The resulting daily returns and standard deviation are transformed to annual returns and standard deviation and are plotted to create the efficient frontier:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-8-1.png}
 
 The portfolio compositions for each \(\lambda\) are:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
 
 \hypertarget{index-tracking-portfolio-itp}{%
-\section{Index-tracking portfolio (ITP)}\label{index-tracking-portfolio-itp}}
+\section{Index-Tracking Portfolio (ITP)}\label{index-tracking-portfolio-itp}}
 
-Indices are asset baskets that are used to track the performance of a specific asset group. The well-known Standard and Poor's 500 index (short: S\&P 500), for example, tracks the top 500 stocks in the United States. All indices are not investible and only serve to visualize the performance of these asset groups without incurring transaction costs. Asset managers use such indices as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made a poor decision. That is why all fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rearly achived with activ managemnt after costs \citep{Desm2016}. This is the reason why passiv managed funds with the goal to track there benchmarks are becoming more frequent. This is why passively managed funds with the purpose of tracking their benchmarks are becoming more common. This can be accomplished through either full or sparse replication. In most circumstances, using a full replication that achieves the exact performance is not achievable, because not all assets in an index are investable. And, if so, it would be unwise because benchmarks with numerous indexes can contain over ten thousand separate assets, resulting in a massive amount of transaction costs. A sparse replication of the performance is the most prevalent approach. To do so, the portfolio manager must define his benchmark, which should overlap with his fund's investing universe. Following that, he will reduce this universe using investor principles such as liquidity and availability. Now he can begin to optimize a portfolio, taking into account the investor constraints, in order to match the benchmark performance. Typically, this is accomplished by lowering the variance between the ITP's daily returns and the benchmark:
+Indices are baskets of assets that are used to track the performance of a specific asset group. For example, the well-known Standard and Poor's 500 index (short: S\&P 500), tracks the 500 largest companies in the United States. Indices are not purchasable and only serve to visualize the performance of there asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made poor decisions. That is why fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rarely achieved with active management after costs \citep{Desm2016}. This resulted in a growing popularity of passive managed funds with its goal to track there benchmarks as close as possible. It can be accomplished through either full or sparse replication. A full replication is a portfolio that has all assets contained in the benchmark, with the same weights. The resulting performance with neglecting transaction costs, would be exactly the benchmark performance. The first problem is that a benchmark can contain inliquid or not purchasable assets. The second problem would be the weighting scheme of indices, because they are often weighted by its market capitalization which will change daily. This would result in daily work of rebalancing and increasing transaction costs to mimic the benchmarks performance as close as possible. To prevent this, sparse replications are used, that contain a fraction of its benchmarks assets. To do so, the portfolio manager must define his benchmark, which should overlap with his fund's investment universe. Following that, he will reduce this universe using the investors constraints and availability, to create a pool of possible assets. A example pool to track the S\&P 500 could consist of the top hundred highest weighted assets in the S\&P 500. Now is the time to optimize a portfolio with the goal of matching the benchmark performance and taking into account the investors constraints like ratings, asset sectors and more. Typically, this is accomplished by lowering the variance between the portfolio and benchmark returns:
 
 \[
  minimize \ \ Var(r_{p}-r_{bm})
@@ -516,54 +500,17 @@ Now the three terms can be solved, beginning with the easiest.
 Var(r_{bm}) = \sigma_{bm}^2 = constant
 \]
 
-The variance of the portfolio can be solved by looking at the Portfolio math Using Matrix Algebra section in \citep{Eric2021}:
+The variance of the portfolio can be solved with \ref{portvar}:
 
 \[
 Var(R * w) = w^T * Cov(R) * w
 \]
-
-And the last term can be solved in general as (\url{https://bookdown.org/compfinezbook/introcompfinr/Multivariate-Probability-Distributions-Using-Matrix-Algebra.html} 3.6.5):
+\citep{Eric2021}
+And the last term can be solved the same way as in \citep{Eric2021}:
 
 \[
-  Cov(A*a, b) = Cov(b, A*a) = E[(b-\mu_{b})(A*a-\mu_{A}*a)] = E[(b-\mu_{b})(A-\mu_{A})*a] = E[(b-\mu_{b})(A-\mu_{A})]*a = Cov(A,b) * a
+  Cov(A \times a, b) = Cov(b, A \times a) = E[(b-\mu_{b})(A \times a-\mu_{A} \times a)] = E[(b-\mu_{b})(A-\mu_{A}) \times a] = E[(b-\mu_{b})(A-\mu_{A})] \times a = Cov(A,b) \times a
 \]
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{A }\OtherTok{=} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{10}\NormalTok{), }\AttributeTok{ncol=}\DecValTok{2}\NormalTok{)}
-\NormalTok{a }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\FloatTok{0.8}\NormalTok{)}
-\NormalTok{b }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{7}\NormalTok{)}
-
-\FunctionTok{cov}\NormalTok{(A }\SpecialCharTok{\%*\%}\NormalTok{ a, b)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##      [,1]
-## [1,] 2.15
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{t}\NormalTok{(a) }\SpecialCharTok{\%*\%} \FunctionTok{cov}\NormalTok{(A, b)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##      [,1]
-## [1,] 2.15
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{t}\NormalTok{(}\FunctionTok{cov}\NormalTok{(A, b)) }\SpecialCharTok{\%*\%}\NormalTok{ a }\CommentTok{\# das hier wird gebraucht}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##      [,1]
-## [1,] 2.15
-\end{verbatim}
 
 This results in the final formula of the ITP:
 
@@ -576,7 +523,7 @@ This results in the final formula of the ITP:
    \label{eq:ITP}
 \end{equation}
 
-The minimization problem of the ITP in the general stricture which all optimizers need is:
+The minimization problem of the ITP in the general structure needed by many optimizers is:
 
 \[
   min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
@@ -599,24 +546,24 @@ Its possible to add some basic constraints like in the MVP, to sum up the weight
 \hypertarget{example-itp}{%
 \subsection{Example ITP}\label{example-itp}}
 
-This section will show the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google without going into details:
+This example will show the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is the year 2020 and the goal is to minimize the variance between the portfolios and benchmarks historical returns.
 
 \begin{verbatim}
 ##      AAPL       IBM      GOOG 
 ## 0.2681058 0.4040352 0.3278591
 \end{verbatim}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
 
 \hypertarget{analytic-solver-for-quadratic-programming-problems}{%
 \chapter{Analytic Solver for Quadratic Programming Problems}\label{analytic-solver-for-quadratic-programming-problems}}
 
-The benefits and drawbacks of analytic solvers for quadratic programming problems will be discussed in this chapter after chapter \href{challenges}{6}'s discussion of some common problems and their solutions. It would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the applications and analysis are discussed here. The foremost reason of addressing quadratic programming solvers is to use it as a benchmark for the PSO.
+The benefits and drawbacks of analytic solvers for quadratic programming problems will be discussed in this chapter. It would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the applications and analysis are discussed. The foremost reason of addressing quadratic programming solvers is to use it as a benchmark for the PSO.
 
 \hypertarget{quadratic-programming-qp}{%
 \section{Quadratic Programming (QP)}\label{quadratic-programming-qp}}
 
-A quadratic program is a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term dependent on the variable of interest. Additionally can the problem be simply constrained by several linear inequalities that restrict the solution. The general formulation used, is to find \(x\) that minimizes the following problem:
+A quadratic program is a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term, dependent on the variable of interest. Additionally can the problem be constrained by several linear inequalities that restrict the solution. The general formulation used, is to find \(x\) that minimizes the following problem:
 \[
   min \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
 \]
@@ -630,30 +577,36 @@ Some other sources notate the problem with different signs or coefficients that 
 \hypertarget{qp-solver-from-quadprog}{%
 \section{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
 
-The most common free QP-solver used in R is \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(x^T D x > 0 \ \forall \ x \in R^N\) and \(D\in R^{N \times N}\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\sum\) with the function \texttt{nearPD} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \ \%\), which is negligible for the context of this thesis. The \texttt{solve.QP} functions for a \(N\) dimensional vector of interest, has the following arguments that can be found in the above stated formulation of a QP:
+The most common free QP-solver used in R is \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(D\in R^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in R^N\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\textstyle\sum\) with the function \texttt{nearPD} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \%\), which is negligible for the context of this thesis. The \texttt{solve.QP} functions for a \(N\) dimensional vector of interest, has the following arguments, that can be found in the above stated formulation of a QP:
 
 \begin{itemize}
 \tightlist
 \item
-  Dmat: Symmetric positive definite matrix \(D \in R^{N \times N}\) of the quadratic term.
+  \texttt{Dmat}: Symmetric positive definite matrix \(D \in R^{N \times N}\) of the quadratic term.
 \item
-  dvec: Vector \(d \in R^{N}\) of the linear term
+  \texttt{dvec}: Vector \(d \in R^{N}\) of the linear term
 \item
-  Amat: Constraint matrix \(A\)
+  \texttt{Amat}: Constraint matrix \(A\)
 \item
-  bvec: Constraint vector \(b_0\)
+  \texttt{bvec}: Constraint vector \(b_0\)
 \item
-  meq = 1: means that the first row of \(A\) is treated as equality constraint (used to achieve fully invested portfolios)
+  \texttt{meq\ =\ 1}: means that the first row of \(A\) is treated as equality constraint
 \end{itemize}
 
 The return of \texttt{solve.QP} is a list and contains among other things the following attributes of interest:
-+ solution: Vector containing the solution \(x\) of the quadratic programming problem. (e.g.~portfolio weights)
-+ value: Scalar, the value of the quadratic function at the solution
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{solution}: Vector containing the solution \(x\) of the quadratic programming problem. (e.g.~portfolio weights)
+\item
+  \texttt{value}: Scalar, the value of the quadratic function at the solution
+\end{itemize}
 
 \hypertarget{example-solving-mvp-with-solve.qp}{%
 \section{\texorpdfstring{Example: Solving MVP with \texttt{solve.QP}}{Example: Solving MVP with solve.QP}}\label{example-solving-mvp-with-solve.qp}}
 
-This section provides insights into the effects of diversification and the use of \texttt{solve.QP}, by creating ten diffrent efficient frontiers from a pool of ten assets. Each efficient frontier \(i\) consists of \(N_i = i\) assets and is created by adding the next smallest variance first. After loading returns for ten of the biggest equitys in the US market, the variance is calculated to arrange all columns ascending, like shown in the code bellow:
+This section provides insights into the effects of diversification and the use of \texttt{solve.QP}, by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier \(i \in \{1, 2, \cdots, 10\}\) consists of \(N_i = i\) assets and is created by adding the asset with the next smallest variance first. After loading returns for ten of the biggest equity's in the US market, the variance is calculated to arrange all columns ascending by its variance, like shown in the code bellow:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -672,7 +625,7 @@ This section provides insights into the effects of diversification and the use o
 \end{Highlighting}
 \end{Shaded}
 
-The next step is to create a function \texttt{mvp} that has the arguments \texttt{return} and \texttt{lambda}. It calculates the expected returns \texttt{mu} and the estimated positive definite covariance \texttt{cov}. Afterwords it solves a MVP with the constraints \(\sum w = 1\) and \(w>=0\) and returns key features \(mu\), \(var\) and \(composition\) of the portfolio.
+The next step is to create a function \texttt{mvp} that has the arguments \texttt{return} and \texttt{lambda}. It calculates the expected returns \texttt{mu} and the estimated positive definite covariance \texttt{cov}. Afterwards it solves a MVP with the constraints \(\textstyle\sum w = 1\) and \(w>=0\), which returns key features \texttt{mu}, \texttt{var} and \texttt{composition} of the portfolio.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -720,7 +673,7 @@ The next step is to create a function \texttt{mvp} that has the arguments \textt
 \end{Highlighting}
 \end{Shaded}
 
-Each \(lambda \in {0.01, 0.02, \cdots, 1}\) and each combination of ascending number of assets produces one portfolio that can be generated with two for loops.
+Each \(\lambda \in \{0.01, 0.02, \cdots, 1\}\) and each combination of ascending number of assets produces one portfolio that can be generated with two for loops.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -736,7 +689,7 @@ Each \(lambda \in {0.01, 0.02, \cdots, 1}\) and each combination of ascending nu
 \end{Highlighting}
 \end{Shaded}
 
-The result gets filtered and names are added that represent the number of assets. Now can the plot be genarated:
+The result gets filtered and names are added that represent the number of assets. Now can the plot be generated:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -780,11 +733,14 @@ The result gets filtered and names are added that represent the number of assets
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-16-1.png}
-It can be seen, that each asset added results in a minimum variance portfolio with smaller standard deviation. Nonetheless that it starter with the asset that has the smallest standard deviation of 0.0001822. This is the effect of diversification mentioned by Markowitz.
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-14-1.png}
+
+It can be seen, that each asset added results in a minimum variance portfolio with smaller or equal standard deviation. Nonetheless that it started with the asset that has the smallest standard deviation of 0.0134977. This is the effect of diversification mentioned by Markowitz.
 
 \hypertarget{example-solving-itp-with-solve.qp}{%
 \section{\texorpdfstring{Example: Solving ITP with \texttt{solve.QP}}{Example: Solving ITP with solve.QP}}\label{example-solving-itp-with-solve.qp}}
+
+This example will analyse how many assets are needed to minimize the variance between the replication and the S\&P 500 historical returns from \texttt{2016-01-01} to \texttt{2021-12-31}. The constraints are set to be long only and the weights should sum up to one. To step-wise reduce the number of assets, the five assets with the least weights gets discarded and acts as the new asset pool for the next replication, until only five assets are left. At first the needed data can be downloaded with existing functions from the \texttt{R/} directory. The function \texttt{get\_spx\_composition} uses web scrapping to read the constituents of \href{https://en.wikipedia.org/wiki/List_of_S\%26P_500_companies}{wikipedia} and transforms it in monthly compositions of the S\&P 500. The pool is created by all assets that are present in the last month of the timeframe, reduced by assets with missing values. The code below, loads returns of all assets in the pool and the S\&P 500:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -812,8 +768,13 @@ It can be seen, that each asset added results in a minimum variance portfolio wi
   \FunctionTok{get\_yf}\NormalTok{(}\AttributeTok{tickers =} \StringTok{"\%5EGSPC"}\NormalTok{, }\AttributeTok{from =}\NormalTok{ from, }\AttributeTok{to =}\NormalTok{ to)}\SpecialCharTok{$}\NormalTok{returns, }
   \StringTok{"AS\_sp500"}
 \NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{setNames}\NormalTok{(., }\StringTok{"S\&P 500"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
+Now are all needed data present and the function for the ITP can be created. It needs \texttt{pool\_returns} with variable number of columns and the single column matrix \texttt{bm\_returns}.
 
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{itp }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pool\_returns, bm\_returns)\{}
 \NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
     \AttributeTok{Dmat =} \FunctionTok{cov}\NormalTok{(pool\_returns),}
@@ -836,8 +797,13 @@ It can be seen, that each asset added results in a minimum variance portfolio wi
     \StringTok{"solution"} \OtherTok{=} \FunctionTok{setNames}\NormalTok{(qp}\SpecialCharTok{$}\NormalTok{solution, }\FunctionTok{colnames}\NormalTok{(pool\_returns))}
 \NormalTok{  )}
 \NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
+Now can the replication and successive discarding of assets begin. The results are saved in \texttt{res} and used to plot the results.
 
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{res }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{rev}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{5}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw), }\DecValTok{5}\NormalTok{)))\{}
   \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{==}\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw))\{}
@@ -856,6 +822,8 @@ It can be seen, that each asset added results in a minimum variance portfolio wi
 \end{Shaded}
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-17-1.png}
+
+It can be seen that the standard deviation stagnates at about \(N=100\). This results in the conclusion that a sparse replication with hundred assets is, in this sepcific case, sufficient to track the historical S\&P 500 performance of the timeframe.
 
 \hypertarget{simple_particle_swarm_optimization}{%
 \chapter{Simple\_Particle\_Swarm\_Optimization}\label{simple_particle_swarm_optimization}}

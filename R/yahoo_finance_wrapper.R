@@ -1,5 +1,5 @@
 
-get_yf <- function(tickers, from="2020-01-01", to="2021-01-01", prices_type="close", return_type="adjusted", print=F){
+get_yf <- function(tickers, from="2020-01-01", to="2021-01-01", price_type="close", return_type="adjusted", print=F){
   # load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/data/spx_composition.rdata")
   # tickers <- unique(spx_composition$Ticker)
   # from <- "2020-01-01"
@@ -17,9 +17,9 @@ get_yf <- function(tickers, from="2020-01-01", to="2021-01-01", prices_type="clo
   prices_for_returns <- NULL
   for(name in names(e)){
     x = e[[name]]
-    if(nrow(x) > 0 && sum(toupper(colnames(x)) %like% toupper(prices_type))==1){
+    if(nrow(x) > 0 && sum(toupper(colnames(x)) %like% toupper(price_type))==1){
       x = data.frame(x)
-      prices <- cbind.xts(prices, setNames(xts(x[,toupper(colnames(x)) %like% toupper(prices_type)], order.by = as.Date(rownames(x))), name))
+      prices <- cbind.xts(prices, setNames(xts(x[,toupper(colnames(x)) %like% toupper(price_type)], order.by = as.Date(rownames(x))), name))
       prices_for_returns <- cbind.xts(prices_for_returns, setNames(xts(x[,toupper(colnames(x)) %like% toupper(return_type)], order.by = as.Date(rownames(x))), name))
     }
   }
