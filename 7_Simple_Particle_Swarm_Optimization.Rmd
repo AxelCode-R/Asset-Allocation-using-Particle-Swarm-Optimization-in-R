@@ -9,12 +9,12 @@ $$
 $$
 with $r_1$ and $r_2$ being uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_1$ acts as the weighting of the direction to its own best position of the particle. On the contrary is the social parameter $c_2$, which is a weighting to the direction of the global best position. The inertia weight $w$ is crucial for the convergence behavior by remembering a part of its historical trajectory. A study examined in [@PaVr2002] showed that these parameters can be set to $c_1=c_2=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems do benefit from more fine-tuning of these parameters. \\
 
-To provide a direct translation to code, the formula above can be stated for $d = 1, 2, \cdots, D$ particles in the following matrix notation:
+To provide a effortless translation to code, the formula above can be stated for $d = 1, 2, \cdots, D$ particles in the following matrix notation:
 $$
   V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} = X^i + V^{i+1}
 $$
-with $X \in R 
+with positions $X \in R^{N,D}$, velocity's $V \in R^{N,D}$, best own positions $P \in R^{N,D}$ and the global best position $p_g \in R^{N}$. The parameters $w$, $c_1$, $c_2$, $r_1$ and $r_2$ are stile scalars. but 
 
 
 
