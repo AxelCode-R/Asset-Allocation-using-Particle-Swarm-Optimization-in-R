@@ -1,3 +1,10 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
 # Particle Swarm Optimization (PSO)
 The PSO was developed by J. Kennedy as a Global Optimization method based on Swarm Intelligence and was introduced to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The initial PSO should resemble a flock of birds, that is flying through the sky without collisions. That is why its first applications were found in particle physics, to analyse moving particles in high dimensional spaces, which is resembled in the name Particle. Afterwards it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and find the optima by cooperation with other particles in the swarm [@PaVr2002]. The benefits compared to some other Global Optimization methods are the fact that no gradient information is needed. It can find the optimum by considering only the result of the function that needs to be optimized. That means that the function can be arbitrarily complex and its still possible to reach the global optimum. Other benefits are the low computational costs, because only basic mathematical operators are used.
 
@@ -20,6 +27,7 @@ with current positions $X \in R^{N,D}$, current velocity's $V \in R^{N,D}$, best
 ## Code
 
 ```{r}
+#https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/
 fn <- function(pos){
   -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + exp(1) + 20
 }
@@ -37,36 +45,75 @@ c2 <- 0.5
 lower <- -10
 upper <- 10
 maxiter <- 10
-w <- 0.8
+w0 <- 1.2
+wN <- 0
 
 X <- mrunif(nr = length(par), nc=D, lower=lower, upper=upper)
 X_fit <- apply(X, 2, fn)
 V <- mrunif(nr = length(par), nc=D, lower=lower, upper=upper)
 P <- X
 P_fit <- X_fit
-p_g <- P[, which.min(fit)]
+p_g <- P[, which.min(P_fit)]
+p_g_fit <- which.min(P_fit)
 
+trace <- TRUE
+trace_data <- NULL
 for(i in 1:maxiter){
-  V <- w * V + c1 * runif(1) * (P-X) + c2 * runif(1) * (p_g-X)
+  V <- (w0-(w0-wN)*i/maxiter) * V + c1 * runif(1) * (P-X) + c2 * runif(1) * (p_g-X)
   X <- X + V
-  X_fit <- apply(X, 2, fn)
-  P_fit[P_fit <= X_fit] <- 
-}
-
-
-
-
-#psoptim()
-
-pso_default <- function(
-  par,
-  fn,
-  ...,
-  lower,
-  upper
-){
   
+  # evaluate function
+  X_fit <- apply(X, 2, fn)
+  
+  # save new own best
+  P[, P_fit > X_fit] <- X[, P_fit > X_fit]
+  P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+  
+  # new global best
+  if(any(P_fit < p_g_fit)){
+    p_g <- P[, which.min(P_fit)]
+    p_g_fit <- min(P_fit)
+  }
+  
+  p0("mean P_fit: ", mean(P_fit))
+  p0("P_g_fit: ", p_g_fit)
+  
+  if(trace==TRUE){
+    trace_data <- rbind(trace_data, data.frame("iter"=i, t(X)))
+  }
 }
+
+
+grid <- expand.grid(seq(-10, 10, length.out = 100), seq(-10, 10, length.out = 100), stringsAsFactors = F)
+grid$z <- apply(grid, 1, fn)
+
+library(ggplot2)
+library(gganimate)
+library(metR)
+# install.packages('tinytex')
+# tinytex::install_tinytex()
+
+anim <- ggplot(trace_data) +
+  geom_contour(data = grid, aes(x = Var1, y = Var2, z = z), color = "black") +
+  geom_point(aes(X1, X2)) +
+  labs(x = "X", y = "Y") +
+  transition_time(iter) +
+  ease_aes("linear")
+
+anim_save(path="gifs/", filename = "pso_2dim.gif", animation = anim)
+gif_file("gifs/pso_2dim.gif")
+
+# #psoptim()
+# 
+# pso_default <- function(
+#   par,
+#   fn,
+#   ...,
+#   lower,
+#   upper
+# ){
+#   
+# }
 ```
 
 
