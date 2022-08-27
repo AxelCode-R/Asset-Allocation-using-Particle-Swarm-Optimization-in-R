@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-08-25" />
+<meta name="date" content="2022-08-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -222,7 +222,7 @@ div.csl-indent {
 <p>The following functions are created to increase the simplicity of data-gathering with the quantmod R-package, that can be found in the directory named <code>R/</code> in the attached <a href="https://github.com/AxelCode-R/Master-Thesis">github repository</a>.</p>
 <div id="get_yf" class="section level3 hasAnchor" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> <code>get_yf()</code><a href="open-data-sources.html#get_yf" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This function is the main wrapper for gathering data with <code>getSymbols()</code> from yahoo-finance and transforms prices to returns with the <code>pri_to_ret</code> function explained in <a href="mathfundations.html#pritoret">4.5.1</a>. The output is a list that contains prices and returns as a <a href="https://cran.r-project.org/web/packages/xts/xts.pdf">xts</a> object. The arguments that can be passed to <code>get_yf</code>, are:</p>
+<p>This function is the main wrapper for gathering data with <code>getSymbols()</code> from yahoo-finance and transforms prices to returns with the <code>pri_to_ret()</code> function explained in <a href="mathfundations.html#pritoret">4.5.1</a>. The output is a list that contains prices and returns as a <a href="https://cran.r-project.org/web/packages/xts/xts.pdf">xts</a> object. The arguments that can be passed to <code>get_yf()</code>, are:</p>
 <ul>
 <li><code>tickers</code>: Vector of symbols (asset identifiers e.g. “APPL”, “GOOG”, …)</li>
 <li><code>from ="2020-01-01"</code>: R-Date</li>

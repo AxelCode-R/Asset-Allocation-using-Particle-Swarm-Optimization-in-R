@@ -5,7 +5,7 @@ To increase the reproducibility, all data is free and can be loaded with the fun
 The following functions are created to increase the simplicity of data-gathering with the quantmod R-package, that can be found in the directory named `R/` in the attached [github repository](https://github.com/AxelCode-R/Master-Thesis).
 
 ### `get_yf()`
-This function is the main wrapper for gathering data with `getSymbols()` from yahoo-finance and transforms prices to returns with the `pri_to_ret` function explained in \@ref(pritoret). The output is a list that contains prices and returns as a [xts](https://cran.r-project.org/web/packages/xts/xts.pdf) object. The arguments that can be passed to `get_yf`, are:
+This function is the main wrapper for gathering data with `getSymbols()` from yahoo-finance and transforms prices to returns with the `pri_to_ret()` function explained in \@ref(pritoret). The output is a list that contains prices and returns as a [xts](https://cran.r-project.org/web/packages/xts/xts.pdf) object. The arguments that can be passed to `get_yf()`, are:
 
 + `tickers`: Vector of symbols (asset identifiers e.g. "APPL", "GOOG", ...)
 + `from ="2020-01-01"`: R-Date

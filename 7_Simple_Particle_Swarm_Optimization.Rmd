@@ -1,4 +1,27 @@
-# Simple_Particle_Swarm_Optimization
+# Particle Swarm Optimization (PSO)
+The PSO was developed by J. Kennedy as a Global Optimization method based on Swarm Intelligence and was introduced to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The initial PSO should resemble a flock of birds, that is flying through the sky without collisions. That is why its first applications were found in particle physics, to analyse moving particles in high dimensional spaces, which is reassembled by the name Particle. Afterwards it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and find the optima by cooperation with other particles in the swarm [@PaVr2002]. The benefits compared to some other Global Optimization methods are the fact that no gradient information is needed. It can find the optimum by considering only the scalar of a function result, that needs to be optimized. Other benefits are the low computational costs, because only basic mathematical operators are used.
 
-first pso examples and explainations 
+## The Algorithm
+Each Particle $d$ with position $x_d$ moves in the search space $R^N$ and has its own velocity $v_d$ and remembers its best position $p_d$. After each iteration the velocity changes into the direction of its previous velocity, its best position and the global best position $p_g$ of all particles. A whole iteration from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
+$$
+  v_d^{i+1} = wv_d^{i} + c_1 r_1^i (p_d^i-x_d^i) + c_2 r_2^i (p_g^i - x_d^i) \\
+  x_d^{i+1} = x_d^i + v_d^{i+1}
+$$
+with $r_1$ and $r_2$ being uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_1$ acts as the weighting of the direction to its own best position of the particle. On the contrary is the social parameter $c_2$, which is a weighting to the direction of the global best position. The inertia weight $w$ is crucial for the convergence behavior by remembering a part of its historical trajectory. A study examined in [@PaVr2002] showed that these parameters can be set to $c_1=c_2=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems do benefit from more fine-tuning of these parameters. \\
+
+To provide a direct translation to code, the formula above can be stated for $d = 1, 2, \cdots, D$ particles in the following matrix notation:
+$$
+  V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
+  X^{i+1} = X^i + V^{i+1}
+$$
+with $X \in R 
+
+
+
+
+
+
+
+
+
 
