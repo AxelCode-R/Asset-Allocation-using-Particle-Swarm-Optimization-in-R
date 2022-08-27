@@ -1,8 +1,8 @@
 # Particle Swarm Optimization (PSO)
-The PSO was developed by J. Kennedy as a Global Optimization method based on Swarm Intelligence and was introduced to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The initial PSO should resemble a flock of birds, that is flying through the sky without collisions. That is why its first applications were found in particle physics, to analyse moving particles in high dimensional spaces, which is reassembled by the name Particle. Afterwards it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and find the optima by cooperation with other particles in the swarm [@PaVr2002]. The benefits compared to some other Global Optimization methods are the fact that no gradient information is needed. It can find the optimum by considering only the scalar of a function result, that needs to be optimized. Other benefits are the low computational costs, because only basic mathematical operators are used.
+The PSO was developed by J. Kennedy as a Global Optimization method based on Swarm Intelligence and was introduced to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The initial PSO should resemble a flock of birds, that is flying through the sky without collisions. That is why its first applications were found in particle physics, to analyse moving particles in high dimensional spaces, which is resembled in the name Particle. Afterwards it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and find the optima by cooperation with other particles in the swarm [@PaVr2002]. The benefits compared to some other Global Optimization methods are the fact that no gradient information is needed. It can find the optimum by considering only the result of the function that needs to be optimized. That means that the function can be arbitrarily complex and its still possible to reach the global optimum. Other benefits are the low computational costs, because only basic mathematical operators are used.
 
 ## The Algorithm
-Each Particle $d$ with position $x_d$ moves in the search space $R^N$ and has its own velocity $v_d$ and remembers its best position $p_d$. After each iteration the velocity changes into the direction of its previous velocity, its best position and the global best position $p_g$ of all particles. A whole iteration from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
+Each Particle $d$ with position $x_d$ moves in the search space $R^N$ and has its own velocity $v_d$ and remembers its best position $p_d$. After each iteration the velocity changes into the direction of its previous velocity, its best position and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
 $$
   v_d^{i+1} = wv_d^{i} + c_1 r_1^i (p_d^i-x_d^i) + c_2 r_2^i (p_g^i - x_d^i) \\
   x_d^{i+1} = x_d^i + v_d^{i+1}
@@ -14,7 +14,67 @@ $$
   V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} = X^i + V^{i+1}
 $$
-with positions $X \in R^{N,D}$, velocity's $V \in R^{N,D}$, best own positions $P \in R^{N,D}$ and the global best position $p_g \in R^{N}$. The parameters $w$, $c_1$, $c_2$, $r_1$ and $r_2$ are stile scalars. but 
+with current positions $X \in R^{N,D}$, current velocity's $V \in R^{N,D}$, best own positions $P \in R^{N,D}$ and the global best position $p_g \in R^{N}$. The parameters $w$, $c_1$, $c_2$, $r_1$ and $r_2$ are stile scalars.
+
+
+## Code
+
+```{r}
+fn <- function(pos){
+  -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + exp(1) + 20
+}
+
+# fn1 <- function(par){
+#   return(fn(par, ...))
+# }
+mrunif <- function(nr, nc, lower, upper) {
+    return(matrix(runif(nr*nc,0,1),nrow=nr,ncol=nc)*(upper-lower)+lower)
+}
+par <- rep(NA, 2)
+D <- 10
+c1 <- 0.5
+c2 <- 0.5
+lower <- -10
+upper <- 10
+maxiter <- 10
+w <- 0.8
+
+X <- mrunif(nr = length(par), nc=D, lower=lower, upper=upper)
+X_fit <- apply(X, 2, fn)
+V <- mrunif(nr = length(par), nc=D, lower=lower, upper=upper)
+P <- X
+P_fit <- X_fit
+p_g <- P[, which.min(fit)]
+
+for(i in 1:maxiter){
+  V <- w * V + c1 * runif(1) * (P-X) + c2 * runif(1) * (p_g-X)
+  X <- X + V
+  X_fit <- apply(X, 2, fn)
+  P_fit[P_fit <= X_fit] <- 
+}
+
+
+
+
+#psoptim()
+
+pso_default <- function(
+  par,
+  fn,
+  ...,
+  lower,
+  upper
+){
+  
+}
+```
+
+
+
+
+
+## Example: 2-Dimensions
+
 
 
 
