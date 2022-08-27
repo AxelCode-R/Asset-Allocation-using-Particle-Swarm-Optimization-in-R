@@ -26,7 +26,7 @@ with current positions $X \in R^{N,D}$, current velocity's $V \in R^{N,D}$, best
 
 ## Code
 
-```{r}
+```{r gif_create}
 #https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/
 fn <- function(pos){
   -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + exp(1) + 20
@@ -90,6 +90,7 @@ grid$z <- apply(grid, 1, fn)
 library(ggplot2)
 library(gganimate)
 library(metR)
+###library(magick)
 # install.packages('tinytex')
 # tinytex::install_tinytex()
 
@@ -100,8 +101,17 @@ anim <- ggplot(trace_data) +
   transition_time(iter) +
   ease_aes("linear")
 
-anim_save(path="gifs/", filename = "pso_2dim.gif", animation = anim)
-gif_file("gifs/pso_2dim.gif")
+
+if(!knitr::is_latex_output()){
+  anim
+  animate(anim, renderer = file_renderer('gifs/pso_2dim/'), device = "jpeg")
+}
+# else{
+#   animate(anim, renderer = file_renderer('gifs/pso_2dim/'))
+# }
+
+# anim_save(path="gifs/", filename = "pso_2dim.gif", animation = anim)
+# gif_file("gifs/pso_2dim.gif")
 
 # #psoptim()
 # 
@@ -115,9 +125,9 @@ gif_file("gifs/pso_2dim.gif")
 #   
 # }
 ```
-
-
-
+```{=latex}
+\animategraphics[loop, width=8cm]{10}{./gifs/pso_2dim/gganim_plot000}{1}{9}
+```
 
 
 ## Example: 2-Dimensions
