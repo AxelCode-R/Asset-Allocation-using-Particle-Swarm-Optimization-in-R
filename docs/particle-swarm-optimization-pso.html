@@ -294,26 +294,26 @@ with current positions <span class="math inline">\(X \in R^{N,D}\)</span>, curre
 <span id="cb17-53"><a href="particle-swarm-optimization-pso.html#cb17-53" aria-hidden="true" tabindex="-1"></a>    trace_data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(trace_data, <span class="fu">data.frame</span>(<span class="st">&quot;iter&quot;</span><span class="ot">=</span>i, <span class="fu">t</span>(X)))</span>
 <span id="cb17-54"><a href="particle-swarm-optimization-pso.html#cb17-54" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb17-55"><a href="particle-swarm-optimization-pso.html#cb17-55" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<pre><code>## [1] &quot;mean P_fit: 12.2245032142358&quot;
-## [1] &quot;P_g_fit: 4&quot;
-## [1] &quot;mean P_fit: 12.0225113503431&quot;
-## [1] &quot;P_g_fit: 4&quot;
-## [1] &quot;mean P_fit: 11.9878673047499&quot;
-## [1] &quot;P_g_fit: 4&quot;
-## [1] &quot;mean P_fit: 11.9878673047499&quot;
-## [1] &quot;P_g_fit: 4&quot;
-## [1] &quot;mean P_fit: 11.4541451112655&quot;
-## [1] &quot;P_g_fit: 4&quot;
-## [1] &quot;mean P_fit: 8.92116211569369&quot;
-## [1] &quot;P_g_fit: 4&quot;
-## [1] &quot;mean P_fit: 7.31308227254119&quot;
-## [1] &quot;P_g_fit: 4&quot;
-## [1] &quot;mean P_fit: 6.70589481826717&quot;
-## [1] &quot;P_g_fit: 3.61257609343887&quot;
-## [1] &quot;mean P_fit: 6.52297665221052&quot;
-## [1] &quot;P_g_fit: 3.61257609343887&quot;
-## [1] &quot;mean P_fit: 5.60260600030854&quot;
-## [1] &quot;P_g_fit: 3.61257609343887&quot;</code></pre>
+<pre><code>## [1] &quot;mean P_fit: 12.416334224413&quot;
+## [1] &quot;P_g_fit: 6&quot;
+## [1] &quot;mean P_fit: 12.416334224413&quot;
+## [1] &quot;P_g_fit: 6&quot;
+## [1] &quot;mean P_fit: 12.416334224413&quot;
+## [1] &quot;P_g_fit: 6&quot;
+## [1] &quot;mean P_fit: 8.93903657954626&quot;
+## [1] &quot;P_g_fit: 5.45692845634364&quot;
+## [1] &quot;mean P_fit: 7.98439591466889&quot;
+## [1] &quot;P_g_fit: 5.45692845634364&quot;
+## [1] &quot;mean P_fit: 7.98439591466889&quot;
+## [1] &quot;P_g_fit: 5.45692845634364&quot;
+## [1] &quot;mean P_fit: 7.68613079343805&quot;
+## [1] &quot;P_g_fit: 5.45692845634364&quot;
+## [1] &quot;mean P_fit: 6.97350989853896&quot;
+## [1] &quot;P_g_fit: 4.07298447351445&quot;
+## [1] &quot;mean P_fit: 4.66634790552658&quot;
+## [1] &quot;P_g_fit: 3.12683093834061&quot;
+## [1] &quot;mean P_fit: 4.36047365906363&quot;
+## [1] &quot;P_g_fit: 3.12683093834061&quot;</code></pre>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="particle-swarm-optimization-pso.html#cb19-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">100</span>), <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">100</span>), <span class="at">stringsAsFactors =</span> F)</span>
 <span id="cb19-2"><a href="particle-swarm-optimization-pso.html#cb19-2" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>z <span class="ot">&lt;-</span> <span class="fu">apply</span>(grid, <span class="dv">1</span>, fn)</span>
 <span id="cb19-3"><a href="particle-swarm-optimization-pso.html#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -409,26 +409,26 @@ with current positions <span class="math inline">\(X \in R^{N,D}\)</span>, curre
 ## 19    19     100     0.19          3
 ## 20    20     100     0.20          3
 ##                                                                           frame_source
-## 1  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0001.jpg
-## 2  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0002.jpg
-## 3  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0003.jpg
-## 4  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0004.jpg
-## 5  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0005.jpg
-## 6  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0006.jpg
-## 7  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0007.jpg
-## 8  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0008.jpg
-## 9  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0009.jpg
-## 10 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0010.jpg
-## 11 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0011.jpg
-## 12 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0012.jpg
-## 13 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0013.jpg
-## 14 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0014.jpg
-## 15 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0015.jpg
-## 16 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0016.jpg
-## 17 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0017.jpg
-## 18 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0018.jpg
-## 19 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0019.jpg
-## 20 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpeWGwlA\\11a461e164f9/gganim_plot0020.jpg
+## 1  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0001.jpg
+## 2  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0002.jpg
+## 3  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0003.jpg
+## 4  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0004.jpg
+## 5  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0005.jpg
+## 6  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0006.jpg
+## 7  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0007.jpg
+## 8  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0008.jpg
+## 9  C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0009.jpg
+## 10 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0010.jpg
+## 11 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0011.jpg
+## 12 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0012.jpg
+## 13 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0013.jpg
+## 14 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0014.jpg
+## 15 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0015.jpg
+## 16 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0016.jpg
+## 17 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0017.jpg
+## 18 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0018.jpg
+## 19 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0019.jpg
+## 20 C:\\Users\\Axel\\AppData\\Local\\Temp\\RtmpITL3zd\\4f946c1c7b4c/gganim_plot0020.jpg
 ##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 80 rows ]</code></pre>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="particle-swarm-optimization-pso.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># else{</span></span>
 <span id="cb21-2"><a href="particle-swarm-optimization-pso.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   animate(anim, renderer = file_renderer(&#39;gifs/pso_2dim/&#39;))</span></span>

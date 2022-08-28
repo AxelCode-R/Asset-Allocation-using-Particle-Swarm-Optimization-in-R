@@ -1,8 +1,13 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Mathematical Fundations {#mathfundations}
 This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations of them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter \@ref(challenges).
 
 ## Basic Operators
-A compendium that compares commonly used mathematical symbols to R-code and its meanings can be found in the table below:
+A compendium, that compares commonly used mathematical symbols to R-code and its meanings, is listed in the table below:
 
 ```{r, echo=F}
 reactable(
@@ -24,7 +29,7 @@ reactable(
 Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices](https://www.investopedia.com/terms/a/adjusted closing price.asp), which show the percentage change over time. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns are essential for comparing assets and for analyzing dependencies.
 
 ### Daily Returns
-The default timeframe for all raw data in this thesis is one workday and only simple returns are used. The simple returns can be calculated as follows if we know the adjusted closing price $P$ of one asset on workdays $t_i$ and $t_{i+1}$:
+The default timeframe for all raw data in this thesis is one workday and only simple returns are used. Suppose there is a asset with prices $P$ on workday $t_i$ and $t_{i+1}$, then follows that the simple return on $t_{i+1}$ can be calculated as:
 $$
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 $$
@@ -32,7 +37,7 @@ $$
 ### Annualized Returns
 
 ## Markowitz Modern Portfolio Theory (MPT)
-In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: "A portfolio has the same return but less variance than the sum of its parts". This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. More specific information can be found at [@Mari2005].
+In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: "A portfolio has the same return but less variance than the sum of its parts". This is true if the assets are not perfectly correlated, because bad and good movers can make up for each other and reducing the likelihood of extreme events. More specific information can be found at [@Mari2005].
 
 ### Assumptions of Markowitz Portfolio Theory
 The following list contains all Markowitz assumptions according to [@Mari2005]:
@@ -45,7 +50,7 @@ The following list contains all Markowitz assumptions according to [@Mari2005]:
 are compensated with a higher expected return.
 
 
-The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. [@Mari2005] has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in real-life.
+The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. It is obvious that these assumptions are unrealistic in real-life. For more details regarding the requirements for utilizing other distributions, have a look at [@Mari2005]. 
 
 ## Portfolio Math
 Proofs for the fundamental calculations required for portfolio optimization as shown in [@Eric2021] will be provided in this section. The returns are presented differently than in most sources, because its the most common data-format used in practice. Suppose there are $N$ assets that are described by a return vector $R$ of random variables and a portfolio weight vector $w$, respectively:
@@ -59,15 +64,15 @@ $$
   \begin{bmatrix}
     w_{1} \\ 
     w_{2} \\
-    \cdots \\
+    \vdots \\
     w_{N}  
  \end{bmatrix}
 $$
 
-Each return is additionally simplified in this thesis so that it is normally distributed  with $R_i = \mathcal{N}(\mu_i, \sigma_i^2)$. As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.
+In this thesis, each return is simplified to be normal distributed with $R_i = \mathcal{N}(\mu_i, \sigma_i^2)$. As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.
 
 ### Expected Returns
-The following formula can be used to get the expected returns of a vector with normally distributed random variables $R \in \mathbb{R}^{N}$:
+The following formula can be used to get the expected returns of a vector with normally distributed random variables $R \in \mathbb{R}^{1\times N}$:
 \begin{align*}
   E[R] &=
   \begin{bmatrix}
@@ -143,6 +148,32 @@ The general formula to calculate the implicit daily return from $n$ days is:
 $$
   r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
 $$
+
+```{r}
+# compound
+# erklären von
+# geometric average return (is used)
+# arithmetic average return
+
+R1 <- rnorm(n = 100000, mean = 0, sd = 0.001)
+
+p1 <- plot_ly(mode="lines", type = 'scatter') %>% 
+  add_trace(x=1:length(R1), y = cumprod(1+R1), name="correct", line=list(color="grey")) %>% 
+  add_trace(x=1:length(R1), y = cumprod(rep(1+mean(R1), length(R1))), name="mean returns", line=list(color="green")) %>% 
+  add_trace(x=1:length(R1), y = cumprod(rep(prod(1+R1)^(1/length(R1)), length(R1))), name="implicit returns", line=list(color="blue"))
+
+
+R2 <- rev(-R1)
+p2 <- plot_ly(mode="lines", type = 'scatter') %>% 
+  add_trace(x=1:length(R2), y = cumprod(1+R2), name="correct", showlegend=F, line=list(color="grey")) %>% 
+  add_trace(x=1:length(R2), y = cumprod(rep(1+mean(R2), length(R2))), name="mean returns", showlegend=F, line=list(color="green")) %>% 
+  add_trace(x=1:length(R2), y = cumprod(rep(prod(1+R2)^(1/length(R2)), length(R2))), name="implicit returns", showlegend=F, line=list(color="blue"))
+
+subplot(p1, p2, nrows=2)
+```
+
+
+
 
 ### Covariance
 The general formula of the covariance matrix $\textstyle\sum$ of a random vector $R$ with $N$ normally distributed elements and $\sigma_{i,j}$ as correlation of two unique assets is described as:

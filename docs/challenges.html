@@ -335,10 +335,11 @@ minimize \ \ Var(r_{p}-r_{bm})
   r_{p} = R * w
 \]</span></p>
 <p>The Variance is then solved up until a quadratic problem dependent on the portfolio weights <span class="math inline">\(w\)</span> is represented:</p>
-<p><span class="math display">\[
-Var(r_{p}-r_{bm}) = Var(R * w - r_{bm}) = Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm})
-\]</span>
-Now the three terms can be solved, beginning with the easiest.</p>
+<p><span class="math display">\[\begin{align*}
+Var(r_{p}-r_{bm}) &amp;= Var(R * w - r_{bm}) \\
+&amp;= Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm})
+\end{align*}\]</span></p>
+<p>Now the three terms can be solved, beginning with the easiest.</p>
 <p><span class="math display">\[
 Var(r_{bm}) = \sigma_{bm}^2 = constant
 \]</span></p>
@@ -346,11 +347,14 @@ Var(r_{bm}) = \sigma_{bm}^2 = constant
 <p><span class="math display">\[
 Var(R * w) = w^T * Cov(R) * w
 \]</span>
-<span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span>
 And the last term can be solved the same way as in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span>:</p>
-<p><span class="math display">\[
-  Cov(A \times a, b) = Cov(b, A \times a) = E[(b-\mu_{b})(A \times a-\mu_{A} \times a)] = E[(b-\mu_{b})(A-\mu_{A}) \times a] = E[(b-\mu_{b})(A-\mu_{A})] \times a = Cov(A,b) \times a
-\]</span></p>
+<p><span class="math display">\[\begin{align*}
+  Cov(A \times a, b) &amp;= Cov(b, A \times a) \\
+  &amp;= E[(b-\mu_{b})(A \times a-\mu_{A} \times a)] \\
+  &amp;= E[(b-\mu_{b})(A-\mu_{A}) \times a] \\
+  &amp;= E[(b-\mu_{b})(A-\mu_{A})] \times a \\
+  &amp;= Cov(A,b) \times a
+\end{align*}\]</span></p>
 <p>This results in the final formula of the ITP:</p>
 <p><span class="math display" id="eq:ITP">\[\begin{equation}
   \begin{split}
