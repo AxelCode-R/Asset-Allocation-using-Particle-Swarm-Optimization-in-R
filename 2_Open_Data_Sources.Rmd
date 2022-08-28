@@ -15,6 +15,5 @@ This function is the main wrapper for gathering data with `getSymbols()` from ya
 + `print = F`: Should the function print the return of `getSymbols()`
 
 ### `buffer()`
-To make data reusable and decrease compiling time, this thesis saves all data gathered with `get_yf()`. It takes an R expression, evaluates it and saves it in the `buffer_data/` directory with the given name. If this name already exists it will load the R-object from the RData-file without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with `force=T`.
-
+To make data reusable and decrease compiling time, this function saves data gathered with `get_yf()`. It takes an R expression, evaluates it and saves it in the `buffer_data/` directory with the given name. If this name already exists, it loads the R-object from the RData-files, without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with `force=T`.
 

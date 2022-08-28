@@ -126,7 +126,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-08-27}
+\date{2022-08-28}
 
 \begin{document}
 \maketitle
@@ -142,7 +142,7 @@
 \renewcommand{\chaptermark}[1]{\markboth{\uppercase{#1}}{\uppercase{#1}}}
 \markboth{\uppercase{Preface}}{\uppercase{Preface}}
 
-Blah blah blah
+Blah blah blah (soll vor dem TOC kommen denke ich)
 
 \renewcommand{\chaptermark}[1]{\markboth{\uppercase{\thechapter. \ #1}}{}}
 
@@ -203,7 +203,7 @@ This function is the main wrapper for gathering data with \texttt{getSymbols()} 
 \hypertarget{buffer}{%
 \subsection{\texorpdfstring{\texttt{buffer()}}{buffer()}}\label{buffer}}
 
-To make data reusable and decrease compiling time, this thesis saves all data gathered with \texttt{get\_yf()}. It takes an R expression, evaluates it and saves it in the \texttt{buffer\_data/} directory with the given name. If this name already exists it will load the R-object from the RData-file without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with \texttt{force=T}.
+To make data reusable and decrease compiling time, this function saves data gathered with \texttt{get\_yf()}. It takes an R expression, evaluates it and saves it in the \texttt{buffer\_data/} directory with the given name. If this name already exists, it loads the R-object from the RData-files, without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with \texttt{force=T}.
 
 \hypertarget{mathfundations}{%
 \chapter{Mathematical Fundations}\label{mathfundations}}
@@ -351,12 +351,28 @@ Let \(R \in \mathbb{R}^{T \times N}\) denote a realized return Matrix of \(N\) a
  R_P
 \]
 
+\hypertarget{implicitdailyreturns}{%
+\subsection{Implicit Daily Returns}\label{implicitdailyreturns}}
+
+Because the estimation of the variance is calculated as daily variance, it needs to do the same with return over time. This can be done by calculating implicit daily returns. Suppose there is a asset with returns \(r_1 = 0.01; r_2=0.03, r_3=0.02\) then the implicit daily return \(r^{id}\) can be calculated as:
+\[
+  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
+\]
+And the benefit is that it's a daily mean return, which will produce exactly the same outcome, that means:
+\[
+  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
+\]
+The general formula to calculate the implicit daily return from \(n\) days is:
+\[
+  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
+\]
+
 \hypertarget{covariance}{%
 \subsection{Covariance}\label{covariance}}
 
 The general formula of the covariance matrix \(\textstyle\sum\) of a random vector \(R\) with \(N\) normally distributed elements and \(\sigma_{i,j}\) as correlation of two unique assets is described as:
 \begin{align*}
-  Cov(R) &= E[(R-\mu)^T \times (R-\mu)] \\
+  Cov(R) &= E[(R-\mu)^T \otimes (R-\mu)] \\
   &=   \begin{bmatrix}
     \sigma_1^2 & \sigma_{1,2} & \cdots & \sigma_{1,N} \\
     \sigma_{2, 1} & \sigma_2^2 & \cdots & \sigma_{2, N} \\
@@ -376,11 +392,12 @@ Let \(R\) be a random vector with \(N\) normally distributed elements and \(w\) 
   &= E[((R - \mu) \times w)^2]
 \end{align*}
 
-Since \((R - \mu) \times w\) is a scalar, it can be transformed from \(((R - \mu) \times w)^2\) to \(((R - \mu) \times w)^T \times ((R - \mu) \times w)\) and results in:
+Since \((R - \mu) \times w\) is a scalar, it can be transformed from \(((R - \mu) \times w)^2\) to \(((R - \mu) \times w)^T \cdot ((R - \mu) \times w)\) and results in:
 \begin{align*}
-  Var(R \times w) &= E[((R - \mu) \times w)^T \times ((R - \mu) \times w)]\\ 
-  &= E[(w^T \times (R - \mu)^T) \times ((R - \mu) \times w)]\\ 
-  &= w^T \times E[(R - \mu)^T \times (R - \mu)] \times w \\
+  Var(R \times w) &= E[((R - \mu) \cdot w)^T \times ((R - \mu) \times w)]\\ 
+  &= E[(w^T \times (R - \mu)^T) \cdot ((R - \mu) \times w)]\\ 
+  &= w^T \times E[(R - \mu)^T \otimes (R - \mu)] \times w \\
+  &= w^T \times Cov(R) \times w \\
   &= w^T \times \textstyle\sum \times w
 \end{align*}
 
@@ -440,30 +457,7 @@ The cummulated daily returns are:
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-5-1.png}
 
-The expected daily returns and the covariance matrix for the 3 assets can be estimated with the code below:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{p0}\NormalTok{(}\StringTok{"estimation of expected daily returns"}\NormalTok{)}
-\NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{((}\DecValTok{1}\SpecialCharTok{+}\NormalTok{returns), prod)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns))}\SpecialCharTok{{-}}\DecValTok{1}
-\NormalTok{mu}
-
-\FunctionTok{p0}\NormalTok{(}\StringTok{"estimation of positiv definite covariance matrix"}\NormalTok{)}
-\NormalTok{cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov}\NormalTok{(returns))}\SpecialCharTok{$}\NormalTok{mat)}
-\NormalTok{cov}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] "estimation of expected daily returns"
-##          AAPL           IBM          GOOG 
-##  0.0024166167 -0.0000952478  0.0010448549 
-## [1] "estimation of positiv definite covariance matrix"
-##              AAPL          IBM         GOOG
-## AAPL 0.0008665678 0.0004378721 0.0005361398
-## IBM  0.0004378721 0.0006646758 0.0004100227
-## GOOG 0.0005361398 0.0004100227 0.0005849202
-\end{verbatim}
+The expected daily returns and the covariance matrix for the 3 assets can be estimated with the formulas from chapter \ref{mathfundations}:
 
 These are all the necessary data to solve the MVP with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). All 100 portfolios are calculated by solving a quadratic minimization problem with long only constraint and the weights should sum up to 1.
 
@@ -471,7 +465,7 @@ The resulting daily returns and standard deviation are transformed to annual ret
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-8-1.png}
 
-The portfolio compositions for each \(\lambda\) are:
+The portfolio compositions for each \(\lambda\)'s are:
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
 
@@ -578,7 +572,7 @@ Some other sources notate the problem with different signs or coefficients that 
 \hypertarget{qp-solver-from-quadprog}{%
 \section{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
 
-The most common free QP-solver used in R is \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(D\in R^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in R^N\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\textstyle\sum\) with the function \texttt{nearPD} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \%\), which is negligible for the context of this thesis. The \texttt{solve.QP} functions for a \(N\) dimensional vector of interest, has the following arguments, that can be found in the above stated formulation of a QP:
+The most common free QP-solver used in R is \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(D\in R^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in R^N\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\textstyle\sum\) with the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \%\), which is negligible for the context of this thesis. The \texttt{solve.QP()} functions for a \(N\) dimensional vector of interest, has the following arguments, that can be found in the above stated formulation of a QP:
 
 \begin{itemize}
 \tightlist
@@ -594,7 +588,7 @@ The most common free QP-solver used in R is \href{https://cran.r-project.org/web
   \texttt{meq\ =\ 1}: means that the first row of \(A\) is treated as equality constraint
 \end{itemize}
 
-The return of \texttt{solve.QP} is a list and contains among other things the following attributes of interest:
+The return of \texttt{solve.QP()} is a list and contains among other things the following attributes of interest:
 
 \begin{itemize}
 \tightlist
@@ -605,7 +599,7 @@ The return of \texttt{solve.QP} is a list and contains among other things the fo
 \end{itemize}
 
 \hypertarget{example-solving-mvp-with-solve.qp}{%
-\section{\texorpdfstring{Example: Solving MVP with \texttt{solve.QP}}{Example: Solving MVP with solve.QP}}\label{example-solving-mvp-with-solve.qp}}
+\section{\texorpdfstring{Example: Solving MVP with \texttt{solve.QP()}}{Example: Solving MVP with solve.QP()}}\label{example-solving-mvp-with-solve.qp}}
 
 This section provides insights into the effects of diversification and the use of \texttt{solve.QP}, by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier \(i \in \{1, 2, \cdots, 10\}\) consists of \(N_i = i\) assets and is created by adding the asset with the next smallest variance first. After loading returns for ten of the biggest equity's in the US market, the variance is calculated to arrange all columns ascending by its variance, like shown in the code bellow:
 
@@ -626,7 +620,7 @@ This section provides insights into the effects of diversification and the use o
 \end{Highlighting}
 \end{Shaded}
 
-The next step is to create a function \texttt{mvp} that has the arguments \texttt{return} and \texttt{lambda}. It calculates the expected returns \texttt{mu} and the estimated positive definite covariance \texttt{cov}. Afterwards it solves a MVP with the constraints \(\textstyle\sum w = 1\) and \(w>=0\), which returns key features \texttt{mu}, \texttt{var} and \texttt{composition} of the portfolio.
+The next step is to create a function \texttt{mvp()} that has the arguments \texttt{return} and \texttt{lambda}. It calculates the expected returns \texttt{mu} and the estimated positive definite covariance \texttt{cov}. Afterwards it solves a MVP with the constraints \(\textstyle\sum w = 1\) and \(w>=0\), which returns key features \texttt{mu}, \texttt{var} and \texttt{composition} of the portfolio.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -676,72 +670,14 @@ The next step is to create a function \texttt{mvp} that has the arguments \textt
 
 Each \(\lambda \in \{0.01, 0.02, \cdots, 1\}\) and each combination of ascending number of assets produces one portfolio that can be generated with two for loops.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\StringTok{"index"}\OtherTok{=}\DecValTok{1}\NormalTok{, }\StringTok{"var"}\OtherTok{=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{var}\NormalTok{(returns\_raw[, }\DecValTok{1}\NormalTok{])), }\StringTok{"return"} \OtherTok{=} \FunctionTok{prod}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\NormalTok{returns\_raw[, }\DecValTok{1}\NormalTok{])}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns\_raw))}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{row.names=}\ConstantTok{NULL}\NormalTok{)}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\FunctionTok{ncol}\NormalTok{(returns\_raw))\{}
-\NormalTok{  returns }\OtherTok{\textless{}{-}}\NormalTok{ returns\_raw[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{i]}
-  \ControlFlowTok{for}\NormalTok{(lambda }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.01}\NormalTok{))\{}
-\NormalTok{    res }\OtherTok{\textless{}{-}} \FunctionTok{mvp}\NormalTok{(returns, lambda)}
-    
-\NormalTok{    df }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(df, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"index"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{res}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"return"} \OtherTok{=}\NormalTok{ res}\SpecialCharTok{$}\NormalTok{mu))}
-\NormalTok{  \}}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
 The result gets filtered and names are added that represent the number of assets. Now can the plot be generated:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(return)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{distinct}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{name =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"n\_"}\NormalTok{, index)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{arrange}\NormalTok{(name) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{name =} \FunctionTok{factor}\NormalTok{(name, }\AttributeTok{levels=}\FunctionTok{paste0}\NormalTok{(}\StringTok{"n\_"}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(returns\_raw)}\SpecialCharTok{:}\DecValTok{1}\NormalTok{)))}
-
-
-\NormalTok{max\_show\_sd }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{group\_by}\NormalTok{(index) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{max\_x =} \FunctionTok{max}\NormalTok{(var)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{pull}\NormalTok{(max\_x) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mean}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{sqrt}\NormalTok{()}
-
-\FunctionTok{plot\_ly}\NormalTok{(}
-    \AttributeTok{data =}\NormalTok{ df[df}\SpecialCharTok{$}\NormalTok{index}\SpecialCharTok{!=}\DecValTok{1}\NormalTok{,], }
-    \AttributeTok{x=}\SpecialCharTok{\textasciitilde{}}\FunctionTok{sqrt}\NormalTok{(var), }
-    \AttributeTok{y=}\SpecialCharTok{\textasciitilde{}}\NormalTok{return, }
-    \AttributeTok{name=}\SpecialCharTok{\textasciitilde{}}\NormalTok{name, }
-    \AttributeTok{mode=}\StringTok{"lines"}\NormalTok{, }
-    \AttributeTok{type =} \StringTok{\textquotesingle{}scatter\textquotesingle{}}\NormalTok{, }
-    \AttributeTok{color =} \SpecialCharTok{\textasciitilde{}}\NormalTok{name, }
-    \AttributeTok{colors =} \FunctionTok{c}\NormalTok{(}\StringTok{"green"}\NormalTok{, }\StringTok{"red"}\NormalTok{)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{add\_trace}\NormalTok{(}
-    \AttributeTok{data=}\NormalTok{df[df}\SpecialCharTok{$}\NormalTok{index}\SpecialCharTok{==}\DecValTok{1}\NormalTok{,],  }
-    \AttributeTok{x=}\SpecialCharTok{\textasciitilde{}}\FunctionTok{sqrt}\NormalTok{(var), }
-    \AttributeTok{y=}\SpecialCharTok{\textasciitilde{}}\NormalTok{return, }
-    \AttributeTok{showlegend=}\NormalTok{T, }
-    \AttributeTok{marker=}\FunctionTok{list}\NormalTok{(}\AttributeTok{color=}\StringTok{"red"}\NormalTok{), }
-    \AttributeTok{mode=}\StringTok{"markers"}\NormalTok{, }
-    \AttributeTok{name=}\StringTok{"n\_1"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{layout}\NormalTok{(}
-    \AttributeTok{xaxis=}\FunctionTok{list}\NormalTok{(}\AttributeTok{range=}\FunctionTok{c}\NormalTok{(}\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{min}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{var))}\SpecialCharTok{*}\FloatTok{0.9}\NormalTok{, max\_show\_sd), }\AttributeTok{title=}\StringTok{"standard deviation"}\NormalTok{),}
-    \AttributeTok{yaxis=}\FunctionTok{list}\NormalTok{(}\AttributeTok{range=}\FunctionTok{c}\NormalTok{(}\FunctionTok{min}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{return)}\SpecialCharTok{*}\FloatTok{0.9}\NormalTok{, (}\FunctionTok{max}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{return)}\SpecialCharTok{+}\FunctionTok{mean}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{return))}\SpecialCharTok{*}\FloatTok{0.5}\NormalTok{), }\AttributeTok{title=}\StringTok{"return"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-14-1.png}
 
 It can be seen, that each asset added results in a minimum variance portfolio with smaller or equal standard deviation. Nonetheless that it started with the asset that has the smallest standard deviation of 0.0134977. This is the effect of diversification mentioned by Markowitz.
 
 \hypertarget{example-solving-itp-with-solve.qp}{%
-\section{\texorpdfstring{Example: Solving ITP with \texttt{solve.QP}}{Example: Solving ITP with solve.QP}}\label{example-solving-itp-with-solve.qp}}
+\section{\texorpdfstring{Example: Solving ITP with \texttt{solve.QP()}}{Example: Solving ITP with solve.QP()}}\label{example-solving-itp-with-solve.qp}}
 
-This example will analyse how many assets are needed to minimize the variance between the replication and the S\&P 500 historical returns from \texttt{2016-01-01} to \texttt{2021-12-31}. The constraints are set to be long only and the weights should sum up to one. To step-wise reduce the number of assets, the five assets with the least weights gets discarded and acts as the new asset pool for the next replication, until only five assets are left. At first the needed data can be downloaded with existing functions from the \texttt{R/} directory. The function \texttt{get\_spx\_composition} uses web scrapping to read the constituents of \href{https://en.wikipedia.org/wiki/List_of_S\%26P_500_companies}{wikipedia} and transforms it in monthly compositions of the S\&P 500. The pool is created by all assets that are present in the last month of the timeframe, reduced by assets with missing values. The code below, loads returns of all assets in the pool and the S\&P 500:
+This example will analyse how many assets are needed to minimize the variance between the replication and the S\&P 500 historical returns from \texttt{2016-01-01} to \texttt{2021-12-31}. The constraints are set to be long only and the weights should sum up to one. To step-wise reduce the number of assets, the five assets with the least weights gets discarded and acts as the new asset pool for the next replication, until only five assets are left. At first the needed data can be downloaded with existing functions from the \texttt{R/} directory. The function \texttt{get\_spx\_composition()} uses web scrapping to read the constituents of \href{https://en.wikipedia.org/wiki/List_of_S\%26P_500_companies}{wikipedia} and transforms it in monthly compositions of the S\&P 500. The pool is created by all assets that are present in the last month of the timeframe, reduced by assets with missing values. The code below, loads returns of all assets in the pool and the S\&P 500:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -802,27 +738,6 @@ Now are all needed data present and the function for the ITP can be created. It 
 \end{Shaded}
 
 Now can the replication and successive discarding of assets begin. The results are saved in \texttt{res} and used to plot the results.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{res }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{rev}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{5}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw), }\DecValTok{5}\NormalTok{)))\{}
-  \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{==}\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw))\{}
-\NormalTok{    temp }\OtherTok{\textless{}{-}} \FunctionTok{itp}\NormalTok{(pool\_returns\_raw, bm\_returns)}
-\NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{}
-\NormalTok{    temp }\OtherTok{\textless{}{-}} \FunctionTok{itp}\NormalTok{(pool\_returns\_raw[, }\FunctionTok{names}\NormalTok{(}\FunctionTok{sort}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{solution, }\AttributeTok{decreasing =}\NormalTok{ T)[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{i])], bm\_returns)}
-\NormalTok{  \}}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(res, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"N"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{temp}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"sd"}\OtherTok{=}\FunctionTok{sqrt}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{var), }\AttributeTok{row.names =} \ConstantTok{NULL}\NormalTok{))}
-\NormalTok{\}}
-
-
-\FunctionTok{plot\_ly}\NormalTok{(}\AttributeTok{data=}\NormalTok{res, }\AttributeTok{x=}\SpecialCharTok{\textasciitilde{}}\NormalTok{N, }\AttributeTok{y=}\SpecialCharTok{\textasciitilde{}}\NormalTok{sd, }\AttributeTok{mode=}\StringTok{"lines"}\NormalTok{, }\AttributeTok{type =} \StringTok{\textquotesingle{}scatter\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{layout}\NormalTok{(}\AttributeTok{yaxis=}\FunctionTok{list}\NormalTok{(}\AttributeTok{range=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{mean}\NormalTok{(}\FunctionTok{max}\NormalTok{(res}\SpecialCharTok{$}\NormalTok{sd),}\FunctionTok{mean}\NormalTok{(res}\SpecialCharTok{$}\NormalTok{sd)) ))) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-17-1.png}
 
 It can be seen that the standard deviation stagnates at about \(N=100\). This results in the conclusion that a sparse replication with hundred assets is, in this sepcific case, sufficient to track the historical S\&P 500 performance of the timeframe.
 
@@ -912,26 +827,26 @@ with current positions \(X \in R^{N,D}\), current velocity's \(V \in R^{N,D}\), 
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "mean P_fit: 13.8357392635391"
-## [1] "P_g_fit: 6.16153960594603"
-## [1] "mean P_fit: 13.8230109011181"
-## [1] "P_g_fit: 6.16153960594603"
-## [1] "mean P_fit: 13.6443048556828"
-## [1] "P_g_fit: 6.16153960594603"
-## [1] "mean P_fit: 8.40893494822595"
-## [1] "P_g_fit: 2.59654452604916"
-## [1] "mean P_fit: 6.70169668665106"
-## [1] "P_g_fit: 2.59654452604916"
-## [1] "mean P_fit: 5.71084390311925"
-## [1] "P_g_fit: 2.59654452604916"
-## [1] "mean P_fit: 5.45110511934317"
-## [1] "P_g_fit: 2.59654452604916"
-## [1] "mean P_fit: 4.51902097353436"
-## [1] "P_g_fit: 2.50244012890064"
-## [1] "mean P_fit: 3.53970245426114"
-## [1] "P_g_fit: 2.49501355423973"
-## [1] "mean P_fit: 3.44655392098547"
-## [1] "P_g_fit: 2.44399574492065"
+## [1] "mean P_fit: 13.0863172324073"
+## [1] "P_g_fit: 2"
+## [1] "mean P_fit: 13.0232601932714"
+## [1] "P_g_fit: 2"
+## [1] "mean P_fit: 11.7219189813533"
+## [1] "P_g_fit: 2"
+## [1] "mean P_fit: 8.44954654427425"
+## [1] "P_g_fit: 2"
+## [1] "mean P_fit: 7.85574496516824"
+## [1] "P_g_fit: 2"
+## [1] "mean P_fit: 7.46345693668874"
+## [1] "P_g_fit: 2"
+## [1] "mean P_fit: 7.18720785713128"
+## [1] "P_g_fit: 2"
+## [1] "mean P_fit: 6.32195506902286"
+## [1] "P_g_fit: 2"
+## [1] "mean P_fit: 6.22404203801382"
+## [1] "P_g_fit: 2"
+## [1] "mean P_fit: 6.17099133618426"
+## [1] "P_g_fit: 2"
 \end{verbatim}
 
 \begin{Shaded}

@@ -7,9 +7,9 @@ A compendium that compares commonly used mathematical symbols to R-code and its 
 ```{r, echo=F}
 reactable(
   data.frame(
-    "Latex" = c("&#215;", 'A<sup>T</sup>', "&middot;"),
-    "R"= c("%*%", "t(A)", "*"),
-    "Meaning" = c("Matrix or vector multiplication and cross-product", "transpose of Matrix or vector A", "Scalar or elementwise vector multiplication")
+    "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;"),
+    "R"= c("%*%", "%*%","t(A)", "*"),
+    "Meaning" = c("Matrix or Vector multiplication and Cross-Product", "Outer Product", "Transpose of Matrix or Vector A", "Scalar or elementwise Vector multiplication")
   ), 
   columns <- list(
     Latex = colDef(name = "Latex/Displayed", html = T),
@@ -130,11 +130,24 @@ $$
  R_P
 $$
 
+### Implicit Daily Returns {#implicitdailyreturns}
+Because the estimation of the variance is calculated as daily variance, it needs to do the same with return over time. This can be done by calculating implicit daily returns. Suppose there is a asset with returns $r_1 = 0.01; r_2=0.03, r_3=0.02$ then the implicit daily return $r^{id}$ can be calculated as:
+$$
+  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
+$$
+And the benefit is that it's a daily mean return, which will produce exactly the same outcome, that means:
+$$
+  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
+$$
+The general formula to calculate the implicit daily return from $n$ days is:
+$$
+  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
+$$
 
 ### Covariance
 The general formula of the covariance matrix $\textstyle\sum$ of a random vector $R$ with $N$ normally distributed elements and $\sigma_{i,j}$ as correlation of two unique assets is described as:
 \begin{align*}
-  Cov(R) &= E[(R-\mu)^T \times (R-\mu)] \\
+  Cov(R) &= E[(R-\mu)^T \otimes (R-\mu)] \\
   &=   \begin{bmatrix}
     \sigma_1^2 & \sigma_{1,2} & \cdots & \sigma_{1,N} \\
     \sigma_{2, 1} & \sigma_2^2 & \cdots & \sigma_{2, N} \\
@@ -152,11 +165,12 @@ Let $R$ be a random vector with $N$ normally distributed elements and $w$ a weig
   &= E[((R - \mu) \times w)^2]
 \end{align*}
 
-Since $(R - \mu) \times w$ is a scalar, it can be transformed from $((R - \mu) \times w)^2$ to $((R - \mu) \times w)^T \times ((R - \mu) \times w)$ and results in:
+Since $(R - \mu) \times w$ is a scalar, it can be transformed from $((R - \mu) \times w)^2$ to $((R - \mu) \times w)^T \cdot ((R - \mu) \times w)$ and results in:
 \begin{align*}
-  Var(R \times w) &= E[((R - \mu) \times w)^T \times ((R - \mu) \times w)]\\ 
-  &= E[(w^T \times (R - \mu)^T) \times ((R - \mu) \times w)]\\ 
-  &= w^T \times E[(R - \mu)^T \times (R - \mu)] \times w \\
+  Var(R \times w) &= E[((R - \mu) \cdot w)^T \times ((R - \mu) \times w)]\\ 
+  &= E[(w^T \times (R - \mu)^T) \cdot ((R - \mu) \times w)]\\ 
+  &= w^T \times E[(R - \mu)^T \otimes (R - \mu)] \times w \\
+  &= w^T \times Cov(R) \times w \\
   &= w^T \times \textstyle\sum \times w
 \end{align*}
 

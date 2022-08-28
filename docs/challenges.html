@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-08-27" />
+<meta name="date" content="2022-08-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -189,8 +189,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a></li>
-<li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-mvp-with-solve.qp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP</code></a></li>
-<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-itp-with-solve.qp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP</code></a></li>
+<li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-mvp-with-solve.qp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-itp-with-solve.qp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization (PSO)</a>
 <ul>
@@ -243,8 +243,8 @@ div.csl-indent {
 <span id="cb1-4"><a href="challenges.html#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>The cummulated daily returns are:</p>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>The expected daily returns and the covariance matrix for the 3 assets can be estimated with the code below:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="challenges.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p0</span>(<span class="st">&quot;estimation of expected daily returns&quot;</span>)</span>
+<p>The expected daily returns and the covariance matrix for the 3 assets can be estimated with the formulas from chapter <a href="mathfundations.html#mathfundations">4</a>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb2-1"><a href="challenges.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p0</span>(<span class="st">&quot;estimation of expected daily returns&quot;</span>)</span>
 <span id="cb2-2"><a href="challenges.html#cb2-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">sapply</span>((<span class="dv">1</span><span class="sc">+</span>returns), prod)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">nrow</span>(returns))<span class="sc">-</span><span class="dv">1</span></span>
 <span id="cb2-3"><a href="challenges.html#cb2-3" aria-hidden="true" tabindex="-1"></a>mu</span>
 <span id="cb2-4"><a href="challenges.html#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -314,7 +314,7 @@ div.csl-indent {
 <span id="cb5-19"><a href="challenges.html#cb5-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-20"><a href="challenges.html#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<p>The portfolio compositions for each <span class="math inline">\(\lambda\)</span> are:</p>
+<p>The portfolio compositions for each <span class="math inline">\(\lambda\)</span>’s are:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb6-1"><a href="challenges.html#cb6-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">type=</span><span class="st">&quot;bar&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">layout</span>(<span class="at">title=</span><span class="st">&quot;Portfolio compositions&quot;</span>, <span class="at">barmode=</span><span class="st">&quot;stack&quot;</span>, <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;lambda&quot;</span>, <span class="at">autorange =</span> <span class="st">&quot;reversed&quot;</span>), <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;wgt&quot;</span>))</span>
 <span id="cb6-2"><a href="challenges.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(portfolios)){</span>
 <span id="cb6-3"><a href="challenges.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> p <span class="sc">%&gt;%</span></span>
@@ -342,7 +342,7 @@ Now the three terms can be solved, beginning with the easiest.</p>
 <p><span class="math display">\[
 Var(r_{bm}) = \sigma_{bm}^2 = constant
 \]</span></p>
-<p>The variance of the portfolio can be solved with <a href="mathfundations.html#portvar">4.4.5</a>:</p>
+<p>The variance of the portfolio can be solved with <a href="mathfundations.html#portvar">4.4.6</a>:</p>
 <p><span class="math display">\[
 Var(R * w) = w^T * Cov(R) * w
 \]</span>

@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-08-27" />
+<meta name="date" content="2022-08-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -189,8 +189,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a></li>
-<li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-mvp-with-solve.qp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP</code></a></li>
-<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-itp-with-solve.qp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP</code></a></li>
+<li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-mvp-with-solve.qp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-itp-with-solve.qp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization (PSO)</a>
 <ul>
@@ -239,7 +239,7 @@ div.csl-indent {
 </div>
 <div id="buffer" class="section level3 hasAnchor" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> <code>buffer()</code><a href="open-data-sources.html#buffer" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>To make data reusable and decrease compiling time, this thesis saves all data gathered with <code>get_yf()</code>. It takes an R expression, evaluates it and saves it in the <code>buffer_data/</code> directory with the given name. If this name already exists it will load the R-object from the RData-file without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with <code>force=T</code>.</p>
+<p>To make data reusable and decrease compiling time, this function saves data gathered with <code>get_yf()</code>. It takes an R expression, evaluates it and saves it in the <code>buffer_data/</code> directory with the given name. If this name already exists, it loads the R-object from the RData-files, without evaluating the expression. Forcing the evaluation and overwriting the existing RData-file can be done with <code>force=T</code>.</p>
 
 </div>
 </div>

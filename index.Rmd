@@ -44,6 +44,6 @@ description: This GitBook is an example of a GitBook for teaching. It can be ada
 \renewcommand{\chaptermark}[1]{\markboth{\uppercase{#1}}{\uppercase{#1}}}
 \chaptermark{Preface}
 
-Blah blah blah
+Blah blah blah (soll vor dem TOC kommen denke ich)
 
 \renewcommand{\chaptermark}[1]{\markboth{\uppercase{\thechapter. \ #1}}{}}

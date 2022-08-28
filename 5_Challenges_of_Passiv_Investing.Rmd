@@ -37,9 +37,9 @@ plotly_line_chart_xts(ret_to_cumret(returns)) %>%
 
 ```
 
-The expected daily returns and the covariance matrix for the 3 assets can be estimated with the code below:
+The expected daily returns and the covariance matrix for the 3 assets can be estimated with the formulas from chapter \@ref(mathfundations):
 
-```{r, results = "hold"}
+```{r, results = "hold", include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 p0("estimation of expected daily returns")
 mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
 mu
@@ -113,7 +113,7 @@ plot_ly(data = mu_and_var) %>%
 
 ```
 
-The portfolio compositions for each $\lambda$ are:
+The portfolio compositions for each $\lambda$'s are:
 
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
 p <- plot_ly(type="bar") %>% layout(title="Portfolio compositions", barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="wgt"))
