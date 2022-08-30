@@ -126,7 +126,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-08-28}
+\date{2022-08-30}
 
 \begin{document}
 \maketitle
@@ -213,7 +213,7 @@ This chapter provides an overview of the mathematical calculations and conventio
 \hypertarget{basic-operators}{%
 \section{Basic Operators}\label{basic-operators}}
 
-A compendium that compares commonly used mathematical symbols to R-code and its meanings can be found in the table below:
+A compendium, that compares commonly used mathematical symbols to R-code and its meanings, is listed in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png}
 
@@ -222,21 +222,18 @@ A compendium that compares commonly used mathematical symbols to R-code and its 
 
 Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using \href{https://www.investopedia.com/terms/a/adjusted\%20closing\%20price.asp}{adjusted closing prices}, which show the percentage change over time. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns are essential for comparing assets and for analyzing dependencies.
 
-\hypertarget{daily-returns}{%
-\subsection{Daily Returns}\label{daily-returns}}
+\hypertarget{simple-returns}{%
+\subsection{Simple Returns}\label{simple-returns}}
 
-The default timeframe for all raw data in this thesis is one workday and only simple returns are used. The simple returns can be calculated as follows if we know the adjusted closing price \(P\) of one asset on workdays \(t_i\) and \(t_{i+1}\):
+The default timeframe for all raw data in this thesis is one workday and only simple returns are used. Suppose there is a asset with prices \(P\) on workday \(t_i\) and and following workday \(t_{i+1}\), then follows that the simple return on \(t_{i+1}\) can be calculated as:
 \[
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 \]
 
-\hypertarget{annualized-returns}{%
-\subsection{Annualized Returns}\label{annualized-returns}}
-
 \hypertarget{markowitz-modern-portfolio-theory-mpt}{%
 \section{Markowitz Modern Portfolio Theory (MPT)}\label{markowitz-modern-portfolio-theory-mpt}}
 
-In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: ``A portfolio has the same return but less variance than the sum of its parts''. This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. More specific information can be found at \citep{Mari2005}.
+In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: ``A portfolio has the same return but less variance than the sum of its parts''. This is true if the assets are not perfectly correlated, because bad and good movers can make up for each other and reducing the likelihood of extreme events. More specific information can be found at \citep{Mari2005}.
 
 \hypertarget{assumptions-of-markowitz-portfolio-theory}{%
 \subsection{Assumptions of Markowitz Portfolio Theory}\label{assumptions-of-markowitz-portfolio-theory}}
@@ -258,7 +255,7 @@ The following list contains all Markowitz assumptions according to \citep{Mari20
   are compensated with a higher expected return.
 \end{itemize}
 
-The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. \citep{Mari2005} has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in real-life.
+The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. It is obvious that these assumptions are unrealistic in real-life. For more details regarding the requirements for utilizing other distributions, have a look at \citep{Mari2005}.
 
 \hypertarget{portfolio-math}{%
 \section{Portfolio Math}\label{portfolio-math}}
@@ -274,17 +271,17 @@ Proofs for the fundamental calculations required for portfolio optimization as s
   \begin{bmatrix}
     w_{1} \\ 
     w_{2} \\
-    \cdots \\
+    \vdots \\
     w_{N}  
  \end{bmatrix}
 \]
 
-Each return is additionally simplified in this thesis so that it is normally distributed with \(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\). As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.
+In this thesis, each return is simplified to be normal distributed with \(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\). As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.
 
 \hypertarget{expected-returns}{%
 \subsection{Expected Returns}\label{expected-returns}}
 
-The following formula can be used to get the expected returns of a vector with normally distributed random variables \(R \in \mathbb{R}^{N}\):
+The following formula can be used to get the expected returns of a vector with normally distributed random variables \(R \in \mathbb{R}^{1\times N}\):
 \begin{align*}
   E[R] &=
   \begin{bmatrix}
@@ -297,7 +294,7 @@ The following formula can be used to get the expected returns of a vector with n
  =
  \mu
 \end{align*}
-and \(\mu_i\) can be estimated in R with the base-function \texttt{mean()} and historical data.
+and \(\mu_i\) can be estimated in R with historical data and the formula for geometric mean returns (also called compound returns). The function to calculate the geometric mean returns from a xts-object can be found in \ref{geomeanret}.
 
 \hypertarget{expected-portfolio-returns}{%
 \subsection{Expected Portfolio Returns}\label{expected-portfolio-returns}}
@@ -351,22 +348,6 @@ Let \(R \in \mathbb{R}^{T \times N}\) denote a realized return Matrix of \(N\) a
  R_P
 \]
 
-\hypertarget{implicitdailyreturns}{%
-\subsection{Implicit Daily Returns}\label{implicitdailyreturns}}
-
-Because the estimation of the variance is calculated as daily variance, it needs to do the same with return over time. This can be done by calculating implicit daily returns. Suppose there is a asset with returns \(r_1 = 0.01; r_2=0.03, r_3=0.02\) then the implicit daily return \(r^{id}\) can be calculated as:
-\[
-  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
-\]
-And the benefit is that it's a daily mean return, which will produce exactly the same outcome, that means:
-\[
-  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
-\]
-The general formula to calculate the implicit daily return from \(n\) days is:
-\[
-  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
-\]
-
 \hypertarget{covariance}{%
 \subsection{Covariance}\label{covariance}}
 
@@ -411,10 +392,37 @@ asdad
 \hypertarget{pritoret}{%
 \subsection{\texorpdfstring{\texttt{pri\_to\_ret()}}{pri\_to\_ret()}}\label{pritoret}}
 
-asdasd
+asdasdasd ((prices to returns))
 
 \hypertarget{ret_to_cumret}{%
 \subsection{\texorpdfstring{\texttt{ret\_to\_cumret()}}{ret\_to\_cumret()}}\label{ret_to_cumret}}
+
+asdasdasdasdasd ((returns to cumulated returns normalized to 100))
+
+\hypertarget{geomeanret}{%
+\subsection{\texorpdfstring{\texttt{ret\_to\_geomeanret()}}{ret\_to\_geomeanret()}}\label{geomeanret}}
+
+Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. Because the estimation of the variance is calculated as daily variance, it needs to do the same with returns over time. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns \(r_1 = 0.01; r_2=0.03, r_3=0.02\) then the geometric mean return \(r^{id}\) can be calculated as:
+\[
+  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
+\]
+And the benefit is that it's a daily mean return, which will produce exactly the same outcome, that means:
+\[
+  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
+\]
+This isnt the case for arithmetic mean returns. The general formula to calculate the implicit daily return from \(n\) days is:
+\[
+  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
+\]
+and as R-code:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ret\_to\_geomeanret }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(xts\_ret)\{}
+  \FunctionTok{sapply}\NormalTok{((}\DecValTok{1}\SpecialCharTok{+}\NormalTok{xts\_ret), prod)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(xts\_ret))}\SpecialCharTok{{-}}\DecValTok{1}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
@@ -455,7 +463,7 @@ All possible MVPs combined create the efficient frontier, that is analyzed in th
 
 The cummulated daily returns are:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-5-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-6-1.png}
 
 The expected daily returns and the covariance matrix for the 3 assets can be estimated with the formulas from chapter \ref{mathfundations}:
 
@@ -463,11 +471,11 @@ These are all the necessary data to solve the MVP with \(\lambda \in \{0.01, 0.0
 
 The resulting daily returns and standard deviation are transformed to annual returns and standard deviation and are plotted to create the efficient frontier:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-8-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
 
 The portfolio compositions for each \(\lambda\)'s are:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
 
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-Tracking Portfolio (ITP)}\label{index-tracking-portfolio-itp}}
@@ -553,7 +561,7 @@ This example will show the results of tracking the S\&P 500 with a tracking port
 ## 0.2681058 0.4040352 0.3278591
 \end{verbatim}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
 
 \hypertarget{analytic-solver-for-quadratic-programming-problems}{%
 \chapter{Analytic Solver for Quadratic Programming Problems}\label{analytic-solver-for-quadratic-programming-problems}}
@@ -754,22 +762,144 @@ The PSO was developed by J. Kennedy as a Global Optimization method based on Swa
 \hypertarget{the-algorithm}{%
 \section{The Algorithm}\label{the-algorithm}}
 
-Each Particle \(d\) with position \(x_d\) moves in the search space \(R^N\) and has its own velocity \(v_d\) and remembers its best position \(p_d\). After each iteration the velocity changes into the direction of its previous velocity, its best position and the global best position \(p_g\) of all particles. A position change from \(i\) to \(i+1\) can be calculated by the following two equations \citep{PaVr2002}:
+Each Particle \(d\) with position \(x_d\) moves in the search space \(R^N\) and has its inherent velocity \(v_d\) and remembers its best position \(p_d\). After each iteration the velocity changes into the direction of its previous velocity, its best inherent position and the global best position \(p_g\) of all particles. A position change from \(i\) to \(i+1\) can be calculated by the following two equations \citep{PaVr2002}:
 \[
   v_d^{i+1} = wv_d^{i} + c_1 r_1^i (p_d^i-x_d^i) + c_2 r_2^i (p_g^i - x_d^i) \\
   x_d^{i+1} = x_d^i + v_d^{i+1}
 \]
-with \(r_1\) and \(r_2\) being uniformly distributed random numbers in {[}0, 1{]}. The cognitive parameter \(c_1\) acts as the weighting of the direction to its own best position of the particle. On the contrary is the social parameter \(c_2\), which is a weighting to the direction of the global best position. The inertia weight \(w\) is crucial for the convergence behavior by remembering a part of its historical trajectory. A study examined in \citep{PaVr2002} showed that these parameters can be set to \(c_1=c_2=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems do benefit from more fine-tuning of these parameters. \textbackslash{}
+with \(r_1\) and \(r_2\) being uniformly distributed random numbers in {[}0, 1{]}. The cognitive parameter \(c_1\) acts as the weighting of the direction to its inherent best position of the particle. On the contrary is the social parameter \(c_2\), which is a weighting to the direction of the global best position. The inertia weight \(w\) is crucial for the convergence behavior by remembering a part of its historical trajectory. A study examined in \citep{PaVr2002} showed that these parameters can be set to \(c_1=c_2=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems do benefit from more fine-tuning of these parameters.
 
 To provide a effortless translation to code, the formula above can be stated for \(d = 1, 2, \cdots, D\) particles in the following matrix notation:
 \[
   V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} = X^i + V^{i+1}
 \]
-with current positions \(X \in R^{N,D}\), current velocity's \(V \in R^{N,D}\), best own positions \(P \in R^{N,D}\) and the global best position \(p_g \in R^{N}\). The parameters \(w\), \(c_1\), \(c_2\), \(r_1\) and \(r_2\) are stile scalars.
+with current positions \(X \in R^{N \times D}\), current velocity's \(V \in R^{N \times D}\), best inherent positions \(P \in R^{N \times D}\) and the global best position \(p_g \in R^{N}\). The parameters \(w\), \(c_1\), \(c_2\), \(r_1\) and \(r_2\) are stile scalars.
 
-\hypertarget{code}{%
-\section{Code}\label{code}}
+\hypertarget{pso-function}{%
+\section{PSO Function}\label{pso-function}}
+
+A general purpose PSO function is created in this section by following the structure of other optimization heuristics in R, specially the existing PSO implementation from the R-Package \texttt{pso}. The center of everything is a objective function \texttt{fn()} which will return a scalar that needs to be minimized. The function itself needs mainly a vector \texttt{pos} that describes the position of a particle (e.g.~weights). The other main parameters for the PSO function are \texttt{par}, which is one position of a particle, that is used to derive the dimension of the problem and used as first position of one particle. The argument can contain only \texttt{NA}'s which results in completely randomized starting positions. The last two arguments needed are \texttt{lower}and \texttt{upper} bounds (e.g.~weights bigger than 0 and smaller than 1). All other parameters have default values that can be overwritten by passing a list named \texttt{control}. The resulting structure is:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PSO }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}
+\NormalTok{    par, }
+\NormalTok{    fn, }
+\NormalTok{    lower, }
+\NormalTok{    upper, }
+    \AttributeTok{control =} \FunctionTok{list}\NormalTok{(}
+      \AttributeTok{s =} \DecValTok{10}\NormalTok{, }\CommentTok{\# swarm size}
+      \AttributeTok{c1 =} \FloatTok{0.5}\NormalTok{, }\CommentTok{\# inherit best}
+      \AttributeTok{c2 =} \FloatTok{0.5}\NormalTok{, }\CommentTok{\# global best}
+      \AttributeTok{maxiter =} \DecValTok{10}\NormalTok{, }\CommentTok{\# iterations}
+      \AttributeTok{w0 =} \FloatTok{1.2}\NormalTok{, }\CommentTok{\# starting inertia weight}
+      \AttributeTok{wN =} \DecValTok{0}\NormalTok{, }\CommentTok{\# ending inertia weight}
+      \AttributeTok{save\_traces =}\NormalTok{ F }\CommentTok{\# save more information}
+\NormalTok{    ))\{}
+
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Before the main data-structure can be initialized, its necessary to create some example inputs for the \texttt{PSO()} function like below:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{par }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\NormalTok{fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}\FunctionTok{return}\NormalTok{(}\FunctionTok{sum}\NormalTok{(}\FunctionTok{abs}\NormalTok{(x)))\}}
+\NormalTok{lower }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{10}
+\NormalTok{upper }\OtherTok{\textless{}{-}} \DecValTok{10}
+\NormalTok{control }\OtherTok{=} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{s =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{c1 =} \FloatTok{0.5}\NormalTok{,}
+  \AttributeTok{c2 =} \FloatTok{0.5}\NormalTok{,}
+  \AttributeTok{maxiter =} \DecValTok{100}\NormalTok{,}
+  \AttributeTok{w0 =} \FloatTok{1.2}\NormalTok{,}
+  \AttributeTok{wN =} \DecValTok{0}\NormalTok{,}
+  \AttributeTok{save\_traces =}\NormalTok{ F}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Now is the time to initialize the random positions \texttt{X}, its fitness \texttt{X\_fit} and its random velocity's \texttt{V} with the function \texttt{mrunif()}, which will create a matrix from uniformly distributed random numbers between \texttt{lower} and \texttt{upper}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X }\OtherTok{\textless{}{-}} \FunctionTok{mrunif}\NormalTok{(}\AttributeTok{nr =} \FunctionTok{length}\NormalTok{(par), }\AttributeTok{nc=}\NormalTok{control}\SpecialCharTok{$}\NormalTok{s, }\AttributeTok{lower=}\NormalTok{lower, }\AttributeTok{upper=}\NormalTok{upper)}
+\ControlFlowTok{if}\NormalTok{(}\FunctionTok{all}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(par)))\{}
+\NormalTok{  X[, }\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ par}
+\NormalTok{\}}
+\NormalTok{X\_fit }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, fn)}
+\NormalTok{V }\OtherTok{\textless{}{-}} \FunctionTok{mrunif}\NormalTok{(}\AttributeTok{nr =} \FunctionTok{length}\NormalTok{(par), }\AttributeTok{nc=}\NormalTok{control}\SpecialCharTok{$}\NormalTok{s, }\AttributeTok{lower=}\SpecialCharTok{{-}}\NormalTok{(upper}\SpecialCharTok{{-}}\NormalTok{lower), }\AttributeTok{upper=}\NormalTok{(upper}\SpecialCharTok{{-}}\NormalTok{lower))}\SpecialCharTok{/}\DecValTok{4}
+\end{Highlighting}
+\end{Shaded}
+
+The velocity's are compressed with factor 4 to start with a maximal movement from a quarter of the space in each axis. The personal best positions \texttt{P} are the same as \texttt{X} and the global best position is the position with the smallest fitness:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{P }\OtherTok{\textless{}{-}}\NormalTok{ X}
+\NormalTok{P\_fit }\OtherTok{\textless{}{-}}\NormalTok{ X\_fit}
+\NormalTok{p\_g }\OtherTok{\textless{}{-}}\NormalTok{ P[, }\FunctionTok{which.min}\NormalTok{(P\_fit)]}
+\NormalTok{p\_g\_fit }\OtherTok{\textless{}{-}} \FunctionTok{which.min}\NormalTok{(P\_fit)}
+\end{Highlighting}
+\end{Shaded}
+
+The needed data-structure is present and the optimization can start by calculating the new velocity's and the transformation of the old positions. If particles have left the valid space, they get pushed back to the border. Afterwards the fitness is calculated and the personal best and global best positions are saved, if they have improved.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{trace\_data }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{control}\SpecialCharTok{$}\NormalTok{maxiter)\{}
+  \CommentTok{\# move particles}
+\NormalTok{  V }\OtherTok{\textless{}{-}}\NormalTok{ (control}\SpecialCharTok{$}\NormalTok{w0}\SpecialCharTok{{-}}\NormalTok{(control}\SpecialCharTok{$}\NormalTok{w0}\SpecialCharTok{{-}}\NormalTok{control}\SpecialCharTok{$}\NormalTok{wN)}\SpecialCharTok{*}\NormalTok{i}\SpecialCharTok{/}\NormalTok{control}\SpecialCharTok{$}\NormalTok{maxiter) }\SpecialCharTok{*}\NormalTok{ V }\SpecialCharTok{+} 
+\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c1 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+} 
+\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c2 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
+\NormalTok{  X }\OtherTok{\textless{}{-}}\NormalTok{ X }\SpecialCharTok{+}\NormalTok{ V}
+  
+  \CommentTok{\# move into valid space}
+\NormalTok{  X[X }\SpecialCharTok{\textgreater{}}\NormalTok{ upper] }\OtherTok{\textless{}{-}}\NormalTok{ upper}
+\NormalTok{  X[X }\SpecialCharTok{\textless{}}\NormalTok{ lower] }\OtherTok{\textless{}{-}}\NormalTok{ lower}
+  
+  \CommentTok{\# evaluate objective function}
+\NormalTok{  X\_fit }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, fn)}
+  
+  \CommentTok{\# save new inherent best}
+\NormalTok{  P[, P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit] }\OtherTok{\textless{}{-}}\NormalTok{ X[, P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit]}
+\NormalTok{  P\_fit[P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit] }\OtherTok{\textless{}{-}}\NormalTok{ X\_fit[P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit]}
+  
+  \CommentTok{\# new global best}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{any}\NormalTok{(P\_fit }\SpecialCharTok{\textless{}}\NormalTok{ p\_g\_fit))\{}
+\NormalTok{    p\_g }\OtherTok{\textless{}{-}}\NormalTok{ P[, }\FunctionTok{which.min}\NormalTok{(P\_fit)]}
+\NormalTok{    p\_g\_fit }\OtherTok{\textless{}{-}} \FunctionTok{min}\NormalTok{(P\_fit)}
+\NormalTok{  \}}
+  
+  \ControlFlowTok{if}\NormalTok{(control}\SpecialCharTok{$}\NormalTok{save\_traces}\SpecialCharTok{==}\ConstantTok{TRUE}\NormalTok{)\{}
+\NormalTok{    trace\_data }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(trace\_data, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"iter"}\OtherTok{=}\NormalTok{i, }\FunctionTok{t}\NormalTok{(X)))}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+The particle with the best fitness and its position after hundred iterations is:
+
+\begin{verbatim}
+## [1] "position: "
+\end{verbatim}
+
+\begin{verbatim}
+## [1] -0.000000007943707  0.000134760618526
+\end{verbatim}
+
+\begin{verbatim}
+## [1] "fittness: 0.000134768562232869"
+\end{verbatim}
+
+\hypertarget{animation-2-dimensional}{%
+\section{Animation 2-Dimensional}\label{animation-2-dimensional}}
+
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -778,12 +908,7 @@ with current positions \(X \in R^{N,D}\), current velocity's \(V \in R^{N,D}\), 
   \SpecialCharTok{{-}}\DecValTok{20} \SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.2} \SpecialCharTok{*} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.5} \SpecialCharTok{*}\NormalTok{((pos[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{+}\NormalTok{ (pos[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))) }\SpecialCharTok{{-}} \FunctionTok{exp}\NormalTok{(}\FloatTok{0.5}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{1}\NormalTok{]) }\SpecialCharTok{+} \FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{2}\NormalTok{]))) }\SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} \DecValTok{20}
 \NormalTok{\}}
 
-\CommentTok{\# fn1 \textless{}{-} function(par)\{}
-\CommentTok{\#   return(fn(par, ...))}
-\CommentTok{\# \}}
-\NormalTok{mrunif }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(nr, nc, lower, upper) \{}
-    \FunctionTok{return}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\FunctionTok{runif}\NormalTok{(nr}\SpecialCharTok{*}\NormalTok{nc,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{),}\AttributeTok{nrow=}\NormalTok{nr,}\AttributeTok{ncol=}\NormalTok{nc)}\SpecialCharTok{*}\NormalTok{(upper}\SpecialCharTok{{-}}\NormalTok{lower)}\SpecialCharTok{+}\NormalTok{lower)}
-\NormalTok{\}}
+
 \NormalTok{par }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\DecValTok{2}\NormalTok{)}
 \NormalTok{D }\OtherTok{\textless{}{-}} \DecValTok{10}
 \NormalTok{c1 }\OtherTok{\textless{}{-}} \FloatTok{0.5}
@@ -802,16 +927,16 @@ with current positions \(X \in R^{N,D}\), current velocity's \(V \in R^{N,D}\), 
 \NormalTok{p\_g }\OtherTok{\textless{}{-}}\NormalTok{ P[, }\FunctionTok{which.min}\NormalTok{(P\_fit)]}
 \NormalTok{p\_g\_fit }\OtherTok{\textless{}{-}} \FunctionTok{which.min}\NormalTok{(P\_fit)}
 
-\NormalTok{trace }\OtherTok{\textless{}{-}} \ConstantTok{TRUE}
+\NormalTok{save\_traces }\OtherTok{\textless{}{-}} \ConstantTok{TRUE}
 \NormalTok{trace\_data }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{maxiter)\{}
 \NormalTok{  V }\OtherTok{\textless{}{-}}\NormalTok{ (w0}\SpecialCharTok{{-}}\NormalTok{(w0}\SpecialCharTok{{-}}\NormalTok{wN)}\SpecialCharTok{*}\NormalTok{i}\SpecialCharTok{/}\NormalTok{maxiter) }\SpecialCharTok{*}\NormalTok{ V }\SpecialCharTok{+}\NormalTok{ c1 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+}\NormalTok{ c2 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
 \NormalTok{  X }\OtherTok{\textless{}{-}}\NormalTok{ X }\SpecialCharTok{+}\NormalTok{ V}
   
-  \CommentTok{\# evaluate function}
+  \CommentTok{\# evaluate objective function}
 \NormalTok{  X\_fit }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, fn)}
   
-  \CommentTok{\# save new own best}
+  \CommentTok{\# save new inherent best}
 \NormalTok{  P[, P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit] }\OtherTok{\textless{}{-}}\NormalTok{ X[, P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit]}
 \NormalTok{  P\_fit[P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit] }\OtherTok{\textless{}{-}}\NormalTok{ X\_fit[P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit]}
   
@@ -821,88 +946,14 @@ with current positions \(X \in R^{N,D}\), current velocity's \(V \in R^{N,D}\), 
 \NormalTok{    p\_g\_fit }\OtherTok{\textless{}{-}} \FunctionTok{min}\NormalTok{(P\_fit)}
 \NormalTok{  \}}
   
-  \FunctionTok{p0}\NormalTok{(}\StringTok{"mean P\_fit: "}\NormalTok{, }\FunctionTok{mean}\NormalTok{(P\_fit))}
-  \FunctionTok{p0}\NormalTok{(}\StringTok{"P\_g\_fit: "}\NormalTok{, p\_g\_fit)}
-  
-  \ControlFlowTok{if}\NormalTok{(trace}\SpecialCharTok{==}\ConstantTok{TRUE}\NormalTok{)\{}
+  \ControlFlowTok{if}\NormalTok{(save\_traces}\SpecialCharTok{==}\ConstantTok{TRUE}\NormalTok{)\{}
 \NormalTok{    trace\_data }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(trace\_data, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"iter"}\OtherTok{=}\NormalTok{i, }\FunctionTok{t}\NormalTok{(X)))}
 \NormalTok{  \}}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{verbatim}
-## [1] "mean P_fit: 12.5166184572097"
-## [1] "P_g_fit: 5.99668689747084"
-## [1] "mean P_fit: 11.9838464195393"
-## [1] "P_g_fit: 5.99668689747084"
-## [1] "mean P_fit: 11.9838464195393"
-## [1] "P_g_fit: 5.99668689747084"
-## [1] "mean P_fit: 11.5117064683784"
-## [1] "P_g_fit: 5.99668689747084"
-## [1] "mean P_fit: 8.21671445243426"
-## [1] "P_g_fit: 5.00470585492461"
-## [1] "mean P_fit: 5.11812357142387"
-## [1] "P_g_fit: 1.4212891729448"
-## [1] "mean P_fit: 5.11812357142387"
-## [1] "P_g_fit: 1.4212891729448"
-## [1] "mean P_fit: 4.73602496770644"
-## [1] "P_g_fit: 1.4212891729448"
-## [1] "mean P_fit: 3.97953677453534"
-## [1] "P_g_fit: 1.35364088410123"
-## [1] "mean P_fit: 3.45035408999126"
-## [1] "P_g_fit: 1.11433044261825"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{grid }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{, }\AttributeTok{length.out =} \DecValTok{100}\NormalTok{), }\FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{, }\AttributeTok{length.out =} \DecValTok{100}\NormalTok{), }\AttributeTok{stringsAsFactors =}\NormalTok{ F)}
-\NormalTok{grid}\SpecialCharTok{$}\NormalTok{z }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(grid, }\DecValTok{1}\NormalTok{, fn)}
-
-\FunctionTok{library}\NormalTok{(ggplot2)}
-\FunctionTok{library}\NormalTok{(gganimate)}
-\FunctionTok{library}\NormalTok{(metR)}
-\DocumentationTok{\#\#\#library(magick)}
-\CommentTok{\# install.packages(\textquotesingle{}tinytex\textquotesingle{})}
-\CommentTok{\# tinytex::install\_tinytex()}
-
-\NormalTok{anim }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(trace\_data) }\SpecialCharTok{+}
-  \FunctionTok{geom\_contour}\NormalTok{(}\AttributeTok{data =}\NormalTok{ grid, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Var1, }\AttributeTok{y =}\NormalTok{ Var2, }\AttributeTok{z =}\NormalTok{ z), }\AttributeTok{color =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(X1, X2)) }\SpecialCharTok{+}
-  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"X"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Y"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{transition\_time}\NormalTok{(iter) }\SpecialCharTok{+}
-  \FunctionTok{ease\_aes}\NormalTok{(}\StringTok{"linear"}\NormalTok{)}
-
-
-\ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{is\_latex\_output}\NormalTok{())\{}
-\NormalTok{  anim}
-  \FunctionTok{animate}\NormalTok{(anim, }\AttributeTok{renderer =} \FunctionTok{file\_renderer}\NormalTok{(}\StringTok{\textquotesingle{}gifs/pso\_2dim/\textquotesingle{}}\NormalTok{), }\AttributeTok{device =} \StringTok{"jpeg"}\NormalTok{)}
-\NormalTok{\}}
-\CommentTok{\# else\{}
-\CommentTok{\#   animate(anim, renderer = file\_renderer(\textquotesingle{}gifs/pso\_2dim/\textquotesingle{}))}
-\CommentTok{\# \}}
-
-\CommentTok{\# anim\_save(path="gifs/", filename = "pso\_2dim.gif", animation = anim)}
-\CommentTok{\# gif\_file("gifs/pso\_2dim.gif")}
-
-\CommentTok{\# \#psoptim()}
-\CommentTok{\# }
-\CommentTok{\# pso\_default \textless{}{-} function(}
-\CommentTok{\#   par,}
-\CommentTok{\#   fn,}
-\CommentTok{\#   ...,}
-\CommentTok{\#   lower,}
-\CommentTok{\#   upper}
-\CommentTok{\# )\{}
-\CommentTok{\#   }
-\CommentTok{\# \}}
-\end{Highlighting}
-\end{Shaded}
-
-\animategraphics[loop, width=8cm]{10}{./gifs/pso_2dim/gganim_plot000}{1}{9}
-
-\hypertarget{example-2-dimensions}{%
-\section{Example: 2-Dimensions}\label{example-2-dimensions}}
+\animategraphics[loop, width=8cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{50}
 
   \bibliography{book.bib,packages.bib}
 

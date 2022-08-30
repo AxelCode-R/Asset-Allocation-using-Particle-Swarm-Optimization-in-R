@@ -25,6 +25,12 @@ library(quantmod)
 # webshot::install_phantomjs()
 
 
+# for animations
+library(ggplot2)
+library(gganimate)
+library(metR)
+
+
 # alphavantage API-KEY
 api_key <- Sys.getenv("api_key")
 

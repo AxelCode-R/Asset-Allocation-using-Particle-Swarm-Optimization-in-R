@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-08-28" />
+<meta name="date" content="2022-08-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -195,8 +195,8 @@ div.csl-indent {
 <li class="chapter" data-level="8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization (PSO)</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#the-algorithm"><i class="fa fa-check"></i><b>8.1</b> The Algorithm</a></li>
-<li class="chapter" data-level="8.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#code"><i class="fa fa-check"></i><b>8.2</b> Code</a></li>
-<li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-2-dimensions"><i class="fa fa-check"></i><b>8.3</b> Example: 2-Dimensions</a></li>
+<li class="chapter" data-level="8.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pso-function"><i class="fa fa-check"></i><b>8.2</b> PSO Function</a></li>
+<li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -224,26 +224,23 @@ div.csl-indent {
 <p>This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It’s important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don’t hold up in real-world situations, but these models or variations of them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter <a href="challenges.html#challenges">6</a>.</p>
 <div id="basic-operators" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Basic Operators<a href="mathfundations.html#basic-operators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A compendium that compares commonly used mathematical symbols to R-code and its meanings can be found in the table below:</p>
+<p>A compendium, that compares commonly used mathematical symbols to R-code and its meanings, is listed in the table below:</p>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="return-calculation" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Return Calculation<a href="mathfundations.html#return-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using <a href="https://www.investopedia.com/terms/a/adjusted%20closing%20price.asp">adjusted closing prices</a>, which show the percentage change over time. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns are essential for comparing assets and for analyzing dependencies.</p>
-<div id="daily-returns" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Daily Returns<a href="mathfundations.html#daily-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The default timeframe for all raw data in this thesis is one workday and only simple returns are used. The simple returns can be calculated as follows if we know the adjusted closing price <span class="math inline">\(P\)</span> of one asset on workdays <span class="math inline">\(t_i\)</span> and <span class="math inline">\(t_{i+1}\)</span>:
+<div id="simple-returns" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Simple Returns<a href="mathfundations.html#simple-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The default timeframe for all raw data in this thesis is one workday and only simple returns are used. Suppose there is a asset with prices <span class="math inline">\(P\)</span> on workday <span class="math inline">\(t_i\)</span> and and following workday <span class="math inline">\(t_{i+1}\)</span>, then follows that the simple return on <span class="math inline">\(t_{i+1}\)</span> can be calculated as:
 <span class="math display">\[
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 \]</span></p>
 </div>
-<div id="annualized-returns" class="section level3 hasAnchor" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> Annualized Returns<a href="mathfundations.html#annualized-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-</div>
 </div>
 <div id="markowitz-modern-portfolio-theory-mpt" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> Markowitz Modern Portfolio Theory (MPT)<a href="mathfundations.html#markowitz-modern-portfolio-theory-mpt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: “A portfolio has the same return but less variance than the sum of its parts”. This is true if the assets are not perfectly correlated because bad and good movers can make up for each other, reducing the likelihood of extreme events. More specific information can be found at <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
+<p>In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: “A portfolio has the same return but less variance than the sum of its parts”. This is true if the assets are not perfectly correlated, because bad and good movers can make up for each other and reducing the likelihood of extreme events. More specific information can be found at <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
 <div id="assumptions-of-markowitz-portfolio-theory" class="section level3 hasAnchor" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> Assumptions of Markowitz Portfolio Theory<a href="mathfundations.html#assumptions-of-markowitz-portfolio-theory" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The following list contains all Markowitz assumptions according to <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>:</p>
@@ -255,7 +252,7 @@ div.csl-indent {
 <li>Investors are risk-adverse, they will only accept greater risk if they
 are compensated with a higher expected return.</li>
 </ul>
-<p>The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span> has further details regarding the requirements for utilizing other distributions. It is obvious that these assumptions are unrealistic in real-life.</p>
+<p>The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. It is obvious that these assumptions are unrealistic in real-life. For more details regarding the requirements for utilizing other distributions, have a look at <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
 </div>
 </div>
 <div id="portfolio-math" class="section level2 hasAnchor" number="4.4">
@@ -271,14 +268,14 @@ w =
   \begin{bmatrix}
     w_{1} \\
     w_{2} \\
-    \cdots \\
+    \vdots \\
     w_{N}  
 \end{bmatrix}
 \]</span></p>
-<p>Each return is additionally simplified in this thesis so that it is normally distributed with <span class="math inline">\(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\)</span>. As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.</p>
+<p>In this thesis, each return is simplified to be normal distributed with <span class="math inline">\(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\)</span>. As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.</p>
 <div id="expected-returns" class="section level3 hasAnchor" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> Expected Returns<a href="mathfundations.html#expected-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The following formula can be used to get the expected returns of a vector with normally distributed random variables <span class="math inline">\(R \in \mathbb{R}^{N}\)</span>:
+<p>The following formula can be used to get the expected returns of a vector with normally distributed random variables <span class="math inline">\(R \in \mathbb{R}^{1\times N}\)</span>:
 <span class="math display">\[\begin{align*}
   E[R] &amp;=
   \begin{bmatrix}
@@ -291,7 +288,7 @@ w =
 =
 \mu
 \end{align*}\]</span>
-and <span class="math inline">\(\mu_i\)</span> can be estimated in R with the base-function <code>mean()</code> and historical data.</p>
+and <span class="math inline">\(\mu_i\)</span> can be estimated in R with historical data and the formula for geometric mean returns (also called compound returns). The function to calculate the geometric mean returns from a xts-object can be found in <a href="mathfundations.html#geomeanret">4.5.3</a>.</p>
 </div>
 <div id="expected-portfolio-returns" class="section level3 hasAnchor" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> Expected Portfolio Returns<a href="mathfundations.html#expected-portfolio-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -343,23 +340,8 @@ E[\mu_{1}] \cdot w_1 + E[\mu_{2}] \cdot w_2 + \cdots + E[\mu_{N}] \cdot w_{N}
 R_P
 \]</span></p>
 </div>
-<div id="implicitdailyreturns" class="section level3 hasAnchor" number="4.4.4">
-<h3><span class="header-section-number">4.4.4</span> Implicit Daily Returns<a href="mathfundations.html#implicitdailyreturns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Because the estimation of the variance is calculated as daily variance, it needs to do the same with return over time. This can be done by calculating implicit daily returns. Suppose there is a asset with returns <span class="math inline">\(r_1 = 0.01; r_2=0.03, r_3=0.02\)</span> then the implicit daily return <span class="math inline">\(r^{id}\)</span> can be calculated as:
-<span class="math display">\[
-  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
-\]</span>
-And the benefit is that it’s a daily mean return, which will produce exactly the same outcome, that means:
-<span class="math display">\[
-  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
-\]</span>
-The general formula to calculate the implicit daily return from <span class="math inline">\(n\)</span> days is:
-<span class="math display">\[
-  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
-\]</span></p>
-</div>
-<div id="covariance" class="section level3 hasAnchor" number="4.4.5">
-<h3><span class="header-section-number">4.4.5</span> Covariance<a href="mathfundations.html#covariance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="covariance" class="section level3 hasAnchor" number="4.4.4">
+<h3><span class="header-section-number">4.4.4</span> Covariance<a href="mathfundations.html#covariance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The general formula of the covariance matrix <span class="math inline">\(\textstyle\sum\)</span> of a random vector <span class="math inline">\(R\)</span> with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(\sigma_{i,j}\)</span> as correlation of two unique assets is described as:
 <span class="math display">\[\begin{align*}
   Cov(R) &amp;= E[(R-\mu)^T \otimes (R-\mu)] \\
@@ -373,8 +355,8 @@ The general formula to calculate the implicit daily return from <span class="mat
 \end{align*}\]</span>
 and can be estimated in R with the base-function <code>cov()</code> and historical data.</p>
 </div>
-<div id="portvar" class="section level3 hasAnchor" number="4.4.6">
-<h3><span class="header-section-number">4.4.6</span> Portfolio Variance<a href="mathfundations.html#portvar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="portvar" class="section level3 hasAnchor" number="4.4.5">
+<h3><span class="header-section-number">4.4.5</span> Portfolio Variance<a href="mathfundations.html#portvar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let <span class="math inline">\(R\)</span> be a random vector with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(w\)</span> a weighting vector. Suppose the covariance matrix <span class="math inline">\(\sum\)</span> of <span class="math inline">\(R\)</span> is known, then the variance of the linear combination of <span class="math inline">\(R\)</span> can be calculated as:
 <span class="math display">\[\begin{align*}
   Var(R \times w) &amp;= E[(R \times w - \mu \times w)^2] \\
@@ -396,10 +378,30 @@ and can be estimated in R with the base-function <code>cov()</code> and historic
 <p>asdad</p>
 <div id="pritoret" class="section level3 hasAnchor" number="4.5.1">
 <h3><span class="header-section-number">4.5.1</span> <code>pri_to_ret()</code><a href="mathfundations.html#pritoret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>asdasd</p>
+<p>asdasdasd ((prices to returns))</p>
 </div>
 <div id="ret_to_cumret" class="section level3 hasAnchor" number="4.5.2">
 <h3><span class="header-section-number">4.5.2</span> <code>ret_to_cumret()</code><a href="mathfundations.html#ret_to_cumret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>asdasdasdasdasd ((returns to cumulated returns normalized to 100))</p>
+</div>
+<div id="geomeanret" class="section level3 hasAnchor" number="4.5.3">
+<h3><span class="header-section-number">4.5.3</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. Because the estimation of the variance is calculated as daily variance, it needs to do the same with returns over time. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns <span class="math inline">\(r_1 = 0.01; r_2=0.03, r_3=0.02\)</span> then the geometric mean return <span class="math inline">\(r^{id}\)</span> can be calculated as:
+<span class="math display">\[
+  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
+\]</span>
+And the benefit is that it’s a daily mean return, which will produce exactly the same outcome, that means:
+<span class="math display">\[
+  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
+\]</span>
+This isnt the case for arithmetic mean returns. The general formula to calculate the implicit daily return from <span class="math inline">\(n\)</span> days is:
+<span class="math display">\[
+  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
+\]</span>
+and as R-code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="mathfundations.html#cb1-1" aria-hidden="true" tabindex="-1"></a>ret_to_geomeanret <span class="ot">&lt;-</span> <span class="cf">function</span>(xts_ret){</span>
+<span id="cb1-2"><a href="mathfundations.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>((<span class="dv">1</span><span class="sc">+</span>xts_ret), prod)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">nrow</span>(xts_ret))<span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb1-3"><a href="mathfundations.html#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 
 </div>
 </div>

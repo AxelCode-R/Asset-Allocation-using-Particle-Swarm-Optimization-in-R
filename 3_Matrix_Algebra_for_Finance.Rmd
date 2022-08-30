@@ -28,13 +28,11 @@ reactable(
 ## Return Calculation
 Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices](https://www.investopedia.com/terms/a/adjusted closing price.asp), which show the percentage change over time. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns are essential for comparing assets and for analyzing dependencies.
 
-### Daily Returns
-The default timeframe for all raw data in this thesis is one workday and only simple returns are used. Suppose there is a asset with prices $P$ on workday $t_i$ and $t_{i+1}$, then follows that the simple return on $t_{i+1}$ can be calculated as:
+### Simple Returns
+The default timeframe for all raw data in this thesis is one workday and only simple returns are used. Suppose there is a asset with prices $P$ on workday $t_i$ and and following workday $t_{i+1}$, then follows that the simple return on $t_{i+1}$ can be calculated as:
 $$
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 $$
-
-### Annualized Returns
 
 ## Markowitz Modern Portfolio Theory (MPT)
 In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: "A portfolio has the same return but less variance than the sum of its parts". This is true if the assets are not perfectly correlated, because bad and good movers can make up for each other and reducing the likelihood of extreme events. More specific information can be found at [@Mari2005].
@@ -85,7 +83,7 @@ The following formula can be used to get the expected returns of a vector with n
  =
  \mu
 \end{align*}
-and $\mu_i$ can be estimated in R with the base-function `mean()` and historical data.
+and $\mu_i$ can be estimated in R with historical data and the formula for geometric mean returns (also called compound returns). The function to calculate the geometric mean returns from a xts-object can be found in \@ref(geomeanret). 
 
 ### Expected Portfolio Returns
 The following equation can be used to get the linear combination of expected returns $\mu$ and a weighting vector $w$ (e.g. portfolio weights):
@@ -135,45 +133,6 @@ $$
  R_P
 $$
 
-### Implicit Daily Returns {#implicitdailyreturns}
-Because the estimation of the variance is calculated as daily variance, it needs to do the same with return over time. This can be done by calculating implicit daily returns. Suppose there is a asset with returns $r_1 = 0.01; r_2=0.03, r_3=0.02$ then the implicit daily return $r^{id}$ can be calculated as:
-$$
-  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
-$$
-And the benefit is that it's a daily mean return, which will produce exactly the same outcome, that means:
-$$
-  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
-$$
-The general formula to calculate the implicit daily return from $n$ days is:
-$$
-  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
-$$
-
-```{r}
-# compound
-# erklären von
-# geometric average return (is used)
-# arithmetic average return
-
-R1 <- rnorm(n = 100000, mean = 0, sd = 0.001)
-
-p1 <- plot_ly(mode="lines", type = 'scatter') %>% 
-  add_trace(x=1:length(R1), y = cumprod(1+R1), name="correct", line=list(color="grey")) %>% 
-  add_trace(x=1:length(R1), y = cumprod(rep(1+mean(R1), length(R1))), name="mean returns", line=list(color="green")) %>% 
-  add_trace(x=1:length(R1), y = cumprod(rep(prod(1+R1)^(1/length(R1)), length(R1))), name="implicit returns", line=list(color="blue"))
-
-
-R2 <- rev(-R1)
-p2 <- plot_ly(mode="lines", type = 'scatter') %>% 
-  add_trace(x=1:length(R2), y = cumprod(1+R2), name="correct", showlegend=F, line=list(color="grey")) %>% 
-  add_trace(x=1:length(R2), y = cumprod(rep(1+mean(R2), length(R2))), name="mean returns", showlegend=F, line=list(color="green")) %>% 
-  add_trace(x=1:length(R2), y = cumprod(rep(prod(1+R2)^(1/length(R2)), length(R2))), name="implicit returns", showlegend=F, line=list(color="blue"))
-
-subplot(p1, p2, nrows=2)
-```
-
-
-
 
 ### Covariance
 The general formula of the covariance matrix $\textstyle\sum$ of a random vector $R$ with $N$ normally distributed elements and $\sigma_{i,j}$ as correlation of two unique assets is described as:
@@ -213,6 +172,29 @@ The same holds for a estimation of $\textstyle\sum$.
 asdad
 
 ### `pri_to_ret()` {#pritoret}
-asdasd
+asdasdasd  ((prices to returns))
 
 ### `ret_to_cumret()`
+asdasdasdasdasd  ((returns to cumulated returns normalized to 100))
+
+### `ret_to_geomeanret()` {#geomeanret}
+Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. Because the estimation of the variance is calculated as daily variance, it needs to do the same with returns over time. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns $r_1 = 0.01; r_2=0.03, r_3=0.02$ then the geometric mean return $r^{id}$ can be calculated as:
+$$
+  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
+$$
+And the benefit is that it's a daily mean return, which will produce exactly the same outcome, that means:
+$$
+  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
+$$
+This isnt the case for arithmetic mean returns. The general formula to calculate the implicit daily return from $n$ days is:
+$$
+  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
+$$
+and as R-code:
+```{r}
+ret_to_geomeanret <- function(xts_ret){
+  sapply((1+xts_ret), prod)^(1/nrow(xts_ret))-1
+}
+```
+
+
