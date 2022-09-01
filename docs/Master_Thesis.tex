@@ -126,7 +126,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-08-30}
+\date{2022-09-01}
 
 \begin{document}
 \maketitle
@@ -318,36 +318,6 @@ The following equation can be used to get the linear combination of expected ret
  \mu_P
 \end{align*}
 
-\hypertarget{portfolio-returns}{%
-\subsection{Portfolio Returns}\label{portfolio-returns}}
-
-Let \(R \in \mathbb{R}^{T \times N}\) denote a realized return Matrix of \(N\) assets and \(T\) days in the past. The portfolio return on each day can be calculated with the formula of the expected portfolio return. This is possible on all days \(T\) by:
-\[
-  R \times w = 
-  \begin{bmatrix}
-    R_{1, 1} & R_{1, 2} & \cdots & R_{1, N} \\
-    R_{2, 1} & R_{2, 2} & \cdots & R_{2, N} \\
-    \vdots  & \vdots & \ddots & \vdots \\
-    R_{T, 1} & R_{T, 2} & \cdots & R_{T, N} \\
- \end{bmatrix}
-  \times 
-  \begin{bmatrix}
-    w_{1} \\ 
-    w_{2} \\
-    \vdots \\
-    w_{N}  
- \end{bmatrix}
- =
-   \begin{bmatrix}
-    R_{1}^P \\ 
-    R_{2}^P \\
-    \vdots \\
-    R_{N}^P  
- \end{bmatrix}
- =
- R_P
-\]
-
 \hypertarget{covariance}{%
 \subsection{Covariance}\label{covariance}}
 
@@ -383,6 +353,21 @@ Since \((R - \mu) \times w\) is a scalar, it can be transformed from \(((R - \mu
 \end{align*}
 
 The same holds for a estimation of \(\textstyle\sum\).
+
+\hypertarget{portfolioreturns}{%
+\subsection{Portfolio Returns}\label{portfolioreturns}}
+
+Suppose there are \(N\) assets which create a portfolio with weights \(w\) at time \(t_0\) and the portfolio should perform multiple timesteps till \(t_T\) without re-balancing. What are the portfolio returns on each timestep \(t_i\)? Its clear that assets with a positive performance have a higher weight at the end of the timestep than before. The formula for holding a portfolio with weights \(\textstyle\sum w = 1\) and return matrix \(R \in R^{T \times N}\), has the aggregated return changes \(Z_i-1\) on \(t_i\) with \(i=0, 1, \cdots, T\) for:
+\[
+  Z_i =
+  \left\{
+  \begin{split}
+  &(1+R_i)\cdot w, &\text{ if }i=0\\
+  &(1+R_i)\cdot \frac{Z_i}{\sum Z_i}, &\text{ if }i>0
+  \end{split}
+  \right.
+\]
+This calculation of portfolio returns is implemented in the \texttt{calc\_portfolio\_returns()} function below.
 
 \hypertarget{r-functions-2}{%
 \section{R-Functions}\label{r-functions-2}}
@@ -424,6 +409,28 @@ and as R-code:
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{calc_portfolio_returns}{%
+\subsection{\texorpdfstring{\texttt{calc\_portfolio\_returns()}}{calc\_portfolio\_returns()}}\label{calc_portfolio_returns}}
+
+This is the implementation of a vectorial calculation of portfolio returns over multiple periods with a weighting vector \texttt{weights} at \(t_0\) and no re-balancing:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{calc\_portfolio\_returns }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(xts\_returns, weights, }\AttributeTok{name=}\StringTok{"portfolio"}\NormalTok{)\{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{sum}\NormalTok{(weights)}\SpecialCharTok{!=}\DecValTok{1}\NormalTok{)\{}
+\NormalTok{    xts\_returns}\SpecialCharTok{$}\NormalTok{temp\_\_\_X1 }\OtherTok{\textless{}{-}} \DecValTok{0}
+\NormalTok{    weights }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(weights, }\DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{sum}\NormalTok{(weights))}
+\NormalTok{  \}}
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{cumprod}\NormalTok{((}\DecValTok{1}\SpecialCharTok{+}\NormalTok{xts\_returns)) }\SpecialCharTok{*} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(weights, }\FunctionTok{nrow}\NormalTok{(xts\_returns)), }\AttributeTok{ncol=}\FunctionTok{length}\NormalTok{(weights), }\AttributeTok{byrow=}\NormalTok{T)}
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{xts}\NormalTok{(}\FunctionTok{rowSums}\NormalTok{(res}\SpecialCharTok{/}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{rowSums}\NormalTok{(res[}\SpecialCharTok{{-}}\FunctionTok{nrow}\NormalTok{(xts\_returns),])))}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{order.by=}\FunctionTok{index}\NormalTok{(xts\_returns)) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{setNames}\NormalTok{(., name)}
+  \FunctionTok{return}\NormalTok{(res)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+This function has the same results as the \texttt{Return.portfolio()} function from the \texttt{PortfolioAnalytics} package.
+
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
 
@@ -463,7 +470,7 @@ All possible MVPs combined create the efficient frontier, that is analyzed in th
 
 The cummulated daily returns are:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-6-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-7-1.png}
 
 The expected daily returns and the covariance matrix for the 3 assets can be estimated with the formulas from chapter \ref{mathfundations}:
 
@@ -471,11 +478,11 @@ These are all the necessary data to solve the MVP with \(\lambda \in \{0.01, 0.0
 
 The resulting daily returns and standard deviation are transformed to annual returns and standard deviation and are plotted to create the efficient frontier:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
 
 The portfolio compositions for each \(\lambda\)'s are:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
 
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-Tracking Portfolio (ITP)}\label{index-tracking-portfolio-itp}}
@@ -561,7 +568,7 @@ This example will show the results of tracking the S\&P 500 with a tracking port
 ## 0.2681058 0.4040352 0.3278591
 \end{verbatim}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
 
 \hypertarget{analytic-solver-for-quadratic-programming-problems}{%
 \chapter{Analytic Solver for Quadratic Programming Problems}\label{analytic-solver-for-quadratic-programming-problems}}
@@ -831,7 +838,8 @@ Now is the time to initialize the random positions \texttt{X}, its fitness \text
 \NormalTok{  X[, }\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ par}
 \NormalTok{\}}
 \NormalTok{X\_fit }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, fn)}
-\NormalTok{V }\OtherTok{\textless{}{-}} \FunctionTok{mrunif}\NormalTok{(}\AttributeTok{nr =} \FunctionTok{length}\NormalTok{(par), }\AttributeTok{nc=}\NormalTok{control}\SpecialCharTok{$}\NormalTok{s, }\AttributeTok{lower=}\SpecialCharTok{{-}}\NormalTok{(upper}\SpecialCharTok{{-}}\NormalTok{lower), }\AttributeTok{upper=}\NormalTok{(upper}\SpecialCharTok{{-}}\NormalTok{lower))}\SpecialCharTok{/}\DecValTok{4}
+\NormalTok{V }\OtherTok{\textless{}{-}} \FunctionTok{mrunif}\NormalTok{(}\AttributeTok{nr =} \FunctionTok{length}\NormalTok{(par), }\AttributeTok{nc=}\NormalTok{control}\SpecialCharTok{$}\NormalTok{s, }
+            \AttributeTok{lower=}\SpecialCharTok{{-}}\NormalTok{(upper}\SpecialCharTok{{-}}\NormalTok{lower), }\AttributeTok{upper=}\NormalTok{(upper}\SpecialCharTok{{-}}\NormalTok{lower))}\SpecialCharTok{/}\DecValTok{4}
 \end{Highlighting}
 \end{Shaded}
 
@@ -882,19 +890,7 @@ The needed data-structure is present and the optimization can start by calculati
 \end{Highlighting}
 \end{Shaded}
 
-The particle with the best fitness and its position after hundred iterations is:
-
-\begin{verbatim}
-## [1] "position: "
-\end{verbatim}
-
-\begin{verbatim}
-## [1] -0.000000007943707  0.000134760618526
-\end{verbatim}
-
-\begin{verbatim}
-## [1] "fittness: 0.000134768562232869"
-\end{verbatim}
+The best fitness after \(100\) iterations is 0.0000167 and the best possible solution is at \(0\).
 
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
@@ -905,7 +901,9 @@ This section provides insights into the behavior of the PSO by visualizing multi
 \begin{Highlighting}[]
 \CommentTok{\#https://www.r{-}bloggers.com/2021/10/how{-}to{-}build{-}a{-}basic{-}particle{-}swarm{-}optimiser{-}from{-}scratch{-}in{-}r/}
 \NormalTok{fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pos)\{}
-  \SpecialCharTok{{-}}\DecValTok{20} \SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.2} \SpecialCharTok{*} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.5} \SpecialCharTok{*}\NormalTok{((pos[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{+}\NormalTok{ (pos[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))) }\SpecialCharTok{{-}} \FunctionTok{exp}\NormalTok{(}\FloatTok{0.5}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{1}\NormalTok{]) }\SpecialCharTok{+} \FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{2}\NormalTok{]))) }\SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} \DecValTok{20}
+  \SpecialCharTok{{-}}\DecValTok{20} \SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.2} \SpecialCharTok{*} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.5} \SpecialCharTok{*}\NormalTok{((pos[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{+}\NormalTok{ (pos[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))) }\SpecialCharTok{{-}} 
+  \FunctionTok{exp}\NormalTok{(}\FloatTok{0.5}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{1}\NormalTok{]) }\SpecialCharTok{+} \FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{2}\NormalTok{]))) }\SpecialCharTok{+} 
+  \FunctionTok{exp}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} \DecValTok{20}
 \NormalTok{\}}
 
 
@@ -930,7 +928,9 @@ This section provides insights into the behavior of the PSO by visualizing multi
 \NormalTok{save\_traces }\OtherTok{\textless{}{-}} \ConstantTok{TRUE}
 \NormalTok{trace\_data }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{maxiter)\{}
-\NormalTok{  V }\OtherTok{\textless{}{-}}\NormalTok{ (w0}\SpecialCharTok{{-}}\NormalTok{(w0}\SpecialCharTok{{-}}\NormalTok{wN)}\SpecialCharTok{*}\NormalTok{i}\SpecialCharTok{/}\NormalTok{maxiter) }\SpecialCharTok{*}\NormalTok{ V }\SpecialCharTok{+}\NormalTok{ c1 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+}\NormalTok{ c2 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
+\NormalTok{  V }\OtherTok{\textless{}{-}}\NormalTok{ (w0}\SpecialCharTok{{-}}\NormalTok{(w0}\SpecialCharTok{{-}}\NormalTok{wN)}\SpecialCharTok{*}\NormalTok{i}\SpecialCharTok{/}\NormalTok{maxiter) }\SpecialCharTok{*}\NormalTok{ V }\SpecialCharTok{+} 
+\NormalTok{    c1 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+} 
+\NormalTok{    c2 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
 \NormalTok{  X }\OtherTok{\textless{}{-}}\NormalTok{ X }\SpecialCharTok{+}\NormalTok{ V}
   
   \CommentTok{\# evaluate objective function}
@@ -954,6 +954,12 @@ This section provides insights into the behavior of the PSO by visualizing multi
 \end{Shaded}
 
 \animategraphics[loop, width=8cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{50}
+
+\hypertarget{pros-and-cons}{%
+\section{Pros and Cons}\label{pros-and-cons}}
+
+\hypertarget{functions}{%
+\section{Functions}\label{functions}}
 
   \bibliography{book.bib,packages.bib}
 

@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-08-30" />
+<meta name="date" content="2022-09-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -197,6 +197,8 @@ div.csl-indent {
 <li class="chapter" data-level="8.1" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#the-algorithm"><i class="fa fa-check"></i><b>8.1</b> The Algorithm</a></li>
 <li class="chapter" data-level="8.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pso-function"><i class="fa fa-check"></i><b>8.2</b> PSO Function</a></li>
 <li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
+<li class="chapter" data-level="8.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons"><i class="fa fa-check"></i><b>8.4</b> Pros and Cons</a></li>
+<li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#functions"><i class="fa fa-check"></i><b>8.5</b> Functions</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -310,38 +312,36 @@ E[\mu_{1}] \cdot w_1 + E[\mu_{2}] \cdot w_2 + \cdots + E[\mu_{N}] \cdot w_{N}
 =
 \mu_P
 \end{align*}\]</span></p>
+<!-- ### Portfolio Returns -->
+<!-- Let $R \in \mathbb{R}^{T \times N}$ denote a realized return Matrix of $N$ assets and $T$ days in the past. The portfolio return on each day can be calculated with the formula of the expected portfolio return. This is possible on all days $T$ by: -->
+<!-- $$ -->
+<!--   R \times w =  -->
+<!--   \begin{bmatrix} -->
+<!--     R_{1, 1} & R_{1, 2} & \cdots & R_{1, N} \\ -->
+<!--     R_{2, 1} & R_{2, 2} & \cdots & R_{2, N} \\ -->
+<!--     \vdots  & \vdots & \ddots & \vdots \\ -->
+<!--     R_{T, 1} & R_{T, 2} & \cdots & R_{T, N} \\ -->
+<!--  \end{bmatrix} -->
+<!--   \times  -->
+<!--   \begin{bmatrix} -->
+<!--     w_{1} \\  -->
+<!--     w_{2} \\ -->
+<!--     \vdots \\ -->
+<!--     w_{N}   -->
+<!--  \end{bmatrix} -->
+<!--  = -->
+<!--    \begin{bmatrix} -->
+<!--     R_{1}^P \\  -->
+<!--     R_{2}^P \\ -->
+<!--     \vdots \\ -->
+<!--     R_{N}^P   -->
+<!--  \end{bmatrix} -->
+<!--  = -->
+<!--  R_P -->
+<!-- $$ -->
 </div>
-<div id="portfolio-returns" class="section level3 hasAnchor" number="4.4.3">
-<h3><span class="header-section-number">4.4.3</span> Portfolio Returns<a href="mathfundations.html#portfolio-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Let <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span> denote a realized return Matrix of <span class="math inline">\(N\)</span> assets and <span class="math inline">\(T\)</span> days in the past. The portfolio return on each day can be calculated with the formula of the expected portfolio return. This is possible on all days <span class="math inline">\(T\)</span> by:
-<span class="math display">\[
-  R \times w =
-  \begin{bmatrix}
-    R_{1, 1} &amp; R_{1, 2} &amp; \cdots &amp; R_{1, N} \\
-    R_{2, 1} &amp; R_{2, 2} &amp; \cdots &amp; R_{2, N} \\
-    \vdots  &amp; \vdots &amp; \ddots &amp; \vdots \\
-    R_{T, 1} &amp; R_{T, 2} &amp; \cdots &amp; R_{T, N} \\
-\end{bmatrix}
-  \times
-  \begin{bmatrix}
-    w_{1} \\
-    w_{2} \\
-    \vdots \\
-    w_{N}  
-\end{bmatrix}
-=
-   \begin{bmatrix}
-    R_{1}^P \\
-    R_{2}^P \\
-    \vdots \\
-    R_{N}^P  
-\end{bmatrix}
-=
-R_P
-\]</span></p>
-</div>
-<div id="covariance" class="section level3 hasAnchor" number="4.4.4">
-<h3><span class="header-section-number">4.4.4</span> Covariance<a href="mathfundations.html#covariance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="covariance" class="section level3 hasAnchor" number="4.4.3">
+<h3><span class="header-section-number">4.4.3</span> Covariance<a href="mathfundations.html#covariance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The general formula of the covariance matrix <span class="math inline">\(\textstyle\sum\)</span> of a random vector <span class="math inline">\(R\)</span> with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(\sigma_{i,j}\)</span> as correlation of two unique assets is described as:
 <span class="math display">\[\begin{align*}
   Cov(R) &amp;= E[(R-\mu)^T \otimes (R-\mu)] \\
@@ -355,8 +355,8 @@ R_P
 \end{align*}\]</span>
 and can be estimated in R with the base-function <code>cov()</code> and historical data.</p>
 </div>
-<div id="portvar" class="section level3 hasAnchor" number="4.4.5">
-<h3><span class="header-section-number">4.4.5</span> Portfolio Variance<a href="mathfundations.html#portvar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="portvar" class="section level3 hasAnchor" number="4.4.4">
+<h3><span class="header-section-number">4.4.4</span> Portfolio Variance<a href="mathfundations.html#portvar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let <span class="math inline">\(R\)</span> be a random vector with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(w\)</span> a weighting vector. Suppose the covariance matrix <span class="math inline">\(\sum\)</span> of <span class="math inline">\(R\)</span> is known, then the variance of the linear combination of <span class="math inline">\(R\)</span> can be calculated as:
 <span class="math display">\[\begin{align*}
   Var(R \times w) &amp;= E[(R \times w - \mu \times w)^2] \\
@@ -371,6 +371,20 @@ and can be estimated in R with the base-function <code>cov()</code> and historic
   &amp;= w^T \times \textstyle\sum \times w
 \end{align*}\]</span></p>
 <p>The same holds for a estimation of <span class="math inline">\(\textstyle\sum\)</span>.</p>
+</div>
+<div id="portfolioreturns" class="section level3 hasAnchor" number="4.4.5">
+<h3><span class="header-section-number">4.4.5</span> Portfolio Returns<a href="mathfundations.html#portfolioreturns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Suppose there are <span class="math inline">\(N\)</span> assets which create a portfolio with weights <span class="math inline">\(w\)</span> at time <span class="math inline">\(t_0\)</span> and the portfolio should perform multiple timesteps till <span class="math inline">\(t_T\)</span> without re-balancing. What are the portfolio returns on each timestep <span class="math inline">\(t_i\)</span>? Its clear that assets with a positive performance have a higher weight at the end of the timestep than before. The formula for holding a portfolio with weights <span class="math inline">\(\textstyle\sum w = 1\)</span> and return matrix <span class="math inline">\(R \in R^{T \times N}\)</span>, has the aggregated return changes <span class="math inline">\(Z_i-1\)</span> on <span class="math inline">\(t_i\)</span> with <span class="math inline">\(i=0, 1, \cdots, T\)</span> for:
+<span class="math display">\[
+  Z_i =
+  \left\{
+  \begin{split}
+  &amp;(1+R_i)\cdot w, &amp;\text{ if }i=0\\
+  &amp;(1+R_i)\cdot \frac{Z_i}{\sum Z_i}, &amp;\text{ if }i&gt;0
+  \end{split}
+  \right.
+\]</span>
+This calculation of portfolio returns is implemented in the <code>calc_portfolio_returns()</code> function below.</p>
 </div>
 </div>
 <div id="r-functions-2" class="section level2 hasAnchor" number="4.5">
@@ -402,6 +416,21 @@ and as R-code:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="mathfundations.html#cb1-1" aria-hidden="true" tabindex="-1"></a>ret_to_geomeanret <span class="ot">&lt;-</span> <span class="cf">function</span>(xts_ret){</span>
 <span id="cb1-2"><a href="mathfundations.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>((<span class="dv">1</span><span class="sc">+</span>xts_ret), prod)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">nrow</span>(xts_ret))<span class="sc">-</span><span class="dv">1</span></span>
 <span id="cb1-3"><a href="mathfundations.html#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="calc_portfolio_returns" class="section level3 hasAnchor" number="4.5.4">
+<h3><span class="header-section-number">4.5.4</span> <code>calc_portfolio_returns()</code><a href="mathfundations.html#calc_portfolio_returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This is the implementation of a vectorial calculation of portfolio returns over multiple periods with a weighting vector <code>weights</code> at <span class="math inline">\(t_0\)</span> and no re-balancing:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="mathfundations.html#cb2-1" aria-hidden="true" tabindex="-1"></a>calc_portfolio_returns <span class="ot">&lt;-</span> <span class="cf">function</span>(xts_returns, weights, <span class="at">name=</span><span class="st">&quot;portfolio&quot;</span>){</span>
+<span id="cb2-2"><a href="mathfundations.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">sum</span>(weights)<span class="sc">!=</span><span class="dv">1</span>){</span>
+<span id="cb2-3"><a href="mathfundations.html#cb2-3" aria-hidden="true" tabindex="-1"></a>    xts_returns<span class="sc">$</span>temp___X1 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb2-4"><a href="mathfundations.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    weights <span class="ot">&lt;-</span> <span class="fu">c</span>(weights, <span class="dv">1</span><span class="sc">-</span><span class="fu">sum</span>(weights))</span>
+<span id="cb2-5"><a href="mathfundations.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-6"><a href="mathfundations.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">cumprod</span>((<span class="dv">1</span><span class="sc">+</span>xts_returns)) <span class="sc">*</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(weights, <span class="fu">nrow</span>(xts_returns)), <span class="at">ncol=</span><span class="fu">length</span>(weights), <span class="at">byrow=</span>T)</span>
+<span id="cb2-7"><a href="mathfundations.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">xts</span>(<span class="fu">rowSums</span>(res<span class="sc">/</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rowSums</span>(res[<span class="sc">-</span><span class="fu">nrow</span>(xts_returns),])))<span class="sc">-</span><span class="dv">1</span>, <span class="at">order.by=</span><span class="fu">index</span>(xts_returns)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-8"><a href="mathfundations.html#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setNames</span>(., name)</span>
+<span id="cb2-9"><a href="mathfundations.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb2-10"><a href="mathfundations.html#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>This function has the same results as the <code>Return.portfolio()</code> function from the <code>PortfolioAnalytics</code> package.</p>
 
 </div>
 </div>

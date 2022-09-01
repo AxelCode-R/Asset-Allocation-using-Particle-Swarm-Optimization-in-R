@@ -68,7 +68,8 @@ if(all(!is.na(par))){
   X[, 1] <- par
 }
 X_fit <- apply(X, 2, fn)
-V <- mrunif(nr = length(par), nc=control$s, lower=-(upper-lower), upper=(upper-lower))/4
+V <- mrunif(nr = length(par), nc=control$s, 
+            lower=-(upper-lower), upper=(upper-lower))/4
 ```
 The velocity's are compressed with factor 4 to start with a maximal movement from a quarter of the space in each axis. The personal best positions `P` are the same as `X` and the global best position is the position with the smallest fitness:
 ```{r}
@@ -110,12 +111,7 @@ for(i in 1:control$maxiter){
   }
 }
 ```
-The particle with the best fitness and its position after hundred iterations is:
-```{r, echo=F}
-p0("position: ")
-p_g
-p0("fittness: ", p_g_fit)
-```
+The best fitness after $100$ iterations is `r p_g_fit` and the best possible solution is at $0$.
 
 
 
@@ -124,7 +120,9 @@ This section provides insights into the behavior of the PSO by visualizing multi
 ```{r gif_create}
 #https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/
 fn <- function(pos){
-  -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + exp(1) + 20
+  -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - 
+  exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + 
+  exp(1) + 20
 }
 
 
@@ -149,7 +147,9 @@ p_g_fit <- which.min(P_fit)
 save_traces <- TRUE
 trace_data <- NULL
 for(i in 1:maxiter){
-  V <- (w0-(w0-wN)*i/maxiter) * V + c1 * runif(1) * (P-X) + c2 * runif(1) * (p_g-X)
+  V <- (w0-(w0-wN)*i/maxiter) * V + 
+    c1 * runif(1) * (P-X) + 
+    c2 * runif(1) * (p_g-X)
   X <- X + V
   
   # evaluate objective function
@@ -207,7 +207,11 @@ if(!knitr::is_latex_output()){
 
 
 
+## Pros and Cons
 
+
+
+## Functions
 
 
 

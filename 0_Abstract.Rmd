@@ -1,7 +1,7 @@
 ```{r, setup, include=F}
 #rmarkdown::find_pandoc(version = "2.7.3")
 source("global.R")
-knitr::opts_chunk$set(cache = F, warning=F, message=F)
+knitr::opts_chunk$set(cache = T, warning=F, message=F)
 global_buffer_force <- F
 ```
 
