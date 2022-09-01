@@ -17,7 +17,7 @@ Let there be $N$ assets and its returns on $T$ different days which creates a re
 (\#eq:MVP)
 \end{equation} 
 
-The risk aversion parameter $\lambda$ defines the trade-off between risk and return. With $\lambda = 1$, the minimization problem only contains the the variance term and so on results in a minimum variance portfolio and $\lambda = 0$ transforms the problem to a minimization of the negative expected returns which results in a maximum return portfolio. All possible $\lambda \in [0, 1]$ represent the efficient frontier.
+The risk aversion parameter $\lambda$ defines the trade-off between risk and return. With $\lambda = 1$, the minimization problem only contains the variance term and so on results in a minimum variance portfolio and $\lambda = 0$ transforms the problem into a minimization of the negative expected returns, which results in a maximum return portfolio. All possible portfolios created by $\lambda \in [0, 1]$ define the efficient frontier.
 
 
 ### MVP example
@@ -136,14 +136,14 @@ $$
 To obtain the portfolio weights $w$, its necessary to substitute $r_{p}$ as shown below:
 
 $$
-  r_{p} = R * w
+  r_{p} = R \times w
 $$
 
 The Variance is then solved up until a quadratic problem dependent on the portfolio weights $w$ is represented:
 
 \begin{align*}
- Var(r_{p}-r_{bm}) &= Var(R * w - r_{bm}) \\
- &= Var(R * w) + Var(r_{bm}) - 2 \cdot Cov(R*w,r_{bm}) 
+ Var(r_{p}-r_{bm}) &= Var(R \times w - r_{bm}) \\
+ &= Var(R \times w) + Var(r_{bm}) - 2 \cdot Cov(R \times w,r_{bm}) 
 \end{align*}
 
 Now the three terms can be solved, beginning with the easiest.
@@ -155,7 +155,7 @@ $$
 The variance of the portfolio can be solved with \@ref(portvar):
 
 $$
-Var(R * w) = w^T * Cov(R) * w
+Var(R \times w) = w^T \times Cov(R) \times w
 $$
 And the last term can be solved the same way as in [@Eric2021]:
 

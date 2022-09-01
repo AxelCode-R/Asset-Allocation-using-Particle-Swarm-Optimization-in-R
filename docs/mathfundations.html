@@ -234,7 +234,7 @@ div.csl-indent {
 <p>Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using <a href="https://www.investopedia.com/terms/a/adjusted%20closing%20price.asp">adjusted closing prices</a>, which show the percentage change over time. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns are essential for comparing assets and for analyzing dependencies.</p>
 <div id="simple-returns" class="section level3 hasAnchor" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> Simple Returns<a href="mathfundations.html#simple-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The default timeframe for all raw data in this thesis is one workday and only simple returns are used. Suppose there is a asset with prices <span class="math inline">\(P\)</span> on workday <span class="math inline">\(t_i\)</span> and and following workday <span class="math inline">\(t_{i+1}\)</span>, then follows that the simple return on <span class="math inline">\(t_{i+1}\)</span> can be calculated as:
+<p>The default timeframe for all raw data in this thesis is one workday and only simple returns are used. Suppose there is a asset with prices <span class="math inline">\(P\)</span> on workday <span class="math inline">\(t_i\)</span> and following workday <span class="math inline">\(t_{i+1}\)</span>, then follows that the simple return on <span class="math inline">\(t_{i+1}\)</span> can be calculated as:
 <span class="math display">\[
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 \]</span></p>
@@ -242,7 +242,7 @@ div.csl-indent {
 </div>
 <div id="markowitz-modern-portfolio-theory-mpt" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> Markowitz Modern Portfolio Theory (MPT)<a href="mathfundations.html#markowitz-modern-portfolio-theory-mpt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: “A portfolio has the same return but less variance than the sum of its parts”. This is true if the assets are not perfectly correlated, because bad and good movers can make up for each other and reducing the likelihood of extreme events. More specific information can be found at <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
+<p>In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: “A portfolio has the same return but less variance than the sum of its parts”. This is true if the assets are not perfectly correlated, because bad and good movers can make up for each other which will reduce the likelihood of extreme events. More specific information can be found at <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
 <div id="assumptions-of-markowitz-portfolio-theory" class="section level3 hasAnchor" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> Assumptions of Markowitz Portfolio Theory<a href="mathfundations.html#assumptions-of-markowitz-portfolio-theory" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The following list contains all Markowitz assumptions according to <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>:</p>
@@ -374,13 +374,13 @@ and can be estimated in R with the base-function <code>cov()</code> and historic
 </div>
 <div id="portfolioreturns" class="section level3 hasAnchor" number="4.4.5">
 <h3><span class="header-section-number">4.4.5</span> Portfolio Returns<a href="mathfundations.html#portfolioreturns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Suppose there are <span class="math inline">\(N\)</span> assets which create a portfolio with weights <span class="math inline">\(w\)</span> at time <span class="math inline">\(t_0\)</span> and the portfolio should perform multiple timesteps till <span class="math inline">\(t_T\)</span> without re-balancing. What are the portfolio returns on each timestep <span class="math inline">\(t_i\)</span>? Its clear that assets with a positive performance have a higher weight at the end of the timestep than before. The formula for holding a portfolio with weights <span class="math inline">\(\textstyle\sum w = 1\)</span> and return matrix <span class="math inline">\(R \in R^{T \times N}\)</span>, has the aggregated return changes <span class="math inline">\(Z_i-1\)</span> on <span class="math inline">\(t_i\)</span> with <span class="math inline">\(i=0, 1, \cdots, T\)</span> for:
+<p>Suppose there are <span class="math inline">\(N\)</span> assets which create a portfolio with weights <span class="math inline">\(w\)</span> at time <span class="math inline">\(t_0\)</span> and the portfolio should perform multiple timesteps till <span class="math inline">\(t_T\)</span> without re-balancing. What are the portfolio returns on each timestep <span class="math inline">\(t_i\)</span>? Its obvious that assets with a positive performance at the current timestep have a higher weight at the next timestep. This can be done by adjusting the weights after each timestep, dependent on the returns. The formula for holding a portfolio with weights <span class="math inline">\(\textstyle\sum w = 1\)</span> and return matrix <span class="math inline">\(R \in R^{T \times N}\)</span>, has the return <span class="math inline">\(Z_i-1\)</span> on <span class="math inline">\(t_i\)</span> with <span class="math inline">\(i=0, 1, \cdots, T\)</span> for:
 <span class="math display">\[
   Z_i =
   \left\{
   \begin{split}
   &amp;(1+R_i)\cdot w, &amp;\text{ if }i=0\\
-  &amp;(1+R_i)\cdot \frac{Z_i}{\sum Z_i}, &amp;\text{ if }i&gt;0
+  &amp;(1+R_i)\cdot \frac{Z_{i-1}}{\sum Z_{i-1}}, &amp;\text{ if }i&gt;0
   \end{split}
   \right.
 \]</span>
@@ -400,15 +400,15 @@ This calculation of portfolio returns is implemented in the <code>calc_portfolio
 </div>
 <div id="geomeanret" class="section level3 hasAnchor" number="4.5.3">
 <h3><span class="header-section-number">4.5.3</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. Because the estimation of the variance is calculated as daily variance, it needs to do the same with returns over time. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns <span class="math inline">\(r_1 = 0.01; r_2=0.03, r_3=0.02\)</span> then the geometric mean return <span class="math inline">\(r^{id}\)</span> can be calculated as:
+<p>Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. Because the estimation of the variance is calculated as daily variance, it needs to do the same with returns over time. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns <span class="math inline">\(r_1 = 0.01\)</span>, <span class="math inline">\(r_2=0.03\)</span> and <span class="math inline">\(r_3=0.02\)</span> then follows that the geometric mean return <span class="math inline">\(r^{id}\)</span> can be calculated as:
 <span class="math display">\[
   r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
 \]</span>
-And the benefit is that it’s a daily mean return, which will produce exactly the same outcome, that means:
+And the benefit is that it’s a daily mean return, which will produce exactly the same outcome as the real returns, that means:
 <span class="math display">\[
   (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
 \]</span>
-This isnt the case for arithmetic mean returns. The general formula to calculate the implicit daily return from <span class="math inline">\(n\)</span> days is:
+This isnt the case for arithmetic mean returns. The general formula to calculate the mean geometric return from <span class="math inline">\(n\)</span> days is:
 <span class="math display">\[
   r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
 \]</span>
@@ -420,16 +420,20 @@ and as R-code:</p>
 <div id="calc_portfolio_returns" class="section level3 hasAnchor" number="4.5.4">
 <h3><span class="header-section-number">4.5.4</span> <code>calc_portfolio_returns()</code><a href="mathfundations.html#calc_portfolio_returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This is the implementation of a vectorial calculation of portfolio returns over multiple periods with a weighting vector <code>weights</code> at <span class="math inline">\(t_0\)</span> and no re-balancing:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="mathfundations.html#cb2-1" aria-hidden="true" tabindex="-1"></a>calc_portfolio_returns <span class="ot">&lt;-</span> <span class="cf">function</span>(xts_returns, weights, <span class="at">name=</span><span class="st">&quot;portfolio&quot;</span>){</span>
-<span id="cb2-2"><a href="mathfundations.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">sum</span>(weights)<span class="sc">!=</span><span class="dv">1</span>){</span>
-<span id="cb2-3"><a href="mathfundations.html#cb2-3" aria-hidden="true" tabindex="-1"></a>    xts_returns<span class="sc">$</span>temp___X1 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb2-4"><a href="mathfundations.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    weights <span class="ot">&lt;-</span> <span class="fu">c</span>(weights, <span class="dv">1</span><span class="sc">-</span><span class="fu">sum</span>(weights))</span>
-<span id="cb2-5"><a href="mathfundations.html#cb2-5" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-6"><a href="mathfundations.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">cumprod</span>((<span class="dv">1</span><span class="sc">+</span>xts_returns)) <span class="sc">*</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(weights, <span class="fu">nrow</span>(xts_returns)), <span class="at">ncol=</span><span class="fu">length</span>(weights), <span class="at">byrow=</span>T)</span>
-<span id="cb2-7"><a href="mathfundations.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">xts</span>(<span class="fu">rowSums</span>(res<span class="sc">/</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rowSums</span>(res[<span class="sc">-</span><span class="fu">nrow</span>(xts_returns),])))<span class="sc">-</span><span class="dv">1</span>, <span class="at">order.by=</span><span class="fu">index</span>(xts_returns)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-8"><a href="mathfundations.html#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setNames</span>(., name)</span>
-<span id="cb2-9"><a href="mathfundations.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb2-10"><a href="mathfundations.html#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="mathfundations.html#cb2-1" aria-hidden="true" tabindex="-1"></a>calc_portfolio_returns <span class="ot">&lt;-</span> </span>
+<span id="cb2-2"><a href="mathfundations.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(xts_returns, weights, <span class="at">name=</span><span class="st">&quot;portfolio&quot;</span>){</span>
+<span id="cb2-3"><a href="mathfundations.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">sum</span>(weights)<span class="sc">!=</span><span class="dv">1</span>){</span>
+<span id="cb2-4"><a href="mathfundations.html#cb2-4" aria-hidden="true" tabindex="-1"></a>    xts_returns<span class="sc">$</span>temp___X1 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb2-5"><a href="mathfundations.html#cb2-5" aria-hidden="true" tabindex="-1"></a>    weights <span class="ot">&lt;-</span> <span class="fu">c</span>(weights, <span class="dv">1</span><span class="sc">-</span><span class="fu">sum</span>(weights))</span>
+<span id="cb2-6"><a href="mathfundations.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-7"><a href="mathfundations.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">cumprod</span>((<span class="dv">1</span><span class="sc">+</span>xts_returns)) <span class="sc">*</span> <span class="fu">matrix</span>(</span>
+<span id="cb2-8"><a href="mathfundations.html#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(weights, <span class="fu">nrow</span>(xts_returns)), <span class="at">ncol=</span><span class="fu">length</span>(weights), <span class="at">byrow=</span>T)</span>
+<span id="cb2-9"><a href="mathfundations.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">xts</span>(</span>
+<span id="cb2-10"><a href="mathfundations.html#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rowSums</span>(res<span class="sc">/</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rowSums</span>(res[<span class="sc">-</span><span class="fu">nrow</span>(xts_returns),])))<span class="sc">-</span><span class="dv">1</span>, </span>
+<span id="cb2-11"><a href="mathfundations.html#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">order.by=</span><span class="fu">index</span>(xts_returns)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-12"><a href="mathfundations.html#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setNames</span>(., name)</span>
+<span id="cb2-13"><a href="mathfundations.html#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb2-14"><a href="mathfundations.html#cb2-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>This function has the same results as the <code>Return.portfolio()</code> function from the <code>PortfolioAnalytics</code> package.</p>
 
 </div>

@@ -19,7 +19,7 @@ $$
 Some other sources notate the problem with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. $|A^T \times x| >= a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
 
 ## QP Solver from quadprog
-The most common free QP-solver used in R is [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with the requirement that $D$ needs to be a symmetric positive definite matrix. It means that $D\in R^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in R^N$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix $\sum$, but its possible to find the nearest positive definite matrix of $\textstyle\sum$ with the function `nearPD()` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above $10^{-15} \%$, which is negligible for the context of this thesis. The `solve.QP()` functions for a $N$ dimensional vector of interest, has the following arguments, that can be found in the above stated formulation of a QP:
+The most common free QP-solver used in R is from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with the requirement that $D$ needs to be a symmetric positive definite matrix. It means that $D\in R^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in R^N$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix $\sum$, but its possible to find the nearest positive definite matrix of $\textstyle\sum$ with the function `nearPD()` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above $10^{-15} \%$, which is negligible for the context of this thesis. The `solve.QP()` function for a $N$ dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
 
 + `Dmat`: Symmetric positive definite matrix $D \in R^{N \times N}$ of the quadratic term.
 + `dvec`: Vector $d \in R^{N}$ of the linear term
@@ -38,7 +38,8 @@ This section provides insights into the effects of diversification and the use o
 ```{r, class.source="code_fold_it_collapsed"}
 returns_raw <- buffer(
   get_yf(
-    tickers = c("IBM", "GOOG", "AAPL", "MSFT", "AMZN", "NVDA", "JPM", "META", "V", "WMT"), 
+    tickers = c("IBM", "GOOG", "AAPL", "MSFT", "AMZN", 
+                "NVDA", "JPM", "META", "V", "WMT"), 
     from = "2016-01-01", 
     to = "2021-12-31"
   )$returns, 
@@ -72,7 +73,10 @@ mvp <- function(returns, lambda){
       meq = 1
     )
   
-    qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+    qp <- solve.QP(
+      Dmat = mat$Dmat, dvec = mat$dvec, 
+      Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
+    )
     
     res <- list(
       "mu" = mu %*% qp$solution,
@@ -112,7 +116,7 @@ for(i in 2:ncol(returns_raw)){
 
 The result gets filtered and names are added that represent the number of assets. Now can the plot be generated:
 
-```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r, class.source="code_fold_it_collapsed"}
 df <- df %>% 
   filter(!is.na(return)) %>% 
   distinct() %>% 
@@ -173,13 +177,17 @@ spx_composition <- buffer(
 
 pool_returns_raw <- buffer(
   get_yf(
-    tickers = spx_composition %>% filter(Date<=to) %>% filter(Date==max(Date)) %>% pull(Ticker), 
+    tickers = spx_composition %>% 
+      filter(Date<=to) %>% 
+      filter(Date==max(Date)) %>% 
+      pull(Ticker), 
     from = from, 
     to = to
   )$returns, 
   "AS_sp500_assets"
 )
-pool_returns_raw <- pool_returns_raw[, colSums(is.na(pool_returns_raw))==0]
+pool_returns_raw <- 
+  pool_returns_raw[, colSums(is.na(pool_returns_raw))==0]
 
 
 bm_returns <- buffer(
@@ -197,7 +205,9 @@ itp <- function(pool_returns, bm_returns){
     dvec = cov(pool_returns, bm_returns),
     Amat = t(rbind(
       rep(1, ncol(pool_returns)), # sum up to 1
-      diag(1, nrow=ncol(pool_returns), ncol=ncol(pool_returns)) # long only
+      diag(1, 
+           nrow=ncol(pool_returns), 
+           ncol=ncol(pool_returns)) # long only
     )),
     bvec = c(
       1, # sum up to 1
@@ -206,10 +216,14 @@ itp <- function(pool_returns, bm_returns){
     meq = 1
   )
   
-  qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+  qp <- solve.QP(
+    Dmat = mat$Dmat, dvec = mat$dvec, 
+    Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
+  )
 
   res <- list(
-    "var" = as.numeric(var(pool_returns %*% qp$solution - bm_returns)),
+    "var" = as.numeric(
+      var(pool_returns %*% qp$solution - bm_returns)),
     "solution" = setNames(qp$solution, colnames(pool_returns))
   )
 }
@@ -217,7 +231,7 @@ itp <- function(pool_returns, bm_returns){
 
 Now can the replication and successive discarding of assets begin. The results are saved in `res` and used to plot the results.
 
-```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r, class.source="code_fold_it_collapsed"}
 res <- NULL
 for(i in rev(seq(5, ncol(pool_returns_raw), 5))){
   if(i==ncol(pool_returns_raw)){
@@ -235,7 +249,7 @@ plot_ly(data=res, x=~N, y=~sd, mode="lines", type = 'scatter') %>%
 ```
 
 
-It can be seen that the standard deviation stagnates at about $N=100$. This results in the conclusion that a sparse replication with hundred assets is, in this sepcific case, sufficient to track the historical S&P 500 performance of the timeframe.
+It can be seen that the standard deviation stagnates at about $N=100$. This results in the conclusion that a sparse replication with hundred assets is, in this specific case, sufficient to track the historical S&P 500 performance of the timeframe.
 
 
 
