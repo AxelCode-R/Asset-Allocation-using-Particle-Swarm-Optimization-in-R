@@ -166,8 +166,8 @@ pso <- function(
     X <- X + V
     
     # set velocity to zeros if not in valid space
-    V[X > upper] <- 0
-    V[X < lower] <- 0
+    V[X > upper] <- -V[X > upper]
+    V[X < lower] <- -V[X < lower]
     
     # move into valid space
     X[X > upper] <- upper
@@ -281,6 +281,144 @@ if(!knitr::is_latex_output()){
 ```{=latex}
 \animategraphics[loop, width=8cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{50}
 ```
+
+
+## Example MVP
+
+```{r}
+returns_raw <- buffer(
+  get_yf(
+    tickers = c("IBM", "GOOG", "AAPL", "MSFT", "AMZN", 
+                "NVDA", "JPM", "META", "V", "WMT"), 
+    from = "2016-01-01", 
+    to = "2021-12-31"
+  )$returns, 
+  "AS_10_assets"
+)
+
+# re-arrange: low var first
+vars <- sapply(returns_raw, var)
+returns_raw <- returns_raw[, order(vars, decreasing = F)]
+
+mvp_QP <- function(returns, lambda){
+  tc <- tryCatch({
+    mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
+
+    cov <- as.matrix(nearPD(cov(returns))$mat)
+
+    mat <- list(
+      Dmat = lambda * cov,
+      dvec = (1-lambda) * mu,
+      Amat = t(rbind(
+        rep(1, ncol(returns)), # sum up to 1
+        diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+      )),
+      bvec = c(
+        1, # sum up to 1
+        rep(0, ncol(returns)) # long only
+      ),
+      meq = 1
+    )
+  
+    qp <- solve.QP(
+      Dmat = mat$Dmat, dvec = mat$dvec, 
+      Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
+    )
+    
+    res <- list(
+      "mu" = mu %*% qp$solution,
+      "var" = t(qp$solution) %*% cov %*% qp$solution,
+      "composition" = setNames(qp$solution, colnames(returns))
+    )
+    TRUE
+  }, error = function(e){FALSE})
+  
+
+  if(tc){
+    return(res)
+  }else{
+    return(list(
+      "mu" = NA,
+      "var" = NA,
+      "composition" = NA
+    ))
+  }
+}
+
+
+mvp_PSO <- function(returns, lambda){
+  tc <- tryCatch({
+    mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
+
+    cov <- as.matrix(nearPD(cov(returns))$mat)
+
+    mat <- list(
+      Dmat = lambda * cov,
+      dvec = (1-lambda) * mu,
+      Amat = t(rbind(
+        rep(1, ncol(returns)), # sum up to 1
+        diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+      )),
+      bvec = c(
+        1, # sum up to 1
+        rep(0, ncol(returns)) # long only
+      ),
+      meq = 1
+    )
+  
+    calc_fit <- function(x){
+      0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
+    }
+    calc_const <- function(x){
+      -min(0, t(mat$Amat) %*% x - mat$bvec)
+    }
+    pso_res <- pso(
+      par = rep(NA, ncol(returns)),
+      fn = function(x){
+        fitness <- calc_fit(x)
+        constraints <- calc_const(x)
+        return(fitness+10*constraints)
+      },
+      lower = 0,
+      upper = 1,
+      control = list(
+        s = 200, # swarm size
+        c.p = 0.5, # inherit best
+        c.g = 0.5, # global best
+        maxiter = 300, # iterations
+        w0 = 1.2, # starting inertia weight
+        wN = 0, # ending inertia weight
+        save_traces = F # save more information
+      )
+    )
+    
+    p0("constraint: ", sum(calc_const(pso_res$solution)))
+    p0("fitness: ", calc_fit(pso_res$solution))
+    
+    res <- list(
+      "mu" = mu %*% qp$solution,
+      "var" = t(qp$solution) %*% cov %*% qp$solution,
+      "composition" = setNames(qp$solution, colnames(returns))
+    )
+    TRUE
+  }, error = function(e){FALSE})
+  
+
+  if(tc){
+    return(res)
+  }else{
+    return(list(
+      "mu" = NA,
+      "var" = NA,
+      "composition" = NA
+    ))
+  }
+}
+
+```
+
+
+## Example ITP
 
 
 
