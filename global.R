@@ -29,6 +29,7 @@ library(quantmod)
 library(ggplot2)
 library(gganimate)
 library(metR)
+library(ggpubr)
 
 
 # alphavantage API-KEY

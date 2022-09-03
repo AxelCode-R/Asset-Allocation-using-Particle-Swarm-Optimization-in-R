@@ -126,7 +126,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-09-01}
+\date{2022-09-03}
 
 \begin{document}
 \maketitle
@@ -852,49 +852,40 @@ The PSO was developed by J. Kennedy as a Global Optimization method based on Swa
 \hypertarget{the-algorithm}{%
 \section{The Algorithm}\label{the-algorithm}}
 
-Each Particle \(d\) with position \(x_d\) moves in the search space \(R^N\) and has its inherent velocity \(v_d\) and remembers its best position \(p_d\). After each iteration the velocity changes into the direction of its previous velocity, its best inherent position and the global best position \(p_g\) of all particles. A position change from \(i\) to \(i+1\) can be calculated by the following two equations \citep{PaVr2002}:
+Each Particle \(d\) with position \(x_d\) moves in the search space \(R^N\) and has its inherent velocity \(v_d\) and remembers its previous best position \(P_d\). After each iteration the velocity changes into the direction of its inherent velocity, its best previous position and the global best position \(p_g\) of all particles. A position change from \(i\) to \(i+1\) can be calculated by the following two equations \citep{PaVr2002}:
 
 \begin{align*}
-  v_d^{i+1} &= wv_d^{i} + c_1 r_1^i (p_d^i-x_d^i) + c_2 r_2^i (p_g^i - x_d^i) \\
+  v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i-x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
-with \(r_1\) and \(r_2\) being uniformly distributed random numbers in {[}0, 1{]}. The cognitive parameter \(c_1\) acts as the weighting of the direction to its inherent best position of the particle. On the contrary is the social parameter \(c_2\), which is a weighting to the direction of the global best position. The inertia weight \(w\) is crucial for the convergence behavior by remembering a part of its historical trajectory. A study examined in \citep{PaVr2002} showed that these parameters can be set to \(c_1=c_2=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems do benefit from more fine-tuning of these parameters.
-
-To provide a effortless translation to code, the formula above can be stated for \(d = 1, 2, \cdots, D\) particles in the following matrix notation:
+with \(r_1\) and \(r_2\) being uniformly distributed random numbers in {[}0, 1{]}. The cognitive parameter \(c_p\) acts as the weighting of the direction to its previous best position of the particle. On the contrary is the social parameter \(c_g\), which is a weighting to the direction of the global best position. The inertia weight \(w\) is crucial for the convergence behavior by remembering a part of its previous trajectory. A study examined in \citep{PaVr2002} showed that these parameters can be set to \(c_p=c_g=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems do benefit from more fine-tuning of these parameters. To provide a effortless translation to code, the formula above can be stated for \(d = 1, 2, \cdots, D\) particles in the following matrix notation:
 \[
   V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} = X^i + V^{i+1}
 \]
-with current positions \(X \in R^{N \times D}\), current velocity's \(V \in R^{N \times D}\), best inherent positions \(P \in R^{N \times D}\) and the global best position \(p_g \in R^{N}\). The parameters \(w\), \(c_1\), \(c_2\), \(r_1\) and \(r_2\) are stile scalars.
+with current positions \(X \in R^{N \times D}\), current velocity's \(V \in R^{N \times D}\), previous best positions \(P \in R^{N \times D}\) and the global best position \(p_g \in R^{N}\). The parameters \(w\), \(c_p\), \(c_g\), \(r_1\) and \(r_2\) are stile scalars.
 
 \hypertarget{pso-function}{%
-\section{PSO Function}\label{pso-function}}
+\section{\texorpdfstring{\texttt{pso()} Function}{pso() Function}}\label{pso-function}}
 
 A general purpose PSO function is created in this section by following the structure of other optimization heuristics in R, specially the existing PSO implementation from the R-Package \texttt{pso}. The center of everything is a objective function \texttt{fn()} which will return a scalar that needs to be minimized. The function itself needs mainly a vector \texttt{pos} that describes the position of a particle (e.g.~weights). The other main parameters for the PSO function are \texttt{par}, which is one position of a particle, that is used to derive the dimension of the problem and used as first position of one particle. The argument can contain only \texttt{NA}'s which results in completely randomized starting positions. The last two arguments needed are \texttt{lower} and \texttt{upper} bounds (e.g.~weights bigger than 0 and smaller than 1). All other parameters have default values that can be overwritten by passing a list named \texttt{control}. The resulting structure is:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{PSO }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}
+\NormalTok{pso }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}
 \NormalTok{    par, }
 \NormalTok{    fn, }
 \NormalTok{    lower, }
 \NormalTok{    upper, }
-    \AttributeTok{control =} \FunctionTok{list}\NormalTok{(}
-      \AttributeTok{s =} \DecValTok{10}\NormalTok{, }\CommentTok{\# swarm size}
-      \AttributeTok{c1 =} \FloatTok{0.5}\NormalTok{, }\CommentTok{\# inherit best}
-      \AttributeTok{c2 =} \FloatTok{0.5}\NormalTok{, }\CommentTok{\# global best}
-      \AttributeTok{maxiter =} \DecValTok{10}\NormalTok{, }\CommentTok{\# iterations}
-      \AttributeTok{w0 =} \FloatTok{1.2}\NormalTok{, }\CommentTok{\# starting inertia weight}
-      \AttributeTok{wN =} \DecValTok{0}\NormalTok{, }\CommentTok{\# ending inertia weight}
-      \AttributeTok{save\_traces =}\NormalTok{ F }\CommentTok{\# save more information}
-\NormalTok{    ))\{}
+    \AttributeTok{control =} \FunctionTok{list}\NormalTok{()}
+\NormalTok{  )\{}
 
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
-Before the main data-structure can be initialized, its necessary to create some example inputs for the \texttt{PSO()} function like below:
+Before the main data-structure can be initialized, its necessary to create some example inputs for the \texttt{pso()} function like below:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -903,13 +894,13 @@ Before the main data-structure can be initialized, its necessary to create some 
 \NormalTok{lower }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{10}
 \NormalTok{upper }\OtherTok{\textless{}{-}} \DecValTok{10}
 \NormalTok{control }\OtherTok{=} \FunctionTok{list}\NormalTok{(}
-  \AttributeTok{s =} \DecValTok{10}\NormalTok{,}
-  \AttributeTok{c1 =} \FloatTok{0.5}\NormalTok{,}
-  \AttributeTok{c2 =} \FloatTok{0.5}\NormalTok{,}
-  \AttributeTok{maxiter =} \DecValTok{100}\NormalTok{,}
-  \AttributeTok{w0 =} \FloatTok{1.2}\NormalTok{,}
-  \AttributeTok{wN =} \DecValTok{0}\NormalTok{,}
-  \AttributeTok{save\_traces =}\NormalTok{ F}
+  \AttributeTok{s =} \DecValTok{10}\NormalTok{, }\CommentTok{\# swarm size}
+  \AttributeTok{c.p =} \FloatTok{0.5}\NormalTok{, }\CommentTok{\# inherit best}
+  \AttributeTok{c.g =} \FloatTok{0.5}\NormalTok{, }\CommentTok{\# global best}
+  \AttributeTok{maxiter =} \DecValTok{100}\NormalTok{, }\CommentTok{\# iterations}
+  \AttributeTok{w0 =} \FloatTok{1.2}\NormalTok{, }\CommentTok{\# starting inertia weight}
+  \AttributeTok{wN =} \DecValTok{0}\NormalTok{, }\CommentTok{\# ending inertia weight}
+  \AttributeTok{save\_traces =}\NormalTok{ F }\CommentTok{\# save more information}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -952,9 +943,13 @@ The needed data-structure is present and the optimization can start by calculati
   \CommentTok{\# move particles}
 \NormalTok{  V }\OtherTok{\textless{}{-}} 
 \NormalTok{    (control}\SpecialCharTok{$}\NormalTok{w0}\SpecialCharTok{{-}}\NormalTok{(control}\SpecialCharTok{$}\NormalTok{w0}\SpecialCharTok{{-}}\NormalTok{control}\SpecialCharTok{$}\NormalTok{wN)}\SpecialCharTok{*}\NormalTok{i}\SpecialCharTok{/}\NormalTok{control}\SpecialCharTok{$}\NormalTok{maxiter) }\SpecialCharTok{*}\NormalTok{ V }\SpecialCharTok{+} 
-\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c1 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+} 
-\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c2 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
+\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c.p }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+} 
+\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c.g }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
 \NormalTok{  X }\OtherTok{\textless{}{-}}\NormalTok{ X }\SpecialCharTok{+}\NormalTok{ V}
+  
+  \CommentTok{\# set velocity to zeros if not in valid space}
+\NormalTok{  V[X }\SpecialCharTok{\textgreater{}}\NormalTok{ upper] }\OtherTok{\textless{}{-}} \DecValTok{0}
+\NormalTok{  V[X }\SpecialCharTok{\textless{}}\NormalTok{ lower] }\OtherTok{\textless{}{-}} \DecValTok{0}
   
   \CommentTok{\# move into valid space}
 \NormalTok{  X[X }\SpecialCharTok{\textgreater{}}\NormalTok{ upper] }\OtherTok{\textless{}{-}}\NormalTok{ upper}
@@ -963,11 +958,11 @@ The needed data-structure is present and the optimization can start by calculati
   \CommentTok{\# evaluate objective function}
 \NormalTok{  X\_fit }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, fn)}
   
-  \CommentTok{\# save new inherent best}
+  \CommentTok{\# save new previews best}
 \NormalTok{  P[, P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit] }\OtherTok{\textless{}{-}}\NormalTok{ X[, P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit]}
 \NormalTok{  P\_fit[P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit] }\OtherTok{\textless{}{-}}\NormalTok{ X\_fit[P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit]}
   
-  \CommentTok{\# new global best}
+  \CommentTok{\# save new global best}
   \ControlFlowTok{if}\NormalTok{(}\FunctionTok{any}\NormalTok{(P\_fit }\SpecialCharTok{\textless{}}\NormalTok{ p\_g\_fit))\{}
 \NormalTok{    p\_g }\OtherTok{\textless{}{-}}\NormalTok{ P[, }\FunctionTok{which.min}\NormalTok{(P\_fit)]}
 \NormalTok{    p\_g\_fit }\OtherTok{\textless{}{-}} \FunctionTok{min}\NormalTok{(P\_fit)}
@@ -980,68 +975,38 @@ The needed data-structure is present and the optimization can start by calculati
 \end{Highlighting}
 \end{Shaded}
 
-The best fitness after \(100\) iterations is 0.0000167 and the best possible solution is at \(0\).
+The best fitness after \(100\) iterations is 0.0000009 and the best possible solution is at \(0\).
 
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
 
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}.
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}. The PSO core from the chapter above was used to finish the \texttt{pso()} function and is used here with seed 0. The fucntion \texttt{fn} to evaluate is they same function as in \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\#https://www.r{-}bloggers.com/2021/10/how{-}to{-}build{-}a{-}basic{-}particle{-}swarm{-}optimiser{-}from{-}scratch{-}in{-}r/}
 \NormalTok{fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pos)\{}
   \SpecialCharTok{{-}}\DecValTok{20} \SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.2} \SpecialCharTok{*} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.5} \SpecialCharTok{*}\NormalTok{((pos[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{+}\NormalTok{ (pos[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))) }\SpecialCharTok{{-}} 
   \FunctionTok{exp}\NormalTok{(}\FloatTok{0.5}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{1}\NormalTok{]) }\SpecialCharTok{+} \FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{2}\NormalTok{]))) }\SpecialCharTok{+} 
   \FunctionTok{exp}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} \DecValTok{20}
 \NormalTok{\}}
 
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{0}\NormalTok{)}
 
-\NormalTok{par }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\DecValTok{2}\NormalTok{)}
-\NormalTok{D }\OtherTok{\textless{}{-}} \DecValTok{10}
-\NormalTok{c1 }\OtherTok{\textless{}{-}} \FloatTok{0.5}
-\NormalTok{c2 }\OtherTok{\textless{}{-}} \FloatTok{0.5}
-\NormalTok{lower }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{10}
-\NormalTok{upper }\OtherTok{\textless{}{-}} \DecValTok{10}
-\NormalTok{maxiter }\OtherTok{\textless{}{-}} \DecValTok{10}
-\NormalTok{w0 }\OtherTok{\textless{}{-}} \FloatTok{1.2}
-\NormalTok{wN }\OtherTok{\textless{}{-}} \DecValTok{0}
-
-\NormalTok{X }\OtherTok{\textless{}{-}} \FunctionTok{mrunif}\NormalTok{(}\AttributeTok{nr =} \FunctionTok{length}\NormalTok{(par), }\AttributeTok{nc=}\NormalTok{D, }\AttributeTok{lower=}\NormalTok{lower, }\AttributeTok{upper=}\NormalTok{upper)}
-\NormalTok{X\_fit }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, fn)}
-\NormalTok{V }\OtherTok{\textless{}{-}} \FunctionTok{mrunif}\NormalTok{(}\AttributeTok{nr =} \FunctionTok{length}\NormalTok{(par), }\AttributeTok{nc=}\NormalTok{D, }\AttributeTok{lower=}\NormalTok{lower, }\AttributeTok{upper=}\NormalTok{upper)}
-\NormalTok{P }\OtherTok{\textless{}{-}}\NormalTok{ X}
-\NormalTok{P\_fit }\OtherTok{\textless{}{-}}\NormalTok{ X\_fit}
-\NormalTok{p\_g }\OtherTok{\textless{}{-}}\NormalTok{ P[, }\FunctionTok{which.min}\NormalTok{(P\_fit)]}
-\NormalTok{p\_g\_fit }\OtherTok{\textless{}{-}} \FunctionTok{which.min}\NormalTok{(P\_fit)}
-
-\NormalTok{save\_traces }\OtherTok{\textless{}{-}} \ConstantTok{TRUE}
-\NormalTok{trace\_data }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{maxiter)\{}
-\NormalTok{  V }\OtherTok{\textless{}{-}}\NormalTok{ (w0}\SpecialCharTok{{-}}\NormalTok{(w0}\SpecialCharTok{{-}}\NormalTok{wN)}\SpecialCharTok{*}\NormalTok{i}\SpecialCharTok{/}\NormalTok{maxiter) }\SpecialCharTok{*}\NormalTok{ V }\SpecialCharTok{+} 
-\NormalTok{    c1 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+} 
-\NormalTok{    c2 }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
-\NormalTok{  X }\OtherTok{\textless{}{-}}\NormalTok{ X }\SpecialCharTok{+}\NormalTok{ V}
-  
-  \CommentTok{\# evaluate objective function}
-\NormalTok{  X\_fit }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, fn)}
-  
-  \CommentTok{\# save new inherent best}
-\NormalTok{  P[, P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit] }\OtherTok{\textless{}{-}}\NormalTok{ X[, P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit]}
-\NormalTok{  P\_fit[P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit] }\OtherTok{\textless{}{-}}\NormalTok{ X\_fit[P\_fit }\SpecialCharTok{\textgreater{}}\NormalTok{ X\_fit]}
-  
-  \CommentTok{\# new global best}
-  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{any}\NormalTok{(P\_fit }\SpecialCharTok{\textless{}}\NormalTok{ p\_g\_fit))\{}
-\NormalTok{    p\_g }\OtherTok{\textless{}{-}}\NormalTok{ P[, }\FunctionTok{which.min}\NormalTok{(P\_fit)]}
-\NormalTok{    p\_g\_fit }\OtherTok{\textless{}{-}} \FunctionTok{min}\NormalTok{(P\_fit)}
-\NormalTok{  \}}
-  
-  \ControlFlowTok{if}\NormalTok{(save\_traces}\SpecialCharTok{==}\ConstantTok{TRUE}\NormalTok{)\{}
-\NormalTok{    trace\_data }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(trace\_data, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"iter"}\OtherTok{=}\NormalTok{i, }\FunctionTok{t}\NormalTok{(X)))}
-\NormalTok{  \}}
-\NormalTok{\}}
+\NormalTok{res }\OtherTok{\textless{}{-}} \FunctionTok{pso}\NormalTok{(}
+  \AttributeTok{par =} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+  \AttributeTok{fn =}\NormalTok{ fn,}
+  \AttributeTok{lower =} \SpecialCharTok{{-}}\DecValTok{10}\NormalTok{,}
+  \AttributeTok{upper =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{control =} \FunctionTok{list}\NormalTok{(}
+    \AttributeTok{maxiter =} \DecValTok{30}\NormalTok{,}
+    \AttributeTok{w0 =} \FloatTok{0.8}\NormalTok{,}
+    \AttributeTok{save\_traces =}\NormalTok{ T}
+\NormalTok{  )}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+The function \texttt{fn} has many local minima and a global minima at \((1,1)\) with value \(0\). The background-color-scale ranges from 0 as red to 20 as purple.
 
 \animategraphics[loop, width=8cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{50}
 

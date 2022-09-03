@@ -9,58 +9,49 @@ editor_options:
 The PSO was developed by J. Kennedy as a Global Optimization method based on Swarm Intelligence and was introduced to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The initial PSO should resemble a flock of birds, that is flying through the sky without collisions. That is why its first applications were found in particle physics, to analyse moving particles in high dimensional spaces, which is resembled in the name Particle. Afterwards it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and find the optima by cooperation with other particles in the swarm [@PaVr2002]. The benefits compared to some other Global Optimization methods are the fact that no gradient information is needed. It can find the optimum by considering only the result of the function that needs to be optimized. That means that the function can be arbitrarily complex and its still possible to reach the global optimum. Other benefits are the low computational costs, because only basic mathematical operators are used.
 
 ## The Algorithm
-Each Particle $d$ with position $x_d$ moves in the search space $R^N$ and has its inherent velocity $v_d$ and remembers its best position $p_d$. After each iteration the velocity changes into the direction of its previous velocity, its best inherent position and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
+Each Particle $d$ with position $x_d$ moves in the search space $R^N$ and has its inherent velocity $v_d$ and remembers its previous best position $P_d$. After each iteration the velocity changes into the direction of its inherent velocity, its best previous position and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
 
 \begin{align*}
-  v_d^{i+1} &= wv_d^{i} + c_1 r_1^i (p_d^i-x_d^i) + c_2 r_2^i (p_g^i - x_d^i) \\
+  v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i-x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
-with $r_1$ and $r_2$ being uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_1$ acts as the weighting of the direction to its inherent best position of the particle. On the contrary is the social parameter $c_2$, which is a weighting to the direction of the global best position. The inertia weight $w$ is crucial for the convergence behavior by remembering a part of its historical trajectory. A study examined in [@PaVr2002] showed that these parameters can be set to $c_1=c_2=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems do benefit from more fine-tuning of these parameters.  
-
-To provide a effortless translation to code, the formula above can be stated for $d = 1, 2, \cdots, D$ particles in the following matrix notation:
+with $r_1$ and $r_2$ being uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_p$ acts as the weighting of the direction to its previous best position of the particle. On the contrary is the social parameter $c_g$, which is a weighting to the direction of the global best position. The inertia weight $w$ is crucial for the convergence behavior by remembering a part of its previous trajectory. A study examined in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems do benefit from more fine-tuning of these parameters. To provide a effortless translation to code, the formula above can be stated for $d = 1, 2, \cdots, D$ particles in the following matrix notation:
 $$
   V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} = X^i + V^{i+1}
 $$
-with current positions $X \in R^{N \times D}$, current velocity's $V \in R^{N \times D}$, best inherent positions $P \in R^{N \times D}$ and the global best position $p_g \in R^{N}$. The parameters $w$, $c_1$, $c_2$, $r_1$ and $r_2$ are stile scalars.
+with current positions $X \in R^{N \times D}$, current velocity's $V \in R^{N \times D}$, previous best positions $P \in R^{N \times D}$ and the global best position $p_g \in R^{N}$. The parameters $w$, $c_p$, $c_g$, $r_1$ and $r_2$ are stile scalars.
 
-## PSO Function
+## `pso()` Function
 A general purpose PSO function is created in this section by following the structure of other optimization heuristics in R, specially the existing PSO implementation from the R-Package `pso`. The center of everything is a objective function `fn()` which will return a scalar that needs to be minimized. The function itself needs mainly a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is one position of a particle, that is used to derive the dimension of the problem and used as first position of one particle. The argument can contain only `NA`'s which results in completely randomized starting positions. The last two arguments needed are `lower` and `upper` bounds (e.g. weights bigger than 0 and smaller than 1). All other parameters have default values that can be overwritten by passing a list named `control`. The resulting structure is:
 ```{r}
-PSO <- function(
+pso <- function(
     par, 
     fn, 
     lower, 
     upper, 
-    control = list(
-      s = 10, # swarm size
-      c1 = 0.5, # inherit best
-      c2 = 0.5, # global best
-      maxiter = 10, # iterations
-      w0 = 1.2, # starting inertia weight
-      wN = 0, # ending inertia weight
-      save_traces = F # save more information
-    )){
+    control = list()
+  ){
 
 }
 ```
 
 
-Before the main data-structure can be initialized, its necessary to create some example inputs for the `PSO()` function like below:
+Before the main data-structure can be initialized, its necessary to create some example inputs for the `pso()` function like below:
 ```{r}
 par <- rep(NA, 2)
 fn <- function(x){return(sum(abs(x)))}
 lower <- -10
 upper <- 10
 control = list(
-  s = 10,
-  c1 = 0.5,
-  c2 = 0.5,
-  maxiter = 100,
-  w0 = 1.2,
-  wN = 0,
-  save_traces = F
+  s = 10, # swarm size
+  c.p = 0.5, # inherit best
+  c.g = 0.5, # global best
+  maxiter = 100, # iterations
+  w0 = 1.2, # starting inertia weight
+  wN = 0, # ending inertia weight
+  save_traces = F # save more information
 )
 ```
 Now is the time to initialize the random positions `X`, its fitness `X_fit` and its random velocity's `V` with the function `mrunif()`, which will create a matrix from uniformly distributed random numbers between `lower` and `upper`:
@@ -92,9 +83,13 @@ for(i in 1:control$maxiter){
   # move particles
   V <- 
     (control$w0-(control$w0-control$wN)*i/control$maxiter) * V + 
-    control$c1 * runif(1) * (P-X) + 
-    control$c2 * runif(1) * (p_g-X)
+    control$c.p * runif(1) * (P-X) + 
+    control$c.g * runif(1) * (p_g-X)
   X <- X + V
+  
+  # set velocity to zeros if not in valid space
+  V[X > upper] <- 0
+  V[X < lower] <- 0
   
   # move into valid space
   X[X > upper] <- upper
@@ -103,11 +98,11 @@ for(i in 1:control$maxiter){
   # evaluate objective function
   X_fit <- apply(X, 2, fn)
   
-  # save new inherent best
+  # save new previews best
   P[, P_fit > X_fit] <- X[, P_fit > X_fit]
   P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
   
-  # new global best
+  # save new global best
   if(any(P_fit < p_g_fit)){
     p_g <- P[, which.min(P_fit)]
     p_g_fit <- min(P_fit)
@@ -120,78 +115,153 @@ for(i in 1:control$maxiter){
 ```
 The best fitness after $100$ iterations is `r p_g_fit` and the best possible solution is at $0$.
 
+```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+# the resulting pso() function
+pso <- function(
+    par, 
+    fn, 
+    lower, 
+    upper, 
+    control = list()
+  ){
+
+  # use default control values if not set
+  control_ = list(
+    s = 10, # swarm size
+    c.p = 0.5, # inherit best
+    c.g = 0.5, # global best
+    maxiter = 200, # iterations
+    w0 = 1.2, # starting inertia weight
+    wN = 0, # ending inertia weight
+    save_traces = F # save more information
+  )
+  control <- c(control, control_[!names(control_) %in% names(control)])
+  
+  # init data-structure
+  X <- mrunif(
+    nr = length(par), nc=control$s, lower=lower, upper=upper
+  )
+  if(all(!is.na(par))){
+    X[, 1] <- par
+  }
+  X_fit <- apply(X, 2, fn)
+  V <- mrunif(
+    nr = length(par), nc=control$s, 
+    lower=-(upper-lower), upper=(upper-lower)
+  )/4
+  P <- X
+  P_fit <- X_fit
+  p_g <- P[, which.min(P_fit)]
+  p_g_fit <- which.min(P_fit)
+  
+  
+  trace_data <- NULL
+  for(i in 1:control$maxiter){
+    
+    # move particles
+    V <- 
+      (control$w0-(control$w0-control$wN)*i/control$maxiter) * V + 
+      control$c.p * runif(1) * (P-X) + 
+      control$c.g * runif(1) * (p_g-X)
+    X <- X + V
+    
+    # set velocity to zeros if not in valid space
+    V[X > upper] <- 0
+    V[X < lower] <- 0
+    
+    # move into valid space
+    X[X > upper] <- upper
+    X[X < lower] <- lower
+    
+    # evaluate objective function
+    X_fit <- apply(X, 2, fn)
+    
+    # save new previews best
+    P[, P_fit > X_fit] <- X[, P_fit > X_fit]
+    P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+    
+    # save new global best
+    if(any(P_fit < p_g_fit)){
+      p_g <- P[, which.min(P_fit)]
+      p_g_fit <- min(P_fit)
+    }
+    
+    if(control$save_traces){
+      trace_data <- rbind(trace_data, data.frame("iter"=i, t(X)))
+    }
+  }
+  
+  res <- list(
+    "solution" = p_g,
+    "fitness" = p_g_fit
+  )
+  if(control$save_traces){
+    res$trace_data <- trace_data
+  }
+  return(res)
+}
+```
+
+
 
 
 ## Animation 2-Dimensional
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). The PSO core from the chapter above was used to finish the `pso()` function and is used here with seed 0. The fucntion `fn` to evaluate is they same function as in [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
 ```{r gif_create}
-#https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/
 fn <- function(pos){
   -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - 
   exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + 
   exp(1) + 20
 }
 
+set.seed(0)
 
-par <- rep(NA, 2)
-D <- 10
-c1 <- 0.5
-c2 <- 0.5
-lower <- -10
-upper <- 10
-maxiter <- 10
-w0 <- 1.2
-wN <- 0
-
-X <- mrunif(nr = length(par), nc=D, lower=lower, upper=upper)
-X_fit <- apply(X, 2, fn)
-V <- mrunif(nr = length(par), nc=D, lower=lower, upper=upper)
-P <- X
-P_fit <- X_fit
-p_g <- P[, which.min(P_fit)]
-p_g_fit <- which.min(P_fit)
-
-save_traces <- TRUE
-trace_data <- NULL
-for(i in 1:maxiter){
-  V <- (w0-(w0-wN)*i/maxiter) * V + 
-    c1 * runif(1) * (P-X) + 
-    c2 * runif(1) * (p_g-X)
-  X <- X + V
-  
-  # evaluate objective function
-  X_fit <- apply(X, 2, fn)
-  
-  # save new inherent best
-  P[, P_fit > X_fit] <- X[, P_fit > X_fit]
-  P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
-  
-  # new global best
-  if(any(P_fit < p_g_fit)){
-    p_g <- P[, which.min(P_fit)]
-    p_g_fit <- min(P_fit)
-  }
-  
-  if(save_traces==TRUE){
-    trace_data <- rbind(trace_data, data.frame("iter"=i, t(X)))
-  }
-}
+res <- pso(
+  par = rep(NA, 2),
+  fn = fn,
+  lower = -10,
+  upper = 10,
+  control = list(
+    maxiter = 30,
+    w0 = 0.8,
+    save_traces = T
+  )
+)
 ```
-
+The function `fn` has many local minima and a global minima at $(1,1)$ with value $0$. The background-color-scale ranges from 0 as red to 20 as purple.
 
 ```{r gif_animate, echo=F}
 grid <- expand.grid(seq(-10, 10, length.out = 100), seq(-10, 10, length.out = 100), stringsAsFactors = F)
 grid$z <- apply(grid, 1, fn)
 
 
-anim <- ggplot(trace_data) +
-  geom_contour(data = grid, aes(x = Var1, y = Var2, z = z), color = "black") +
+background <- ggplot() +
+  geom_contour_filled(data = grid, aes(x = Var1, y = Var2, z = z), color = "black", alpha = 0.5) +
+  scale_fill_brewer(palette = "Spectral") +
+  theme(axis.line=element_blank(),
+      axis.text.x=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks=element_blank(),
+      axis.title.x=element_blank(),
+      axis.title.y=element_blank(),
+      legend.position="none",
+      panel.background=element_blank(),
+      panel.border=element_blank(),
+      panel.grid.major=element_blank(),
+      panel.grid.minor=element_blank(),
+      plot.background=element_blank())
+ggsave(background, filename = "gifs/pso_2dim/background.jpg", scale = 1, dpi=150)
+
+
+anim <- ggplot(res$trace_data) +
+  background_image(jpeg::readJPEG("gifs/pso_2dim/background.jpg")) +
   geom_point(aes(X1, X2)) +
-  xlim(-11, 11) +
-  ylim(-11, 11) +
+  xlim(-10, 10) +
+  ylim(-10, 10) +
   labs(x = "X", y = "Y") +
   transition_time(iter) +
   ease_aes("linear")
+
 
 
 if(!knitr::is_latex_output()){
