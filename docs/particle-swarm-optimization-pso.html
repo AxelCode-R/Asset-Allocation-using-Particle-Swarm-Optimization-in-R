@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-09-03" />
+<meta name="date" content="2022-09-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -189,7 +189,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a></li>
-<li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-mvp-with-solve.qp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
 <li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-itp-with-solve.qp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization (PSO)</a>
@@ -197,8 +197,10 @@ div.csl-indent {
 <li class="chapter" data-level="8.1" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#the-algorithm"><i class="fa fa-check"></i><b>8.1</b> The Algorithm</a></li>
 <li class="chapter" data-level="8.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pso-function"><i class="fa fa-check"></i><b>8.2</b> <code>pso()</code> Function</a></li>
 <li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
-<li class="chapter" data-level="8.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons"><i class="fa fa-check"></i><b>8.4</b> Pros and Cons</a></li>
-<li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#functions"><i class="fa fa-check"></i><b>8.5</b> Functions</a></li>
+<li class="chapter" data-level="8.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-mvp"><i class="fa fa-check"></i><b>8.4</b> Example MVP</a></li>
+<li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-1"><i class="fa fa-check"></i><b>8.5</b> Example ITP</a></li>
+<li class="chapter" data-level="8.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons"><i class="fa fa-check"></i><b>8.6</b> Pros and Cons</a></li>
+<li class="chapter" data-level="8.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#functions"><i class="fa fa-check"></i><b>8.7</b> Functions</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -367,8 +369,8 @@ with current positions <span class="math inline">\(X \in R^{N \times D}\)</span>
 <span id="cb24-48"><a href="particle-swarm-optimization-pso.html#cb24-48" aria-hidden="true" tabindex="-1"></a>    X <span class="ot">&lt;-</span> X <span class="sc">+</span> V</span>
 <span id="cb24-49"><a href="particle-swarm-optimization-pso.html#cb24-49" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb24-50"><a href="particle-swarm-optimization-pso.html#cb24-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set velocity to zeros if not in valid space</span></span>
-<span id="cb24-51"><a href="particle-swarm-optimization-pso.html#cb24-51" aria-hidden="true" tabindex="-1"></a>    V[X <span class="sc">&gt;</span> upper] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb24-52"><a href="particle-swarm-optimization-pso.html#cb24-52" aria-hidden="true" tabindex="-1"></a>    V[X <span class="sc">&lt;</span> lower] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb24-51"><a href="particle-swarm-optimization-pso.html#cb24-51" aria-hidden="true" tabindex="-1"></a>    V[X <span class="sc">&gt;</span> upper] <span class="ot">&lt;-</span> <span class="sc">-</span>V[X <span class="sc">&gt;</span> upper]</span>
+<span id="cb24-52"><a href="particle-swarm-optimization-pso.html#cb24-52" aria-hidden="true" tabindex="-1"></a>    V[X <span class="sc">&lt;</span> lower] <span class="ot">&lt;-</span> <span class="sc">-</span>V[X <span class="sc">&lt;</span> lower]</span>
 <span id="cb24-53"><a href="particle-swarm-optimization-pso.html#cb24-53" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb24-54"><a href="particle-swarm-optimization-pso.html#cb24-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># move into valid space</span></span>
 <span id="cb24-55"><a href="particle-swarm-optimization-pso.html#cb24-55" aria-hidden="true" tabindex="-1"></a>    X[X <span class="sc">&gt;</span> upper] <span class="ot">&lt;-</span> upper</span>
@@ -419,19 +421,192 @@ with current positions <span class="math inline">\(X \in R^{N \times D}\)</span>
 <span id="cb25-12"><a href="particle-swarm-optimization-pso.html#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower =</span> <span class="sc">-</span><span class="dv">10</span>,</span>
 <span id="cb25-13"><a href="particle-swarm-optimization-pso.html#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">upper =</span> <span class="dv">10</span>,</span>
 <span id="cb25-14"><a href="particle-swarm-optimization-pso.html#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(</span>
-<span id="cb25-15"><a href="particle-swarm-optimization-pso.html#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">maxiter =</span> <span class="dv">30</span>,</span>
-<span id="cb25-16"><a href="particle-swarm-optimization-pso.html#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">w0 =</span> <span class="fl">0.8</span>,</span>
-<span id="cb25-17"><a href="particle-swarm-optimization-pso.html#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_traces =</span> T</span>
-<span id="cb25-18"><a href="particle-swarm-optimization-pso.html#cb25-18" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb25-19"><a href="particle-swarm-optimization-pso.html#cb25-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>The function <code>fn</code> has many local minima and a global minima at <span class="math inline">\((1,1)\)</span> with value <span class="math inline">\(0\)</span>. The background-color-scale ranges from 0 as red to 20 as purple.</p>
+<span id="cb25-15"><a href="particle-swarm-optimization-pso.html#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">s =</span> <span class="dv">10</span>,</span>
+<span id="cb25-16"><a href="particle-swarm-optimization-pso.html#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">maxiter =</span> <span class="dv">30</span>,</span>
+<span id="cb25-17"><a href="particle-swarm-optimization-pso.html#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">w0 =</span> <span class="fl">0.8</span>,</span>
+<span id="cb25-18"><a href="particle-swarm-optimization-pso.html#cb25-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_traces =</span> T</span>
+<span id="cb25-19"><a href="particle-swarm-optimization-pso.html#cb25-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-20"><a href="particle-swarm-optimization-pso.html#cb25-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>The function <code>fn</code> has many local minima and a global minima at <span class="math inline">\((1,1)\)</span> with value <span class="math inline">\(0\)</span>. The background-color-scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterates 30 times with inertia weight decreasing from 0.8 to 0. The iterations are visualized in the GIF below:</p>
 <p><img src="Master_Thesis_files/figure-html/gif_animate-1.gif" /><!-- --></p>
 </div>
-<div id="pros-and-cons" class="section level2 hasAnchor" number="8.4">
-<h2><span class="header-section-number">8.4</span> Pros and Cons<a href="particle-swarm-optimization-pso.html#pros-and-cons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="example-mvp" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Example MVP<a href="particle-swarm-optimization-pso.html#example-mvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This example uses the <code>solve.QP</code> approach from <a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp">7.3</a> with ten assets as benchmark. Recap, the goal is to create a MVP from ten of the biggest american equity’s between 2016 and 2021 for each possible <span class="math inline">\(\lambda\)</span>. The PSO has 100 particles and 200 iterations for each lambda. The key features of all portfolios generated with the <code>solve.QP</code> versus the PSO is shown below:
+<img src="Master_Thesis_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+It can be seen that the analytical approach and the PSO approach have a tiny difference for <span class="math inline">\(lambda &gt; 0.8\)</span> and a steadily increansed diffrence otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.</p>
 </div>
-<div id="functions" class="section level2 hasAnchor" number="8.5">
-<h2><span class="header-section-number">8.5</span> Functions<a href="particle-swarm-optimization-pso.html#functions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="example-itp-1" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Example ITP<a href="particle-swarm-optimization-pso.html#example-itp-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="particle-swarm-optimization-pso.html#cb26-1" aria-hidden="true" tabindex="-1"></a>from <span class="ot">&lt;-</span> <span class="st">&quot;2016-01-01&quot;</span></span>
+<span id="cb26-2"><a href="particle-swarm-optimization-pso.html#cb26-2" aria-hidden="true" tabindex="-1"></a>to <span class="ot">&lt;-</span> <span class="st">&quot;2021-12-31&quot;</span></span>
+<span id="cb26-3"><a href="particle-swarm-optimization-pso.html#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="particle-swarm-optimization-pso.html#cb26-4" aria-hidden="true" tabindex="-1"></a>spx_composition <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
+<span id="cb26-5"><a href="particle-swarm-optimization-pso.html#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_spx_composition</span>(),</span>
+<span id="cb26-6"><a href="particle-swarm-optimization-pso.html#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AS_spx_composition&quot;</span></span>
+<span id="cb26-7"><a href="particle-swarm-optimization-pso.html#cb26-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-8"><a href="particle-swarm-optimization-pso.html#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="particle-swarm-optimization-pso.html#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="particle-swarm-optimization-pso.html#cb26-10" aria-hidden="true" tabindex="-1"></a>pool_returns_raw <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
+<span id="cb26-11"><a href="particle-swarm-optimization-pso.html#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(</span>
+<span id="cb26-12"><a href="particle-swarm-optimization-pso.html#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">tickers =</span> spx_composition <span class="sc">%&gt;%</span> </span>
+<span id="cb26-13"><a href="particle-swarm-optimization-pso.html#cb26-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Date<span class="sc">&lt;=</span>to) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-14"><a href="particle-swarm-optimization-pso.html#cb26-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Date<span class="sc">==</span><span class="fu">max</span>(Date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-15"><a href="particle-swarm-optimization-pso.html#cb26-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pull</span>(Ticker), </span>
+<span id="cb26-16"><a href="particle-swarm-optimization-pso.html#cb26-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">from =</span> from, </span>
+<span id="cb26-17"><a href="particle-swarm-optimization-pso.html#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">to =</span> to</span>
+<span id="cb26-18"><a href="particle-swarm-optimization-pso.html#cb26-18" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>returns, </span>
+<span id="cb26-19"><a href="particle-swarm-optimization-pso.html#cb26-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AS_sp500_assets&quot;</span></span>
+<span id="cb26-20"><a href="particle-swarm-optimization-pso.html#cb26-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-21"><a href="particle-swarm-optimization-pso.html#cb26-21" aria-hidden="true" tabindex="-1"></a>pool_returns_raw <span class="ot">&lt;-</span> </span>
+<span id="cb26-22"><a href="particle-swarm-optimization-pso.html#cb26-22" aria-hidden="true" tabindex="-1"></a>  pool_returns_raw[, <span class="fu">colSums</span>(<span class="fu">is.na</span>(pool_returns_raw))<span class="sc">==</span><span class="dv">0</span>]</span>
+<span id="cb26-23"><a href="particle-swarm-optimization-pso.html#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-24"><a href="particle-swarm-optimization-pso.html#cb26-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-25"><a href="particle-swarm-optimization-pso.html#cb26-25" aria-hidden="true" tabindex="-1"></a>bm_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
+<span id="cb26-26"><a href="particle-swarm-optimization-pso.html#cb26-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="st">&quot;%5EGSPC&quot;</span>, <span class="at">from =</span> from, <span class="at">to =</span> to)<span class="sc">$</span>returns, </span>
+<span id="cb26-27"><a href="particle-swarm-optimization-pso.html#cb26-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AS_sp500&quot;</span></span>
+<span id="cb26-28"><a href="particle-swarm-optimization-pso.html#cb26-28" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">setNames</span>(., <span class="st">&quot;S&amp;P 500&quot;</span>)</span>
+<span id="cb26-29"><a href="particle-swarm-optimization-pso.html#cb26-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-30"><a href="particle-swarm-optimization-pso.html#cb26-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-31"><a href="particle-swarm-optimization-pso.html#cb26-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-32"><a href="particle-swarm-optimization-pso.html#cb26-32" aria-hidden="true" tabindex="-1"></a>itp_QP <span class="ot">&lt;-</span> <span class="cf">function</span>(pool_returns, bm_returns){</span>
+<span id="cb26-33"><a href="particle-swarm-optimization-pso.html#cb26-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-34"><a href="particle-swarm-optimization-pso.html#cb26-34" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb26-35"><a href="particle-swarm-optimization-pso.html#cb26-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> <span class="fu">cov</span>(pool_returns),</span>
+<span id="cb26-36"><a href="particle-swarm-optimization-pso.html#cb26-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">dvec =</span> <span class="fu">cov</span>(pool_returns, bm_returns),</span>
+<span id="cb26-37"><a href="particle-swarm-optimization-pso.html#cb26-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
+<span id="cb26-38"><a href="particle-swarm-optimization-pso.html#cb26-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(pool_returns)), <span class="co"># sum up to 1</span></span>
+<span id="cb26-39"><a href="particle-swarm-optimization-pso.html#cb26-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">diag</span>(<span class="dv">1</span>, </span>
+<span id="cb26-40"><a href="particle-swarm-optimization-pso.html#cb26-40" aria-hidden="true" tabindex="-1"></a>           <span class="at">nrow=</span><span class="fu">ncol</span>(pool_returns), </span>
+<span id="cb26-41"><a href="particle-swarm-optimization-pso.html#cb26-41" aria-hidden="true" tabindex="-1"></a>           <span class="at">ncol=</span><span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb26-42"><a href="particle-swarm-optimization-pso.html#cb26-42" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb26-43"><a href="particle-swarm-optimization-pso.html#cb26-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">bvec =</span> <span class="fu">c</span>(</span>
+<span id="cb26-44"><a href="particle-swarm-optimization-pso.html#cb26-44" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
+<span id="cb26-45"><a href="particle-swarm-optimization-pso.html#cb26-45" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb26-46"><a href="particle-swarm-optimization-pso.html#cb26-46" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb26-47"><a href="particle-swarm-optimization-pso.html#cb26-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">meq =</span> <span class="dv">1</span></span>
+<span id="cb26-48"><a href="particle-swarm-optimization-pso.html#cb26-48" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-49"><a href="particle-swarm-optimization-pso.html#cb26-49" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb26-50"><a href="particle-swarm-optimization-pso.html#cb26-50" aria-hidden="true" tabindex="-1"></a>  qp <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(</span>
+<span id="cb26-51"><a href="particle-swarm-optimization-pso.html#cb26-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> mat<span class="sc">$</span>Dmat, <span class="at">dvec =</span> mat<span class="sc">$</span>dvec, </span>
+<span id="cb26-52"><a href="particle-swarm-optimization-pso.html#cb26-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> mat<span class="sc">$</span>Amat, <span class="at">bvec =</span> mat<span class="sc">$</span>bvec, <span class="at">meq =</span> mat<span class="sc">$</span>meq</span>
+<span id="cb26-53"><a href="particle-swarm-optimization-pso.html#cb26-53" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-54"><a href="particle-swarm-optimization-pso.html#cb26-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-55"><a href="particle-swarm-optimization-pso.html#cb26-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb26-56"><a href="particle-swarm-optimization-pso.html#cb26-56" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb26-57"><a href="particle-swarm-optimization-pso.html#cb26-57" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;value&quot;</span> <span class="ot">=</span> qp<span class="sc">$</span>value,</span>
+<span id="cb26-58"><a href="particle-swarm-optimization-pso.html#cb26-58" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(</span>
+<span id="cb26-59"><a href="particle-swarm-optimization-pso.html#cb26-59" aria-hidden="true" tabindex="-1"></a>      <span class="fu">var</span>(pool_returns <span class="sc">%*%</span> qp<span class="sc">$</span>solution <span class="sc">-</span> bm_returns)),</span>
+<span id="cb26-60"><a href="particle-swarm-optimization-pso.html#cb26-60" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;solution&quot;</span> <span class="ot">=</span> <span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(pool_returns))</span>
+<span id="cb26-61"><a href="particle-swarm-optimization-pso.html#cb26-61" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-62"><a href="particle-swarm-optimization-pso.html#cb26-62" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-63"><a href="particle-swarm-optimization-pso.html#cb26-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-64"><a href="particle-swarm-optimization-pso.html#cb26-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-65"><a href="particle-swarm-optimization-pso.html#cb26-65" aria-hidden="true" tabindex="-1"></a>itp_PSO <span class="ot">&lt;-</span> <span class="cf">function</span>(pool_returns, bm_returns, <span class="at">silent =</span> T){</span>
+<span id="cb26-66"><a href="particle-swarm-optimization-pso.html#cb26-66" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb26-67"><a href="particle-swarm-optimization-pso.html#cb26-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> <span class="fu">cov</span>(pool_returns),</span>
+<span id="cb26-68"><a href="particle-swarm-optimization-pso.html#cb26-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">dvec =</span> <span class="fu">cov</span>(pool_returns, bm_returns),</span>
+<span id="cb26-69"><a href="particle-swarm-optimization-pso.html#cb26-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
+<span id="cb26-70"><a href="particle-swarm-optimization-pso.html#cb26-70" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(pool_returns)), <span class="co"># sum up to 1</span></span>
+<span id="cb26-71"><a href="particle-swarm-optimization-pso.html#cb26-71" aria-hidden="true" tabindex="-1"></a>      <span class="fu">diag</span>(<span class="dv">1</span>, </span>
+<span id="cb26-72"><a href="particle-swarm-optimization-pso.html#cb26-72" aria-hidden="true" tabindex="-1"></a>           <span class="at">nrow=</span><span class="fu">ncol</span>(pool_returns), </span>
+<span id="cb26-73"><a href="particle-swarm-optimization-pso.html#cb26-73" aria-hidden="true" tabindex="-1"></a>           <span class="at">ncol=</span><span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb26-74"><a href="particle-swarm-optimization-pso.html#cb26-74" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb26-75"><a href="particle-swarm-optimization-pso.html#cb26-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">bvec =</span> <span class="fu">c</span>(</span>
+<span id="cb26-76"><a href="particle-swarm-optimization-pso.html#cb26-76" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
+<span id="cb26-77"><a href="particle-swarm-optimization-pso.html#cb26-77" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb26-78"><a href="particle-swarm-optimization-pso.html#cb26-78" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb26-79"><a href="particle-swarm-optimization-pso.html#cb26-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">meq =</span> <span class="dv">1</span></span>
+<span id="cb26-80"><a href="particle-swarm-optimization-pso.html#cb26-80" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-81"><a href="particle-swarm-optimization-pso.html#cb26-81" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb26-82"><a href="particle-swarm-optimization-pso.html#cb26-82" aria-hidden="true" tabindex="-1"></a>  calc_fit <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb26-83"><a href="particle-swarm-optimization-pso.html#cb26-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(<span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> mat<span class="sc">$</span>Dmat <span class="sc">%*%</span> x <span class="sc">-</span> <span class="fu">t</span>(mat<span class="sc">$</span>dvec) <span class="sc">%*%</span> x)</span>
+<span id="cb26-84"><a href="particle-swarm-optimization-pso.html#cb26-84" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb26-85"><a href="particle-swarm-optimization-pso.html#cb26-85" aria-hidden="true" tabindex="-1"></a>  calc_const <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb26-86"><a href="particle-swarm-optimization-pso.html#cb26-86" aria-hidden="true" tabindex="-1"></a>    const <span class="ot">&lt;-</span> <span class="fu">t</span>(mat<span class="sc">$</span>Amat) <span class="sc">%*%</span> x <span class="sc">-</span> mat<span class="sc">$</span>bvec</span>
+<span id="cb26-87"><a href="particle-swarm-optimization-pso.html#cb26-87" aria-hidden="true" tabindex="-1"></a>    const[mat<span class="sc">$</span>meq] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">abs</span>(const[mat<span class="sc">$</span>meq])</span>
+<span id="cb26-88"><a href="particle-swarm-optimization-pso.html#cb26-88" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">min</span>(<span class="dv">0</span>, const)</span>
+<span id="cb26-89"><a href="particle-swarm-optimization-pso.html#cb26-89" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb26-90"><a href="particle-swarm-optimization-pso.html#cb26-90" aria-hidden="true" tabindex="-1"></a>  pso_res <span class="ot">&lt;-</span> <span class="fu">pso</span>(</span>
+<span id="cb26-91"><a href="particle-swarm-optimization-pso.html#cb26-91" aria-hidden="true" tabindex="-1"></a>    <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_returns)),</span>
+<span id="cb26-92"><a href="particle-swarm-optimization-pso.html#cb26-92" aria-hidden="true" tabindex="-1"></a>    <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
+<span id="cb26-93"><a href="particle-swarm-optimization-pso.html#cb26-93" aria-hidden="true" tabindex="-1"></a>      fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>
+<span id="cb26-94"><a href="particle-swarm-optimization-pso.html#cb26-94" aria-hidden="true" tabindex="-1"></a>      constraints <span class="ot">&lt;-</span> <span class="fu">calc_const</span>(x)</span>
+<span id="cb26-95"><a href="particle-swarm-optimization-pso.html#cb26-95" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(fitness<span class="sc">+</span><span class="dv">10</span><span class="sc">*</span>constraints)</span>
+<span id="cb26-96"><a href="particle-swarm-optimization-pso.html#cb26-96" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb26-97"><a href="particle-swarm-optimization-pso.html#cb26-97" aria-hidden="true" tabindex="-1"></a>    <span class="at">lower =</span> <span class="dv">0</span>,</span>
+<span id="cb26-98"><a href="particle-swarm-optimization-pso.html#cb26-98" aria-hidden="true" tabindex="-1"></a>    <span class="at">upper =</span> <span class="fl">0.1</span>,</span>
+<span id="cb26-99"><a href="particle-swarm-optimization-pso.html#cb26-99" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
+<span id="cb26-100"><a href="particle-swarm-optimization-pso.html#cb26-100" aria-hidden="true" tabindex="-1"></a>      <span class="at">s =</span> <span class="dv">100</span>, <span class="co"># swarm size</span></span>
+<span id="cb26-101"><a href="particle-swarm-optimization-pso.html#cb26-101" aria-hidden="true" tabindex="-1"></a>      <span class="at">c.p =</span> <span class="fl">0.5</span>, <span class="co"># inherit best</span></span>
+<span id="cb26-102"><a href="particle-swarm-optimization-pso.html#cb26-102" aria-hidden="true" tabindex="-1"></a>      <span class="at">c.g =</span> <span class="fl">0.5</span>, <span class="co"># global best</span></span>
+<span id="cb26-103"><a href="particle-swarm-optimization-pso.html#cb26-103" aria-hidden="true" tabindex="-1"></a>      <span class="at">maxiter =</span> <span class="dv">100</span>, <span class="co"># iterations</span></span>
+<span id="cb26-104"><a href="particle-swarm-optimization-pso.html#cb26-104" aria-hidden="true" tabindex="-1"></a>      <span class="at">w0 =</span> <span class="fl">0.9</span>, <span class="co"># starting inertia weight</span></span>
+<span id="cb26-105"><a href="particle-swarm-optimization-pso.html#cb26-105" aria-hidden="true" tabindex="-1"></a>      <span class="at">wN =</span> <span class="dv">0</span>, <span class="co"># ending inertia weight</span></span>
+<span id="cb26-106"><a href="particle-swarm-optimization-pso.html#cb26-106" aria-hidden="true" tabindex="-1"></a>      <span class="at">save_traces =</span> F <span class="co"># save more information</span></span>
+<span id="cb26-107"><a href="particle-swarm-optimization-pso.html#cb26-107" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-108"><a href="particle-swarm-optimization-pso.html#cb26-108" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-109"><a href="particle-swarm-optimization-pso.html#cb26-109" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>silent){</span>
+<span id="cb26-110"><a href="particle-swarm-optimization-pso.html#cb26-110" aria-hidden="true" tabindex="-1"></a>    <span class="fu">p0</span>(<span class="st">&quot;constraint: &quot;</span>, <span class="fu">sum</span>(<span class="fu">calc_const</span>(pso_res<span class="sc">$</span>solution)))</span>
+<span id="cb26-111"><a href="particle-swarm-optimization-pso.html#cb26-111" aria-hidden="true" tabindex="-1"></a>    <span class="fu">p0</span>(<span class="st">&quot;fitness: &quot;</span>, <span class="fu">calc_fit</span>(pso_res<span class="sc">$</span>solution))</span>
+<span id="cb26-112"><a href="particle-swarm-optimization-pso.html#cb26-112" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb26-113"><a href="particle-swarm-optimization-pso.html#cb26-113" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb26-114"><a href="particle-swarm-optimization-pso.html#cb26-114" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb26-115"><a href="particle-swarm-optimization-pso.html#cb26-115" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;composition&quot;</span> <span class="ot">=</span> <span class="fu">setNames</span>(pso_res<span class="sc">$</span>solution, <span class="fu">colnames</span>(pool_returns)),</span>
+<span id="cb26-116"><a href="particle-swarm-optimization-pso.html#cb26-116" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;fit&quot;</span> <span class="ot">=</span> <span class="fu">calc_fit</span>(pso_res<span class="sc">$</span>solution),</span>
+<span id="cb26-117"><a href="particle-swarm-optimization-pso.html#cb26-117" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;constraint&quot;</span> <span class="ot">=</span> <span class="fu">calc_const</span>(pso_res<span class="sc">$</span>solution),</span>
+<span id="cb26-118"><a href="particle-swarm-optimization-pso.html#cb26-118" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(</span>
+<span id="cb26-119"><a href="particle-swarm-optimization-pso.html#cb26-119" aria-hidden="true" tabindex="-1"></a>      <span class="fu">var</span>(pool_returns <span class="sc">%*%</span> pso_res<span class="sc">$</span>solution <span class="sc">-</span> bm_returns))</span>
+<span id="cb26-120"><a href="particle-swarm-optimization-pso.html#cb26-120" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-121"><a href="particle-swarm-optimization-pso.html#cb26-121" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb26-122"><a href="particle-swarm-optimization-pso.html#cb26-122" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb26-123"><a href="particle-swarm-optimization-pso.html#cb26-123" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-124"><a href="particle-swarm-optimization-pso.html#cb26-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-125"><a href="particle-swarm-optimization-pso.html#cb26-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-126"><a href="particle-swarm-optimization-pso.html#cb26-126" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb26-127"><a href="particle-swarm-optimization-pso.html#cb26-127" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">system.time</span>(</span>
+<span id="cb26-128"><a href="particle-swarm-optimization-pso.html#cb26-128" aria-hidden="true" tabindex="-1"></a>  temp_qp <span class="ot">&lt;-</span> <span class="fu">itp_QP</span>(pool_returns_raw, bm_returns)</span>
+<span id="cb26-129"><a href="particle-swarm-optimization-pso.html#cb26-129" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-130"><a href="particle-swarm-optimization-pso.html#cb26-130" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;type&quot;</span><span class="ot">=</span><span class="st">&quot;ITP_QP&quot;</span>, <span class="st">&quot;var&quot;</span><span class="ot">=</span>temp_qp<span class="sc">$</span>var, <span class="st">&quot;fitness&quot;</span><span class="ot">=</span>temp_qp<span class="sc">$</span>value, <span class="st">&quot;constraint&quot;</span><span class="ot">=</span><span class="dv">0</span>, <span class="st">&quot;time&quot;</span><span class="ot">=</span>time[<span class="dv">3</span>])</span>
+<span id="cb26-131"><a href="particle-swarm-optimization-pso.html#cb26-131" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>){</span>
+<span id="cb26-132"><a href="particle-swarm-optimization-pso.html#cb26-132" aria-hidden="true" tabindex="-1"></a>  time <span class="ot">&lt;-</span> <span class="fu">system.time</span>(</span>
+<span id="cb26-133"><a href="particle-swarm-optimization-pso.html#cb26-133" aria-hidden="true" tabindex="-1"></a>    temp_pso <span class="ot">&lt;-</span> <span class="fu">itp_PSO</span>(pool_returns_raw, bm_returns)</span>
+<span id="cb26-134"><a href="particle-swarm-optimization-pso.html#cb26-134" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-135"><a href="particle-swarm-optimization-pso.html#cb26-135" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb26-136"><a href="particle-swarm-optimization-pso.html#cb26-136" aria-hidden="true" tabindex="-1"></a>    df, </span>
+<span id="cb26-137"><a href="particle-swarm-optimization-pso.html#cb26-137" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb26-138"><a href="particle-swarm-optimization-pso.html#cb26-138" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;type&quot;</span><span class="ot">=</span><span class="st">&quot;ITP_PSO&quot;</span>, </span>
+<span id="cb26-139"><a href="particle-swarm-optimization-pso.html#cb26-139" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;var&quot;</span><span class="ot">=</span>temp_pso<span class="sc">$</span>var, </span>
+<span id="cb26-140"><a href="particle-swarm-optimization-pso.html#cb26-140" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;fitness&quot;</span><span class="ot">=</span>temp_pso<span class="sc">$</span>fit, </span>
+<span id="cb26-141"><a href="particle-swarm-optimization-pso.html#cb26-141" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;constraint&quot;</span><span class="ot">=</span>temp_pso<span class="sc">$</span>constraint, </span>
+<span id="cb26-142"><a href="particle-swarm-optimization-pso.html#cb26-142" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;time&quot;</span><span class="ot">=</span>time[<span class="dv">3</span>]</span>
+<span id="cb26-143"><a href="particle-swarm-optimization-pso.html#cb26-143" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-144"><a href="particle-swarm-optimization-pso.html#cb26-144" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-145"><a href="particle-swarm-optimization-pso.html#cb26-145" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-146"><a href="particle-swarm-optimization-pso.html#cb26-146" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>sd <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(df<span class="sc">$</span>var)</span>
+<span id="cb26-147"><a href="particle-swarm-optimization-pso.html#cb26-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-148"><a href="particle-swarm-optimization-pso.html#cb26-148" aria-hidden="true" tabindex="-1"></a>df_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb26-149"><a href="particle-swarm-optimization-pso.html#cb26-149" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;ITP_QP&quot;</span>),</span>
+<span id="cb26-150"><a href="particle-swarm-optimization-pso.html#cb26-150" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;ITP_PSO&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(fitness <span class="sc">==</span> <span class="fu">min</span>(fitness)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">&quot;ITP_PSO_best&quot;</span>),</span>
+<span id="cb26-151"><a href="particle-swarm-optimization-pso.html#cb26-151" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;ITP_PSO&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(type) <span class="sc">%&gt;%</span> <span class="fu">summarise_all</span>(., mean) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">type =</span> <span class="st">&quot;ITP_PSO_mean&quot;</span>)</span>
+<span id="cb26-152"><a href="particle-swarm-optimization-pso.html#cb26-152" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-153"><a href="particle-swarm-optimization-pso.html#cb26-153" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df_summary) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb26-154"><a href="particle-swarm-optimization-pso.html#cb26-154" aria-hidden="true" tabindex="-1"></a>df_summary<span class="sc">$</span>var <span class="ot">&lt;-</span> <span class="fu">round</span>(df_summary<span class="sc">$</span>var, <span class="dv">7</span>)</span>
+<span id="cb26-155"><a href="particle-swarm-optimization-pso.html#cb26-155" aria-hidden="true" tabindex="-1"></a>df_summary<span class="sc">$</span>sd <span class="ot">&lt;-</span> <span class="fu">round</span>(df_summary<span class="sc">$</span>sd, <span class="dv">4</span>)</span>
+<span id="cb26-156"><a href="particle-swarm-optimization-pso.html#cb26-156" aria-hidden="true" tabindex="-1"></a>df_summary<span class="sc">$</span>fitness <span class="ot">&lt;-</span> <span class="fu">round</span>(df_summary<span class="sc">$</span>fitness, <span class="dv">7</span>)</span>
+<span id="cb26-157"><a href="particle-swarm-optimization-pso.html#cb26-157" aria-hidden="true" tabindex="-1"></a>df_summary<span class="sc">$</span>constraint <span class="ot">&lt;-</span> <span class="fu">round</span>(df_summary<span class="sc">$</span>constraint, <span class="dv">18</span>)</span>
+<span id="cb26-158"><a href="particle-swarm-optimization-pso.html#cb26-158" aria-hidden="true" tabindex="-1"></a>df_summary<span class="sc">$</span>time <span class="ot">&lt;-</span> <span class="fu">round</span>(df_summary<span class="sc">$</span>time, <span class="dv">1</span>)</span>
+<span id="cb26-159"><a href="particle-swarm-optimization-pso.html#cb26-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-160"><a href="particle-swarm-optimization-pso.html#cb26-160" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(df_summary) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-161"><a href="particle-swarm-optimization-pso.html#cb26-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
+<p><img src="Master_Thesis_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+The mean fitness</p>
+</div>
+<div id="pros-and-cons" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Pros and Cons<a href="particle-swarm-optimization-pso.html#pros-and-cons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="functions" class="section level2 hasAnchor" number="8.7">
+<h2><span class="header-section-number">8.7</span> Functions<a href="particle-swarm-optimization-pso.html#functions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 
 </div>
 </div>

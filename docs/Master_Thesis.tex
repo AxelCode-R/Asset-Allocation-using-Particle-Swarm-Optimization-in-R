@@ -126,7 +126,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-09-03}
+\date{2022-09-04}
 
 \begin{document}
 \maketitle
@@ -622,8 +622,8 @@ The return of \texttt{solve.QP()} is a list and contains among other things the 
   \texttt{value}: Scalar, the value of the quadratic function at the solution
 \end{itemize}
 
-\hypertarget{example-solving-mvp-with-solve.qp}{%
-\section{\texorpdfstring{Example: Solving MVP with \texttt{solve.QP()}}{Example: Solving MVP with solve.QP()}}\label{example-solving-mvp-with-solve.qp}}
+\hypertarget{exampleanalyticalmvp}{%
+\section{\texorpdfstring{Example: Solving MVP with \texttt{solve.QP()}}{Example: Solving MVP with solve.QP()}}\label{exampleanalyticalmvp}}
 
 This section provides insights into the effects of diversification and the use of \texttt{solve.QP}, by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier \(i \in \{1, 2, \cdots, 10\}\) consists of \(N_i = i\) assets and is created by adding the asset with the next smallest variance first. After loading returns for ten of the biggest equity's in the US market, the variance is calculated to arrange all columns ascending by its variance, like shown in the code bellow:
 
@@ -998,6 +998,7 @@ This section provides insights into the behavior of the PSO by visualizing multi
   \AttributeTok{lower =} \SpecialCharTok{{-}}\DecValTok{10}\NormalTok{,}
   \AttributeTok{upper =} \DecValTok{10}\NormalTok{,}
   \AttributeTok{control =} \FunctionTok{list}\NormalTok{(}
+    \AttributeTok{s =} \DecValTok{10}\NormalTok{,}
     \AttributeTok{maxiter =} \DecValTok{30}\NormalTok{,}
     \AttributeTok{w0 =} \FloatTok{0.8}\NormalTok{,}
     \AttributeTok{save\_traces =}\NormalTok{ T}
@@ -1006,9 +1007,188 @@ This section provides insights into the behavior of the PSO by visualizing multi
 \end{Highlighting}
 \end{Shaded}
 
-The function \texttt{fn} has many local minima and a global minima at \((1,1)\) with value \(0\). The background-color-scale ranges from 0 as red to 20 as purple.
+The function \texttt{fn} has many local minima and a global minima at \((1,1)\) with value \(0\). The background-color-scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterates 30 times with inertia weight decreasing from 0.8 to 0. The iterations are visualized in the GIF below:
 
 \animategraphics[loop, width=8cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{50}
+
+\hypertarget{example-mvp}{%
+\section{Example MVP}\label{example-mvp}}
+
+This example uses the \texttt{solve.QP} approach from \ref{exampleanalyticalmvp} with ten assets as benchmark. Recap, the goal is to create a MVP from ten of the biggest american equity's between 2016 and 2021 for each possible \(\lambda\). The PSO has 100 particles and 200 iterations for each lambda. The key features of all portfolios generated with the \texttt{solve.QP} versus the PSO is shown below:
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-26-1.png}
+It can be seen that the analytical approach and the PSO approach have a tiny difference for \(lambda > 0.8\) and a steadily increansed diffrence otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.
+
+\hypertarget{example-itp-1}{%
+\section{Example ITP}\label{example-itp-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{from }\OtherTok{\textless{}{-}} \StringTok{"2016{-}01{-}01"}
+\NormalTok{to }\OtherTok{\textless{}{-}} \StringTok{"2021{-}12{-}31"}
+
+\NormalTok{spx\_composition }\OtherTok{\textless{}{-}} \FunctionTok{buffer}\NormalTok{(}
+  \FunctionTok{get\_spx\_composition}\NormalTok{(),}
+  \StringTok{"AS\_spx\_composition"}
+\NormalTok{)}
+
+
+\NormalTok{pool\_returns\_raw }\OtherTok{\textless{}{-}} \FunctionTok{buffer}\NormalTok{(}
+  \FunctionTok{get\_yf}\NormalTok{(}
+    \AttributeTok{tickers =}\NormalTok{ spx\_composition }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{filter}\NormalTok{(Date}\SpecialCharTok{\textless{}=}\NormalTok{to) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{filter}\NormalTok{(Date}\SpecialCharTok{==}\FunctionTok{max}\NormalTok{(Date)) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{pull}\NormalTok{(Ticker), }
+    \AttributeTok{from =}\NormalTok{ from, }
+    \AttributeTok{to =}\NormalTok{ to}
+\NormalTok{  )}\SpecialCharTok{$}\NormalTok{returns, }
+  \StringTok{"AS\_sp500\_assets"}
+\NormalTok{)}
+\NormalTok{pool\_returns\_raw }\OtherTok{\textless{}{-}} 
+\NormalTok{  pool\_returns\_raw[, }\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(pool\_returns\_raw))}\SpecialCharTok{==}\DecValTok{0}\NormalTok{]}
+
+
+\NormalTok{bm\_returns }\OtherTok{\textless{}{-}} \FunctionTok{buffer}\NormalTok{(}
+  \FunctionTok{get\_yf}\NormalTok{(}\AttributeTok{tickers =} \StringTok{"\%5EGSPC"}\NormalTok{, }\AttributeTok{from =}\NormalTok{ from, }\AttributeTok{to =}\NormalTok{ to)}\SpecialCharTok{$}\NormalTok{returns, }
+  \StringTok{"AS\_sp500"}
+\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{setNames}\NormalTok{(., }\StringTok{"S\&P 500"}\NormalTok{)}
+
+
+
+\NormalTok{itp\_QP }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pool\_returns, bm\_returns)\{}
+
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+    \AttributeTok{Dmat =} \FunctionTok{cov}\NormalTok{(pool\_returns),}
+    \AttributeTok{dvec =} \FunctionTok{cov}\NormalTok{(pool\_returns, bm\_returns),}
+    \AttributeTok{Amat =} \FunctionTok{t}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}
+      \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns)), }\CommentTok{\# sum up to 1}
+      \FunctionTok{diag}\NormalTok{(}\DecValTok{1}\NormalTok{, }
+           \AttributeTok{nrow=}\FunctionTok{ncol}\NormalTok{(pool\_returns), }
+           \AttributeTok{ncol=}\FunctionTok{ncol}\NormalTok{(pool\_returns)) }\CommentTok{\# long only}
+\NormalTok{    )),}
+    \AttributeTok{bvec =} \FunctionTok{c}\NormalTok{(}
+      \DecValTok{1}\NormalTok{, }\CommentTok{\# sum up to 1}
+      \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns)) }\CommentTok{\# long only}
+\NormalTok{    ),}
+    \AttributeTok{meq =} \DecValTok{1}
+\NormalTok{  )}
+  
+\NormalTok{  qp }\OtherTok{\textless{}{-}} \FunctionTok{solve.QP}\NormalTok{(}
+    \AttributeTok{Dmat =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{Dmat, }\AttributeTok{dvec =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{dvec, }
+    \AttributeTok{Amat =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{Amat, }\AttributeTok{bvec =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{bvec, }\AttributeTok{meq =}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{meq}
+\NormalTok{  )}
+
+  
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+    \StringTok{"value"} \OtherTok{=}\NormalTok{ qp}\SpecialCharTok{$}\NormalTok{value,}
+    \StringTok{"var"} \OtherTok{=} \FunctionTok{as.numeric}\NormalTok{(}
+      \FunctionTok{var}\NormalTok{(pool\_returns }\SpecialCharTok{\%*\%}\NormalTok{ qp}\SpecialCharTok{$}\NormalTok{solution }\SpecialCharTok{{-}}\NormalTok{ bm\_returns)),}
+    \StringTok{"solution"} \OtherTok{=} \FunctionTok{setNames}\NormalTok{(qp}\SpecialCharTok{$}\NormalTok{solution, }\FunctionTok{colnames}\NormalTok{(pool\_returns))}
+\NormalTok{  )}
+\NormalTok{\}}
+
+
+\NormalTok{itp\_PSO }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pool\_returns, bm\_returns, }\AttributeTok{silent =}\NormalTok{ T)\{}
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+    \AttributeTok{Dmat =} \FunctionTok{cov}\NormalTok{(pool\_returns),}
+    \AttributeTok{dvec =} \FunctionTok{cov}\NormalTok{(pool\_returns, bm\_returns),}
+    \AttributeTok{Amat =} \FunctionTok{t}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}
+      \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns)), }\CommentTok{\# sum up to 1}
+      \FunctionTok{diag}\NormalTok{(}\DecValTok{1}\NormalTok{, }
+           \AttributeTok{nrow=}\FunctionTok{ncol}\NormalTok{(pool\_returns), }
+           \AttributeTok{ncol=}\FunctionTok{ncol}\NormalTok{(pool\_returns)) }\CommentTok{\# long only}
+\NormalTok{    )),}
+    \AttributeTok{bvec =} \FunctionTok{c}\NormalTok{(}
+      \DecValTok{1}\NormalTok{, }\CommentTok{\# sum up to 1}
+      \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns)) }\CommentTok{\# long only}
+\NormalTok{    ),}
+    \AttributeTok{meq =} \DecValTok{1}
+\NormalTok{  )}
+  
+\NormalTok{  calc\_fit }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
+    \FunctionTok{as.numeric}\NormalTok{(}\FloatTok{0.5} \SpecialCharTok{*} \FunctionTok{t}\NormalTok{(x) }\SpecialCharTok{\%*\%}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{Dmat }\SpecialCharTok{\%*\%}\NormalTok{ x }\SpecialCharTok{{-}} \FunctionTok{t}\NormalTok{(mat}\SpecialCharTok{$}\NormalTok{dvec) }\SpecialCharTok{\%*\%}\NormalTok{ x)}
+\NormalTok{  \}}
+\NormalTok{  calc\_const }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{    const }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(mat}\SpecialCharTok{$}\NormalTok{Amat) }\SpecialCharTok{\%*\%}\NormalTok{ x }\SpecialCharTok{{-}}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{bvec}
+\NormalTok{    const[mat}\SpecialCharTok{$}\NormalTok{meq] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FunctionTok{abs}\NormalTok{(const[mat}\SpecialCharTok{$}\NormalTok{meq])}
+    \SpecialCharTok{{-}}\FunctionTok{min}\NormalTok{(}\DecValTok{0}\NormalTok{, const)}
+\NormalTok{  \}}
+\NormalTok{  pso\_res }\OtherTok{\textless{}{-}} \FunctionTok{pso}\NormalTok{(}
+    \AttributeTok{par =} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns)),}
+    \AttributeTok{fn =} \ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{      fitness }\OtherTok{\textless{}{-}} \FunctionTok{calc\_fit}\NormalTok{(x)}
+\NormalTok{      constraints }\OtherTok{\textless{}{-}} \FunctionTok{calc\_const}\NormalTok{(x)}
+      \FunctionTok{return}\NormalTok{(fitness}\SpecialCharTok{+}\DecValTok{10}\SpecialCharTok{*}\NormalTok{constraints)}
+\NormalTok{    \},}
+    \AttributeTok{lower =} \DecValTok{0}\NormalTok{,}
+    \AttributeTok{upper =} \FloatTok{0.1}\NormalTok{,}
+    \AttributeTok{control =} \FunctionTok{list}\NormalTok{(}
+      \AttributeTok{s =} \DecValTok{100}\NormalTok{, }\CommentTok{\# swarm size}
+      \AttributeTok{c.p =} \FloatTok{0.5}\NormalTok{, }\CommentTok{\# inherit best}
+      \AttributeTok{c.g =} \FloatTok{0.5}\NormalTok{, }\CommentTok{\# global best}
+      \AttributeTok{maxiter =} \DecValTok{100}\NormalTok{, }\CommentTok{\# iterations}
+      \AttributeTok{w0 =} \FloatTok{0.9}\NormalTok{, }\CommentTok{\# starting inertia weight}
+      \AttributeTok{wN =} \DecValTok{0}\NormalTok{, }\CommentTok{\# ending inertia weight}
+      \AttributeTok{save\_traces =}\NormalTok{ F }\CommentTok{\# save more information}
+\NormalTok{    )}
+\NormalTok{  )}
+  \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\NormalTok{silent)\{}
+    \FunctionTok{p0}\NormalTok{(}\StringTok{"constraint: "}\NormalTok{, }\FunctionTok{sum}\NormalTok{(}\FunctionTok{calc\_const}\NormalTok{(pso\_res}\SpecialCharTok{$}\NormalTok{solution)))}
+    \FunctionTok{p0}\NormalTok{(}\StringTok{"fitness: "}\NormalTok{, }\FunctionTok{calc\_fit}\NormalTok{(pso\_res}\SpecialCharTok{$}\NormalTok{solution))}
+\NormalTok{  \}}
+  
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+    \StringTok{"composition"} \OtherTok{=} \FunctionTok{setNames}\NormalTok{(pso\_res}\SpecialCharTok{$}\NormalTok{solution, }\FunctionTok{colnames}\NormalTok{(pool\_returns)),}
+    \StringTok{"fit"} \OtherTok{=} \FunctionTok{calc\_fit}\NormalTok{(pso\_res}\SpecialCharTok{$}\NormalTok{solution),}
+    \StringTok{"constraint"} \OtherTok{=} \FunctionTok{calc\_const}\NormalTok{(pso\_res}\SpecialCharTok{$}\NormalTok{solution),}
+    \StringTok{"var"} \OtherTok{=} \FunctionTok{as.numeric}\NormalTok{(}
+      \FunctionTok{var}\NormalTok{(pool\_returns }\SpecialCharTok{\%*\%}\NormalTok{ pso\_res}\SpecialCharTok{$}\NormalTok{solution }\SpecialCharTok{{-}}\NormalTok{ bm\_returns))}
+\NormalTok{  )}
+  
+  \FunctionTok{return}\NormalTok{(res)}
+\NormalTok{\}}
+
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{time }\OtherTok{\textless{}{-}} \FunctionTok{system.time}\NormalTok{(}
+\NormalTok{  temp\_qp }\OtherTok{\textless{}{-}} \FunctionTok{itp\_QP}\NormalTok{(pool\_returns\_raw, bm\_returns)}
+\NormalTok{)}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\StringTok{"type"}\OtherTok{=}\StringTok{"ITP\_QP"}\NormalTok{, }\StringTok{"var"}\OtherTok{=}\NormalTok{temp\_qp}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"fitness"}\OtherTok{=}\NormalTok{temp\_qp}\SpecialCharTok{$}\NormalTok{value, }\StringTok{"constraint"}\OtherTok{=}\DecValTok{0}\NormalTok{, }\StringTok{"time"}\OtherTok{=}\NormalTok{time[}\DecValTok{3}\NormalTok{])}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{)\{}
+\NormalTok{  time }\OtherTok{\textless{}{-}} \FunctionTok{system.time}\NormalTok{(}
+\NormalTok{    temp\_pso }\OtherTok{\textless{}{-}} \FunctionTok{itp\_PSO}\NormalTok{(pool\_returns\_raw, bm\_returns)}
+\NormalTok{  )}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(}
+\NormalTok{    df, }
+    \FunctionTok{data.frame}\NormalTok{(}
+      \StringTok{"type"}\OtherTok{=}\StringTok{"ITP\_PSO"}\NormalTok{, }
+      \StringTok{"var"}\OtherTok{=}\NormalTok{temp\_pso}\SpecialCharTok{$}\NormalTok{var, }
+      \StringTok{"fitness"}\OtherTok{=}\NormalTok{temp\_pso}\SpecialCharTok{$}\NormalTok{fit, }
+      \StringTok{"constraint"}\OtherTok{=}\NormalTok{temp\_pso}\SpecialCharTok{$}\NormalTok{constraint, }
+      \StringTok{"time"}\OtherTok{=}\NormalTok{time[}\DecValTok{3}\NormalTok{]}
+\NormalTok{    )}
+\NormalTok{  )}
+\NormalTok{\}}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{sd }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{var)}
+
+\NormalTok{df\_summary }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(}
+\NormalTok{  df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(type }\SpecialCharTok{==} \StringTok{"ITP\_QP"}\NormalTok{),}
+\NormalTok{  df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(type }\SpecialCharTok{==} \StringTok{"ITP\_PSO"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(fitness }\SpecialCharTok{==} \FunctionTok{min}\NormalTok{(fitness)) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{type =} \StringTok{"ITP\_PSO\_best"}\NormalTok{),}
+\NormalTok{  df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(type }\SpecialCharTok{==} \StringTok{"ITP\_PSO"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{group\_by}\NormalTok{(type) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{summarise\_all}\NormalTok{(., mean) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{type =} \StringTok{"ITP\_PSO\_mean"}\NormalTok{)}
+\NormalTok{)}
+\FunctionTok{rownames}\NormalTok{(df\_summary) }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{df\_summary}\SpecialCharTok{$}\NormalTok{var }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(df\_summary}\SpecialCharTok{$}\NormalTok{var, }\DecValTok{7}\NormalTok{)}
+\NormalTok{df\_summary}\SpecialCharTok{$}\NormalTok{sd }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(df\_summary}\SpecialCharTok{$}\NormalTok{sd, }\DecValTok{4}\NormalTok{)}
+\NormalTok{df\_summary}\SpecialCharTok{$}\NormalTok{fitness }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(df\_summary}\SpecialCharTok{$}\NormalTok{fitness, }\DecValTok{7}\NormalTok{)}
+\NormalTok{df\_summary}\SpecialCharTok{$}\NormalTok{constraint }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(df\_summary}\SpecialCharTok{$}\NormalTok{constraint, }\DecValTok{18}\NormalTok{)}
+\NormalTok{df\_summary}\SpecialCharTok{$}\NormalTok{time }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(df\_summary}\SpecialCharTok{$}\NormalTok{time, }\DecValTok{1}\NormalTok{)}
+
+\FunctionTok{reactable}\NormalTok{(df\_summary) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{html\_save}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png}
+The mean fitness
 
 \hypertarget{pros-and-cons}{%
 \section{Pros and Cons}\label{pros-and-cons}}

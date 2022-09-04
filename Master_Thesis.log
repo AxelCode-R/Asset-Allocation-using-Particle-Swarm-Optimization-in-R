@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.1)  3 SEP 2022 12:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.1)  4 SEP 2022 17:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -578,7 +578,7 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 
 ] [7]
 Chapter 4.
-<Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png, id=219, 2409.0pt x 1168.365pt>
+<Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png, id=229, 2409.0pt x 1168.365pt>
 File: Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png>
 Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png  used on input line 218.
@@ -622,24 +622,24 @@ Chapter 6.
 [16
 
 ]
-<Master_Thesis_files/figure-latex/unnamed-chunk-7-1.png, id=328, 2409.0pt x 1204.5pt>
+<Master_Thesis_files/figure-latex/unnamed-chunk-7-1.png, id=338, 2409.0pt x 1204.5pt>
 File: Master_Thesis_files/figure-latex/unnamed-chunk-7-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/unnamed-chunk-7-1.png>
 Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-7-1.png  used on input line 477.
 (pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
-<Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png, id=330, 2409.0pt x 1204.5pt>
+<Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png, id=340, 2409.0pt x 1204.5pt>
 File: Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png>
 Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png  used on input line 485.
 (pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
 [17 <./Master_Thesis_files/figure-latex/unnamed-chunk-7-1.png>]
-<Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png, id=339, 2409.0pt x 1204.5pt>
+<Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png, id=349, 2409.0pt x 1204.5pt>
 File: Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png>
 Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png  used on input line 489.
 (pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
 [18 <./Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png> <./Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png>] [19]
-<Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png, id=360, 2409.0pt x 1204.5pt>
+<Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png, id=370, 2409.0pt x 1204.5pt>
 File: Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png>
 Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png  used on input line 575.
@@ -656,13 +656,13 @@ LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 7
 (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [25]
-<Master_Thesis_files/figure-latex/unnamed-chunk-16-1.png, id=411, 2409.0pt x 1204.5pt>
+<Master_Thesis_files/figure-latex/unnamed-chunk-16-1.png, id=421, 2409.0pt x 1204.5pt>
 File: Master_Thesis_files/figure-latex/unnamed-chunk-16-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/unnamed-chunk-16-1.png>
 Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-16-1.png  used on input line 745.
 (pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
 [26 <./Master_Thesis_files/figure-latex/unnamed-chunk-16-1.png>] [27] [28]
-<Master_Thesis_files/figure-latex/unnamed-chunk-19-1.png, id=431, 2409.0pt x 1204.5pt>
+<Master_Thesis_files/figure-latex/unnamed-chunk-19-1.png, id=441, 2409.0pt x 1204.5pt>
 File: Master_Thesis_files/figure-latex/unnamed-chunk-19-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/unnamed-chunk-19-1.png>
 Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-19-1.png  used on input line 843.
@@ -672,324 +672,362 @@ Chapter 8.
 [30
 
 ] [31] [32] [33]
-<./gifs/pso_2dim/gganim_plot1.jpg, id=475, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot1.jpg, id=485, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot1.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot1.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot1.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot1.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot1.jpg> <a0,fr0>
-<./gifs/pso_2dim/gganim_plot2.jpg, id=478, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot2.jpg, id=488, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot2.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot2.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot2.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot2.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot2.jpg> <a0,fr1>
-<./gifs/pso_2dim/gganim_plot3.jpg, id=481, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot3.jpg, id=491, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot3.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot3.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot3.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot3.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot3.jpg> <a0,fr2>
-<./gifs/pso_2dim/gganim_plot4.jpg, id=484, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot4.jpg, id=494, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot4.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot4.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot4.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot4.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot4.jpg> <a0,fr3>
-<./gifs/pso_2dim/gganim_plot5.jpg, id=487, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot5.jpg, id=497, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot5.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot5.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot5.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot5.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot5.jpg> <a0,fr4>
-<./gifs/pso_2dim/gganim_plot6.jpg, id=490, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot6.jpg, id=500, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot6.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot6.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot6.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot6.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot6.jpg> <a0,fr5>
-<./gifs/pso_2dim/gganim_plot7.jpg, id=493, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot7.jpg, id=503, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot7.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot7.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot7.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot7.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot7.jpg> <a0,fr6>
-<./gifs/pso_2dim/gganim_plot8.jpg, id=496, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot8.jpg, id=506, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot8.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot8.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot8.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot8.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot8.jpg> <a0,fr7>
-<./gifs/pso_2dim/gganim_plot9.jpg, id=499, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot9.jpg, id=509, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot9.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot9.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot9.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot9.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot9.jpg> <a0,fr8>
-<./gifs/pso_2dim/gganim_plot10.jpg, id=502, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot10.jpg, id=512, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot10.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot10.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot10.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot10.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot10.jpg> <a0,fr9>
-<./gifs/pso_2dim/gganim_plot11.jpg, id=505, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot11.jpg, id=515, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot11.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot11.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot11.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot11.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot11.jpg> <a0,fr10>
-<./gifs/pso_2dim/gganim_plot12.jpg, id=508, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot12.jpg, id=518, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot12.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot12.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot12.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot12.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot12.jpg> <a0,fr11>
-<./gifs/pso_2dim/gganim_plot13.jpg, id=511, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot13.jpg, id=521, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot13.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot13.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot13.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot13.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot13.jpg> <a0,fr12>
-<./gifs/pso_2dim/gganim_plot14.jpg, id=514, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot14.jpg, id=524, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot14.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot14.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot14.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot14.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot14.jpg> <a0,fr13>
-<./gifs/pso_2dim/gganim_plot15.jpg, id=517, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot15.jpg, id=527, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot15.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot15.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot15.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot15.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot15.jpg> <a0,fr14>
-<./gifs/pso_2dim/gganim_plot16.jpg, id=520, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot16.jpg, id=530, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot16.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot16.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot16.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot16.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot16.jpg> <a0,fr15>
-<./gifs/pso_2dim/gganim_plot17.jpg, id=523, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot17.jpg, id=533, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot17.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot17.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot17.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot17.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot17.jpg> <a0,fr16>
-<./gifs/pso_2dim/gganim_plot18.jpg, id=526, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot18.jpg, id=536, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot18.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot18.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot18.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot18.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot18.jpg> <a0,fr17>
-<./gifs/pso_2dim/gganim_plot19.jpg, id=529, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot19.jpg, id=539, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot19.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot19.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot19.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot19.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot19.jpg> <a0,fr18>
-<./gifs/pso_2dim/gganim_plot20.jpg, id=532, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot20.jpg, id=542, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot20.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot20.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot20.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot20.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot20.jpg> <a0,fr19>
-<./gifs/pso_2dim/gganim_plot21.jpg, id=535, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot21.jpg, id=545, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot21.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot21.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot21.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot21.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot21.jpg> <a0,fr20>
-<./gifs/pso_2dim/gganim_plot22.jpg, id=538, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot22.jpg, id=548, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot22.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot22.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot22.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot22.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot22.jpg> <a0,fr21>
-<./gifs/pso_2dim/gganim_plot23.jpg, id=541, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot23.jpg, id=551, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot23.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot23.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot23.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot23.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot23.jpg> <a0,fr22>
-<./gifs/pso_2dim/gganim_plot24.jpg, id=544, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot24.jpg, id=554, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot24.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot24.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot24.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot24.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot24.jpg> <a0,fr23>
-<./gifs/pso_2dim/gganim_plot25.jpg, id=547, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot25.jpg, id=557, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot25.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot25.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot25.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot25.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot25.jpg> <a0,fr24>
-<./gifs/pso_2dim/gganim_plot26.jpg, id=550, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot26.jpg, id=560, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot26.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot26.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot26.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot26.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot26.jpg> <a0,fr25>
-<./gifs/pso_2dim/gganim_plot27.jpg, id=553, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot27.jpg, id=563, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot27.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot27.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot27.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot27.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot27.jpg> <a0,fr26>
-<./gifs/pso_2dim/gganim_plot28.jpg, id=556, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot28.jpg, id=566, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot28.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot28.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot28.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot28.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot28.jpg> <a0,fr27>
-<./gifs/pso_2dim/gganim_plot29.jpg, id=559, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot29.jpg, id=569, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot29.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot29.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot29.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot29.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot29.jpg> <a0,fr28>
-<./gifs/pso_2dim/gganim_plot30.jpg, id=562, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot30.jpg, id=572, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot30.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot30.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot30.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot30.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot30.jpg> <a0,fr29>
-<./gifs/pso_2dim/gganim_plot31.jpg, id=565, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot31.jpg, id=575, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot31.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot31.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot31.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot31.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot31.jpg> <a0,fr30>
-<./gifs/pso_2dim/gganim_plot32.jpg, id=568, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot32.jpg, id=578, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot32.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot32.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot32.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot32.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot32.jpg> <a0,fr31>
-<./gifs/pso_2dim/gganim_plot33.jpg, id=571, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot33.jpg, id=581, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot33.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot33.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot33.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot33.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot33.jpg> <a0,fr32>
-<./gifs/pso_2dim/gganim_plot34.jpg, id=574, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot34.jpg, id=584, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot34.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot34.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot34.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot34.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot34.jpg> <a0,fr33>
-<./gifs/pso_2dim/gganim_plot35.jpg, id=577, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot35.jpg, id=587, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot35.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot35.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot35.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot35.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot35.jpg> <a0,fr34>
-<./gifs/pso_2dim/gganim_plot36.jpg, id=580, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot36.jpg, id=590, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot36.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot36.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot36.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot36.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot36.jpg> <a0,fr35>
-<./gifs/pso_2dim/gganim_plot37.jpg, id=583, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot37.jpg, id=593, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot37.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot37.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot37.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot37.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot37.jpg> <a0,fr36>
-<./gifs/pso_2dim/gganim_plot38.jpg, id=586, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot38.jpg, id=596, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot38.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot38.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot38.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot38.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot38.jpg> <a0,fr37>
-<./gifs/pso_2dim/gganim_plot39.jpg, id=589, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot39.jpg, id=599, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot39.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot39.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot39.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot39.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot39.jpg> <a0,fr38>
-<./gifs/pso_2dim/gganim_plot40.jpg, id=592, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot40.jpg, id=602, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot40.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot40.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot40.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot40.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot40.jpg> <a0,fr39>
-<./gifs/pso_2dim/gganim_plot41.jpg, id=595, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot41.jpg, id=605, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot41.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot41.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot41.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot41.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot41.jpg> <a0,fr40>
-<./gifs/pso_2dim/gganim_plot42.jpg, id=598, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot42.jpg, id=609, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot42.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot42.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot42.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot42.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot42.jpg> <a0,fr41>
-<./gifs/pso_2dim/gganim_plot43.jpg, id=601, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot43.jpg, id=612, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot43.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot43.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot43.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot43.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot43.jpg> <a0,fr42>
-<./gifs/pso_2dim/gganim_plot44.jpg, id=604, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot44.jpg, id=615, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot44.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot44.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot44.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot44.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot44.jpg> <a0,fr43>
-<./gifs/pso_2dim/gganim_plot45.jpg, id=607, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot45.jpg, id=618, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot45.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot45.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot45.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot45.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot45.jpg> <a0,fr44>
-<./gifs/pso_2dim/gganim_plot46.jpg, id=610, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot46.jpg, id=621, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot46.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot46.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot46.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot46.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot46.jpg> <a0,fr45>
-<./gifs/pso_2dim/gganim_plot47.jpg, id=613, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot47.jpg, id=624, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot47.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot47.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot47.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot47.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot47.jpg> <a0,fr46>
-<./gifs/pso_2dim/gganim_plot48.jpg, id=617, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot48.jpg, id=627, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot48.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot48.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot48.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot48.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot48.jpg> <a0,fr47>
-<./gifs/pso_2dim/gganim_plot49.jpg, id=620, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot49.jpg, id=630, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot49.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot49.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot49.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot49.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
  <./gifs/pso_2dim/gganim_plot49.jpg> <a0,fr48>
-<./gifs/pso_2dim/gganim_plot50.jpg, id=623, 505.89pt x 361.35pt>
+<./gifs/pso_2dim/gganim_plot50.jpg, id=633, 505.89pt x 361.35pt>
 File: ./gifs/pso_2dim/gganim_plot50.jpg Graphic file (type jpg)
 <use ./gifs/pso_2dim/gganim_plot50.jpg>
-Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot50.jpg  used on input line 1011.
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot50.jpg  used on input line 1012.
 (pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
- <./gifs/pso_2dim/gganim_plot50.jpg> <a0,fr49> (./Master_Thesis.bbl [34] [35]) [36
+ <./gifs/pso_2dim/gganim_plot50.jpg> <a0,fr49> [34]
+<Master_Thesis_files/figure-latex/unnamed-chunk-26-1.png, id=696, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/unnamed-chunk-26-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/unnamed-chunk-26-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-26-1.png  used on input line 1018.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1017--1020
+[]
+ []
+
+[35 <./Master_Thesis_files/figure-latex/unnamed-chunk-26-1.png>] [36]
+Underfull \vbox (badness 10000) detected at line 1188
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1188
+ []
+
+[37]
+Underfull \vbox (badness 10000) detected at line 1188
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1188
+ []
+
+[38]
+<Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png, id=721, 2409.0pt x 1080.035pt>
+File: Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png  used on input line 1190.
+(pdftex.def)             Requested size: 344.97696pt x 154.66466pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1190--1192
+[][]
+ []
+
+(./Master_Thesis.bbl [39 <./Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png>] [40]) [41
 
 ] (./Master_Thesis.aux)
 Package rerunfilecheck Info: File `Master_Thesis.out' has not changed.
-(rerunfilecheck)             Checksum: C69E8386177710CEBFA2F6A8F5530507;4844.
+(rerunfilecheck)             Checksum: 80C13D9F521F72CB8DAB4E62B766A8E2;5070.
  ) 
 Here is how much of TeX's memory you used:
- 16101 strings out of 476942
- 281310 string characters out of 5823482
- 642112 words of memory out of 5000000
- 36613 multiletter control sequences out of 15000+600000
- 549569 words of font info for 167 fonts, out of 8000000 for 9000
+ 16130 strings out of 476942
+ 282207 string characters out of 5823482
+ 649472 words of memory out of 5000000
+ 36629 multiletter control sequences out of 15000+600000
+ 549652 words of font info for 168 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  72i,16n,77p,2452b,506s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}<c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmro10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Master_Thesis.pdf (37 pages, 5245679 bytes).
+Output written on Master_Thesis.pdf (42 pages, 5370522 bytes).
 PDF statistics:
- 826 PDF objects out of 1000 (max. 8388607)
- 623 compressed objects within 7 object streams
- 138 named destinations out of 1000 (max. 500000)
- 45886 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 871 PDF objects out of 1000 (max. 8388607)
+ 659 compressed objects within 7 object streams
+ 147 named destinations out of 1000 (max. 500000)
+ 45912 words of extra memory for PDF output out of 51595 (max. 10000000)
 

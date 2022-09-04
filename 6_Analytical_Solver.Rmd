@@ -32,7 +32,7 @@ The return of `solve.QP()` is a list and contains among other things the followi
 + `solution`: Vector containing the solution $x$ of the quadratic programming problem. (e.g. portfolio weights)
 + `value`: Scalar, the value of the quadratic function at the solution
 
-## Example: Solving MVP with `solve.QP()`
+## Example: Solving MVP with `solve.QP()` {#exampleanalyticalmvp}
 This section provides insights into the effects of diversification and the use of `solve.QP`, by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading returns for ten of the biggest equity's in the US market, the variance is calculated to arrange all columns ascending by its variance, like shown in the code bellow:
 
 ```{r, class.source="code_fold_it_collapsed"}

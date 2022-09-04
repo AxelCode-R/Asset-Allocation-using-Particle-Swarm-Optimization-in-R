@@ -222,13 +222,14 @@ res <- pso(
   lower = -10,
   upper = 10,
   control = list(
+    s = 10,
     maxiter = 30,
     w0 = 0.8,
     save_traces = T
   )
 )
 ```
-The function `fn` has many local minima and a global minima at $(1,1)$ with value $0$. The background-color-scale ranges from 0 as red to 20 as purple.
+The function `fn` has many local minima and a global minima at $(1,1)$ with value $0$. The background-color-scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterates 30 times with inertia weight decreasing from 0.8 to 0. The iterations are visualized in the GIF below:
 
 ```{r gif_animate, echo=F}
 grid <- expand.grid(seq(-10, 10, length.out = 100), seq(-10, 10, length.out = 100), stringsAsFactors = F)
@@ -284,8 +285,7 @@ if(!knitr::is_latex_output()){
 
 
 ## Example MVP
-(IN PRODUKTION)
-chart der pso und qp vergleicht mit lambda schritten
+This example uses the `solve.QP` approach from \@ref(exampleanalyticalmvp) with ten assets as benchmark. Recap, the goal is to create a MVP from ten of the biggest american equity's between 2016 and 2021 for each possible $\lambda$. The PSO has 100 particles and 200 iterations for each lambda. The key features of all portfolios generated with the `solve.QP` versus the PSO is shown below:
 ```{r, echo=F}
 returns_raw <- buffer(
   get_yf(
@@ -466,7 +466,7 @@ plot_ly(
   layout(xaxis=list(range=c(0.9*min(df$sd), 1.5*max(df[df$type=="QP_MVP",]$sd)))) %>% 
   html_save()
 ```
-
+It can be seen that the analytical approach and the PSO approach have a tiny difference for $lambda > 0.8$ and a steadily increansed diffrence otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.
 
 ## Example ITP
 
@@ -568,12 +568,12 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
       return(fitness+10*constraints)
     },
     lower = 0,
-    upper = 0.05,
+    upper = 0.1,
     control = list(
       s = 100, # swarm size
       c.p = 0.5, # inherit best
       c.g = 0.5, # global best
-      maxiter = 200, # iterations
+      maxiter = 100, # iterations
       w0 = 0.9, # starting inertia weight
       wN = 0, # ending inertia weight
       save_traces = F # save more information
@@ -597,13 +597,43 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
 
 
 df <- NULL
+time <- system.time(
+  temp_qp <- itp_QP(pool_returns_raw, bm_returns)
+)
+df <- data.frame("type"="ITP_QP", "var"=temp_qp$var, "fitness"=temp_qp$value, "constraint"=0, "time"=time[3])
+for(i in 1:10){
+  time <- system.time(
+    temp_pso <- itp_PSO(pool_returns_raw, bm_returns)
+  )
+  df <- rbind(
+    df, 
+    data.frame(
+      "type"="ITP_PSO", 
+      "var"=temp_pso$var, 
+      "fitness"=temp_pso$fit, 
+      "constraint"=temp_pso$constraint, 
+      "time"=time[3]
+    )
+  )
+}
+df$sd <- sqrt(df$var)
 
-temp_qp <- itp_QP(pool_returns_raw, bm_returns)
-temp_pso <- itp_PSO(pool_returns_raw, bm_returns)
+df_summary <- rbind(
+  df %>% filter(type == "ITP_QP"),
+  df %>% filter(type == "ITP_PSO") %>% filter(fitness == min(fitness)) %>% mutate(type = "ITP_PSO_best"),
+  df %>% filter(type == "ITP_PSO") %>% group_by(type) %>% summarise_all(., mean) %>% mutate(type = "ITP_PSO_mean")
+)
+rownames(df_summary) <- NULL
+df_summary$var <- round(df_summary$var, 7)
+df_summary$sd <- round(df_summary$sd, 4)
+df_summary$fitness <- round(df_summary$fitness, 7)
+df_summary$constraint <- round(df_summary$constraint, 18)
+df_summary$time <- round(df_summary$time, 1)
 
-
+reactable(df_summary) %>% 
+  html_save()
 ```
-
+The mean fitness
 
 ## Pros and Cons
 
