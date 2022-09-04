@@ -208,13 +208,13 @@ pso <- function(
 ## Animation 2-Dimensional
 This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). The PSO core from the chapter above was used to finish the `pso()` function and is used here with seed 0. The fucntion `fn` to evaluate is they same function as in [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
 ```{r gif_create}
+set.seed(0)
+
 fn <- function(pos){
   -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - 
   exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + 
   exp(1) + 20
 }
-
-set.seed(0)
 
 res <- pso(
   par = rep(NA, 2),
@@ -287,6 +287,8 @@ if(!knitr::is_latex_output()){
 ## Example MVP
 This example uses the `solve.QP` approach from \@ref(exampleanalyticalmvp) with ten assets as benchmark. Recap, the goal is to create a MVP from ten of the biggest american equity's between 2016 and 2021 for each possible $\lambda$. The PSO has 100 particles and 200 iterations for each lambda. The key features of all portfolios generated with the `solve.QP` versus the PSO is shown below:
 ```{r, echo=F}
+set.seed(0)
+
 returns_raw <- buffer(
   get_yf(
     tickers = c("IBM", "GOOG", "AAPL", "MSFT", "AMZN", 
@@ -372,11 +374,11 @@ mvp_PSO <- function(returns, lambda, silent = T){
     }
     calc_const <- function(x){
       const <- t(mat$Amat) %*% x - mat$bvec
-      const[mat$meq] <- -abs(const[mat$meq])
+      #const[mat$meq] <- -abs(const[mat$meq])
       -min(0, const)
     }
     pso_res <- pso(
-      par = rep(NA, ncol(returns)),
+      par = rep(0, ncol(returns)),
       fn = function(x){
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
@@ -466,11 +468,13 @@ plot_ly(
   layout(xaxis=list(range=c(0.9*min(df$sd), 1.5*max(df[df$type=="QP_MVP",]$sd)))) %>% 
   html_save()
 ```
-It can be seen that the analytical approach and the PSO approach have a tiny difference for $lambda > 0.8$ and a steadily increansed diffrence otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.
+It can be seen that the analytical approach and the PSO approach have a tiny difference for $lambda > 0.9$ and a steadily increased difference otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.
 
 ## Example ITP
 
-```{r}
+```{r, echo=F}
+set.seed(0)
+
 from <- "2016-01-01"
 to <- "2021-12-31"
 

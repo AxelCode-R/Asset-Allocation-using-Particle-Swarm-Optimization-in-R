@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.1)  4 SEP 2022 17:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.9.1)  4 SEP 2022 18:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -982,52 +982,35 @@ Underfull \hbox (badness 10000) in paragraph at lines 1017--1020
 []
  []
 
-[35 <./Master_Thesis_files/figure-latex/unnamed-chunk-26-1.png>] [36]
-Underfull \vbox (badness 10000) detected at line 1188
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1188
- []
-
-[37]
-Underfull \vbox (badness 10000) detected at line 1188
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1188
- []
-
-[38]
-<Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png, id=721, 2409.0pt x 1080.035pt>
+<Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png, id=697, 2409.0pt x 1080.035pt>
 File: Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png  used on input line 1190.
+Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png  used on input line 1024.
 (pdftex.def)             Requested size: 344.97696pt x 154.66466pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1190--1192
-[][]
+Underfull \hbox (badness 10000) in paragraph at lines 1024--1026
+[]
  []
 
-(./Master_Thesis.bbl [39 <./Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png>] [40]) [41
+[35 <./Master_Thesis_files/figure-latex/unnamed-chunk-26-1.png>] (./Master_Thesis.bbl [36 <./Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png>]) [37
 
 ] (./Master_Thesis.aux)
 Package rerunfilecheck Info: File `Master_Thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 80C13D9F521F72CB8DAB4E62B766A8E2;5070.
  ) 
 Here is how much of TeX's memory you used:
- 16130 strings out of 476942
- 282207 string characters out of 5823482
- 649472 words of memory out of 5000000
+ 16128 strings out of 476942
+ 282201 string characters out of 5823482
+ 642835 words of memory out of 5000000
  36629 multiletter control sequences out of 15000+600000
- 549652 words of font info for 168 fonts, out of 8000000 for 9000
+ 549735 words of font info for 169 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  72i,16n,77p,2452b,506s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}<c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmro10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Master_Thesis.pdf (42 pages, 5370522 bytes).
+Output written on Master_Thesis.pdf (38 pages, 5352604 bytes).
 PDF statistics:
- 871 PDF objects out of 1000 (max. 8388607)
- 659 compressed objects within 7 object streams
- 147 named destinations out of 1000 (max. 500000)
+ 849 PDF objects out of 1000 (max. 8388607)
+ 641 compressed objects within 7 object streams
+ 143 named destinations out of 1000 (max. 500000)
  45912 words of extra memory for PDF output out of 51595 (max. 10000000)
 

@@ -101,7 +101,7 @@ mvp <- function(returns, lambda){
 
 Each $\lambda \in \{0.01, 0.02, \cdots, 1\}$ and each combination of ascending number of assets produces one portfolio that can be generated with two for loops.
 
-```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r, class.source="code_fold_it_collapsed"}
 df <- data.frame("index"=1, "var"=as.numeric(var(returns_raw[, 1])), "return" = prod(1+returns_raw[, 1])^(1/nrow(returns_raw))-1, row.names=NULL)
 for(i in 2:ncol(returns_raw)){
   returns <- returns_raw[, 1:i]
@@ -116,7 +116,7 @@ for(i in 2:ncol(returns_raw)){
 
 The result gets filtered and names are added that represent the number of assets. Now can the plot be generated:
 
-```{r, class.source="code_fold_it_collapsed"}
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 df <- df %>% 
   filter(!is.na(return)) %>% 
   distinct() %>% 
@@ -241,8 +241,9 @@ for(i in rev(seq(5, ncol(pool_returns_raw), 5))){
   }
   res <- rbind(res, data.frame("N"=i, "var"=temp$var, "sd"=sqrt(temp$var), row.names = NULL))
 }
+```
 
-
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 plot_ly(data=res, x=~N, y=~sd, mode="lines", type = 'scatter') %>% 
   layout(yaxis=list(range=c(0, mean(max(res$sd),mean(res$sd)) ))) %>% 
   html_save()
