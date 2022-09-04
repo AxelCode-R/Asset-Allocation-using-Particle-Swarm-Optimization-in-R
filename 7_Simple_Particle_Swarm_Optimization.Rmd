@@ -284,8 +284,9 @@ if(!knitr::is_latex_output()){
 
 
 ## Example MVP
-
-```{r}
+(IN PRODUKTION)
+chart der pso und qp vergleicht mit lambda schritten
+```{r, echo=F}
 returns_raw <- buffer(
   get_yf(
     tickers = c("IBM", "GOOG", "AAPL", "MSFT", "AMZN", 
@@ -346,7 +347,7 @@ mvp_QP <- function(returns, lambda){
 }
 
 
-mvp_PSO <- function(returns, lambda){
+mvp_PSO <- function(returns, lambda, silent = T){
   tc <- tryCatch({
     mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
 
@@ -370,7 +371,9 @@ mvp_PSO <- function(returns, lambda){
       0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
     }
     calc_const <- function(x){
-      -min(0, t(mat$Amat) %*% x - mat$bvec)
+      const <- t(mat$Amat) %*% x - mat$bvec
+      const[mat$meq] <- -abs(const[mat$meq])
+      -min(0, const)
     }
     pso_res <- pso(
       par = rep(NA, ncol(returns)),
@@ -382,23 +385,26 @@ mvp_PSO <- function(returns, lambda){
       lower = 0,
       upper = 1,
       control = list(
-        s = 200, # swarm size
+        s = 100, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 300, # iterations
+        maxiter = 200, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_traces = F # save more information
       )
     )
-    
-    p0("constraint: ", sum(calc_const(pso_res$solution)))
-    p0("fitness: ", calc_fit(pso_res$solution))
+    if(!silent){
+      p0("constraint: ", sum(calc_const(pso_res$solution)))
+      p0("fitness: ", calc_fit(pso_res$solution))
+    }
     
     res <- list(
-      "mu" = mu %*% qp$solution,
-      "var" = t(qp$solution) %*% cov %*% qp$solution,
-      "composition" = setNames(qp$solution, colnames(returns))
+      "mu" = mu %*% pso_res$solution,
+      "var" = t(pso_res$solution) %*% cov %*% pso_res$solution,
+      "composition" = setNames(pso_res$solution, colnames(returns)),
+      "fit" = calc_fit(pso_res$solution),
+      "constraint" = sum(calc_const(pso_res$solution))
     )
     TRUE
   }, error = function(e){FALSE})
@@ -415,11 +421,172 @@ mvp_PSO <- function(returns, lambda){
   }
 }
 
+
+df <- NULL
+runs <- 100
+for(i in 0:( runs-1)){
+  lambda <- 1-i/runs
+  temp <- mvp_QP(returns = returns_raw, lambda = lambda)
+  df <- rbind(df, data.frame("type"="QP_MVP", "lambda"=lambda, "mu"=temp$mu, "var"=temp$var))
+  
+  temp <- mvp_PSO(returns = returns_raw, lambda = lambda)
+  df <- rbind(df, data.frame("type"="PSO_MVP", "lambda"=lambda, "mu"=temp$mu, "var"=temp$var))
+}
+
+df$sd = sqrt(df$var)
+
+
+
+plot_ly(
+  data = df, 
+  x=~sd, 
+  y=~mu, 
+  name=~type, 
+  mode="markers", 
+  type = 'scatter', 
+  color = ~type, 
+  colors = c("green", "red")
+  ) %>% 
+  add_annotations(
+    data=df[df$type=="QP_MVP" & df$lambda %in% seq(1,0,-0.1),],   
+    x=~sd, 
+    y=~mu, 
+    text = ~paste0("lambda: ",lambda),
+    ay = 40,
+    ax = 20
+  ) %>% 
+  add_annotations(
+    data=df[df$type=="PSO_MVP" & df$lambda %in% seq(1,0,-0.1),],   
+    x=~sd, 
+    y=~mu, 
+    text = ~paste0("lambda: ",lambda),
+    ay = -40,
+    ax = -20
+  ) %>% 
+  layout(xaxis=list(range=c(0.9*min(df$sd), 1.5*max(df[df$type=="QP_MVP",]$sd)))) %>% 
+  html_save()
 ```
 
 
 ## Example ITP
 
+```{r}
+from <- "2016-01-01"
+to <- "2021-12-31"
+
+spx_composition <- buffer(
+  get_spx_composition(),
+  "AS_spx_composition"
+)
+
+
+pool_returns_raw <- buffer(
+  get_yf(
+    tickers = spx_composition %>% 
+      filter(Date<=to) %>% 
+      filter(Date==max(Date)) %>% 
+      pull(Ticker), 
+    from = from, 
+    to = to
+  )$returns, 
+  "AS_sp500_assets"
+)
+pool_returns_raw <- 
+  pool_returns_raw[, colSums(is.na(pool_returns_raw))==0]
+
+
+bm_returns <- buffer(
+  get_yf(tickers = "%5EGSPC", from = from, to = to)$returns, 
+  "AS_sp500"
+) %>% setNames(., "S&P 500")
+
+
+mat <- list(
+  Dmat = cov(pool_returns),
+  dvec = cov(pool_returns, bm_returns),
+  Amat = t(rbind(
+    rep(1, ncol(pool_returns)), # sum up to 1
+    diag(1, 
+         nrow=ncol(pool_returns), 
+         ncol=ncol(pool_returns)) # long only
+  )),
+  bvec = c(
+    1, # sum up to 1
+    rep(0, ncol(pool_returns)) # long only
+  ),
+  meq = 1
+)
+
+itp_QP <- function(pool_returns, bm_returns, mat){
+
+  qp <- solve.QP(
+    Dmat = mat$Dmat, dvec = mat$dvec, 
+    Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
+  )
+
+  
+  res <- list(
+    "value" = qp$value,
+    "var" = as.numeric(
+      var(pool_returns %*% qp$solution - bm_returns)),
+    "solution" = setNames(qp$solution, colnames(pool_returns))
+  )
+}
+
+
+itp_PSO <- function(pool_returns, bm_returns, mat, silent = T){
+
+  calc_fit <- function(x){
+    as.numeric(0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x)
+  }
+  calc_const <- function(x){
+    const <- t(mat$Amat) %*% x - mat$bvec
+    const[mat$meq] <- -abs(const[mat$meq])
+    -min(0, const)
+  }
+  pso_res <- pso(
+    par = rep(0, ncol(pool_returns)),
+    fn = function(x){
+      fitness <- calc_fit(x)
+      constraints <- calc_const(x)
+      return(fitness+10*constraints)
+    },
+    lower = 0,
+    upper = 0.05,
+    control = list(
+      s = 100, # swarm size
+      c.p = 0.5, # inherit best
+      c.g = 0.5, # global best
+      maxiter = 200, # iterations
+      w0 = 0.9, # starting inertia weight
+      wN = 0, # ending inertia weight
+      save_traces = F # save more information
+    )
+  )
+  if(!silent){
+    p0("constraint: ", sum(calc_const(pso_res$solution)))
+    p0("fitness: ", calc_fit(pso_res$solution))
+  }
+  
+  res <- list(
+    "composition" = setNames(pso_res$solution, colnames(returns)),
+    "fit" = calc_fit(pso_res$solution),
+    "constraint" = sum(calc_const(pso_res$solution)),
+    "var" = as.numeric(
+      var(pool_returns %*% pso_res$solution - bm_returns))
+  )
+  
+  return(res)
+}
+
+
+df <- NULL
+
+temp_qp <- itp_QP(pool_returns_raw, bm_returns, mat)
+temp_pso <- itp_PSO(pool_returns_raw, bm_returns, mat)
+
+
+```
 
 
 ## Pros and Cons
