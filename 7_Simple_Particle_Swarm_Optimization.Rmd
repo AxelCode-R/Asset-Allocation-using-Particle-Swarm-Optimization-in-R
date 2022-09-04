@@ -501,24 +501,25 @@ bm_returns <- buffer(
 ) %>% setNames(., "S&P 500")
 
 
-mat <- list(
-  Dmat = cov(pool_returns),
-  dvec = cov(pool_returns, bm_returns),
-  Amat = t(rbind(
-    rep(1, ncol(pool_returns)), # sum up to 1
-    diag(1, 
-         nrow=ncol(pool_returns), 
-         ncol=ncol(pool_returns)) # long only
-  )),
-  bvec = c(
-    1, # sum up to 1
-    rep(0, ncol(pool_returns)) # long only
-  ),
-  meq = 1
-)
 
-itp_QP <- function(pool_returns, bm_returns, mat){
+itp_QP <- function(pool_returns, bm_returns){
 
+  mat <- list(
+    Dmat = cov(pool_returns),
+    dvec = cov(pool_returns, bm_returns),
+    Amat = t(rbind(
+      rep(1, ncol(pool_returns)), # sum up to 1
+      diag(1, 
+           nrow=ncol(pool_returns), 
+           ncol=ncol(pool_returns)) # long only
+    )),
+    bvec = c(
+      1, # sum up to 1
+      rep(0, ncol(pool_returns)) # long only
+    ),
+    meq = 1
+  )
+  
   qp <- solve.QP(
     Dmat = mat$Dmat, dvec = mat$dvec, 
     Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
@@ -534,8 +535,23 @@ itp_QP <- function(pool_returns, bm_returns, mat){
 }
 
 
-itp_PSO <- function(pool_returns, bm_returns, mat, silent = T){
-
+itp_PSO <- function(pool_returns, bm_returns, silent = T){
+  mat <- list(
+    Dmat = cov(pool_returns),
+    dvec = cov(pool_returns, bm_returns),
+    Amat = t(rbind(
+      rep(1, ncol(pool_returns)), # sum up to 1
+      diag(1, 
+           nrow=ncol(pool_returns), 
+           ncol=ncol(pool_returns)) # long only
+    )),
+    bvec = c(
+      1, # sum up to 1
+      rep(0, ncol(pool_returns)) # long only
+    ),
+    meq = 1
+  )
+  
   calc_fit <- function(x){
     as.numeric(0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x)
   }
@@ -569,9 +585,9 @@ itp_PSO <- function(pool_returns, bm_returns, mat, silent = T){
   }
   
   res <- list(
-    "composition" = setNames(pso_res$solution, colnames(returns)),
+    "composition" = setNames(pso_res$solution, colnames(pool_returns)),
     "fit" = calc_fit(pso_res$solution),
-    "constraint" = sum(calc_const(pso_res$solution)),
+    "constraint" = calc_const(pso_res$solution),
     "var" = as.numeric(
       var(pool_returns %*% pso_res$solution - bm_returns))
   )
@@ -582,8 +598,8 @@ itp_PSO <- function(pool_returns, bm_returns, mat, silent = T){
 
 df <- NULL
 
-temp_qp <- itp_QP(pool_returns_raw, bm_returns, mat)
-temp_pso <- itp_PSO(pool_returns_raw, bm_returns, mat)
+temp_qp <- itp_QP(pool_returns_raw, bm_returns)
+temp_pso <- itp_PSO(pool_returns_raw, bm_returns)
 
 
 ```
