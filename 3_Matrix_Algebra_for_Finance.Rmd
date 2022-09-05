@@ -172,7 +172,7 @@ The same holds for a estimation of $\textstyle\sum$.
 
 
 ### Portfolio Returns {#portfolioreturns}
-Suppose there are $N$ assets which create a portfolio with weights $w$ at time $t_0$ and the portfolio should perform multiple timesteps till $t_T$ without re-balancing. What are the portfolio returns on each timestep $t_i$? Its obvious that assets with a positive performance at the current timestep have a higher weight at the next timestep. This can be done by adjusting the weights after each timestep, dependent on the returns. The formula for holding a portfolio with weights $\textstyle\sum w = 1$ and return matrix $R \in R^{T \times N}$, has the return $Z_i-1$ on $t_i$ with $i=0, 1, \cdots, T$ for:
+Suppose there are $N$ assets which create a portfolio with weights $w$ at time $t_0$ and the portfolio should perform multiple timesteps till $t_T$ without re-balancing. What are the portfolio returns on each timestep $t_i$? Its obvious that assets with a positive performance at the current timestep have a higher weight at the next timestep. This can be done by adjusting the weights after each timestep, dependent on the returns. The formula for holding a portfolio with weights $\textstyle\sum w = 1$ and return matrix $R \in \mathbb{R}^{T \times N}$, has the return $Z_i-1$ on $t_i$ with $i=0, 1, \cdots, T$ for:
 <!-- \begin{equation} -->
 <!--   Z_i = -->
 <!--   \left\{ -->

@@ -357,7 +357,7 @@ The same holds for a estimation of \(\textstyle\sum\).
 \hypertarget{portfolioreturns}{%
 \subsection{Portfolio Returns}\label{portfolioreturns}}
 
-Suppose there are \(N\) assets which create a portfolio with weights \(w\) at time \(t_0\) and the portfolio should perform multiple timesteps till \(t_T\) without re-balancing. What are the portfolio returns on each timestep \(t_i\)? Its obvious that assets with a positive performance at the current timestep have a higher weight at the next timestep. This can be done by adjusting the weights after each timestep, dependent on the returns. The formula for holding a portfolio with weights \(\textstyle\sum w = 1\) and return matrix \(R \in R^{T \times N}\), has the return \(Z_i-1\) on \(t_i\) with \(i=0, 1, \cdots, T\) for:
+Suppose there are \(N\) assets which create a portfolio with weights \(w\) at time \(t_0\) and the portfolio should perform multiple timesteps till \(t_T\) without re-balancing. What are the portfolio returns on each timestep \(t_i\)? Its obvious that assets with a positive performance at the current timestep have a higher weight at the next timestep. This can be done by adjusting the weights after each timestep, dependent on the returns. The formula for holding a portfolio with weights \(\textstyle\sum w = 1\) and return matrix \(R \in \mathbb{R}^{T \times N}\), has the return \(Z_i-1\) on \(t_i\) with \(i=0, 1, \cdots, T\) for:
 \[
   Z_i =
   \begin{cases}
@@ -585,22 +585,22 @@ A quadratic program is a minimization problem of some function that returns a sc
 \]
 and holds under the linear constraints:
 \[
-  A^T \times x >= b_0
+  A^T \times x \geq b_0
 \]
 
-Some other sources notate the problem with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package \texttt{quadprog} which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g.~\(|A^T \times x| >= a_0\)) or mixed-integer (e.g.~\(x \in \mathbb{N}\)). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
+Some other sources notate the problem with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package \texttt{quadprog} which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g.~\(|A^T \times x| \geq a_0\)) or mixed-integer (e.g.~\(x \in \mathbb{N}\)). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
 
 \hypertarget{qp-solver-from-quadprog}{%
 \section{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
 
-The most common free QP-solver used in R is from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(D\in R^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in R^N\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\textstyle\sum\) with the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \%\), which is negligible for the context of this thesis. The \texttt{solve.QP()} function for a \(N\) dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
+The most common free QP-solver used in R is from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in \mathbb{R}^N\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\textstyle\sum\) with the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \%\), which is negligible for the context of this thesis. The \texttt{solve.QP()} function for a \(N\) dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
 
 \begin{itemize}
 \tightlist
 \item
-  \texttt{Dmat}: Symmetric positive definite matrix \(D \in R^{N \times N}\) of the quadratic term.
+  \texttt{Dmat}: Symmetric positive definite matrix \(D \in \mathbb{R}^{N \times N}\) of the quadratic term.
 \item
-  \texttt{dvec}: Vector \(d \in R^{N}\) of the linear term
+  \texttt{dvec}: Vector \(d \in \mathbb{R}^{N}\) of the linear term
 \item
   \texttt{Amat}: Constraint matrix \(A\)
 \item
@@ -642,7 +642,7 @@ This section provides insights into the effects of diversification and the use o
 \end{Highlighting}
 \end{Shaded}
 
-The next step is to create a function \texttt{mvp()} that has the arguments \texttt{return} and \texttt{lambda}. It calculates the expected returns \texttt{mu} and the estimated positive definite covariance \texttt{cov}. Afterwards it solves a MVP with the constraints \(\textstyle\sum w = 1\) and \(w>=0\), which returns key features \texttt{mu}, \texttt{var} and \texttt{composition} of the portfolio.
+The next step is to create a function \texttt{mvp()} that has the arguments \texttt{return} and \texttt{lambda}. It calculates the expected returns \texttt{mu} and the estimated positive definite covariance \texttt{cov}. Afterwards it solves a MVP with the constraints \(\textstyle\sum w = 1\) and \(w \geq 0\), which returns key features \texttt{mu}, \texttt{var} and \texttt{composition} of the portfolio.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -826,8 +826,8 @@ Each Particle \(d\) with position \(x_d\) moves in the search space \(R^N\) and 
 with \(r_1\) and \(r_2\) being uniformly distributed random numbers in {[}0, 1{]}. The cognitive parameter \(c_p\) acts as the weighting of the direction to its previous best position of the particle. On the contrary is the social parameter \(c_g\), which is a weighting to the direction of the global best position. The inertia weight \(w\) is crucial for the convergence behavior by remembering a part of its previous trajectory. A study examined in \citep{PaVr2002} showed that these parameters can be set to \(c_p=c_g=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems do benefit from more fine-tuning of these parameters. To provide a effortless translation to code, the formula above can be stated for \(d = 1, 2, \cdots, D\) particles in the following matrix notation:
 
 \begin{align*}
-  V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
-  X^{i+1} = X^i + V^{i+1}
+  V^{i+1} &= w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
+  X^{i+1} &= X^i + V^{i+1}
 \end{align*}
 
 with current positions \(X \in R^{N \times D}\), current velocity's \(V \in R^{N \times D}\), previous best positions \(P \in R^{N \times D}\) and the global best position \(p_g \in R^{N}\). The parameters \(w\), \(c_p\), \(c_g\), \(r_1\) and \(r_2\) are stile scalars.

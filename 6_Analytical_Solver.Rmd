@@ -13,16 +13,16 @@ $$
 $$
 and holds under the linear constraints:
 $$
-  A^T \times x >= b_0
+  A^T \times x \geq b_0
 $$
 
-Some other sources notate the problem with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. $|A^T \times x| >= a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
+Some other sources notate the problem with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. $|A^T \times x| \geq a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
 
 ## QP Solver from quadprog
-The most common free QP-solver used in R is from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with the requirement that $D$ needs to be a symmetric positive definite matrix. It means that $D\in R^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in R^N$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix $\sum$, but its possible to find the nearest positive definite matrix of $\textstyle\sum$ with the function `nearPD()` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above $10^{-15} \%$, which is negligible for the context of this thesis. The `solve.QP()` function for a $N$ dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
+The most common free QP-solver used in R is from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with the requirement that $D$ needs to be a symmetric positive definite matrix. It means that $D\in \mathbb{R}^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in \mathbb{R}^N$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix $\sum$, but its possible to find the nearest positive definite matrix of $\textstyle\sum$ with the function `nearPD()` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above $10^{-15} \%$, which is negligible for the context of this thesis. The `solve.QP()` function for a $N$ dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
 
-+ `Dmat`: Symmetric positive definite matrix $D \in R^{N \times N}$ of the quadratic term.
-+ `dvec`: Vector $d \in R^{N}$ of the linear term
++ `Dmat`: Symmetric positive definite matrix $D \in \mathbb{R}^{N \times N}$ of the quadratic term.
++ `dvec`: Vector $d \in \mathbb{R}^{N}$ of the linear term
 + `Amat`: Constraint matrix $A$
 + `bvec`: Constraint vector $b_0$
 + `meq = 1`: means that the first row of $A$ is treated as equality constraint
@@ -50,7 +50,7 @@ returns_raw <- buffer(
 vars <- sapply(returns_raw, var)
 returns_raw <- returns_raw[, order(vars, decreasing = F)]
 ```
-The next step is to create a function `mvp()` that has the arguments `return` and `lambda`. It calculates the expected returns `mu` and the estimated positive definite covariance `cov`. Afterwards it solves a MVP with the constraints $\textstyle\sum w = 1$ and $w>=0$, which returns key features `mu`, `var` and `composition` of the portfolio. 
+The next step is to create a function `mvp()` that has the arguments `return` and `lambda`. It calculates the expected returns `mu` and the estimated positive definite covariance `cov`. Afterwards it solves a MVP with the constraints $\textstyle\sum w = 1$ and $w \geq 0$, which returns key features `mu`, `var` and `composition` of the portfolio. 
 
 ```{r, class.source="code_fold_it_collapsed"}
 mvp <- function(returns, lambda){

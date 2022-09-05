@@ -19,8 +19,8 @@ Each Particle $d$ with position $x_d$ moves in the search space $R^N$ and has it
 with $r_1$ and $r_2$ being uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_p$ acts as the weighting of the direction to its previous best position of the particle. On the contrary is the social parameter $c_g$, which is a weighting to the direction of the global best position. The inertia weight $w$ is crucial for the convergence behavior by remembering a part of its previous trajectory. A study examined in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems do benefit from more fine-tuning of these parameters. To provide a effortless translation to code, the formula above can be stated for $d = 1, 2, \cdots, D$ particles in the following matrix notation:
 
 \begin{align*}
-  V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
-  X^{i+1} = X^i + V^{i+1}
+  V^{i+1} &= w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
+  X^{i+1} &= X^i + V^{i+1}
 \end{align*}
 
 with current positions $X \in R^{N \times D}$, current velocity's $V \in R^{N \times D}$, previous best positions $P \in R^{N \times D}$ and the global best position $p_g \in R^{N}$. The parameters $w$, $c_p$, $c_g$, $r_1$ and $r_2$ are stile scalars.
