@@ -225,18 +225,18 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="mathfundations" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Mathematical Fundations<a href="mathfundations.html#mathfundations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It’s important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complex and can only be partially modeled. Simplistic, basic models are employed that don’t hold up in real-world situations, but these models or variations of them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter <a href="challenges.html#challenges">6</a>.</p>
+<p>This chapter provides an overview of the mathematical calculations and conventions used in this thesis. It is important to note that most mathematical formulas are written in matrix notation. In most cases, this will result in a direct translation to R code. All necessary assumptions required for the modeled return structure are listed in this chapter so that any reader can understand the formulas given. It is important to note that reality is too complex and can only be partially modeled. Simple, basic models are used that do not stand up to reality, but these models or variations of them are commonly used in the financial world and have proven to be helpful. The complexity of solving advanced and basic models does not differ in PSO because the dimension of the objective function is based on the number of elements that can be selected, see chapter <a href="challenges.html#challenges">6</a>.</p>
 <div id="basic-operators" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Basic Operators<a href="mathfundations.html#basic-operators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A compendium, that compares commonly used mathematical symbols to R-code and its meanings, is listed in the table below:</p>
+<p>A compendium comparing commonly used mathematical symbols with R code and their meaning is given in the following table:</p>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="return-calculation" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Return Calculation<a href="mathfundations.html#return-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using <a href="https://www.investopedia.com/terms/a/adjusted%20closing%20price.asp">adjusted closing prices</a>, which show the percentage change over time. Adjusted closing prices are reflecting dividends and are cleaned of by stock splits and rights offerings. These Returns are essential for comparing assets and for analyzing dependencies.</p>
+<p>Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices] (<a href="https://www.investopedia.com/terms/a/adjusted" class="uri">https://www.investopedia.com/terms/a/adjusted</a> closingprice.asp), which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.</p>
 <div id="simple-returns" class="section level3 hasAnchor" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> Simple Returns<a href="mathfundations.html#simple-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The default timeframe for all raw data in this thesis is one workday and only simple returns are used. Suppose there is a asset with prices <span class="math inline">\(P\)</span> on workday <span class="math inline">\(t_i\)</span> and following workday <span class="math inline">\(t_{i+1}\)</span>, then follows that the simple return on <span class="math inline">\(t_{i+1}\)</span> can be calculated as:
+<p>The default time frame for all raw data in this thesis is one working day and only simple rates of return are used. Assuming there is an asset with price <span class="math inline">\(P\)</span> on working day <span class="math inline">\(t_i\)</span> and the following working day <span class="math inline">\(t_{i+1}\)</span>, it follows that the simple rate of return on <span class="math inline">\(t_{i+1}\)</span> can be calculated as follows:
 <span class="math display">\[
   R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
 \]</span></p>
@@ -244,7 +244,7 @@ div.csl-indent {
 </div>
 <div id="markowitz-modern-portfolio-theory-mpt" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> Markowitz Modern Portfolio Theory (MPT)<a href="mathfundations.html#markowitz-modern-portfolio-theory-mpt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In 1952, Harry Markowitz published his first ground-breaking work, which had a significant influence on modern finance, primarily by outlining the effects of diversification and efficient portfolios. The definition of an efficient portfolio is one that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification could be: “A portfolio has the same return but less variance than the sum of its parts”. This is true if the assets are not perfectly correlated, because bad and good movers can make up for each other which will reduce the likelihood of extreme events. More specific information can be found at <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
+<p>In 1952, Harry Markowitz published his first seminal paper, which had a significant impact on modern finance, primarily by outlining the implications of diversification and efficient portfolios. The definition of an efficient portfolio is a portfolio that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification might be, “A portfolio has the same return but less variance than the sum of its parts.” This is true when assets are not perfectly correlated, as bad and good performance can offset each other, reducing the likelihood of extreme events. For more information, see <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
 <div id="assumptions-of-markowitz-portfolio-theory" class="section level3 hasAnchor" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> Assumptions of Markowitz Portfolio Theory<a href="mathfundations.html#assumptions-of-markowitz-portfolio-theory" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The following list contains all Markowitz assumptions according to <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>:</p>
@@ -256,12 +256,12 @@ div.csl-indent {
 <li>Investors are risk-adverse, they will only accept greater risk if they
 are compensated with a higher expected return.</li>
 </ul>
-<p>The assumption that the returns are normally distributed is not required, but it will be assumed in this case to make the problem simpler. It is obvious that these assumptions are unrealistic in real-life. For more details regarding the requirements for utilizing other distributions, have a look at <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
+<p>The assumption that the returns are normally distributed is not required, but is assumed in this case to simplify the problem. It is obvious that these assumptions are unrealistic in reality. More details on the requirements for using other distributions can be found in <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
 </div>
 </div>
 <div id="portfolio-math" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Portfolio Math<a href="mathfundations.html#portfolio-math" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Proofs for the fundamental calculations required for portfolio optimization as shown in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span> will be provided in this section. The returns are presented differently than in most sources, because its the most common data-format used in practice. Suppose there are <span class="math inline">\(N\)</span> assets that are described by a return vector <span class="math inline">\(R\)</span> of random variables and a portfolio weight vector <span class="math inline">\(w\)</span>, respectively:
+<p>Proofs of the basic calculations required for portfolio optimization, as shown in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span>, are provided in this section. Returns are presented differently than in most sources, as this is the most common data format used in practice. Suppose there are <span class="math inline">\(N\)</span> assets described by a return vector <span class="math inline">\(R\)</span> of random variables and a portfolio weight vector <span class="math inline">\(w\)</span>, respectively:
 <span class="math display">\[
   R =
   \begin{bmatrix}
@@ -276,7 +276,7 @@ w =
     w_{N}  
 \end{bmatrix}
 \]</span></p>
-<p>In this thesis, each return is simplified to be normal distributed with <span class="math inline">\(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\)</span>. As a result, linear combinations of normally distributed random variables are jointly normal distributed and have a mean, variance, and covariance that can be used to fully describe them.</p>
+<p>In this thesis, each return is simplified as being normally distributed with <span class="math inline">\(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\)</span>. As a result, linear combinations of normally distributed random variables are jointly normally distributed and have a mean, variance, and covariance that can be used to fully describe them.</p>
 <div id="expected-returns" class="section level3 hasAnchor" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> Expected Returns<a href="mathfundations.html#expected-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The following formula can be used to get the expected returns of a vector with normally distributed random variables <span class="math inline">\(R \in \mathbb{R}^{1\times N}\)</span>:
@@ -292,11 +292,11 @@ w =
 =
 \mu
 \end{align*}\]</span>
-and <span class="math inline">\(\mu_i\)</span> can be estimated in R with historical data and the formula for geometric mean returns (also called compound returns). The function to calculate the geometric mean returns from a xts-object can be found in <a href="mathfundations.html#geomeanret">4.5.3</a>.</p>
+and <span class="math inline">\(\mu_i\)</span> can be estimated in R using historical data and the formula for the geometric mean of returns (also called compound returns). The function to calculate the geometric mean of the returns from an xts object can be found in <a href="mathfundations.html#geomeanret">4.5.3</a>.</p>
 </div>
 <div id="expected-portfolio-returns" class="section level3 hasAnchor" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> Expected Portfolio Returns<a href="mathfundations.html#expected-portfolio-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The following equation can be used to get the linear combination of expected returns <span class="math inline">\(\mu\)</span> and a weighting vector <span class="math inline">\(w\)</span> (e.g. portfolio weights):
+<p>The following equation can be used to obtain the linear combination of expected returns <span class="math inline">\(\mu\)</span> and a weighting vector <span class="math inline">\(w\)</span> (e.g. portfolio weights):
 <span class="math display">\[\begin{align*}
 \mu \times w &amp;=
   \begin{bmatrix}
@@ -344,7 +344,7 @@ E[\mu_{1}] \cdot w_1 + E[\mu_{2}] \cdot w_2 + \cdots + E[\mu_{N}] \cdot w_{N}
 </div>
 <div id="covariance" class="section level3 hasAnchor" number="4.4.3">
 <h3><span class="header-section-number">4.4.3</span> Covariance<a href="mathfundations.html#covariance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The general formula of the covariance matrix <span class="math inline">\(\textstyle\sum\)</span> of a random vector <span class="math inline">\(R\)</span> with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(\sigma_{i,j}\)</span> as correlation of two unique assets is described as:
+<p>The general formula of the covariance matrix <span class="math inline">\(\textstyle\sum\)</span> of a random vector <span class="math inline">\(R\)</span> with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(\sigma_{i,j}\)</span> as correlation of two unique values is described as follows:
 <span class="math display">\[\begin{align*}
   Cov(R) &amp;= E[(R-\mu)^T \otimes (R-\mu)] \\
   &amp;=   \begin{bmatrix}
@@ -355,37 +355,28 @@ E[\mu_{1}] \cdot w_1 + E[\mu_{2}] \cdot w_2 + \cdots + E[\mu_{N}] \cdot w_{N}
 \end{bmatrix}\\
   &amp;=\textstyle\sum
 \end{align*}\]</span>
-and can be estimated in R with the base-function <code>cov()</code> and historical data.</p>
+and can be estimated in R with the basis function <code>cov()</code> and historical data.</p>
 </div>
 <div id="portvar" class="section level3 hasAnchor" number="4.4.4">
 <h3><span class="header-section-number">4.4.4</span> Portfolio Variance<a href="mathfundations.html#portvar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Let <span class="math inline">\(R\)</span> be a random vector with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(w\)</span> a weighting vector. Suppose the covariance matrix <span class="math inline">\(\sum\)</span> of <span class="math inline">\(R\)</span> is known, then the variance of the linear combination of <span class="math inline">\(R\)</span> can be calculated as:
+<p>Let <span class="math inline">\(R\)</span> be a random vector with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(w\)</span> a weight vector. Assuming that the covariance matrix <span class="math inline">\(\sum\)</span> of <span class="math inline">\(R\)</span> is known, the variance of the linear combination of <span class="math inline">\(R\)</span> can be calculated as follows:
 <span class="math display">\[\begin{align*}
   Var(R \times w) &amp;= E[(R \times w - \mu \times w)^2] \\
   &amp;= E[((R - \mu) \times w)^2]
 \end{align*}\]</span></p>
-<p>Since <span class="math inline">\((R - \mu) \times w\)</span> is a scalar, it can be transformed from <span class="math inline">\(((R - \mu) \times w)^2\)</span> to <span class="math inline">\(((R - \mu) \times w)^T \cdot ((R - \mu) \times w)\)</span> and results in:
-<span class="math display">\[\begin{align*}
+<p>Since <span class="math inline">\((R - \mu) \times w\)</span> is a scalar, it can be transformed from <span class="math inline">\(((R - \mu) \times w)^2\)</span> to <span class="math inline">\(((R - \mu) \times w)^T \cdot ((R - \mu) \times w)\)</span> and results in:</p>
+<p><span class="math display">\[\begin{align*}
   Var(R \times w) &amp;= E[((R - \mu) \cdot w)^T \times ((R - \mu) \times w)]\\
   &amp;= E[(w^T \times (R - \mu)^T) \cdot ((R - \mu) \times w)]\\
   &amp;= w^T \times E[(R - \mu)^T \otimes (R - \mu)] \times w \\
   &amp;= w^T \times Cov(R) \times w \\
   &amp;= w^T \times \textstyle\sum \times w
 \end{align*}\]</span></p>
-<p>The same holds for a estimation of <span class="math inline">\(\textstyle\sum\)</span>.</p>
+<p>The same is true for an estimate of <span class="math inline">\(\textstyle\sum\)</span>.</p>
 </div>
 <div id="portfolioreturns" class="section level3 hasAnchor" number="4.4.5">
 <h3><span class="header-section-number">4.4.5</span> Portfolio Returns<a href="mathfundations.html#portfolioreturns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Suppose there are <span class="math inline">\(N\)</span> assets which create a portfolio with weights <span class="math inline">\(w\)</span> at time <span class="math inline">\(t_0\)</span> and the portfolio should perform multiple timesteps till <span class="math inline">\(t_T\)</span> without re-balancing. What are the portfolio returns on each timestep <span class="math inline">\(t_i\)</span>? Its obvious that assets with a positive performance at the current timestep have a higher weight at the next timestep. This can be done by adjusting the weights after each timestep, dependent on the returns. The formula for holding a portfolio with weights <span class="math inline">\(\textstyle\sum w = 1\)</span> and return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span>, has the return <span class="math inline">\(Z_i-1\)</span> on <span class="math inline">\(t_i\)</span> with <span class="math inline">\(i=0, 1, \cdots, T\)</span> for:
-<!-- \begin{equation} -->
-<!--   Z_i = -->
-<!--   \left\{ -->
-<!--   \begin{split} -->
-<!--   &(1+R_i)\cdot w, &\text{ if }i=0\\ -->
-<!--   &(1+R_i)\cdot \frac{Z_{i-1}}{\sum Z_{i-1}}, &\text{ if }i>0 -->
-<!--   \end{split} -->
-<!--   \right. -->
-<!-- \end{equation} -->
+<p>Suppose there are <span class="math inline">\(N\)</span> assets forming a portfolio with weights <span class="math inline">\(w\)</span> at time <span class="math inline">\(t_0\)</span>, and the portfolio is to pass through several time steps until <span class="math inline">\(t_T\)</span> without rebalancing. What are the portfolio returns at each time step <span class="math inline">\(t_i\)</span>? Clearly, assets with positive performance in the current time step will have a higher weight in the next time step. This can be done by adjusting the weights after each time step depending on the returns. The formula for holding a portfolio with weights <span class="math inline">\(\textstyle\sum w = 1\)</span> and return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span>, has return <span class="math inline">\(Z_i-1\)</span> on <span class="math inline">\(t_i\)</span> with <span class="math inline">\(i=0, 1, \cdots, T\)</span> for:
 <span class="math display">\[
   Z_i =
   \begin{cases}
@@ -393,7 +384,7 @@ and can be estimated in R with the base-function <code>cov()</code> and historic
   (1+R_i)\cdot \frac{Z_{i-1}}{\sum Z_{i-1}} &amp;\text{ if }i&gt;0
   \end{cases}
 \]</span></p>
-<p>This calculation of portfolio returns is implemented in the <code>calc_portfolio_returns()</code> function below.</p>
+<p>This calculation of portfolio returns is implemented in the function <code>calc_portfolio_returns()</code> below.</p>
 </div>
 </div>
 <div id="r-functions-2" class="section level2 hasAnchor" number="4.5">
@@ -409,19 +400,19 @@ and can be estimated in R with the base-function <code>cov()</code> and historic
 </div>
 <div id="geomeanret" class="section level3 hasAnchor" number="4.5.3">
 <h3><span class="header-section-number">4.5.3</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. The variance estimated from daily returns is a daily variance, which is why the returns need to have the same timebase. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns <span class="math inline">\(r_1 = 0.01\)</span>, <span class="math inline">\(r_2=0.03\)</span> and <span class="math inline">\(r_3=0.02\)</span> then follows that the geometric mean return <span class="math inline">\(r^{id}\)</span> can be calculated as:
+<p>The geometric mean of returns is a better estimator than the arithmetic mean of returns because it captures the exact mean price changes over a period of time. The variance estimated from the daily returns is a daily variance, so the returns must have the same time base. This can be done by calculating the geometric mean of the returns from multiple daily returns. Assuming there is an asset with returns <span class="math inline">\(r_1 = 0.01\)</span>, <span class="math inline">\(r_2=0.03\)</span>, and <span class="math inline">\(r_3=0.02\)</span>, it follows that the geometric mean return <span class="math inline">\(r^{id}\)</span> can be calculated as:
 <span class="math display">\[
   r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
 \]</span>
-And the benefit is that it’s a daily mean return, which will produce exactly the same outcome as the real returns, that means:
+And the advantage is that it is a daily average return that gives exactly the same result as the real return, that is:
 <span class="math display">\[
   (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
 \]</span>
-This isnt the case for arithmetic mean returns. The general formula to calculate the mean geometric return from <span class="math inline">\(n\)</span> days is:
+This is not the case with the arithmetic mean of the returns. The general formula for calculating the mean geometric return of <span class="math inline">\(n\)</span> days is:
 <span class="math display">\[
   r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
 \]</span>
-and as R-code:</p>
+and as R code:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="mathfundations.html#cb1-1" aria-hidden="true" tabindex="-1"></a>ret_to_geomeanret <span class="ot">&lt;-</span> <span class="cf">function</span>(xts_ret){</span>
 <span id="cb1-2"><a href="mathfundations.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>((<span class="dv">1</span><span class="sc">+</span>xts_ret), prod)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">nrow</span>(xts_ret))<span class="sc">-</span><span class="dv">1</span></span>
 <span id="cb1-3"><a href="mathfundations.html#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>

@@ -225,29 +225,29 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="challenges" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Challenges of Passiv Investing<a href="challenges.html#challenges" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This Chapter will analyse two common challenges of Passiv-Investing and creates simple use-cases to test the PSO. The first one is the mean-variance portfolio (MVP) from the modern portfolio theory of Markowitz which is simply said an optimal allocation of assets regarding risk and return. The second challenge is the index-tracking-problem which tries to construct a portfolio with minimal tracking error to a given benchmark.</p>
+<p>In this chapter, we analyze two common challenges of passive investing and create simple use cases to test the PSO. The first challenge is the mean-variance portfolio (MVP) from Markowitz’s modern portfolio theory, which, simply put, is an optimal allocation of assets in terms of risk and return. The second challenge is the index tracking problem, which attempts to construct a portfolio with minimal tracking error to a given benchmark.</p>
 <div id="mean-variance-portfolio-mvp" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Mean-Variance Portfolio (MVP)<a href="challenges.html#mean-variance-portfolio-mvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Markowitz has shown that diversifying the risk on multiple assets will reduce the overall risk of the portfolio. This result was the beginning of the widely used modern portfolio theory which uses mathematical models to archive portfolios with minimal variance for a given return target. All these optimal portfolios for a given return target are called efficient and create the efficient frontier.</p>
+<p>Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier.</p>
 <div id="mvp" class="section level3 hasAnchor" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> MVP<a href="challenges.html#mvp" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Let there be <span class="math inline">\(N\)</span> assets and its returns on <span class="math inline">\(T\)</span> different days which creates a return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span>. Each element <span class="math inline">\(R_{t,i}\)</span> contains the return of the <span class="math inline">\(i\)</span>-th asset on day <span class="math inline">\(t\)</span>. The covariance matrix of the returns is <span class="math inline">\(\textstyle\sum \in \mathbb{R}^{N \times N}\)</span> and the expected returns are <span class="math inline">\(\mu \in \mathbb{R}^{N}\)</span>. The MVP with risk aversion parameter <span class="math inline">\(\lambda \in [0,1]\)</span> like shown in <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span> can be formalized as follows:
-<span class="math display" id="eq:MVP">\[\begin{equation}
+<p>Let there be <span class="math inline">\(N\)</span> assets and their returns on <span class="math inline">\(T\)</span> different days, creating a return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span>. Each element <span class="math inline">\(R_{t,i}\)</span> contains the return of the <span class="math inline">\(i\)</span>-th asset on day <span class="math inline">\(t\)</span>. The covariance matrix of the returns is <span class="math inline">\(\textstyle\sum \in \mathbb{R}^{N \times N}\)</span> and the expected returns are <span class="math inline">\(\mu \in \mathbb{R}^{N}\)</span>. The MVP with the risk aversion parameter <span class="math inline">\(\lambda \in [0,1]\)</span>, as shown in <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>, can be formalized as follows:</p>
+<p><span class="math display" id="eq:MVP">\[\begin{equation}
 \underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 \tag{6.1}
 \end{equation}\]</span></p>
-<p>The risk aversion parameter <span class="math inline">\(\lambda\)</span> defines the trade-off between risk and return. With <span class="math inline">\(\lambda = 1\)</span>, the minimization problem only contains the variance term and so on results in a minimum variance portfolio and <span class="math inline">\(\lambda = 0\)</span> transforms the problem into a minimization of the negative expected returns, which results in a maximum return portfolio. All possible portfolios created by <span class="math inline">\(\lambda \in [0, 1]\)</span> define the efficient frontier.</p>
+<p>The risk aversion parameter <span class="math inline">\(\lambda\)</span> defines the tradeoff between risk and return. With <span class="math inline">\(\lambda = 1\)</span>, the minimization problem contains only the variance term, leading to a minimum variance portfolio, and <span class="math inline">\(\lambda = 0\)</span> transforms the problem into a minimization of negative expected returns, leading to a maximum return portfolio. All possible portfolios created by <span class="math inline">\(\lambda \in [0, 1]\)</span> define the efficient frontier.</p>
 </div>
 <div id="mvp-example" class="section level3 hasAnchor" number="6.1.2">
 <h3><span class="header-section-number">6.1.2</span> MVP example<a href="challenges.html#mvp-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>All possible MVPs combined create the efficient frontier, that is analyzed in this section without going into the details of its calculation. This example uses three assets (equitys: IBM, Google, Apple) and calculates the solution of the MVP for each <span class="math inline">\(\lambda\)</span>. First of all are the daily returns of these three assets are loaded from the year 2020.</p>
+<p>All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each <span class="math inline">\(\lambda\)</span>. First, the daily returns of these three assets from 2020 are loaded.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb3-1"><a href="challenges.html#cb3-1" aria-hidden="true" tabindex="-1"></a>returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb3-2"><a href="challenges.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
 <span id="cb3-3"><a href="challenges.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_3_assets&quot;</span></span>
 <span id="cb3-4"><a href="challenges.html#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>The cummulated daily returns are:</p>
+<p>The cumulative daily returns are:</p>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>The expected daily returns and the covariance matrix for the 3 assets can be estimated with the formulas from chapter <a href="mathfundations.html#mathfundations">4</a>:</p>
+<p>The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter <a href="mathfundations.html#mathfundations">4</a>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb4-1"><a href="challenges.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p0</span>(<span class="st">&quot;estimation of expected daily returns&quot;</span>)</span>
 <span id="cb4-2"><a href="challenges.html#cb4-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">sapply</span>((<span class="dv">1</span><span class="sc">+</span>returns), prod)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">nrow</span>(returns))<span class="sc">-</span><span class="dv">1</span></span>
 <span id="cb4-3"><a href="challenges.html#cb4-3" aria-hidden="true" tabindex="-1"></a>mu</span>
@@ -263,7 +263,7 @@ div.csl-indent {
 ## AAPL 0.0008665678 0.0004378721 0.0005361398
 ## IBM  0.0004378721 0.0006646758 0.0004100227
 ## GOOG 0.0005361398 0.0004100227 0.0005849202</code></pre>
-<p>These are all the necessary data to solve the MVP with <span class="math inline">\(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\)</span>. All 100 portfolios are calculated by solving a quadratic minimization problem with long only constraint and the weights should sum up to 1.</p>
+<p>This is all the data necessary to solve the MVP with <span class="math inline">\(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\)</span>. All 100 portfolios are computed by solving a quadratic minimization problem with the “long only” constraint, where the weights should sum to 1.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb6-1"><a href="challenges.html#cb6-1" aria-hidden="true" tabindex="-1"></a>portfolios <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
 <span id="cb6-2"><a href="challenges.html#cb6-2" aria-hidden="true" tabindex="-1"></a>mu_and_var <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
 <span id="cb6-3"><a href="challenges.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(lambda <span class="cf">in</span> <span class="fu">seq</span>(<span class="fl">0.01</span>,<span class="dv">1</span>, <span class="fl">0.01</span>)){</span>
@@ -296,7 +296,7 @@ div.csl-indent {
 <span id="cb6-30"><a href="challenges.html#cb6-30" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb6-31"><a href="challenges.html#cb6-31" aria-hidden="true" tabindex="-1"></a>portfolios <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(portfolios)</span>
 <span id="cb6-32"><a href="challenges.html#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(portfolios) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(returns)</span></code></pre></div>
-<p>The resulting daily returns and standard deviation are transformed to annual returns and standard deviation and are plotted to create the efficient frontier:</p>
+<p>The resulting daily returns and standard deviations are converted to annual returns and standard deviations and plotted to create the efficiency frontier:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb7-1"><a href="challenges.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># annualize</span></span>
 <span id="cb7-2"><a href="challenges.html#cb7-2" aria-hidden="true" tabindex="-1"></a>mu_and_var<span class="sc">$</span>mu <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">+</span>mu_and_var<span class="sc">$</span>mu)<span class="sc">^</span><span class="dv">250-1</span></span>
 <span id="cb7-3"><a href="challenges.html#cb7-3" aria-hidden="true" tabindex="-1"></a>mu_and_var<span class="sc">$</span>sd <span class="ot">&lt;-</span> mu_and_var<span class="sc">$</span>sd <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">250</span>)</span>
@@ -318,7 +318,7 @@ div.csl-indent {
 <span id="cb7-19"><a href="challenges.html#cb7-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb7-20"><a href="challenges.html#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>The portfolio compositions for each <span class="math inline">\(\lambda\)</span>’s are:</p>
+<p>The portfolio compositions for each <span class="math inline">\(\lambda\)</span> are:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb8-1"><a href="challenges.html#cb8-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">type=</span><span class="st">&quot;bar&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">layout</span>(<span class="at">title=</span><span class="st">&quot;Portfolio compositions&quot;</span>, <span class="at">barmode=</span><span class="st">&quot;stack&quot;</span>, <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;lambda&quot;</span>, <span class="at">autorange =</span> <span class="st">&quot;reversed&quot;</span>), <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;wgt&quot;</span>))</span>
 <span id="cb8-2"><a href="challenges.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(portfolios)){</span>
 <span id="cb8-3"><a href="challenges.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> p <span class="sc">%&gt;%</span></span>
@@ -330,20 +330,20 @@ div.csl-indent {
 </div>
 <div id="index-tracking-portfolio-itp" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Index-Tracking Portfolio (ITP)<a href="challenges.html#index-tracking-portfolio-itp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Indices are baskets of assets that are used to track the performance of a specific asset group. For example, the well-known Standard and Poor’s 500 index (short: S&amp;P 500), tracks the 500 largest companies in the United States. Indices are not purchasable and only serve to visualize the performance of there asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager could purchase. If the fund underperforms its benchmark, it may be an indication that the fund manager made poor decisions. That is why fund managers strive to outperform their benchmarks through carefully chosen investments. The past has proven that this is rarely achieved with active management after costs <span class="citation">(<a href="#ref-Desm2016" role="doc-biblioref">Desmond Pace and Grima 2016</a>)</span>. This resulted in a growing popularity of passive managed funds with its goal to track there benchmarks as close as possible. It can be accomplished through either full or sparse replication. A full replication is a portfolio that has all assets contained in the benchmark, with the same weights. The resulting performance with neglecting transaction costs, would be exactly the benchmark performance. The first problem is that a benchmark can contain inliquid or not purchasable assets. The second problem would be the weighting scheme of indices, because they are often weighted by its market capitalization which will change daily. This would result in daily work of rebalancing and increasing transaction costs to mimic the benchmarks performance as close as possible. To prevent this, sparse replications are used, that contain a fraction of its benchmarks assets. To do so, the portfolio manager must define his benchmark, which should overlap with his fund’s investment universe. Following that, he will reduce this universe using the investors constraints and availability, to create a pool of possible assets. A example pool to track the S&amp;P 500 could consist of the top hundred highest weighted assets in the S&amp;P 500. Now is the time to optimize a portfolio with the goal of matching the benchmark performance and taking into account the investors constraints like ratings, asset sectors and more. Typically, this is accomplished by lowering the variance between the portfolio and benchmark returns:</p>
-<p><span class="math display">\[
+<p>Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor’s 500 Index (S&amp;P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost <span class="citation">(<a href="#ref-Desm2016" role="doc-biblioref">Desmond Pace and Grima 2016</a>)</span>. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance is exactly equal to the performance of the benchmark, neglecting transaction costs. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reweight daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark’s assets. To this end, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&amp;P 500 might consist of the one hundred highest-weighted assets in the S&amp;P 500. Now is the time to optimize the portfolio to match the benchmark performance, taking into account investor constraints such as ratings, investment sectors, and others. Typically, this is accomplished by reducing the variance between portfolio and benchmark returns:
+<span class="math display">\[
 minimize \ \ Var(r_{p}-r_{bm})
 \]</span></p>
-<p>To obtain the portfolio weights <span class="math inline">\(w\)</span>, its necessary to substitute <span class="math inline">\(r_{p}\)</span> as shown below:</p>
+<p>To obtain the portfolio weights <span class="math inline">\(w\)</span>, one needs to substitute <span class="math inline">\(r_{p}\)</span> as follows:</p>
 <p><span class="math display">\[
   r_{p} = R \times w
 \]</span></p>
-<p>The Variance is then solved up until a quadratic problem dependent on the portfolio weights <span class="math inline">\(w\)</span> is represented:</p>
+<p>The variance is then solved until a quadratic problem is presented as a function of portfolio weights <span class="math inline">\(w\)</span>:</p>
 <p><span class="math display">\[\begin{align*}
 Var(r_{p}-r_{bm}) &amp;= Var(R \times w - r_{bm}) \\
 &amp;= Var(R \times w) + Var(r_{bm}) - 2 \cdot Cov(R \times w,r_{bm})
 \end{align*}\]</span></p>
-<p>Now the three terms can be solved, beginning with the easiest.</p>
+<p>Now the three terms can be solved, starting with the simplest one.</p>
 <p><span class="math display">\[
 Var(r_{bm}) = \sigma_{bm}^2 = constant
 \]</span></p>
@@ -351,7 +351,7 @@ Var(r_{bm}) = \sigma_{bm}^2 = constant
 <p><span class="math display">\[
 Var(R \times w) = w^T \times Cov(R) \times w
 \]</span>
-And the last term can be solved the same way as in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span>:</p>
+And the last term can be solved in the same way as in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span>:</p>
 <p><span class="math display">\[\begin{align*}
   Cov(A \times a, b) &amp;= Cov(b, A \times a) \\
   &amp;= E[(b-\mu_{b})(A \times a-\mu_{A} \times a)] \\
@@ -366,11 +366,11 @@ And the last term can be solved the same way as in <span class="citation">(<a hr
   &amp; = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
   \tag{6.2}
 \end{align*}\]</span></p>
-<p>The minimization problem of the ITP in the general structure needed by many optimizers is:</p>
+<p>The minimization problem of the ITP in the general structure required by many optimizers is:</p>
 <p><span class="math display">\[
   min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
 \]</span></p>
-<p>Minimization problems can ignore constant terms and global stretching coefficients and still find the same minimum. This results in the general substitution of the ITP as follows:</p>
+<p>Minimization problems can ignore constant terms and global stretch coefficients and still find the same minimum. This leads to a general substitution of the ITP as follows:</p>
 <p><span class="math display">\[
   D = Cov(R)
 \]</span></p>
@@ -378,10 +378,10 @@ And the last term can be solved the same way as in <span class="citation">(<a hr
 <p><span class="math display">\[
 d = Cov(r_{bm}, R)
 \]</span></p>
-<p>Its possible to add some basic constraints like in the MVP, to sum up the weights to 1 and being long only.</p>
+<p>It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only.</p>
 <div id="example-itp" class="section level3 hasAnchor" number="6.2.1">
 <h3><span class="header-section-number">6.2.1</span> Example ITP<a href="challenges.html#example-itp" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This example will show the results of tracking the S&amp;P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is the year 2020 and the goal is to minimize the variance between the portfolios and benchmarks historical returns.</p>
+<p>This example shows the results of tracking the S&amp;P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2020 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb9-1"><a href="challenges.html#cb9-1" aria-hidden="true" tabindex="-1"></a>pool_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb9-2"><a href="challenges.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
 <span id="cb9-3"><a href="challenges.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_3_assets&quot;</span></span>

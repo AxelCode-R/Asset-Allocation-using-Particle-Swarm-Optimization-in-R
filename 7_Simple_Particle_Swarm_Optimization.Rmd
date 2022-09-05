@@ -6,27 +6,27 @@ editor_options:
   chunk_output_type: console
 ---
 # Particle Swarm Optimization (PSO)
-The PSO was developed by J. Kennedy as a Global Optimization method based on Swarm Intelligence and was introduced to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The initial PSO should resemble a flock of birds, that is flying through the sky without collisions. That is why its first applications were found in particle physics, to analyse moving particles in high dimensional spaces, which is resembled in the name Particle. Afterwards it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and find the optima by cooperation with other particles in the swarm [@PaVr2002]. The benefits compared to some other Global Optimization methods are the fact that no gradient information is needed. It can find the optimum by considering only the result of the function that needs to be optimized. That means that the function can be arbitrarily complex and its still possible to reach the global optimum. Other benefits are the low computational costs, because only basic mathematical operators are used.
+The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm [@PaVr2002]. Its advantages over other global optimization methods are that it does not require gradient information. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are the low computational costs, since only basic mathematical operators are used.
 
 ## The Algorithm
-Each Particle $d$ with position $x_d$ moves in the search space $R^N$ and has its inherent velocity $v_d$ and remembers its previous best position $P_d$. After each iteration the velocity changes into the direction of its inherent velocity, its best previous position and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
+Each particle $d$ with position $x_d$ moves in the search space $R^N$ and has its own velocity $v_d$ and remembers its previous best position $P_d$. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
 
 \begin{align*}
   v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i - x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
-with $r_1$ and $r_2$ being uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_p$ acts as the weighting of the direction to its previous best position of the particle. On the contrary is the social parameter $c_g$, which is a weighting to the direction of the global best position. The inertia weight $w$ is crucial for the convergence behavior by remembering a part of its previous trajectory. A study examined in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems do benefit from more fine-tuning of these parameters. To provide a effortless translation to code, the formula above can be stated for $d = 1, 2, \cdots, D$ particles in the following matrix notation:
+Where $r_1$ and $r_2$ are uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_p$ acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter $c_g$, which is a weighting of the direction to the global best position. The inertial weight $w$ is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for $d = 1, 2, \cdots, D$ particles can be given in the following matrix notation:
 
 \begin{align*}
   V^{i+1} &= w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} &= X^i + V^{i+1}
 \end{align*}
 
-with current positions $X \in R^{N \times D}$, current velocity's $V \in R^{N \times D}$, previous best positions $P \in R^{N \times D}$ and the global best position $p_g \in R^{N}$. The parameters $w$, $c_p$, $c_g$, $r_1$ and $r_2$ are stile scalars.
+With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$, $c_g$, $r_1$ and $r_2$ are stile scalars.
 
 ## `pso()` Function
-A general purpose PSO function is created in this section by following the structure of other optimization heuristics in R, specially the existing PSO implementation from the R-Package `pso`. The center of everything is a objective function `fn()` which will return a scalar that needs to be minimized. The function itself needs mainly a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is one position of a particle, that is used to derive the dimension of the problem and used as first position of one particle. The argument can contain only `NA`'s which results in completely randomized starting positions. The last two arguments needed are `lower` and `upper` bounds (e.g. weights bigger than 0 and smaller than 1). All other parameters have default values that can be overwritten by passing a list named `control`. The resulting structure is:
+In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. At the center of it all is an objective function `fn()` that returns a scalar to be minimized. The function itself mainly needs a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is a position of a particle used to derive the dimension of the problem and as the first position of a particle. The argument can only contain `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
 ```{r}
 pso <- function(
     par, 
@@ -39,8 +39,8 @@ pso <- function(
 }
 ```
 
+Before the main data structure can be initialized, some sample input must be created for the `pso()` function as described below:
 
-Before the main data-structure can be initialized, its necessary to create some example inputs for the `pso()` function like below:
 ```{r}
 par <- rep(NA, 2)
 fn <- function(x){return(sum(abs(x)))}
@@ -56,7 +56,9 @@ control = list(
   save_traces = F # save more information
 )
 ```
-Now is the time to initialize the random positions `X`, its fitness `X_fit` and its random velocity's `V` with the function `mrunif()`, which will create a matrix from uniformly distributed random numbers between `lower` and `upper`:
+
+Now it is time to initialize the random positions `X`, their fitness `X_fit` and their random velocities `V` with the function `mrunif()` which produces a matrix of uniformly distributed random numbers between `lower` and `upper`:
+
 ```{r}
 X <- mrunif(
   nr = length(par), nc=control$s, lower=lower, upper=upper
@@ -70,7 +72,10 @@ V <- mrunif(
   lower=-(upper-lower), upper=(upper-lower)
 )/4
 ```
-The velocity's are compressed with factor 4 to start with a maximal movement from a quarter of the space in each axis. The personal best positions `P` are the same as `X` and the global best position is the position with the smallest fitness:
+
+The velocities are compressed by a factor of 4 to start with a maximum movement of one quarter of the space in each axis. The personal best positions `P` are the same as `X` and the global best position is the position with the smallest fitness:
+
+
 ```{r}
 P <- X
 P_fit <- X_fit
@@ -78,7 +83,8 @@ p_g <- P[, which.min(P_fit)]
 p_g_fit <- which.min(P_fit)
 ```
 
-The needed data-structure is present and the optimization can start by calculating the new velocity's and the transformation of the old positions. If particles have left the valid space, they get pushed back to the border. Afterwards the fitness is calculated and the personal best and global best positions are saved, if they have improved.
+The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space, they are pushed back to the edge and the velocities are set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.
+
 ```{r}
 trace_data <- NULL
 for(i in 1:control$maxiter){
@@ -115,7 +121,7 @@ for(i in 1:control$maxiter){
   }
 }
 ```
-The best fitness after $100$ iterations is `r p_g_fit` and the best possible solution is at $0$.
+The best fitness after $100$ iterations is `r p_g_fit` and the best possible solution is $0$.
 
 ```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 # the resulting pso() function
@@ -208,7 +214,8 @@ pso <- function(
 
 
 ## Animation 2-Dimensional
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). The PSO core from the chapter above was used to finish the `pso()` function and is tested here with seed 0. The function `fn` to evaluate can be found in [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML version of this paper. The amazing animation template is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). The PSO core from the above chapter was used to complete the `pso()` function and is tested here with seed 0. The function `fn` to be evaluated can be found in [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
+
 ```{r gif_create}
 set.seed(0)
 
@@ -231,7 +238,8 @@ res <- pso(
   )
 )
 ```
-The function `fn` has many local minima and a global minima at $(1,1)$ with value $0$. The background-color-scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterates 30 times with inertia weight decreasing from 0.8 to 0. The iterations are visualized in the GIF below:
+
+The function `fn` has many local minima and a global minima at $(1,1)$ with the value $0$. The background color scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:
 
 ```{r gif_animate, echo=F}
 grid <- expand.grid(seq(-10, 10, length.out = 100), seq(-10, 10, length.out = 100), stringsAsFactors = F)
@@ -287,7 +295,8 @@ if(!knitr::is_latex_output()){
 
 
 ## Example MVP
-This example uses the `solve.QP` approach from \@ref(exampleanalyticalmvp) with ten assets as benchmark. Recap, the goal is to create a MVP from ten of the biggest american equity's between 2016 and 2021 for each possible $\lambda$. The PSO has 100 particles and 200 iterations for each lambda. The key features of all portfolios generated with the `solve.QP` versus the PSO is shown below:
+This example uses the `solve.QP` approach from \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2016 and 2021 for each possible $\lambda$. The PSO has 100 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the `solve.QP` compared to the PSO are shown below:
+
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
@@ -473,10 +482,13 @@ plot_ly(
   ) %>% 
   html_save()
 ```
-It can be seen that the analytical approach and the PSO approach have a tiny difference for $\lambda > 0.9$ and a steadily increased difference otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.
+
+It can be seen that the analytical approach and the PSO approach show only a small difference for $\lambda > 0.9$, while the difference increases steadily otherwise. This indicates that portfolios with minimal variance are more stable to generate with the PSO.
 
 ## Example ITP
-The same ITP solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as benchmark for the PSO. Recap, the goal is to create a portfolio that minimizes the variance in the returns of it self and the S&P 500 between 2016 and 2021. The pool of assets contain all assets that are present at 2021 and have no missing values. The constraints are long only and the weights should sum up to one. The parameters for the PSO are a swarm size of 100, 100 iterations, inertia weight starts by $0.9$, the upper bound is $0.1$ and one starting position is the null vector. The PSO was run ten times and the aggregated best and mean runs are compared to the `solve.QP()` approach in the table below for seed 0:
+The same ITP solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S&P 500 between 2016 and 2021. The pool of assets includes all assets that are present in 2021 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $0.9$, the upper bound is $0.1$, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
+
+
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
@@ -648,7 +660,8 @@ reactable(
 ) %>% 
   html_save()
 ```
-It can be seen that a sufficient fitness was achieved in all PSO runs with negligible constraint breaks, but much more computing time needed.
+
+It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
 
 ## Pros and Cons
 

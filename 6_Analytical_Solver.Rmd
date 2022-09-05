@@ -4,37 +4,36 @@ editor_options:
   chunk_output_type: console
 ---
 # Analytic Solver for Quadratic Programming Problems
-The benefits and drawbacks of analytic solvers for quadratic programming problems will be discussed in this chapter. It would go beyond the scope of this thesis to explain the mathematical underlying principles of how a solver addresses quadratic problems, only the applications and analysis are discussed. The foremost reason of addressing quadratic programming solvers is to use it as a benchmark for the PSO.
+The advantages and disadvantages of analytical solvers for quadratic programming problems are discussed in this chapter. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver solves quadratic problems; only the applications and analysis are discussed. The main reason for dealing with quadratic programming solution methods is to use them as a benchmark for PSO.
 
 ## Quadratic Programming (QP)
-A quadratic program is a minimization problem of some function that returns a scalar and consists of an quadratic term and an linear term, dependent on the variable of interest. Additionally can the problem be constrained by several linear inequalities that restrict the solution. The general formulation used, is to find $x$ that minimizes the following problem:
+A quadratic program is a minimization problem of a function that returns a scalar value and consists of a quadratic term and a linear term that depend on the variable of interest. In addition, the problem may be constrained by several linear inequalities that bound the solution. The general formulation used is to find $x$ that minimizes the following problem:
 $$
   min \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
 $$
-and holds under the linear constraints:
+and is valid under the linear constraints:
 $$
   A^T \times x \geq b_0
 $$
 
-Some other sources notate the problem with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. $|A^T \times x| \geq a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
+Some other sources notate the problem with different signs or coefficients, all of which are interchangeable with the above problem. In addition, the above problem has the same notation used in the R package `quadprog`, which reduces the substitution overhead. All modern programming languages have many solvers for quadratic problems. They differ mainly in the computation time for certain problems and the requirements. Some commercial QP solvers additionally accept more complex constraints, such as absolute (e.g., $|A^T \times x| \geq a_0$) or mixed-integer (e.g., $x \in \mathbb{N}$). Especially the mixed-integer constraint problems lead to a huge increase in memory requirements.
 
 ## QP Solver from quadprog
-The most common free QP-solver used in R is from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with the requirement that $D$ needs to be a symmetric positive definite matrix. It means that $D\in \mathbb{R}^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in \mathbb{R}^N$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix $\sum$, but it's possible to find the nearest positive definite matrix of $\textstyle\sum$ with the function `nearPD()` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs often do not exceed a percentage change of elements above $10^{-15} \%$, which is negligible for the context of this thesis. The `solve.QP()` function for a $N$ dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
+The most common free QP solver used in R comes from the package [quadprog] (https://cran.r-project.org/web/packages/quadprog/quadprog.pdf), which consists of a single function called `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani published in [@GoId1982] and [@GoId1983]. It uses the above QP with the condition that $D$ must be a symmetric positive definite matrix. This means that $D\in \mathbb{R}^{N \times N}$ and $x^T D x > 0 \ for all \ x \ in \mathbb{R}^N$, which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix $\sum$, but it is possible to find the nearest positive definite matrix of $\textstyle\sum$ using the function `nearPD()` from the [matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R package. The error encountered often does not exceed a percentage change in elements over $10^{-15} \%$, which is negligible for the context of this work. The function `solve.QP()` for an $N$ dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
 
-+ `Dmat`: Symmetric positive definite matrix $D \in \mathbb{R}^{N \times N}$ of the quadratic term.
++ `Dmat`: Symmetric positive definite matrix $D \in \mathbb{R}^{N \times N}$ of the quadratic term
 + `dvec`: Vector $d \in \mathbb{R}^{N}$ of the linear term
 + `Amat`: Constraint matrix $A$
 + `bvec`: Constraint vector $b_0$
-+ `meq = 1`: means that the first row of $A$ is treated as equality constraint
++ `meq = 1`: means that the first row of $A$ is treated as an equality constraint
 
-The return of `solve.QP()` is a list and contains among other things the following attributes of interest:
+The return of `solve.QP()` is a list and contains, among others, the following attributes of interest:
 
-+ `solution`: Vector containing the solution $x$ of the quadratic programming problem. (e.g. portfolio weights)
++ `solution`: Vector containing the solution $x$ of the quadratic programming problem (e.g. portfolio weights)
 + `value`: Scalar, the value of the quadratic function at the solution
 
 ## Example: Solving MVP with `solve.QP()` {#exampleanalyticalmvp}
-This section provides insights into the effects of diversification and the use of `solve.QP`, by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading returns for ten of the biggest equity's in the US market, the variance is calculated to arrange all columns ascending by its variance, like shown in the code bellow:
-
+This section provides insights into the effects of diversification and the use of `solve.QP` by creating ten different efficiency frontiers from a pool of ten assets. Each efficiency frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
 ```{r, class.source="code_fold_it_collapsed"}
 returns_raw <- buffer(
   get_yf(
@@ -50,7 +49,8 @@ returns_raw <- buffer(
 vars <- sapply(returns_raw, var)
 returns_raw <- returns_raw[, order(vars, decreasing = F)]
 ```
-The next step is to create a function `mvp()` that has the arguments `return` and `lambda`. It calculates the expected returns `mu` and the estimated positive definite covariance `cov`. Afterwards it solves a MVP with the constraints $\textstyle\sum w = 1$ and $w \geq 0$, which returns key features `mu`, `var` and `composition` of the portfolio. 
+
+The next step is to create a function `mvp()` that has the arguments `return` and `lambda`. It computes the expected returns `mu` and the estimated positive definite covariance `cov`. It then solves an MVP with constraints $\textstyle\sum w = 1$ and $w \geq 0$, which yields the key features `mu`, `var` and `composition` of the portfolio. 
 
 ```{r, class.source="code_fold_it_collapsed"}
 mvp <- function(returns, lambda){
@@ -99,7 +99,7 @@ mvp <- function(returns, lambda){
 }
 ```
 
-Each $\lambda \in \{0.01, 0.02, \cdots, 1\}$ and each combination of ascending number of assets produces one portfolio that can be generated with two for loops.
+Each $\lambda \in \{0.01, 0.02, \cdots, 1\}$ and each combination of ascending number of assets results in a portfolio that can be created with two for loops.
 
 ```{r, class.source="code_fold_it_collapsed"}
 df <- data.frame(
@@ -122,7 +122,7 @@ for(i in 2:ncol(returns_raw)){
 
 ```
 
-The result gets filtered and names are added that represent the number of assets. Now can the plot be generated:
+The result is filtered and names are added to represent the number of assets. Now the diagram can be created:
 
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 df <- df %>% 
@@ -165,13 +165,12 @@ plot_ly(
 
 ```
 
-It can be seen, that each asset added results in a minimum variance portfolio with smaller or equal standard deviation. Nonetheless that it started with the asset that has the smallest standard deviation of `r sqrt(min(vars))`. This is the effect of diversification mentioned by Markowitz.
-
+It can be seen, that each asset added results in a minimum variance portfolio with smaller or equal standard deviation. Nevertheless, we started with the asset that has the smallest standard deviation of `r sqrt(min(vars))`. This is the effect of diversification mentioned by Markowitz.
 
 
 
 ## Example: Solving ITP with `solve.QP()` {#exampleitpsolveqp}
-This example will analyse how many assets are needed to minimize the variance between the replication and the S&P 500 historical returns from `2016-01-01` to `2021-12-31`. The constraints are set to be long only and the weights should sum up to one. To step-wise reduce the number of assets, the five assets with the least weights get discarded and acts as the new asset pool for the next replication, until only five assets are left. At first the needed data can be downloaded with existing functions from the `R/` directory. The function `get_spx_composition()` uses web scrapping to read the constituents of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and transforms it in monthly compositions of the S&P 500. The pool is created by all assets that are present in the last month of the timeframe, reduced by assets with missing values. The code below, loads returns of all assets in the pool and the S&P 500:
+This example analyzes how many assets are needed to minimize the variance between the replication and historical returns of the S&P 500 from 2016-01-01 to 2021-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded and serve as the new asset pool for the next replication until only five assets are left. First, the required data can be downloaded from the `R/` directory using existing functions. The function `get_spx_composition()` uses web scraping to read the components of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and converts them into monthly compositions of the S&P 500. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the S&P 500:
 
 ```{r, class.source="code_fold_it_collapsed"}
 from <- "2016-01-01"
@@ -204,7 +203,7 @@ bm_returns <- buffer(
 ) %>% setNames(., "S&P 500")
 
 ```
-Now is the needed data present and the function for the ITP can be created. It needs `pool_returns` with variable number of columns and the single column matrix `bm_returns`.
+The required data is now available and the function for the ITP can be created. It requires `pool_returns` with variable number of columns and the single-column matrix `bm_returns`.
 ```{r, class.source="code_fold_it_collapsed"}
 
 itp <- function(pool_returns, bm_returns){
@@ -237,7 +236,7 @@ itp <- function(pool_returns, bm_returns){
 }
 ```
 
-The replication and successive discarding of assets can begin. The results are saved in `res` and used to plot the results.
+The duplication and successive discarding of assets can begin. The results are stored in `res` and used to display the results.
 
 ```{r, class.source="code_fold_it_collapsed"}
 res <- NULL
@@ -258,7 +257,7 @@ plot_ly(data=res, x=~N, y=~sd, mode="lines", type = 'scatter') %>%
 ```
 
 
-It can be seen that the standard deviation stagnates at about $N=100$. This results in the conclusion that a sparse replication with hundred assets is, in this specific case, sufficient to track the historical S&P 500 performance of the timeframe.
+It can be seen that the standard deviation stagnates at about $N=100$. This leads to the conclusion that a sparse replication with one hundred assets is sufficient in this particular case to track the historical performance of the S&P 500 over this period.
 
 
 

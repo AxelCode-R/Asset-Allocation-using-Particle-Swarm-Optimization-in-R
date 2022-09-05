@@ -1,17 +1,17 @@
 # Open Data Sources
-To increase the reproducibility, all data is free and can be loaded with the function `getSymbols()` from the quantmod R-Package. There can be chosen between different data-sources like yahoo-finance (default), alpha-vantage, google and more. 
+To increase reproducibility, all data are free and can be loaded from the quantmod R package with the function `getSymbols()`. It is possible to choose between different data sources like yahoo-finance (default), alpha-vantage, google and others. 
 
 ## R-Functions
-The following functions are created to increase the simplicity of data-gathering with the quantmod R-package, that can be found in the directory named `R/` in the attached [github repository](https://github.com/AxelCode-R/Master-Thesis).
+The following functions were created to increase the ease of data collection with the quantmod R package, which can be found in the `R/` directory in the attached [github repository](https://github.com/AxelCode-R/Master-Thesis).
 
 ### `get_yf()`
-This function is the main wrapper for gathering data with `getSymbols()` from yahoo-finance and transforms prices to returns with the `pri_to_ret()` function explained in \@ref(pritoret). The output is a list that contains prices and returns as a [xts](https://cran.r-project.org/web/packages/xts/xts.pdf) object. The arguments that can be passed to `get_yf()`, are:
+This function is the main wrapper for collecting data with `getSymbols()` from yahoo-finance, and converts prices to returns with the `pri_to_ret()` function explained in \@ref(pritoret). The output is a list containing prices and returns as [xts](https://cran.r-project.org/web/packages/xts/xts.pdf) objects. The arguments that can be passed to `get_yf()` are:
 
-+ `tickers`: Vector of symbols (asset identifiers e.g. "APPL", "GOOG", ...)
++ `tickers`: Vector of symbols (asset names, e.g. "APPL", "GOOG", ...)
 + `from ="2020-01-01"`: R-Date
 + `to = "2021-01-01"`: R-Date
-+ `price_type = "close"`: Type of prices to gather (e.g. "open", "high", "low", "close", "adjusted")
-+ `return_type = "adjusted"`: Type of returns to gather (e.g. "open", "high", "low", "close", "adjusted")
++ `price_type = "close"`: Type of prices to be recorded (e.g. "open", "high", "low", "closed", "adjusted")
++ `return_type = "adjusted"`: Type of return to be recorded (e.g. "open", "high", "low", "closed", "adjusted")
 + `print = F`: Should the function print the return of `getSymbols()`
 
 ### `buffer()`
