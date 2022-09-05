@@ -19,7 +19,7 @@ $$
 Some other sources notate the problem with different signs or coefficients that are all exchangeable with the above stated problem. Additionally has the problem above the same notation that is used in the R-Package `quadprog` which will reduce substitution efforts. All modern programming languages do have many solvers for quadratic problem. They differ mostly in computational time on specific problems and the requirements. Some commercial QP-solvers do additionally accept more complex constraints, like absolute (e.g. $|A^T \times x| \geq a_0$) or mixed-integer (e.g. $x \in \mathbb{N}$). Specially the mixed-integer constraint problems will result in a enormously increase of memory.
 
 ## QP Solver from quadprog
-The most common free QP-solver used in R is from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with the requirement that $D$ needs to be a symmetric positive definite matrix. It means that $D\in \mathbb{R}^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in \mathbb{R}^N$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix $\sum$, but its possible to find the nearest positive definite matrix of $\textstyle\sum$ with the function `nearPD()` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above $10^{-15} \%$, which is negligible for the context of this thesis. The `solve.QP()` function for a $N$ dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
+The most common free QP-solver used in R is from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf) which consists of a single function named `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani that was published in [@GoId1982] and [@GoId1983]. It uses the above stated QP with the requirement that $D$ needs to be a symmetric positive definite matrix. It means that $D\in \mathbb{R}^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in \mathbb{R}^N$ which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix $\sum$, but it's possible to find the nearest positive definite matrix of $\textstyle\sum$ with the function `nearPD()` from the [Matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R-Package. The error that occurs often do not exceed a percentage change of elements above $10^{-15} \%$, which is negligible for the context of this thesis. The `solve.QP()` function for a $N$ dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
 
 + `Dmat`: Symmetric positive definite matrix $D \in \mathbb{R}^{N \times N}$ of the quadratic term.
 + `dvec`: Vector $d \in \mathbb{R}^{N}$ of the linear term
@@ -55,7 +55,7 @@ The next step is to create a function `mvp()` that has the arguments `return` an
 ```{r, class.source="code_fold_it_collapsed"}
 mvp <- function(returns, lambda){
   tc <- tryCatch({
-    mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
+    mu <- ret_to_geomeanret(returns)
 
     cov <- as.matrix(nearPD(cov(returns))$mat)
 
@@ -102,13 +102,21 @@ mvp <- function(returns, lambda){
 Each $\lambda \in \{0.01, 0.02, \cdots, 1\}$ and each combination of ascending number of assets produces one portfolio that can be generated with two for loops.
 
 ```{r, class.source="code_fold_it_collapsed"}
-df <- data.frame("index"=1, "var"=as.numeric(var(returns_raw[, 1])), "return" = prod(1+returns_raw[, 1])^(1/nrow(returns_raw))-1, row.names=NULL)
+df <- data.frame(
+  "index"=1, 
+  "var"=as.numeric(var(returns_raw[, 1])), 
+  "return" = as.numeric(ret_to_geomeanret(returns_raw[, 1])), 
+  row.names=NULL
+)
 for(i in 2:ncol(returns_raw)){
   returns <- returns_raw[, 1:i]
   for(lambda in seq(0.01, 1, 0.01)){
     res <- mvp(returns, lambda)
     
-    df <- rbind(df, data.frame("index"=i, "var"=res$var, "return" = res$mu))
+    df <- rbind(
+      df, 
+      data.frame("index"=i, "var"=res$var, "return" = res$mu)
+    )
   }
 }
 

@@ -593,7 +593,7 @@ Some other sources notate the problem with different signs or coefficients that 
 \hypertarget{qp-solver-from-quadprog}{%
 \section{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
 
-The most common free QP-solver used in R is from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in \mathbb{R}^N\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but its possible to find the nearest positive definite matrix of \(\textstyle\sum\) with the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs is printed and often do not exceed a percentage change of elements above \(10^{-15} \%\), which is negligible for the context of this thesis. The \texttt{solve.QP()} function for a \(N\) dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
+The most common free QP-solver used in R is from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog} which consists of a single function named \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani that was published in \citep{GoId1982} and \citep{GoId1983}. It uses the above stated QP with the requirement that \(D\) needs to be a symmetric positive definite matrix. It means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in \mathbb{R}^N\) which is equivalent to, all eigenvalues are bigger than null. In most cases this is not achieved by using the estimation of the covariance matrix \(\sum\), but it's possible to find the nearest positive definite matrix of \(\textstyle\sum\) with the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{Matrix} R-Package. The error that occurs often do not exceed a percentage change of elements above \(10^{-15} \%\), which is negligible for the context of this thesis. The \texttt{solve.QP()} function for a \(N\) dimensional vector of interest, has the following arguments, that can as well be found in the above stated formulation of a QP:
 
 \begin{itemize}
 \tightlist
@@ -648,7 +648,7 @@ The next step is to create a function \texttt{mvp()} that has the arguments \tex
 \begin{Highlighting}[]
 \NormalTok{mvp }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(returns, lambda)\{}
 \NormalTok{  tc }\OtherTok{\textless{}{-}} \FunctionTok{tryCatch}\NormalTok{(\{}
-\NormalTok{    mu }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{((}\DecValTok{1}\SpecialCharTok{+}\NormalTok{returns), prod)}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns))}\SpecialCharTok{{-}}\DecValTok{1}
+\NormalTok{    mu }\OtherTok{\textless{}{-}} \FunctionTok{ret\_to\_geomeanret}\NormalTok{(returns)}
 
 \NormalTok{    cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov}\NormalTok{(returns))}\SpecialCharTok{$}\NormalTok{mat)}
 
@@ -697,13 +697,21 @@ Each \(\lambda \in \{0.01, 0.02, \cdots, 1\}\) and each combination of ascending
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\StringTok{"index"}\OtherTok{=}\DecValTok{1}\NormalTok{, }\StringTok{"var"}\OtherTok{=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{var}\NormalTok{(returns\_raw[, }\DecValTok{1}\NormalTok{])), }\StringTok{"return"} \OtherTok{=} \FunctionTok{prod}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\NormalTok{returns\_raw[, }\DecValTok{1}\NormalTok{])}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{nrow}\NormalTok{(returns\_raw))}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{row.names=}\ConstantTok{NULL}\NormalTok{)}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \StringTok{"index"}\OtherTok{=}\DecValTok{1}\NormalTok{, }
+  \StringTok{"var"}\OtherTok{=}\FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{var}\NormalTok{(returns\_raw[, }\DecValTok{1}\NormalTok{])), }
+  \StringTok{"return"} \OtherTok{=} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{ret\_to\_geomeanret}\NormalTok{(returns\_raw[, }\DecValTok{1}\NormalTok{])), }
+  \AttributeTok{row.names=}\ConstantTok{NULL}
+\NormalTok{)}
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\FunctionTok{ncol}\NormalTok{(returns\_raw))\{}
 \NormalTok{  returns }\OtherTok{\textless{}{-}}\NormalTok{ returns\_raw[, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{i]}
   \ControlFlowTok{for}\NormalTok{(lambda }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FloatTok{0.01}\NormalTok{))\{}
 \NormalTok{    res }\OtherTok{\textless{}{-}} \FunctionTok{mvp}\NormalTok{(returns, lambda)}
     
-\NormalTok{    df }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(df, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"index"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{res}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"return"} \OtherTok{=}\NormalTok{ res}\SpecialCharTok{$}\NormalTok{mu))}
+\NormalTok{    df }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(}
+\NormalTok{      df, }
+      \FunctionTok{data.frame}\NormalTok{(}\StringTok{"index"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{res}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"return"} \OtherTok{=}\NormalTok{ res}\SpecialCharTok{$}\NormalTok{mu)}
+\NormalTok{    )}
 \NormalTok{  \}}
 \NormalTok{\}}
 \end{Highlighting}
