@@ -169,14 +169,12 @@ And the last term can be solved the same way as in [@Eric2021]:
 
 This results in the final formula of the ITP:
 
-\begin{equation}
-  \begin{split}
-   Var(r_{p}-r_{bm}) & = Var(R \times w - r_{bm}) \\
-   & = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
-   & = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
-   \end{split}
-   (\#eq:ITP)
-\end{equation}
+\begin{align*}
+  Var(r_{p}-r_{bm}) & = Var(R \times w - r_{bm}) \\
+  & = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
+  & = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
+  (\#eq:ITP)
+\end{align*}
 
 The minimization problem of the ITP in the general structure needed by many optimizers is:
 

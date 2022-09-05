@@ -162,8 +162,8 @@ It can be seen, that each asset added results in a minimum variance portfolio wi
 
 
 
-## Example: Solving ITP with `solve.QP()`
-This example will analyse how many assets are needed to minimize the variance between the replication and the S&P 500 historical returns from `2016-01-01` to `2021-12-31`. The constraints are set to be long only and the weights should sum up to one. To step-wise reduce the number of assets, the five assets with the least weights gets discarded and acts as the new asset pool for the next replication, until only five assets are left. At first the needed data can be downloaded with existing functions from the `R/` directory. The function `get_spx_composition()` uses web scrapping to read the constituents of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and transforms it in monthly compositions of the S&P 500. The pool is created by all assets that are present in the last month of the timeframe, reduced by assets with missing values. The code below, loads returns of all assets in the pool and the S&P 500:
+## Example: Solving ITP with `solve.QP()` {#exampleitpsolveqp}
+This example will analyse how many assets are needed to minimize the variance between the replication and the S&P 500 historical returns from `2016-01-01` to `2021-12-31`. The constraints are set to be long only and the weights should sum up to one. To step-wise reduce the number of assets, the five assets with the least weights get discarded and acts as the new asset pool for the next replication, until only five assets are left. At first the needed data can be downloaded with existing functions from the `R/` directory. The function `get_spx_composition()` uses web scrapping to read the constituents of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and transforms it in monthly compositions of the S&P 500. The pool is created by all assets that are present in the last month of the timeframe, reduced by assets with missing values. The code below, loads returns of all assets in the pool and the S&P 500:
 
 ```{r, class.source="code_fold_it_collapsed"}
 from <- "2016-01-01"
@@ -196,7 +196,7 @@ bm_returns <- buffer(
 ) %>% setNames(., "S&P 500")
 
 ```
-Now are all needed data present and the function for the ITP can be created. It needs `pool_returns` with variable number of columns and the single column matrix `bm_returns`.
+Now is the needed data present and the function for the ITP can be created. It needs `pool_returns` with variable number of columns and the single column matrix `bm_returns`.
 ```{r, class.source="code_fold_it_collapsed"}
 
 itp <- function(pool_returns, bm_returns){
@@ -229,7 +229,7 @@ itp <- function(pool_returns, bm_returns){
 }
 ```
 
-Now can the replication and successive discarding of assets begin. The results are saved in `res` and used to plot the results.
+The replication and successive discarding of assets can begin. The results are saved in `res` and used to plot the results.
 
 ```{r, class.source="code_fold_it_collapsed"}
 res <- NULL

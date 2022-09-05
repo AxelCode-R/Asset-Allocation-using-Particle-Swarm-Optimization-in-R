@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-09-04" />
+<meta name="date" content="2022-09-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -190,7 +190,7 @@ div.csl-indent {
 <li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a></li>
 <li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
-<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-itp-with-solve.qp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization (PSO)</a>
 <ul>
@@ -225,7 +225,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="mathfundations" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Mathematical Fundations<a href="mathfundations.html#mathfundations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It’s important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don’t hold up in real-world situations, but these models or variations of them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter <a href="challenges.html#challenges">6</a>.</p>
+<p>This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It’s important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complex and can only be partially modeled. Simplistic, basic models are employed that don’t hold up in real-world situations, but these models or variations of them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter <a href="challenges.html#challenges">6</a>.</p>
 <div id="basic-operators" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Basic Operators<a href="mathfundations.html#basic-operators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A compendium, that compares commonly used mathematical symbols to R-code and its meanings, is listed in the table below:</p>
@@ -377,16 +377,23 @@ and can be estimated in R with the base-function <code>cov()</code> and historic
 <div id="portfolioreturns" class="section level3 hasAnchor" number="4.4.5">
 <h3><span class="header-section-number">4.4.5</span> Portfolio Returns<a href="mathfundations.html#portfolioreturns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Suppose there are <span class="math inline">\(N\)</span> assets which create a portfolio with weights <span class="math inline">\(w\)</span> at time <span class="math inline">\(t_0\)</span> and the portfolio should perform multiple timesteps till <span class="math inline">\(t_T\)</span> without re-balancing. What are the portfolio returns on each timestep <span class="math inline">\(t_i\)</span>? Its obvious that assets with a positive performance at the current timestep have a higher weight at the next timestep. This can be done by adjusting the weights after each timestep, dependent on the returns. The formula for holding a portfolio with weights <span class="math inline">\(\textstyle\sum w = 1\)</span> and return matrix <span class="math inline">\(R \in R^{T \times N}\)</span>, has the return <span class="math inline">\(Z_i-1\)</span> on <span class="math inline">\(t_i\)</span> with <span class="math inline">\(i=0, 1, \cdots, T\)</span> for:
+<!-- \begin{equation} -->
+<!--   Z_i = -->
+<!--   \left\{ -->
+<!--   \begin{split} -->
+<!--   &(1+R_i)\cdot w, &\text{ if }i=0\\ -->
+<!--   &(1+R_i)\cdot \frac{Z_{i-1}}{\sum Z_{i-1}}, &\text{ if }i>0 -->
+<!--   \end{split} -->
+<!--   \right. -->
+<!-- \end{equation} -->
 <span class="math display">\[
   Z_i =
-  \left\{
-  \begin{split}
-  &amp;(1+R_i)\cdot w, &amp;\text{ if }i=0\\
-  &amp;(1+R_i)\cdot \frac{Z_{i-1}}{\sum Z_{i-1}}, &amp;\text{ if }i&gt;0
-  \end{split}
-  \right.
-\]</span>
-This calculation of portfolio returns is implemented in the <code>calc_portfolio_returns()</code> function below.</p>
+  \begin{cases}
+  (1+R_i)\cdot w &amp;\text{ if }i=0\\
+  (1+R_i)\cdot \frac{Z_{i-1}}{\sum Z_{i-1}} &amp;\text{ if }i&gt;0
+  \end{cases}
+\]</span></p>
+<p>This calculation of portfolio returns is implemented in the <code>calc_portfolio_returns()</code> function below.</p>
 </div>
 </div>
 <div id="r-functions-2" class="section level2 hasAnchor" number="4.5">
@@ -402,7 +409,7 @@ This calculation of portfolio returns is implemented in the <code>calc_portfolio
 </div>
 <div id="geomeanret" class="section level3 hasAnchor" number="4.5.3">
 <h3><span class="header-section-number">4.5.3</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. Because the estimation of the variance is calculated as daily variance, it needs to do the same with returns over time. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns <span class="math inline">\(r_1 = 0.01\)</span>, <span class="math inline">\(r_2=0.03\)</span> and <span class="math inline">\(r_3=0.02\)</span> then follows that the geometric mean return <span class="math inline">\(r^{id}\)</span> can be calculated as:
+<p>Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. The variance estimated from daily returns is a daily variance, which is why the returns need to have the same timebase. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns <span class="math inline">\(r_1 = 0.01\)</span>, <span class="math inline">\(r_2=0.03\)</span> and <span class="math inline">\(r_3=0.02\)</span> then follows that the geometric mean return <span class="math inline">\(r^{id}\)</span> can be calculated as:
 <span class="math display">\[
   r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
 \]</span>

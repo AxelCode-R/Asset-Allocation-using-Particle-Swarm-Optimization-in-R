@@ -12,15 +12,17 @@ The PSO was developed by J. Kennedy as a Global Optimization method based on Swa
 Each Particle $d$ with position $x_d$ moves in the search space $R^N$ and has its inherent velocity $v_d$ and remembers its previous best position $P_d$. After each iteration the velocity changes into the direction of its inherent velocity, its best previous position and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
 
 \begin{align*}
-  v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i-x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
+  v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i - x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
 with $r_1$ and $r_2$ being uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_p$ acts as the weighting of the direction to its previous best position of the particle. On the contrary is the social parameter $c_g$, which is a weighting to the direction of the global best position. The inertia weight $w$ is crucial for the convergence behavior by remembering a part of its previous trajectory. A study examined in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems do benefit from more fine-tuning of these parameters. To provide a effortless translation to code, the formula above can be stated for $d = 1, 2, \cdots, D$ particles in the following matrix notation:
-$$
+
+\begin{align*}
   V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} = X^i + V^{i+1}
-$$
+\end{align*}
+
 with current positions $X \in R^{N \times D}$, current velocity's $V \in R^{N \times D}$, previous best positions $P \in R^{N \times D}$ and the global best position $p_g \in R^{N}$. The parameters $w$, $c_p$, $c_g$, $r_1$ and $r_2$ are stile scalars.
 
 ## `pso()` Function
@@ -206,7 +208,7 @@ pso <- function(
 
 
 ## Animation 2-Dimensional
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). The PSO core from the chapter above was used to finish the `pso()` function and is used here with seed 0. The fucntion `fn` to evaluate is they same function as in [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). The PSO core from the chapter above was used to finish the `pso()` function and is tested here with seed 0. The function `fn` to evaluate can be found in [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
 ```{r gif_create}
 set.seed(0)
 
@@ -286,7 +288,7 @@ if(!knitr::is_latex_output()){
 
 ## Example MVP
 This example uses the `solve.QP` approach from \@ref(exampleanalyticalmvp) with ten assets as benchmark. Recap, the goal is to create a MVP from ten of the biggest american equity's between 2016 and 2021 for each possible $\lambda$. The PSO has 100 particles and 200 iterations for each lambda. The key features of all portfolios generated with the `solve.QP` versus the PSO is shown below:
-```{r, echo=F}
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
 returns_raw <- buffer(
@@ -465,14 +467,17 @@ plot_ly(
     ay = -40,
     ax = -20
   ) %>% 
-  layout(xaxis=list(range=c(0.9*min(df$sd), 1.5*max(df[df$type=="QP_MVP",]$sd)))) %>% 
+  layout(
+    xaxis=list(range=c(0.9*min(df$sd), 1.5*max(df[df$type=="QP_MVP",]$sd))),
+    yaxis=list(range=c(0.9*min(df$mu), 1.5*max(df[df$type=="QP_MVP",]$mu)))
+  ) %>% 
   html_save()
 ```
-It can be seen that the analytical approach and the PSO approach have a tiny difference for $lambda > 0.9$ and a steadily increased difference otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.
+It can be seen that the analytical approach and the PSO approach have a tiny difference for $\lambda > 0.9$ and a steadily increased difference otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.
 
 ## Example ITP
-
-```{r, echo=F}
+The same ITP solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as benchmark for the PSO. Recap, the goal is to create a portfolio that minimizes the variance in the returns of it self and the S&P 500 between 2016 and 2021. The pool of assets contain all assets that are present at 2021 and have no missing values. The constraints are long only and the weights should sum up to one. The parameters for the PSO are a swarm size of 100, 100 iterations, inertia weight starts by $0.9$, the upper bound is $0.1$ and one starting position is the null vector. The PSO was run ten times and the aggregated best and mean runs are compared to the `solve.QP()` approach in the table below for seed 0:
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
 from <- "2016-01-01"
@@ -634,16 +639,23 @@ df_summary$fitness <- round(df_summary$fitness, 7)
 df_summary$constraint <- round(df_summary$constraint, 18)
 df_summary$time <- round(df_summary$time, 1)
 
-reactable(df_summary) %>% 
+reactable(
+  df_summary %>% select(type, sd, var, fitness, constraint, time),
+  columns = list(
+    var = colDef(format = colFormat(digits=7)),
+    constraint = colDef(name = "constraint break")
+  )
+) %>% 
   html_save()
 ```
-The mean fitness
+It can be seen that a sufficient fitness was achieved in all PSO runs with negligible constraint breaks, but much more computing time needed.
 
 ## Pros and Cons
 
 
 
 ## Functions
+
 
 
 

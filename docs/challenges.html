@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-09-04" />
+<meta name="date" content="2022-09-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -190,7 +190,7 @@ div.csl-indent {
 <li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a></li>
 <li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
-<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#example-solving-itp-with-solve.qp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization (PSO)</a>
 <ul>
@@ -360,14 +360,12 @@ And the last term can be solved the same way as in <span class="citation">(<a hr
   &amp;= Cov(A,b) \times a
 \end{align*}\]</span></p>
 <p>This results in the final formula of the ITP:</p>
-<p><span class="math display" id="eq:ITP">\[\begin{equation}
-  \begin{split}
-   Var(r_{p}-r_{bm}) &amp; = Var(R \times w - r_{bm}) \\
-   &amp; = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
-   &amp; = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
-   \end{split}
-   \tag{6.2}
-\end{equation}\]</span></p>
+<p><span class="math display" id="eq:ITP">\[\begin{align*}
+  Var(r_{p}-r_{bm}) &amp; = Var(R \times w - r_{bm}) \\
+  &amp; = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
+  &amp; = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
+  \tag{6.2}
+\end{align*}\]</span></p>
 <p>The minimization problem of the ITP in the general structure needed by many optimizers is:</p>
 <p><span class="math display">\[
   min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)

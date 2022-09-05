@@ -126,7 +126,7 @@
 
 \title{Master-Thesis}
 \author{Axel Roth}
-\date{2022-09-04}
+\date{2022-09-05}
 
 \begin{document}
 \maketitle
@@ -208,7 +208,7 @@ To make data reusable and decrease compiling time, this function saves data gath
 \hypertarget{mathfundations}{%
 \chapter{Mathematical Fundations}\label{mathfundations}}
 
-This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complicated and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations of them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter \ref{challenges}.
+This chapter provides an overview of the mathematical calculations and conventions used in this Thesis. It's important to note that most of the time mathematical formulas are written in matrix notation. In the majority of cases, this will result in a direct translation into R-code. All necessary assumptions needed for the modeled return structure are provided in this chapter to enable each reader to make sense of the stated formulas. It is crucial to note that reality is too complex and can only be partially modeled. Simplistic, basic models are employed that don't hold up in real-world situations, but these models or variations of them are frequently used in finance and have proven to be helpful. The complexity of solving advanced and basic models do not differ for the PSO, because the dimension of the objective function is based on the number of selectable elements, see chapter \ref{challenges}.
 
 \hypertarget{basic-operators}{%
 \section{Basic Operators}\label{basic-operators}}
@@ -360,13 +360,12 @@ The same holds for a estimation of \(\textstyle\sum\).
 Suppose there are \(N\) assets which create a portfolio with weights \(w\) at time \(t_0\) and the portfolio should perform multiple timesteps till \(t_T\) without re-balancing. What are the portfolio returns on each timestep \(t_i\)? Its obvious that assets with a positive performance at the current timestep have a higher weight at the next timestep. This can be done by adjusting the weights after each timestep, dependent on the returns. The formula for holding a portfolio with weights \(\textstyle\sum w = 1\) and return matrix \(R \in R^{T \times N}\), has the return \(Z_i-1\) on \(t_i\) with \(i=0, 1, \cdots, T\) for:
 \[
   Z_i =
-  \left\{
-  \begin{split}
-  &(1+R_i)\cdot w, &\text{ if }i=0\\
-  &(1+R_i)\cdot \frac{Z_{i-1}}{\sum Z_{i-1}}, &\text{ if }i>0
-  \end{split}
-  \right.
+  \begin{cases}
+  (1+R_i)\cdot w &\text{ if }i=0\\
+  (1+R_i)\cdot \frac{Z_{i-1}}{\sum Z_{i-1}} &\text{ if }i>0
+  \end{cases}
 \]
+
 This calculation of portfolio returns is implemented in the \texttt{calc\_portfolio\_returns()} function below.
 
 \hypertarget{r-functions-2}{%
@@ -387,7 +386,7 @@ asdasdasdasdasd ((returns to cumulated returns normalized to 100))
 \hypertarget{geomeanret}{%
 \subsection{\texorpdfstring{\texttt{ret\_to\_geomeanret()}}{ret\_to\_geomeanret()}}\label{geomeanret}}
 
-Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. Because the estimation of the variance is calculated as daily variance, it needs to do the same with returns over time. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns \(r_1 = 0.01\), \(r_2=0.03\) and \(r_3=0.02\) then follows that the geometric mean return \(r^{id}\) can be calculated as:
+Geometric mean returns are a better estimator than the arithmetic mean returns, because they capture the exact mean price changes over a period of time. The variance estimated from daily returns is a daily variance, which is why the returns need to have the same timebase. This can be done by calculating geometric mean returns from multiple daily returns. Suppose there is an asset with returns \(r_1 = 0.01\), \(r_2=0.03\) and \(r_3=0.02\) then follows that the geometric mean return \(r^{id}\) can be calculated as:
 \[
   r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
 \]
@@ -533,14 +532,12 @@ And the last term can be solved the same way as in \citep{Eric2021}:
 
 This results in the final formula of the ITP:
 
-\begin{equation}
-  \begin{split}
-   Var(r_{p}-r_{bm}) & = Var(R \times w - r_{bm}) \\
-   & = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
-   & = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
-   \end{split}
-   \label{eq:ITP}
-\end{equation}
+\begin{align*}
+  Var(r_{p}-r_{bm}) & = Var(R \times w - r_{bm}) \\
+  & = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
+  & = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
+  \label{eq:ITP}
+\end{align*}
 
 The minimization problem of the ITP in the general structure needed by many optimizers is:
 
@@ -718,10 +715,10 @@ The result gets filtered and names are added that represent the number of assets
 
 It can be seen, that each asset added results in a minimum variance portfolio with smaller or equal standard deviation. Nonetheless that it started with the asset that has the smallest standard deviation of 0.0134977. This is the effect of diversification mentioned by Markowitz.
 
-\hypertarget{example-solving-itp-with-solve.qp}{%
-\section{\texorpdfstring{Example: Solving ITP with \texttt{solve.QP()}}{Example: Solving ITP with solve.QP()}}\label{example-solving-itp-with-solve.qp}}
+\hypertarget{exampleitpsolveqp}{%
+\section{\texorpdfstring{Example: Solving ITP with \texttt{solve.QP()}}{Example: Solving ITP with solve.QP()}}\label{exampleitpsolveqp}}
 
-This example will analyse how many assets are needed to minimize the variance between the replication and the S\&P 500 historical returns from \texttt{2016-01-01} to \texttt{2021-12-31}. The constraints are set to be long only and the weights should sum up to one. To step-wise reduce the number of assets, the five assets with the least weights gets discarded and acts as the new asset pool for the next replication, until only five assets are left. At first the needed data can be downloaded with existing functions from the \texttt{R/} directory. The function \texttt{get\_spx\_composition()} uses web scrapping to read the constituents of \href{https://en.wikipedia.org/wiki/List_of_S\%26P_500_companies}{wikipedia} and transforms it in monthly compositions of the S\&P 500. The pool is created by all assets that are present in the last month of the timeframe, reduced by assets with missing values. The code below, loads returns of all assets in the pool and the S\&P 500:
+This example will analyse how many assets are needed to minimize the variance between the replication and the S\&P 500 historical returns from \texttt{2016-01-01} to \texttt{2021-12-31}. The constraints are set to be long only and the weights should sum up to one. To step-wise reduce the number of assets, the five assets with the least weights get discarded and acts as the new asset pool for the next replication, until only five assets are left. At first the needed data can be downloaded with existing functions from the \texttt{R/} directory. The function \texttt{get\_spx\_composition()} uses web scrapping to read the constituents of \href{https://en.wikipedia.org/wiki/List_of_S\%26P_500_companies}{wikipedia} and transforms it in monthly compositions of the S\&P 500. The pool is created by all assets that are present in the last month of the timeframe, reduced by assets with missing values. The code below, loads returns of all assets in the pool and the S\&P 500:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -756,7 +753,7 @@ This example will analyse how many assets are needed to minimize the variance be
 \end{Highlighting}
 \end{Shaded}
 
-Now are all needed data present and the function for the ITP can be created. It needs \texttt{pool\_returns} with variable number of columns and the single column matrix \texttt{bm\_returns}.
+Now is the needed data present and the function for the ITP can be created. It needs \texttt{pool\_returns} with variable number of columns and the single column matrix \texttt{bm\_returns}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -791,7 +788,7 @@ Now are all needed data present and the function for the ITP can be created. It 
 \end{Highlighting}
 \end{Shaded}
 
-Now can the replication and successive discarding of assets begin. The results are saved in \texttt{res} and used to plot the results.
+The replication and successive discarding of assets can begin. The results are saved in \texttt{res} and used to plot the results.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -822,15 +819,17 @@ The PSO was developed by J. Kennedy as a Global Optimization method based on Swa
 Each Particle \(d\) with position \(x_d\) moves in the search space \(R^N\) and has its inherent velocity \(v_d\) and remembers its previous best position \(P_d\). After each iteration the velocity changes into the direction of its inherent velocity, its best previous position and the global best position \(p_g\) of all particles. A position change from \(i\) to \(i+1\) can be calculated by the following two equations \citep{PaVr2002}:
 
 \begin{align*}
-  v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i-x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
+  v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i - x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
 with \(r_1\) and \(r_2\) being uniformly distributed random numbers in {[}0, 1{]}. The cognitive parameter \(c_p\) acts as the weighting of the direction to its previous best position of the particle. On the contrary is the social parameter \(c_g\), which is a weighting to the direction of the global best position. The inertia weight \(w\) is crucial for the convergence behavior by remembering a part of its previous trajectory. A study examined in \citep{PaVr2002} showed that these parameters can be set to \(c_p=c_g=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems do benefit from more fine-tuning of these parameters. To provide a effortless translation to code, the formula above can be stated for \(d = 1, 2, \cdots, D\) particles in the following matrix notation:
-\[
+
+\begin{align*}
   V^{i+1} = w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} = X^i + V^{i+1}
-\]
+\end{align*}
+
 with current positions \(X \in R^{N \times D}\), current velocity's \(V \in R^{N \times D}\), previous best positions \(P \in R^{N \times D}\) and the global best position \(p_g \in R^{N}\). The parameters \(w\), \(c_p\), \(c_g\), \(r_1\) and \(r_2\) are stile scalars.
 
 \hypertarget{pso-function}{%
@@ -947,7 +946,7 @@ The best fitness after \(100\) iterations is 0.0000009 and the best possible sol
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
 
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}. The PSO core from the chapter above was used to finish the \texttt{pso()} function and is used here with seed 0. The fucntion \texttt{fn} to evaluate is they same function as in \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}.
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML Version of this thesis. The amazing template of the animation is inspired by \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}. The PSO core from the chapter above was used to finish the \texttt{pso()} function and is tested here with seed 0. The function \texttt{fn} to evaluate can be found in \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -983,13 +982,14 @@ The function \texttt{fn} has many local minima and a global minima at \((1,1)\) 
 
 This example uses the \texttt{solve.QP} approach from \ref{exampleanalyticalmvp} with ten assets as benchmark. Recap, the goal is to create a MVP from ten of the biggest american equity's between 2016 and 2021 for each possible \(\lambda\). The PSO has 100 particles and 200 iterations for each lambda. The key features of all portfolios generated with the \texttt{solve.QP} versus the PSO is shown below:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png}
-It can be seen that the analytical approach and the PSO approach have a tiny difference for \(lambda > 0.9\) and a steadily increased difference otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.
+It can be seen that the analytical approach and the PSO approach have a tiny difference for \(\lambda > 0.9\) and a steadily increased difference otherwise. This indicates that minimum variance portfolios are more stable to generate with the PSO.
 
 \hypertarget{example-itp-1}{%
 \section{Example ITP}\label{example-itp-1}}
 
+The same ITP solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as benchmark for the PSO. Recap, the goal is to create a portfolio that minimizes the variance in the returns of it self and the S\&P 500 between 2016 and 2021. The pool of assets contain all assets that are present at 2021 and have no missing values. The constraints are long only and the weights should sum up to one. The parameters for the PSO are a swarm size of 100, 100 iterations, inertia weight starts by \(0.9\), the upper bound is \(0.1\) and one starting position is the null vector. The PSO was run ten times and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach in the table below for seed 0:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-28-1.png}
-The mean fitness
+It can be seen that a sufficient fitness was achieved in all PSO runs with negligible constraint breaks, but much more computing time needed.
 
 \hypertarget{pros-and-cons}{%
 \section{Pros and Cons}\label{pros-and-cons}}
