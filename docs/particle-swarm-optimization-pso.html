@@ -813,14 +813,15 @@ div.csl-indent {
 <span id="cb28-164"><a href="particle-swarm-optimization-pso.html#cb28-164" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(</span>
 <span id="cb28-165"><a href="particle-swarm-optimization-pso.html#cb28-165" aria-hidden="true" tabindex="-1"></a>  df_summary <span class="sc">%&gt;%</span> <span class="fu">select</span>(type, sd, var, fitness, constraint, time),</span>
 <span id="cb28-166"><a href="particle-swarm-optimization-pso.html#cb28-166" aria-hidden="true" tabindex="-1"></a>  <span class="at">wrap =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb28-167"><a href="particle-swarm-optimization-pso.html#cb28-167" aria-hidden="true" tabindex="-1"></a>  <span class="at">compact =</span> T,</span>
+<span id="cb28-167"><a href="particle-swarm-optimization-pso.html#cb28-167" aria-hidden="true" tabindex="-1"></a>  <span class="co">#compact = T,</span></span>
 <span id="cb28-168"><a href="particle-swarm-optimization-pso.html#cb28-168" aria-hidden="true" tabindex="-1"></a>  <span class="at">columns =</span> <span class="fu">list</span>(</span>
-<span id="cb28-169"><a href="particle-swarm-optimization-pso.html#cb28-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">var =</span> <span class="fu">colDef</span>(<span class="at">format =</span> <span class="fu">colFormat</span>(<span class="at">digits=</span><span class="dv">9</span>), <span class="at">show =</span>F),</span>
-<span id="cb28-170"><a href="particle-swarm-optimization-pso.html#cb28-170" aria-hidden="true" tabindex="-1"></a>    <span class="at">constraint =</span> <span class="fu">colDef</span>(<span class="at">name =</span> <span class="st">&quot;constraint break&quot;</span>)</span>
-<span id="cb28-171"><a href="particle-swarm-optimization-pso.html#cb28-171" aria-hidden="true" tabindex="-1"></a>  )<span class="co">#,</span></span>
-<span id="cb28-172"><a href="particle-swarm-optimization-pso.html#cb28-172" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme = reactableTheme(style = list(fontFamily = &quot;-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif&quot;))</span></span>
-<span id="cb28-173"><a href="particle-swarm-optimization-pso.html#cb28-173" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
-<span id="cb28-174"><a href="particle-swarm-optimization-pso.html#cb28-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
+<span id="cb28-169"><a href="particle-swarm-optimization-pso.html#cb28-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">colDef</span>(<span class="at">width=</span><span class="dv">150</span>),</span>
+<span id="cb28-170"><a href="particle-swarm-optimization-pso.html#cb28-170" aria-hidden="true" tabindex="-1"></a>    <span class="at">var =</span> <span class="fu">colDef</span>(<span class="at">format =</span> <span class="fu">colFormat</span>(<span class="at">digits=</span><span class="dv">9</span>), <span class="at">show =</span>F),</span>
+<span id="cb28-171"><a href="particle-swarm-optimization-pso.html#cb28-171" aria-hidden="true" tabindex="-1"></a>    <span class="at">constraint =</span> <span class="fu">colDef</span>(<span class="at">name =</span> <span class="st">&quot;constraint break&quot;</span>)</span>
+<span id="cb28-172"><a href="particle-swarm-optimization-pso.html#cb28-172" aria-hidden="true" tabindex="-1"></a>  )<span class="co">#,</span></span>
+<span id="cb28-173"><a href="particle-swarm-optimization-pso.html#cb28-173" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme = reactableTheme(style = list(fontFamily = &quot;-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif&quot;))</span></span>
+<span id="cb28-174"><a href="particle-swarm-optimization-pso.html#cb28-174" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-175"><a href="particle-swarm-optimization-pso.html#cb28-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>(., <span class="at">vwidth =</span> <span class="dv">800</span>)</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/pso8-1.png" width="672" /></p>
 <p>It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.</p>
 </div>
