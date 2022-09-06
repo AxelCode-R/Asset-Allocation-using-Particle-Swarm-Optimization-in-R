@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Master-Thesis},
+  pdftitle={Asset Allocation using Particle Swarm Optimization in R},
   pdfauthor={Axel Roth},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -124,9 +124,9 @@
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{Master-Thesis}
+\title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-09-05}
+\date{2022-09-06}
 
 \begin{document}
 \maketitle
@@ -142,18 +142,21 @@
 \renewcommand{\chaptermark}[1]{\markboth{\uppercase{#1}}{\uppercase{#1}}}
 \markboth{\uppercase{Preface}}{\uppercase{Preface}}
 
-Blah blah blah (soll vor dem TOC kommen denke ich)
+\textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
+(soll vor dem TOC kommen denke ich)
 
 \renewcommand{\chaptermark}[1]{\markboth{\uppercase{\thechapter. \ #1}}{}}
 
 \hypertarget{abstract}{%
 \chapter{Abstract}\label{abstract}}
 
+\textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
 Things about this thesis. why and what question should be answered. and what are the answers. (zusammenfassung)
 
 \hypertarget{software-information-and-usage}{%
 \chapter{Software information and usage}\label{software-information-and-usage}}
 
+\textbar\textbar\textbar in progress\textbar\textbar\textbar{}
 wie ich das buch schreibe, R markodwn bookdown und so und welche versionen ich nutze
 
 \hypertarget{r-version-and-packages}{%
@@ -189,9 +192,9 @@ This function is the main wrapper for collecting data with \texttt{getSymbols()}
 \item
   \texttt{tickers}: Vector of symbols (asset names, e.g.~``APPL'', ``GOOG'', \ldots)
 \item
-  \texttt{from\ ="2020-01-01"}: R-Date
+  \texttt{from\ ="2018-01-01"}: R-Date
 \item
-  \texttt{to\ =\ "2021-01-01"}: R-Date
+  \texttt{to\ =\ "2019-12-31"}: R-Date
 \item
   \texttt{price\_type\ =\ "close"}: Type of prices to be recorded (e.g.~``open'', ``high'', ``low'', ``closed'', ``adjusted'')
 \item
@@ -215,12 +218,12 @@ This chapter provides an overview of the mathematical calculations and conventio
 
 A compendium comparing commonly used mathematical symbols with R code and their meaning is given in the following table:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/operators-1.png}
 
 \hypertarget{return-calculation}{%
 \section{Return Calculation}\label{return-calculation}}
 
-Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using {[}adjusted closing prices{]} (\url{https://www.investopedia.com/terms/a/adjusted} closingprice.asp), which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.
+Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using \href{https://www.investopedia.com/terms/a/adjusted\%20closingprice.asp}{adjusted closing prices}, which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.
 
 \hypertarget{simple-returns}{%
 \subsection{Simple Returns}\label{simple-returns}}
@@ -372,17 +375,19 @@ This calculation of portfolio returns is implemented in the function \texttt{cal
 \hypertarget{r-functions-2}{%
 \section{R-Functions}\label{r-functions-2}}
 
-asdad
+\textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
 
 \hypertarget{pritoret}{%
 \subsection{\texorpdfstring{\texttt{pri\_to\_ret()}}{pri\_to\_ret()}}\label{pritoret}}
 
-asdasdasd ((prices to returns))
+\textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
+((prices to returns))
 
 \hypertarget{ret_to_cumret}{%
 \subsection{\texorpdfstring{\texttt{ret\_to\_cumret()}}{ret\_to\_cumret()}}\label{ret_to_cumret}}
 
-asdasdasdasdasd ((returns to cumulated returns normalized to 100))
+\textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
+((returns to cumulated returns normalized to 100))
 
 \hypertarget{geomeanret}{%
 \subsection{\texorpdfstring{\texttt{ret\_to\_geomeanret()}}{ret\_to\_geomeanret()}}\label{geomeanret}}
@@ -438,6 +443,7 @@ This function has the same results as the \texttt{Return.portfolio()} function f
 \hypertarget{activ-vs-passiv-investing}{%
 \chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
 
+\textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
 The fundation of Asset Management
 
 passiv vs activ studie
@@ -471,11 +477,11 @@ The risk aversion parameter \(\lambda\) defines the tradeoff between risk and re
 \hypertarget{mvp-example}{%
 \subsection{MVP example}\label{mvp-example}}
 
-All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each \(\lambda\). First, the daily returns of these three assets from 2020 are loaded.
+All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each \(\lambda\). First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.
 
 The cumulative daily returns are:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-7-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/MVP_ex2-1.png}
 
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \ref{mathfundations}:
 
@@ -483,11 +489,11 @@ This is all the data necessary to solve the MVP with \(\lambda \in \{0.01, 0.02,
 
 The resulting daily returns and standard deviations are converted to annual returns and standard deviations and plotted to create the efficiency frontier:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/MVP_ex5-1.png}
 
 The portfolio compositions for each \(\lambda\) are:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/MVP_ex6-1.png}
 
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-Tracking Portfolio (ITP)}\label{index-tracking-portfolio-itp}}
@@ -563,14 +569,14 @@ It is possible to add some basic constraints, as in the MVP to sum the weights t
 \hypertarget{example-itp}{%
 \subsection{Example ITP}\label{example-itp}}
 
-This example shows the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2020 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark.
+This example shows the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2018-01-01/2019-12-31 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark.
 
 \begin{verbatim}
 ##      AAPL       IBM      GOOG 
-## 0.2681058 0.4040352 0.3278591
+## 0.2594763 0.4164918 0.3240319
 \end{verbatim}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/ITP_ex-1.png}
 
 \hypertarget{analytic-solver-for-quadratic-programming-problems}{%
 \chapter{Analytic Solver for Quadratic Programming Problems}\label{analytic-solver-for-quadratic-programming-problems}}
@@ -594,7 +600,7 @@ Some other sources notate the problem with different signs or coefficients, all 
 \hypertarget{qp-solver-from-quadprog}{%
 \section{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
 
-The most common free QP solver used in R comes from the package {[}quadprog{]} (\url{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}), which consists of a single function called \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani published in \citep{GoId1982} and \citep{GoId1983}. It uses the above QP with the condition that \(D\) must be a symmetric positive definite matrix. This means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ for all \ x \ in \mathbb{R}^N\), which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix \(\sum\), but it is possible to find the nearest positive definite matrix of \(\textstyle\sum\) using the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{matrix} R package. The error encountered often does not exceed a percentage change in elements over \(10^{-15} \%\), which is negligible for the context of this work. The function \texttt{solve.QP()} for an \(N\) dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
+The most common free QP solver used in R comes from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog}, which consists of a single function called \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani published in \citep{GoId1982} and \citep{GoId1983}. It uses the above QP with the condition that \(D\) must be a symmetric positive definite matrix. This means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in \mathbb{R}^N\), which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix \(\sum\), but it is possible to find the nearest positive definite matrix of \(\textstyle\sum\) using the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{matrix} R package. The error encountered often does not exceed a percentage change in elements over \(10^{-15} \%\), which is negligible for the context of this work. The function \texttt{solve.QP()} for an \(N\) dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
 
 \begin{itemize}
 \tightlist
@@ -631,8 +637,8 @@ This section provides insights into the effects of diversification and the use o
   \FunctionTok{get\_yf}\NormalTok{(}
     \AttributeTok{tickers =} \FunctionTok{c}\NormalTok{(}\StringTok{"IBM"}\NormalTok{, }\StringTok{"GOOG"}\NormalTok{, }\StringTok{"AAPL"}\NormalTok{, }\StringTok{"MSFT"}\NormalTok{, }\StringTok{"AMZN"}\NormalTok{, }
                 \StringTok{"NVDA"}\NormalTok{, }\StringTok{"JPM"}\NormalTok{, }\StringTok{"META"}\NormalTok{, }\StringTok{"V"}\NormalTok{, }\StringTok{"WMT"}\NormalTok{), }
-    \AttributeTok{from =} \StringTok{"2016{-}01{-}01"}\NormalTok{, }
-    \AttributeTok{to =} \StringTok{"2021{-}12{-}31"}
+    \AttributeTok{from =} \StringTok{"2018{-}01{-}01"}\NormalTok{, }
+    \AttributeTok{to =} \StringTok{"2019{-}12{-}31"}
 \NormalTok{  )}\SpecialCharTok{$}\NormalTok{returns, }
   \StringTok{"AS\_10\_assets"}
 \NormalTok{)}
@@ -720,19 +726,19 @@ Each \(\lambda \in \{0.01, 0.02, \cdots, 1\}\) and each combination of ascending
 
 The result is filtered and names are added to represent the number of assets. Now the diagram can be created:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-16-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/qp_mvp4-1.png}
 
-It can be seen, that each asset added results in a minimum variance portfolio with smaller or equal standard deviation. Nevertheless, we started with the asset that has the smallest standard deviation of 0.0134977. This is the effect of diversification mentioned by Markowitz.
+It can be seen, that each asset added results in a minimum variance portfolio with smaller or equal standard deviation. Nevertheless, we started with the asset that has the smallest standard deviation of 0.012459. This is the effect of diversification mentioned by Markowitz.
 
 \hypertarget{exampleitpsolveqp}{%
 \section{\texorpdfstring{Example: Solving ITP with \texttt{solve.QP()}}{Example: Solving ITP with solve.QP()}}\label{exampleitpsolveqp}}
 
-This example analyzes how many assets are needed to minimize the variance between the replication and historical returns of the S\&P 500 from 2016-01-01 to 2021-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded and serve as the new asset pool for the next replication until only five assets are left. First, the required data can be downloaded from the \texttt{R/} directory using existing functions. The function \texttt{get\_spx\_composition()} uses web scraping to read the components of \href{https://en.wikipedia.org/wiki/List_of_S\%26P_500_companies}{wikipedia} and converts them into monthly compositions of the S\&P 500. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the S\&P 500:
+This example analyzes how many assets are needed to minimize the variance between the replication and historical returns of the S\&P 500 from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded and serve as the new asset pool for the next replication until only five assets are left. First, the required data can be downloaded from the \texttt{R/} directory using existing functions. The function \texttt{get\_spx\_composition()} uses web scraping to read the components of \href{https://en.wikipedia.org/wiki/List_of_S\%26P_500_companies}{wikipedia} and converts them into monthly compositions of the S\&P 500. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the S\&P 500:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{from }\OtherTok{\textless{}{-}} \StringTok{"2016{-}01{-}01"}
-\NormalTok{to }\OtherTok{\textless{}{-}} \StringTok{"2021{-}12{-}31"}
+\NormalTok{from }\OtherTok{\textless{}{-}} \StringTok{"2018{-}01{-}01"}
+\NormalTok{to }\OtherTok{\textless{}{-}} \StringTok{"2019{-}12{-}31"}
 
 \NormalTok{spx\_composition }\OtherTok{\textless{}{-}} \FunctionTok{buffer}\NormalTok{(}
   \FunctionTok{get\_spx\_composition}\NormalTok{(),}
@@ -802,18 +808,19 @@ The duplication and successive discarding of assets can begin. The results are s
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{res }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{rev}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{5}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw), }\DecValTok{5}\NormalTok{)))\{}
-  \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{==}\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw))\{}
-\NormalTok{    temp }\OtherTok{\textless{}{-}} \FunctionTok{itp}\NormalTok{(pool\_returns\_raw, bm\_returns)}
+\NormalTok{n\_assets }\OtherTok{\textless{}{-}} \FunctionTok{rev}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{5}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw), }\DecValTok{5}\NormalTok{))}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in}\NormalTok{ n\_assets)\{}
+\NormalTok{  temp }\OtherTok{\textless{}{-}} \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{==}\FunctionTok{max}\NormalTok{(n\_assets))\{}
+    \FunctionTok{itp}\NormalTok{(pool\_returns\_raw, bm\_returns)}
 \NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{}
-\NormalTok{    temp }\OtherTok{\textless{}{-}} \FunctionTok{itp}\NormalTok{(pool\_returns\_raw[, }\FunctionTok{names}\NormalTok{(}\FunctionTok{sort}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{solution, }\AttributeTok{decreasing =}\NormalTok{ T)[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{i])], bm\_returns)}
+    \FunctionTok{itp}\NormalTok{(pool\_returns\_raw[, }\FunctionTok{names}\NormalTok{(}\FunctionTok{sort}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{solution, }\AttributeTok{decreasing =}\NormalTok{ T)[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{i])], bm\_returns)}
 \NormalTok{  \}}
 \NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(res, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"N"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{temp}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"sd"}\OtherTok{=}\FunctionTok{sqrt}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{var), }\AttributeTok{row.names =} \ConstantTok{NULL}\NormalTok{))}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-20-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/qp_itp4-1.png}
 
 It can be seen that the standard deviation stagnates at about \(N=100\). This leads to the conclusion that a sparse replication with one hundred assets is sufficient in this particular case to track the historical performance of the S\&P 500 over this period.
 
@@ -950,7 +957,7 @@ The required data structure is available and the optimization can start with the
 \end{Highlighting}
 \end{Shaded}
 
-The best fitness after \(100\) iterations is 0.0000009 and the best possible solution is \(0\).
+The best fitness after \(100\) iterations is 0.0000048 and the best possible solution is \(0\).
 
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
@@ -989,23 +996,25 @@ The function \texttt{fn} has many local minima and a global minima at \((1,1)\) 
 \hypertarget{example-mvp}{%
 \section{Example MVP}\label{example-mvp}}
 
-This example uses the \texttt{solve.QP} approach from \ref{exampleanalyticalmvp} with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2016 and 2021 for each possible \(\lambda\). The PSO has 100 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the \texttt{solve.QP} compared to the PSO are shown below:
+This example uses the \texttt{solve.QP} approach from \ref{exampleanalyticalmvp} with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible \(\lambda\). The PSO has 300 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the \texttt{solve.QP} compared to the PSO are shown below:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-27-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/pso7-1.png}
 
-It can be seen that the analytical approach and the PSO approach show only a small difference for \(\lambda > 0.9\), while the difference increases steadily otherwise. This indicates that portfolios with minimal variance are more stable to generate with the PSO.
+The dots for each \(\lambda\) are connected with a grey line to visualize the error of the PSO. It can be seen that its possible to solve MVP's with a PSO approach.
 
 \hypertarget{example-itp-1}{%
 \section{Example ITP}\label{example-itp-1}}
 
 The same ITP solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S\&P 500 between 2016 and 2021. The pool of assets includes all assets that are present in 2021 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at \(0.9\), the upper bound is \(0.1\), and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach for seed 0 in the table below:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-28-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/pso8-1.png}
 
 It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
 
-\hypertarget{pros-and-cons}{%
-\section{Pros and Cons}\label{pros-and-cons}}
+\hypertarget{pros-and-cons-for-continuous-problems}{%
+\section{Pros and Cons for Continuous Problems}\label{pros-and-cons-for-continuous-problems}}
+
+A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the \texttt{solve.QP()} approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the \texttt{solve.QP()} alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for \(x\) is to be a integer vector. These problems could be solved by the \texttt{solve.QP()} approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the \texttt{solve.QP()} approach.
 
 \hypertarget{functions}{%
 \section{Functions}\label{functions}}

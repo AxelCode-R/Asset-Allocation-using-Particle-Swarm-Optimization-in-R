@@ -22,17 +22,17 @@ The risk aversion parameter $\lambda$ defines the tradeoff between risk and retu
 
 
 ### MVP example
-All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each $\lambda$. First, the daily returns of these three assets from 2020 are loaded.
+All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.
 
-```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r MVP_ex1, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 returns <- buffer(
-  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2020-12-31")$returns, 
+  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
   "CPI_3_assets"
 )
 ``` 
 The cumulative daily returns are:
 
-```{r, echo = F}
+```{r MVP_ex2, echo = F}
 plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
   html_save()
 
@@ -40,7 +40,7 @@ plotly_line_chart_xts(ret_to_cumret(returns)) %>%
 
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \@ref(mathfundations):
 
-```{r, results = "hold", include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r MVP_ex3, results = "hold", include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 p0("estimation of expected daily returns")
 mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
 mu
@@ -52,7 +52,7 @@ cov
 
 This is all the data necessary to solve the MVP with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the "long only" constraint, where the weights should sum to 1.
 
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r MVP_ex4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 portfolios <- data.frame()
 mu_and_var <- NULL
 for(lambda in seq(0.01,1, 0.01)){
@@ -90,7 +90,7 @@ colnames(portfolios) <- colnames(returns)
 
 The resulting daily returns and standard deviations are converted to annual returns and standard deviations and plotted to create the efficiency frontier:
 
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
+```{r MVP_ex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
 # annualize
 mu_and_var$mu <- (1+mu_and_var$mu)^250-1
 mu_and_var$sd <- mu_and_var$sd * sqrt(250)
@@ -116,7 +116,7 @@ plot_ly(data = mu_and_var) %>%
 
 The portfolio compositions for each $\lambda$ are:
 
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
+```{r MVP_ex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
 p <- plot_ly(type="bar") %>% layout(title="Portfolio compositions", barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="wgt"))
 for(i in 1:ncol(portfolios)){
   p <- p %>%
@@ -197,16 +197,16 @@ $$
 It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only.
 
 ### Example ITP
-This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2020 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark.
+This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2018-01-01/2019-12-31 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark.
 
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r ITP_ex, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 pool_returns <- buffer(
-  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2020-01-01", to = "2020-12-31")$returns, 
+  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
   "CPI_3_assets"
 )
 
 bm_returns <- buffer(
-  get_yf(tickers = "%5EGSPC", from = "2020-01-01", to = "2020-12-31")$returns, 
+  get_yf(tickers = "%5EGSPC", from = "2018-01-01", to = "2019-12-31")$returns, 
   "CPI_sp500"
 ) %>% setNames(., "S&P 500")
 

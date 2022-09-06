@@ -7,6 +7,6 @@ global_buffer_force <- F
 
 
 # Abstract
-
+|||in progress||| \
 Things about this thesis. why and what question should be answered. and what are the answers. (zusammenfassung)
 

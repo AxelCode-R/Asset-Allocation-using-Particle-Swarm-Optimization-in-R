@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Challenges of Passiv Investing | Master-Thesis</title>
+  <title>Chapter 6 Challenges of Passiv Investing | Asset Allocation using Particle Swarm Optimization in R</title>
   <meta name="description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.28.1 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Challenges of Passiv Investing | Master-Thesis" />
+  <meta property="og:title" content="Chapter 6 Challenges of Passiv Investing | Asset Allocation using Particle Swarm Optimization in R" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   <meta name="github-repo" content="AxelCode-R/Master-Thesis" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Challenges of Passiv Investing | Master-Thesis" />
+  <meta name="twitter:title" content="Chapter 6 Challenges of Passiv Investing | Asset Allocation using Particle Swarm Optimization in R" />
   
   <meta name="twitter:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-09-05" />
+<meta name="date" content="2022-09-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -199,7 +199,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
 <li class="chapter" data-level="8.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-mvp"><i class="fa fa-check"></i><b>8.4</b> Example MVP</a></li>
 <li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-1"><i class="fa fa-check"></i><b>8.5</b> Example ITP</a></li>
-<li class="chapter" data-level="8.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons"><i class="fa fa-check"></i><b>8.6</b> Pros and Cons</a></li>
+<li class="chapter" data-level="8.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems"><i class="fa fa-check"></i><b>8.6</b> Pros and Cons for Continuous Problems</a></li>
 <li class="chapter" data-level="8.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#functions"><i class="fa fa-check"></i><b>8.7</b> Functions</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -215,7 +215,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Master-Thesis</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Asset Allocation using Particle Swarm Optimization in R</a>
           </h1>
         </div>
 
@@ -240,13 +240,13 @@ div.csl-indent {
 </div>
 <div id="mvp-example" class="section level3 hasAnchor" number="6.1.2">
 <h3><span class="header-section-number">6.1.2</span> MVP example<a href="challenges.html#mvp-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each <span class="math inline">\(\lambda\)</span>. First, the daily returns of these three assets from 2020 are loaded.</p>
+<p>All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each <span class="math inline">\(\lambda\)</span>. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb3-1"><a href="challenges.html#cb3-1" aria-hidden="true" tabindex="-1"></a>returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
-<span id="cb3-2"><a href="challenges.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
+<span id="cb3-2"><a href="challenges.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2019-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
 <span id="cb3-3"><a href="challenges.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_3_assets&quot;</span></span>
 <span id="cb3-4"><a href="challenges.html#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>The cumulative daily returns are:</p>
-<p><img src="Master_Thesis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="Master_Thesis_files/figure-html/MVP_ex2-1.png" width="672" /></p>
 <p>The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter <a href="mathfundations.html#mathfundations">4</a>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb4-1"><a href="challenges.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">p0</span>(<span class="st">&quot;estimation of expected daily returns&quot;</span>)</span>
 <span id="cb4-2"><a href="challenges.html#cb4-2" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">sapply</span>((<span class="dv">1</span><span class="sc">+</span>returns), prod)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">nrow</span>(returns))<span class="sc">-</span><span class="dv">1</span></span>
@@ -257,12 +257,12 @@ div.csl-indent {
 <span id="cb4-7"><a href="challenges.html#cb4-7" aria-hidden="true" tabindex="-1"></a>cov</span></code></pre></div>
 <pre><code>## [1] &quot;estimation of expected daily returns&quot;
 ##          AAPL           IBM          GOOG 
-##  0.0024166167 -0.0000952478  0.0010448549 
+##  0.0011434115 -0.0001059164  0.0004870292 
 ## [1] &quot;estimation of positiv definite covariance matrix&quot;
 ##              AAPL          IBM         GOOG
-## AAPL 0.0008665678 0.0004378721 0.0005361398
-## IBM  0.0004378721 0.0006646758 0.0004100227
-## GOOG 0.0005361398 0.0004100227 0.0005849202</code></pre>
+## AAPL 0.0003011998 0.0001177670 0.0001798891
+## IBM  0.0001177670 0.0002047502 0.0001158595
+## GOOG 0.0001798891 0.0001158595 0.0002728725</code></pre>
 <p>This is all the data necessary to solve the MVP with <span class="math inline">\(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\)</span>. All 100 portfolios are computed by solving a quadratic minimization problem with the “long only” constraint, where the weights should sum to 1.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb6-1"><a href="challenges.html#cb6-1" aria-hidden="true" tabindex="-1"></a>portfolios <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
 <span id="cb6-2"><a href="challenges.html#cb6-2" aria-hidden="true" tabindex="-1"></a>mu_and_var <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
@@ -317,7 +317,7 @@ div.csl-indent {
 <span id="cb7-18"><a href="challenges.html#cb7-18" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb7-19"><a href="challenges.html#cb7-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb7-20"><a href="challenges.html#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
-<p><img src="Master_Thesis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="Master_Thesis_files/figure-html/MVP_ex5-1.png" width="672" /></p>
 <p>The portfolio compositions for each <span class="math inline">\(\lambda\)</span> are:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb8-1"><a href="challenges.html#cb8-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">type=</span><span class="st">&quot;bar&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">layout</span>(<span class="at">title=</span><span class="st">&quot;Portfolio compositions&quot;</span>, <span class="at">barmode=</span><span class="st">&quot;stack&quot;</span>, <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;lambda&quot;</span>, <span class="at">autorange =</span> <span class="st">&quot;reversed&quot;</span>), <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;wgt&quot;</span>))</span>
 <span id="cb8-2"><a href="challenges.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(portfolios)){</span>
@@ -325,7 +325,7 @@ div.csl-indent {
 <span id="cb8-4"><a href="challenges.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">x=</span><span class="fu">seq</span>(<span class="fl">0.01</span>,<span class="dv">1</span>, <span class="fl">0.01</span>), <span class="at">y=</span>portfolios[, i], <span class="at">name =</span> <span class="fu">colnames</span>(portfolios)[i])</span>
 <span id="cb8-5"><a href="challenges.html#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb8-6"><a href="challenges.html#cb8-6" aria-hidden="true" tabindex="-1"></a>p <span class="sc">%&gt;%</span> <span class="fu">html_save</span>()</span></code></pre></div>
-<p><img src="Master_Thesis_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="Master_Thesis_files/figure-html/MVP_ex6-1.png" width="672" /></p>
 </div>
 </div>
 <div id="index-tracking-portfolio-itp" class="section level2 hasAnchor" number="6.2">
@@ -381,14 +381,14 @@ d = Cov(r_{bm}, R)
 <p>It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only.</p>
 <div id="example-itp" class="section level3 hasAnchor" number="6.2.1">
 <h3><span class="header-section-number">6.2.1</span> Example ITP<a href="challenges.html#example-itp" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This example shows the results of tracking the S&amp;P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2020 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark.</p>
+<p>This example shows the results of tracking the S&amp;P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2018-01-01/2019-12-31 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb9-1"><a href="challenges.html#cb9-1" aria-hidden="true" tabindex="-1"></a>pool_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
-<span id="cb9-2"><a href="challenges.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
+<span id="cb9-2"><a href="challenges.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2019-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
 <span id="cb9-3"><a href="challenges.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_3_assets&quot;</span></span>
 <span id="cb9-4"><a href="challenges.html#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-5"><a href="challenges.html#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-6"><a href="challenges.html#cb9-6" aria-hidden="true" tabindex="-1"></a>bm_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
-<span id="cb9-7"><a href="challenges.html#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="st">&quot;%5EGSPC&quot;</span>, <span class="at">from =</span> <span class="st">&quot;2020-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2020-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
+<span id="cb9-7"><a href="challenges.html#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="st">&quot;%5EGSPC&quot;</span>, <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2019-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
 <span id="cb9-8"><a href="challenges.html#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_sp500&quot;</span></span>
 <span id="cb9-9"><a href="challenges.html#cb9-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">setNames</span>(., <span class="st">&quot;S&amp;P 500&quot;</span>)</span>
 <span id="cb9-10"><a href="challenges.html#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
@@ -415,10 +415,10 @@ d = Cov(r_{bm}, R)
 <span id="cb9-31"><a href="challenges.html#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-32"><a href="challenges.html#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(pool_returns))</span></code></pre></div>
 <pre><code>##      AAPL       IBM      GOOG 
-## 0.2681058 0.4040352 0.3278591</code></pre>
+## 0.2594763 0.4164918 0.3240319</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb11-1"><a href="challenges.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotly_line_chart_xts</span>(<span class="fu">ret_to_cumret</span>(<span class="fu">cbind.xts</span>(port_returns, bm_returns))) <span class="sc">%&gt;%</span> </span>
 <span id="cb11-2"><a href="challenges.html#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
-<p><img src="Master_Thesis_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="Master_Thesis_files/figure-html/ITP_ex-1.png" width="672" /></p>
 
 </div>
 </div>

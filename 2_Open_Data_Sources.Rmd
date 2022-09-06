@@ -8,8 +8,8 @@ The following functions were created to increase the ease of data collection wit
 This function is the main wrapper for collecting data with `getSymbols()` from yahoo-finance, and converts prices to returns with the `pri_to_ret()` function explained in \@ref(pritoret). The output is a list containing prices and returns as [xts](https://cran.r-project.org/web/packages/xts/xts.pdf) objects. The arguments that can be passed to `get_yf()` are:
 
 + `tickers`: Vector of symbols (asset names, e.g. "APPL", "GOOG", ...)
-+ `from ="2020-01-01"`: R-Date
-+ `to = "2021-01-01"`: R-Date
++ `from ="2018-01-01"`: R-Date
++ `to = "2019-12-31"`: R-Date
 + `price_type = "close"`: Type of prices to be recorded (e.g. "open", "high", "low", "closed", "adjusted")
 + `return_type = "adjusted"`: Type of return to be recorded (e.g. "open", "high", "low", "closed", "adjusted")
 + `print = F`: Should the function print the return of `getSymbols()`

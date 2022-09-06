@@ -9,7 +9,7 @@ This chapter provides an overview of the mathematical calculations and conventio
 ## Basic Operators
 A compendium comparing commonly used mathematical symbols with R code and their meaning is given in the following table:
 
-```{r, echo=F}
+```{r operators, echo=F}
 reactable(
   data.frame(
     "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;"),
@@ -26,7 +26,7 @@ reactable(
 ```
 
 ## Return Calculation
-Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices] (https://www.investopedia.com/terms/a/adjusted closingprice.asp), which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.
+Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices](https://www.investopedia.com/terms/a/adjusted closingprice.asp), which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.
 
 ### Simple Returns
 The default time frame for all raw data in this thesis is one working day and only simple rates of return are used. Assuming there is an asset with price $P$ on working day $t_i$ and the following working day $t_{i+1}$, it follows that the simple rate of return on $t_{i+1}$ can be calculated as follows:
@@ -185,13 +185,15 @@ $$
 This calculation of portfolio returns is implemented in the function `calc_portfolio_returns()` below.
 
 ## R-Functions
-asdad
+|||in progress||| \
 
 ### `pri_to_ret()` {#pritoret}
-asdasdasd  ((prices to returns))
+|||in progress||| \
+((prices to returns))
 
 ### `ret_to_cumret()`
-asdasdasdasdasd  ((returns to cumulated returns normalized to 100))
+|||in progress||| \
+((returns to cumulated returns normalized to 100))
 
 ### `ret_to_geomeanret()` {#geomeanret}
 The geometric mean of returns is a better estimator than the arithmetic mean of returns because it captures the exact mean price changes over a period of time. The variance estimated from the daily returns is a daily variance, so the returns must have the same time base. This can be done by calculating the geometric mean of the returns from multiple daily returns. Assuming there is an asset with returns $r_1 = 0.01$, $r_2=0.03$, and $r_3=0.02$, it follows that the geometric mean return $r^{id}$ can be calculated as:
@@ -216,7 +218,7 @@ ret_to_geomeanret <- function(xts_ret){
 
 ### `calc_portfolio_returns()`
 This is the implementation of a vectorial calculation of portfolio returns over multiple periods with a weighting vector `weights` at $t_0$ and no re-balancing: 
-```{r}
+```{r calc_portfolio_returns}
 calc_portfolio_returns <- 
   function(xts_returns, weights, name="portfolio"){
   if(sum(weights)!=1){

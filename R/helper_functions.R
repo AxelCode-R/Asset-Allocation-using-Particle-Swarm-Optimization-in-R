@@ -49,7 +49,7 @@ buffer <- function(expr, rdata_file, force = FALSE){
 
 
 
-html_save <- function(html_chart, ...){
+html_save <- function(html_chart, zoom = 4, vheight = 300, vwidth = 600){
   if(!knitr::is_html_output() && !knitr::is_latex_output()){
     html_chart
   }else{
@@ -58,7 +58,7 @@ html_save <- function(html_chart, ...){
     }
     suppressMessages({
       htmlwidgets::saveWidget(html_chart, "docs/p.html")
-      webshot2::webshot("docs/p.html", "docs/p.png", delay=1, zoom=4, vheight=300, vwidth = 600)
+      webshot2::webshot("docs/p.html", "docs/p.png", delay=1, zoom=zoom, vheight=vheight, vwidth = vwidth)
     })
   }
 }

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Mathematical Fundations | Master-Thesis</title>
+  <title>Chapter 4 Mathematical Fundations | Asset Allocation using Particle Swarm Optimization in R</title>
   <meta name="description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.28.1 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Mathematical Fundations | Master-Thesis" />
+  <meta property="og:title" content="Chapter 4 Mathematical Fundations | Asset Allocation using Particle Swarm Optimization in R" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   <meta name="github-repo" content="AxelCode-R/Master-Thesis" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Mathematical Fundations | Master-Thesis" />
+  <meta name="twitter:title" content="Chapter 4 Mathematical Fundations | Asset Allocation using Particle Swarm Optimization in R" />
   
   <meta name="twitter:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-09-05" />
+<meta name="date" content="2022-09-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -199,7 +199,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
 <li class="chapter" data-level="8.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-mvp"><i class="fa fa-check"></i><b>8.4</b> Example MVP</a></li>
 <li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-1"><i class="fa fa-check"></i><b>8.5</b> Example ITP</a></li>
-<li class="chapter" data-level="8.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons"><i class="fa fa-check"></i><b>8.6</b> Pros and Cons</a></li>
+<li class="chapter" data-level="8.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems"><i class="fa fa-check"></i><b>8.6</b> Pros and Cons for Continuous Problems</a></li>
 <li class="chapter" data-level="8.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#functions"><i class="fa fa-check"></i><b>8.7</b> Functions</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -215,7 +215,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Master-Thesis</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Asset Allocation using Particle Swarm Optimization in R</a>
           </h1>
         </div>
 
@@ -229,11 +229,11 @@ div.csl-indent {
 <div id="basic-operators" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Basic Operators<a href="mathfundations.html#basic-operators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A compendium comparing commonly used mathematical symbols with R code and their meaning is given in the following table:</p>
-<p><img src="Master_Thesis_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="Master_Thesis_files/figure-html/operators-1.png" width="672" /></p>
 </div>
 <div id="return-calculation" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Return Calculation<a href="mathfundations.html#return-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices] (<a href="https://www.investopedia.com/terms/a/adjusted" class="uri">https://www.investopedia.com/terms/a/adjusted</a> closingprice.asp), which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.</p>
+<p>Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using <a href="https://www.investopedia.com/terms/a/adjusted%20closingprice.asp">adjusted closing prices</a>, which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.</p>
 <div id="simple-returns" class="section level3 hasAnchor" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> Simple Returns<a href="mathfundations.html#simple-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The default time frame for all raw data in this thesis is one working day and only simple rates of return are used. Assuming there is an asset with price <span class="math inline">\(P\)</span> on working day <span class="math inline">\(t_i\)</span> and the following working day <span class="math inline">\(t_{i+1}\)</span>, it follows that the simple rate of return on <span class="math inline">\(t_{i+1}\)</span> can be calculated as follows:
@@ -389,14 +389,17 @@ and can be estimated in R with the basis function <code>cov()</code> and histori
 </div>
 <div id="r-functions-2" class="section level2 hasAnchor" number="4.5">
 <h2><span class="header-section-number">4.5</span> R-Functions<a href="mathfundations.html#r-functions-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>asdad</p>
+<p>|||in progress|||<br />
+</p>
 <div id="pritoret" class="section level3 hasAnchor" number="4.5.1">
 <h3><span class="header-section-number">4.5.1</span> <code>pri_to_ret()</code><a href="mathfundations.html#pritoret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>asdasdasd ((prices to returns))</p>
+<p>|||in progress|||<br />
+((prices to returns))</p>
 </div>
 <div id="ret_to_cumret" class="section level3 hasAnchor" number="4.5.2">
 <h3><span class="header-section-number">4.5.2</span> <code>ret_to_cumret()</code><a href="mathfundations.html#ret_to_cumret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>asdasdasdasdasd ((returns to cumulated returns normalized to 100))</p>
+<p>|||in progress|||<br />
+((returns to cumulated returns normalized to 100))</p>
 </div>
 <div id="geomeanret" class="section level3 hasAnchor" number="4.5.3">
 <h3><span class="header-section-number">4.5.3</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>

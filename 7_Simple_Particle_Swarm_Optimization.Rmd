@@ -27,7 +27,7 @@ With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \i
 
 ## `pso()` Function
 In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. At the center of it all is an objective function `fn()` that returns a scalar to be minimized. The function itself mainly needs a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is a position of a particle used to derive the dimension of the problem and as the first position of a particle. The argument can only contain `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
-```{r}
+```{r pso1}
 pso <- function(
     par, 
     fn, 
@@ -41,7 +41,7 @@ pso <- function(
 
 Before the main data structure can be initialized, some sample input must be created for the `pso()` function as described below:
 
-```{r}
+```{r pso2}
 par <- rep(NA, 2)
 fn <- function(x){return(sum(abs(x)))}
 lower <- -10
@@ -59,7 +59,7 @@ control = list(
 
 Now it is time to initialize the random positions `X`, their fitness `X_fit` and their random velocities `V` with the function `mrunif()` which produces a matrix of uniformly distributed random numbers between `lower` and `upper`:
 
-```{r}
+```{r pso3}
 X <- mrunif(
   nr = length(par), nc=control$s, lower=lower, upper=upper
 )
@@ -76,7 +76,7 @@ V <- mrunif(
 The velocities are compressed by a factor of 4 to start with a maximum movement of one quarter of the space in each axis. The personal best positions `P` are the same as `X` and the global best position is the position with the smallest fitness:
 
 
-```{r}
+```{r pso4}
 P <- X
 P_fit <- X_fit
 p_g <- P[, which.min(P_fit)]
@@ -85,7 +85,7 @@ p_g_fit <- which.min(P_fit)
 
 The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space, they are pushed back to the edge and the velocities are set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.
 
-```{r}
+```{r pso5}
 trace_data <- NULL
 for(i in 1:control$maxiter){
   # move particles
@@ -123,7 +123,7 @@ for(i in 1:control$maxiter){
 ```
 The best fitness after $100$ iterations is `r p_g_fit` and the best possible solution is $0$.
 
-```{r, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r pso6, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 # the resulting pso() function
 pso <- function(
     par, 
@@ -295,17 +295,17 @@ if(!knitr::is_latex_output()){
 
 
 ## Example MVP
-This example uses the `solve.QP` approach from \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2016 and 2021 for each possible $\lambda$. The PSO has 100 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the `solve.QP` compared to the PSO are shown below:
+This example uses the `solve.QP` approach from \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the `solve.QP` compared to the PSO are shown below:
 
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r pso7, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
 returns_raw <- buffer(
   get_yf(
     tickers = c("IBM", "GOOG", "AAPL", "MSFT", "AMZN", 
                 "NVDA", "JPM", "META", "V", "WMT"), 
-    from = "2016-01-01", 
-    to = "2021-12-31"
+    from = "2018-01-01", 
+    to = "2019-12-31"
   )$returns, 
   "AS_10_assets"
 )
@@ -316,7 +316,7 @@ returns_raw <- returns_raw[, order(vars, decreasing = F)]
 
 mvp_QP <- function(returns, lambda){
   tc <- tryCatch({
-    mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
+    mu <- ret_to_geomeanret(returns)
 
     cov <- as.matrix(nearPD(cov(returns))$mat)
 
@@ -362,7 +362,7 @@ mvp_QP <- function(returns, lambda){
 
 mvp_PSO <- function(returns, lambda, silent = T){
   tc <- tryCatch({
-    mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
+    mu <- ret_to_geomeanret(returns)
 
     cov <- as.matrix(nearPD(cov(returns))$mat)
 
@@ -385,20 +385,20 @@ mvp_PSO <- function(returns, lambda, silent = T){
     }
     calc_const <- function(x){
       const <- t(mat$Amat) %*% x - mat$bvec
-      #const[mat$meq] <- -abs(const[mat$meq])
-      -min(0, const)
+      const[mat$meq] <- -max(0, abs(const[mat$meq])-0.01)
+      -sum(min(0, const))
     }
     pso_res <- pso(
-      par = rep(0, ncol(returns)),
+      par = rep(NA, ncol(returns)),
       fn = function(x){
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness+10*constraints)
+        return(fitness + 10 * constraints)
       },
       lower = 0,
       upper = 1,
       control = list(
-        s = 100, # swarm size
+        s = 300, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
         maxiter = 200, # iterations
@@ -437,17 +437,41 @@ mvp_PSO <- function(returns, lambda, silent = T){
 
 df <- NULL
 runs <- 100
-for(i in 0:( runs-1)){
+for(i in 0:round((runs-1)/2)){
   lambda <- 1-i/runs
   temp <- mvp_QP(returns = returns_raw, lambda = lambda)
-  df <- rbind(df, data.frame("type"="QP_MVP", "lambda"=lambda, "mu"=temp$mu, "var"=temp$var))
+  df <- rbind(df, data.frame("type"="QP_MVP", "lambda"=lambda, "mu"=temp$mu, "var"=temp$var, "constraint"=0))
   
   temp <- mvp_PSO(returns = returns_raw, lambda = lambda)
-  df <- rbind(df, data.frame("type"="PSO_MVP", "lambda"=lambda, "mu"=temp$mu, "var"=temp$var))
+  df <- rbind(df, data.frame("type"="PSO_MVP", "lambda"=lambda, "mu"=temp$mu, "var"=temp$var, "constraint"=temp$constraint))
 }
 
 df$sd = sqrt(df$var)
 
+
+
+df_qp <- df[df$type=="QP_MVP" & df$lambda %in% seq(1,0.6,-0.1),]
+df_diff <- data.frame(
+  "mu_pso" = df[df$type=="PSO_MVP",]$mu,
+  "sd_pso" = df[df$type=="PSO_MVP",]$sd,
+  "mu_qp" = df[df$type=="QP_MVP",]$mu,
+  "sd_qp" = df[df$type=="QP_MVP",]$sd
+)
+
+shapes <- list()
+for(i in 1:nrow(df_diff)){
+  shapes[[i]] <- list(
+    type = "line", 
+    y0 = df_diff[i,]$mu_pso, 
+    y1 = df_diff[i,]$mu_qp, 
+    yref = "y",
+    xref = "x",
+    x0 = df_diff[i,]$sd_pso, 
+    x1 = df_diff[i,]$sd_qp, 
+    line = list(color = "lightgrey"),
+    layer='below'
+  )
+}
 
 
 plot_ly(
@@ -461,39 +485,39 @@ plot_ly(
   colors = c("green", "red")
   ) %>% 
   add_annotations(
-    data=df[df$type=="QP_MVP" & df$lambda %in% seq(1,0,-0.1),],   
+    data=df_qp,   
     x=~sd, 
     y=~mu, 
     text = ~paste0("lambda: ",lambda),
-    ay = 40,
-    ax = 20
+    ay = -30,
+    ax = -30
   ) %>% 
-  add_annotations(
-    data=df[df$type=="PSO_MVP" & df$lambda %in% seq(1,0,-0.1),],   
-    x=~sd, 
-    y=~mu, 
-    text = ~paste0("lambda: ",lambda),
-    ay = -40,
-    ax = -20
-  ) %>% 
+  # add_segments(
+  #   #data=df_diff,   
+  #   x=df_diff$sd_pso, 
+  #   y=df_diff$mu_pso, 
+  #   yend = df_diff$sd_diff,
+  #   xend = df_diff$mu_diff
+  # ) %>% 
   layout(
-    xaxis=list(range=c(0.9*min(df$sd), 1.5*max(df[df$type=="QP_MVP",]$sd))),
-    yaxis=list(range=c(0.9*min(df$mu), 1.5*max(df[df$type=="QP_MVP",]$mu)))
+    xaxis=list(range=c(0.5*min(df$sd), 1.2*max(df[df$type=="QP_MVP",]$sd)), showgrid = FALSE),
+    yaxis=list(range=c(0.5*min(df$mu), 1.2*max(df[df$type=="QP_MVP",]$mu)), showgrid = FALSE),
+    shapes = shapes,
+    legend = list(x = 0.1, y = 0.9)
   ) %>% 
   html_save()
 ```
 
-It can be seen that the analytical approach and the PSO approach show only a small difference for $\lambda > 0.9$, while the difference increases steadily otherwise. This indicates that portfolios with minimal variance are more stable to generate with the PSO.
+The dots for each $\lambda$ are connected with a grey line to visualize the error of the PSO. It can be seen that its possible to solve MVP's with a PSO approach.
 
 ## Example ITP
 The same ITP solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S&P 500 between 2016 and 2021. The pool of assets includes all assets that are present in 2021 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $0.9$, the upper bound is $0.1$, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
 
-
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
-
-from <- "2016-01-01"
-to <- "2021-12-31"
+ 
+from <- "2018-01-01"
+to <- "2019-12-31"
 
 spx_composition <- buffer(
   get_spx_composition(),
@@ -578,7 +602,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
   }
   calc_const <- function(x){
     const <- t(mat$Amat) %*% x - mat$bvec
-    const[mat$meq] <- -abs(const[mat$meq])
+    const[mat$meq] <- -max(0, abs(const[mat$meq])-0.01)
     -min(0, const)
   }
   pso_res <- pso(
@@ -595,7 +619,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
       c.p = 0.5, # inherit best
       c.g = 0.5, # global best
       maxiter = 100, # iterations
-      w0 = 0.9, # starting inertia weight
+      w0 = 1.2, # starting inertia weight
       wN = 0, # ending inertia weight
       save_traces = F # save more information
     )
@@ -624,7 +648,7 @@ time <- system.time(
 df <- data.frame("type"="ITP_QP", "var"=temp_qp$var, "fitness"=temp_qp$value, "constraint"=0, "time"=time[3])
 for(i in 1:10){
   time <- system.time(
-    temp_pso <- itp_PSO(pool_returns_raw, bm_returns)
+    temp_pso <- itp_PSO(pool_returns = pool_returns_raw, bm_returns)
   )
   df <- rbind(
     df, 
@@ -636,6 +660,8 @@ for(i in 1:10){
       "time"=time[3]
     )
   )
+  
+  
 }
 df$sd <- sqrt(df$var)
 
@@ -645,7 +671,7 @@ df_summary <- rbind(
   df %>% filter(type == "ITP_PSO") %>% group_by(type) %>% summarise_all(., mean) %>% mutate(type = "ITP_PSO_mean")
 )
 rownames(df_summary) <- NULL
-df_summary$var <- round(df_summary$var, 7)
+df_summary$var <- round(df_summary$var, 12)
 df_summary$sd <- round(df_summary$sd, 4)
 df_summary$fitness <- round(df_summary$fitness, 7)
 df_summary$constraint <- round(df_summary$constraint, 18)
@@ -653,18 +679,22 @@ df_summary$time <- round(df_summary$time, 1)
 
 reactable(
   df_summary %>% select(type, sd, var, fitness, constraint, time),
+  wrap = FALSE,
+  #compact = T,
   columns = list(
-    var = colDef(format = colFormat(digits=7)),
+    type = colDef(width=150),
+    var = colDef(format = colFormat(digits=9), show =F),
     constraint = colDef(name = "constraint break")
-  )
+  )#,
+  #theme = reactableTheme(style = list(fontFamily = "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"))
 ) %>% 
-  html_save()
+  html_save(., vwidth = 800)
 ```
 
 It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
 
-## Pros and Cons
-
+## Pros and Cons for Continuous Problems
+A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP()` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP()` alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for $x$ is to be a integer vector. These problems could be solved by the `solve.QP()` approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP()` approach.
 
 
 ## Functions
