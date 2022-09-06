@@ -245,9 +245,15 @@ for(i in n_assets){
   temp <- if(i==max(n_assets)){
     itp(pool_returns_raw, bm_returns)
   }else{
-    itp(pool_returns_raw[, names(sort(temp$solution, decreasing = T)[1:i])], bm_returns)
+    itp(
+      pool_returns_raw[, names(sort(temp$solution, decreasing = T)[1:i])], 
+      bm_returns
+    )
   }
-  res <- rbind(res, data.frame("N"=i, "var"=temp$var, "sd"=sqrt(temp$var), row.names = NULL))
+  res <- rbind(
+    res, 
+    data.frame("N"=i, "var"=temp$var, "sd"=sqrt(temp$var), row.names = NULL)
+  )
 }
 ```
 

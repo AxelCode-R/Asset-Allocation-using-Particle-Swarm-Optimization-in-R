@@ -450,7 +450,7 @@ df$sd = sqrt(df$var)
 
 
 
-df_qp <- df[df$type=="QP_MVP" & df$lambda %in% seq(1,0.6,-0.1),]
+df_qp <- df[df$type=="QP_MVP" & df$lambda %in% seq(1,0.8,-0.1),]
 df_diff <- data.frame(
   "mu_pso" = df[df$type=="PSO_MVP",]$mu,
   "sd_pso" = df[df$type=="PSO_MVP",]$sd,

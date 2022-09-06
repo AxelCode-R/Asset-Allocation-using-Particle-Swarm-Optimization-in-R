@@ -813,9 +813,15 @@ The duplication and successive discarding of assets can begin. The results are s
 \NormalTok{  temp }\OtherTok{\textless{}{-}} \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{==}\FunctionTok{max}\NormalTok{(n\_assets))\{}
     \FunctionTok{itp}\NormalTok{(pool\_returns\_raw, bm\_returns)}
 \NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{}
-    \FunctionTok{itp}\NormalTok{(pool\_returns\_raw[, }\FunctionTok{names}\NormalTok{(}\FunctionTok{sort}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{solution, }\AttributeTok{decreasing =}\NormalTok{ T)[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{i])], bm\_returns)}
+    \FunctionTok{itp}\NormalTok{(}
+\NormalTok{      pool\_returns\_raw[, }\FunctionTok{names}\NormalTok{(}\FunctionTok{sort}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{solution, }\AttributeTok{decreasing =}\NormalTok{ T)[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{i])], }
+\NormalTok{      bm\_returns}
+\NormalTok{    )}
 \NormalTok{  \}}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(res, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"N"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{temp}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"sd"}\OtherTok{=}\FunctionTok{sqrt}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{var), }\AttributeTok{row.names =} \ConstantTok{NULL}\NormalTok{))}
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(}
+\NormalTok{    res, }
+    \FunctionTok{data.frame}\NormalTok{(}\StringTok{"N"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{temp}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"sd"}\OtherTok{=}\FunctionTok{sqrt}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{var), }\AttributeTok{row.names =} \ConstantTok{NULL}\NormalTok{)}
+\NormalTok{  )}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
