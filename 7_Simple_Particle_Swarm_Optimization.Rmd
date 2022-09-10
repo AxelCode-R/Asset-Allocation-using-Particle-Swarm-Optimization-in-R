@@ -697,8 +697,132 @@ It can be seen that in all PSO runs, sufficient fitness was achieved with neglig
 A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP()` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP()` alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for $x$ is to be a integer vector. These problems could be solved by the `solve.QP()` approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP()` approach.
 
 
-## Functions
+## Discrete Problems and Transaction Costs
 
+```{r}
+set.seed(0)
+
+nav <- 10000
+ 
+from <- "2018-01-01"
+to <- "2019-12-31"
+
+spx_composition <- buffer(
+  get_spx_composition(),
+  "AS_spx_composition"
+)
+
+
+pool_data <- buffer(
+  get_yf(
+    tickers = spx_composition %>% 
+      filter(Date<=to) %>% 
+      filter(Date==max(Date)) %>% 
+      pull(Ticker), 
+    from = from, 
+    to = to
+  ), 
+  "AS_sp500_asset_data"
+)
+pool_data$returns <- 
+  pool_data$returns[, colSums(is.na(pool_data$returns))==0]
+pool_data$prices <- pool_data$prices[, colnames(pool_data$returns)]
+
+
+bm_returns <- buffer(
+  get_yf(tickers = "%5EGSPC", from = from, to = to)$returns, 
+  "AS_sp500"
+) %>% setNames(., "S&P 500")
+
+
+pool_returns <- pool_data$returns
+mat <- list(
+  Dmat = cov(pool_returns),
+  dvec = cov(pool_returns, bm_returns),
+  Amat = t(rbind(
+    rep(1, ncol(pool_returns)), # sum up to 1
+    diag(1, 
+         nrow=ncol(pool_returns), 
+         ncol=ncol(pool_returns)) # long only
+  )),
+  bvec = c(
+    1, # sum up to 1
+    rep(0, ncol(pool_returns)) # long only
+  ),
+  meq = 1
+)
+
+qp <- solve.QP(
+  Dmat = mat$Dmat, dvec = mat$dvec, 
+  Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
+)
+
+sub_ticker <- colnames(pool_returns)[order(qp$solution, decreasing = T)[1:100]]
+
+res_qp <- itp_QP(pool_data$returns[,sub_ticker], bm_returns)
+prices <- last(pool_data$prices[,sub_ticker])
+res_qp_discrete <- setNames(as.vector(round(res_qp$solution*nav/prices)*prices/nav), names(res_qp$solution))
+
+res_qp_discrete_fit <- as.numeric(0.5 * t(res_qp_discrete) %*% mat$Dmat[names(res_qp_discrete), names(res_qp_discrete)] %*% res_qp_discrete - t(as.vector(mat$dvec[names(res_qp_discrete),])) %*% res_qp_discrete)
+res_qp_discrete_sum_wgt <- sum(res_qp_discrete)
+
+
+
+pool_returns <- pool_data$returns[, sub_ticker]
+mat <- list(
+  Dmat = cov(pool_returns),
+  dvec = cov(pool_returns, bm_returns),
+  Amat = t(rbind(
+    rep(1, ncol(pool_returns)), # sum up to 1
+    diag(1, 
+         nrow=ncol(pool_returns), 
+         ncol=ncol(pool_returns)) # long only
+  )),
+  bvec = c(
+    1, # sum up to 1
+    rep(0, ncol(pool_returns)) # long only
+  ),
+  meq = 1
+)
+  
+calc_fit <- function(x){
+  as.numeric(0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x)
+}
+calc_const <- function(x){
+  const <- t(mat$Amat) %*% x - mat$bvec
+  const[mat$meq] <- -max(0, abs(const[mat$meq]+0.01)-0.01)
+  -min(0, const)
+}
+pso_res <- pso(
+  par = res_qp$solution,
+  fn = function(x){
+    x <- as.vector(round(x*nav/prices)*prices/nav)
+    fitness <- calc_fit(x)
+    constraints <- calc_const(x)
+    return(fitness + 10*constraints)
+  },
+  lower = 0,
+  upper = 1,
+  control = list(
+    s = 200, # swarm size
+    c.p = 0.5, # inherit best
+    c.g = 0.5, # global best
+    maxiter = 100, # iterations
+    w0 = 1.5, # starting inertia weight
+    wN = 0, # ending inertia weight
+    save_traces = F # save more information
+  )
+)
+pso_res$solution <- setNames(as.vector(round(pso_res$solution*nav/prices)*prices/nav), names(res_qp$solution))
+res_pso_fit <- as.numeric(0.5 * t(pso_res$solution) %*% mat$Dmat[names(pso_res$solution), names(pso_res$solution)] %*% pso_res$solution - t(as.vector(mat$dvec[names(pso_res$solution),])) %*% pso_res$solution)
+
+
+res_qp_discrete_fit
+sum(res_qp_discrete_sum_wgt)
+
+res_pso_fit
+sum(pso_res$solution)
+```
 
 
 
