@@ -698,8 +698,8 @@ A PSO approach has advantages and disadvantages, since on the one hand any probl
 
 
 ## Discrete Problems and Transaction Costs
-
-```{r}
+A continuous solution for a portfolio is not sufficient for the practice, because only integer amounts of assets can be bought. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products.
+```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
 nav <- 10000
@@ -752,22 +752,25 @@ mat <- list(
   meq = 1
 )
 
+# search 100 best tickers
 qp <- solve.QP(
   Dmat = mat$Dmat, dvec = mat$dvec, 
   Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
 )
-
 sub_ticker <- colnames(pool_returns)[order(qp$solution, decreasing = T)[1:100]]
 
-res_qp <- itp_QP(pool_data$returns[,sub_ticker], bm_returns)
-prices <- last(pool_data$prices[,sub_ticker])
-res_qp_discrete <- setNames(as.vector(round(res_qp$solution*nav/prices)*prices/nav), names(res_qp$solution))
 
+# Default solve.QP
+time_qp <- system.time({
+  res_qp <- itp_QP(pool_data$returns[,sub_ticker], bm_returns)
+  prices <- last(pool_data$prices[,sub_ticker])
+  res_qp_discrete <- setNames(as.vector(round(res_qp$solution*nav/prices)*prices/nav), names(res_qp$solution))
+})
 res_qp_discrete_fit <- as.numeric(0.5 * t(res_qp_discrete) %*% mat$Dmat[names(res_qp_discrete), names(res_qp_discrete)] %*% res_qp_discrete - t(as.vector(mat$dvec[names(res_qp_discrete),])) %*% res_qp_discrete)
 res_qp_discrete_sum_wgt <- sum(res_qp_discrete)
 
 
-
+# Default PSO
 pool_returns <- pool_data$returns[, sub_ticker]
 mat <- list(
   Dmat = cov(pool_returns),
@@ -793,35 +796,80 @@ calc_const <- function(x){
   const[mat$meq] <- -max(0, abs(const[mat$meq]+0.01)-0.01)
   -min(0, const)
 }
-pso_res <- pso(
-  par = res_qp$solution,
-  fn = function(x){
-    x <- as.vector(round(x*nav/prices)*prices/nav)
-    fitness <- calc_fit(x)
-    constraints <- calc_const(x)
-    return(fitness + 10*constraints)
-  },
-  lower = 0,
-  upper = 1,
-  control = list(
-    s = 200, # swarm size
-    c.p = 0.5, # inherit best
-    c.g = 0.5, # global best
-    maxiter = 100, # iterations
-    w0 = 1.5, # starting inertia weight
-    wN = 0, # ending inertia weight
-    save_traces = F # save more information
+time_pso <- system.time({
+  pso_res <- pso(
+    par = rep(0, ncol(pool_returns)),
+    fn = function(x){
+      x <- as.vector(round(x*nav/prices)*prices/nav)
+      fitness <- calc_fit(x)
+      constraints <- calc_const(x)
+      return(fitness + 10*constraints)
+    },
+    lower = 0,
+    upper = 1,
+    control = list(
+      s = 200, # swarm size
+      c.p = 0.5, # inherit best
+      c.g = 0.5, # global best
+      maxiter = 100, # iterations
+      w0 = 1.2, # starting inertia weight
+      wN = 0, # ending inertia weight
+      save_traces = F # save more information
+    )
   )
-)
+})
 pso_res$solution <- setNames(as.vector(round(pso_res$solution*nav/prices)*prices/nav), names(res_qp$solution))
 res_pso_fit <- as.numeric(0.5 * t(pso_res$solution) %*% mat$Dmat[names(pso_res$solution), names(pso_res$solution)] %*% pso_res$solution - t(as.vector(mat$dvec[names(pso_res$solution),])) %*% pso_res$solution)
 
 
-res_qp_discrete_fit
-sum(res_qp_discrete_sum_wgt)
 
-res_pso_fit
-sum(pso_res$solution)
+# PSO with solve.QP starting position
+time_pso_2 <- system.time({
+  pso_2_res <- pso(
+    par = res_qp$solution,
+    fn = function(x){
+      x <- as.vector(round(x*nav/prices)*prices/nav)
+      fitness <- calc_fit(x)
+      constraints <- calc_const(x)
+      return(fitness + 10*constraints)
+    },
+    lower = 0,
+    upper = 1,
+    control = list(
+      s = 200, # swarm size
+      c.p = 0.5, # inherit best
+      c.g = 0.5, # global best
+      maxiter = 100, # iterations
+      w0 = 1.2, # starting inertia weight
+      wN = 0, # ending inertia weight
+      save_traces = F # save more information
+    )
+  )
+})
+pso_2_res$solution <- setNames(as.vector(round(pso_2_res$solution*nav/prices)*prices/nav), names(res_qp$solution))
+res_pso_2_fit <- as.numeric(0.5 * t(pso_2_res$solution) %*% mat$Dmat[names(pso_2_res$solution), names(pso_2_res$solution)] %*% pso_2_res$solution - t(as.vector(mat$dvec[names(pso_2_res$solution),])) %*% pso_2_res$solution)
+
+
+
+# print("solve.QP")
+# res_qp_discrete_fit
+# sum(res_qp_discrete_sum_wgt)
+# 
+# print("PSO")
+# res_pso_fit
+# sum(pso_res$solution)
+# 
+# print("PSO 2")
+# res_pso_2_fit
+# sum(pso_2_res$solution)
+
+reactable(data.frame(
+  "type" = c("solve.QP discrete", "PSO", "PSO with solve.QP init res"),
+  "fitnes" = c(res_qp_discrete_fit, res_pso_fit, res_pso_2_fit),
+  "sum_wgt" = c(res_qp_discrete_sum_wgt, sum(pso_res$solution), sum(pso_2_res$solution)),
+  "time" = c(time_qp[3], time_pso[3], time_pso_2[3])
+)) %>% 
+  html_save()
 ```
 
 
