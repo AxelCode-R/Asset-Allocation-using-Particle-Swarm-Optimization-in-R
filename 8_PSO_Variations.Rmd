@@ -1,0 +1,25 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+# PSO Variations
+The standard PSO analysed in the previews chapter is capable to solve a wide range of problems but is very slow and often gets stuck in local minima. This chapter analyses different variations of the standard PSO in finance related problems. The first variant is the PSO with functions stretching which reduces the congerence into local minima. Aftwards are 
+
+
+
+10.1.1.301.4441.pdf
+function stretching
+
+
+Boudt-Wan2020_Article_TheEffectOfVelocitySparsityOnT
+SV-PSO CV-PSO
+oh ist nur binary PSO
+
+
+pso_cardinality_constrained.pdf
+
+
+DissertationHelwig (1).pdf

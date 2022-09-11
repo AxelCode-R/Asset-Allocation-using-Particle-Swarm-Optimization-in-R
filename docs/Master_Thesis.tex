@@ -126,7 +126,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-09-06}
+\date{2022-09-11}
 
 \begin{document}
 \maketitle
@@ -833,12 +833,12 @@ It can be seen that the standard deviation stagnates at about \(N=100\). This le
 \hypertarget{particle-swarm-optimization-pso}{%
 \chapter{Particle Swarm Optimization (PSO)}\label{particle-swarm-optimization-pso}}
 
-The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy \citep{KeEb1995}. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm \citep{PaVr2002}. Its advantages over other global optimization methods are that it does not require gradient information. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are the low computational costs, since only basic mathematical operators are used.
+The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy \citep{KeEb1995}. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm \citep{PaVr2002}. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are the low computational costs, since only basic mathematical operators are used.
 
 \hypertarget{the-algorithm}{%
 \section{The Algorithm}\label{the-algorithm}}
 
-Each particle \(d\) with position \(x_d\) moves in the search space \(R^N\) and has its own velocity \(v_d\) and remembers its previous best position \(P_d\). After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position \(p_g\) of all particles. A position change from \(i\) to \(i+1\) can be calculated by the following two equations \citep{PaVr2002}:
+Each particle \(d\) with position \(x_d\) moves in the search space \(\mathbb{R}^N\) and has its own velocity \(v_d\) and remembers its previous best position \(P_d\). After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position \(p_g\) of all particles. A position change from \(i\) to \(i+1\) can be calculated by the following two equations \citep{PaVr2002}:
 
 \begin{align*}
   v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i - x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
@@ -848,7 +848,7 @@ Each particle \(d\) with position \(x_d\) moves in the search space \(R^N\) and 
 Where \(r_1\) and \(r_2\) are uniformly distributed random numbers in {[}0, 1{]}. The cognitive parameter \(c_p\) acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter \(c_g\), which is a weighting of the direction to the global best position. The inertial weight \(w\) is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in \citep{PaVr2002} showed that these parameters can be set to \(c_p=c_g=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for \(d = 1, 2, \cdots, D\) particles can be given in the following matrix notation:
 
 \begin{align*}
-  V^{i+1} &= w \cdot V^{i} + c_1 \cdot r_1^i \cdot (P^i-X^i) + c_2 \cdot r_2^i \cdot (p_g^i - X^i) \\
+  V^{i+1} &= w \cdot V^{i} + c_p \cdot r_1^i \cdot (P^i-X^i) + c_g \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} &= X^i + V^{i+1}
 \end{align*}
 
@@ -857,7 +857,7 @@ With current positions \(X \in \mathbb{R}^{N \times D}\), current velocities \(V
 \hypertarget{pso-function}{%
 \section{\texorpdfstring{\texttt{pso()} Function}{pso() Function}}\label{pso-function}}
 
-In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package \texttt{pso}. At the center of it all is an objective function \texttt{fn()} that returns a scalar to be minimized. The function itself mainly needs a vector \texttt{pos} that describes the position of a particle (e.g.~weights). The other main parameters for the PSO function are \texttt{par}, which is a position of a particle used to derive the dimension of the problem and as the first position of a particle. The argument can only contain \texttt{NA}'s, resulting in completely random starting positions. The last two arguments are \texttt{lower} and \texttt{upper} bounds (e.g.~weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called \texttt{control}. The resulting structure is:
+In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package \texttt{pso}. The key component of the problem is a objective function called \texttt{fn()}, which returns a scalar that needs to be minimized. The function itself mainly needs a vector \texttt{pos} that describes the position of a particle (e.g.~weights). The other main parameters for the PSO function are \texttt{par}, which is a position of a particle used to derive the dimension of the problem and as the first position of a particle. The argument can only contain \texttt{NA}'s, resulting in completely random starting positions. The last two arguments are \texttt{lower} and \texttt{upper} bounds (e.g.~weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called \texttt{control}. The resulting structure is:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -873,7 +873,7 @@ In this section, a general PSO function is created that follows the structure of
 \end{Highlighting}
 \end{Shaded}
 
-Before the main data structure can be initialized, some sample input must be created for the \texttt{pso()} function as described below:
+Before the main data structure can be initialized, some sample inputs must be created for the \texttt{pso()} function as described below:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1011,7 +1011,7 @@ The dots for each \(\lambda\) are connected with a grey line to visualize the er
 \hypertarget{example-itp-1}{%
 \section{Example ITP}\label{example-itp-1}}
 
-The same ITP solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S\&P 500 between 2016 and 2021. The pool of assets includes all assets that are present in 2021 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at \(0.9\), the upper bound is \(0.1\), and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach for seed 0 in the table below:
+The same ITP solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S\&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at \(1.2\), the upper bound is \(0.1\), and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach for seed 0 in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/pso8-1.png}
 
@@ -1022,8 +1022,23 @@ It can be seen that in all PSO runs, sufficient fitness was achieved with neglig
 
 A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the \texttt{solve.QP()} approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the \texttt{solve.QP()} alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for \(x\) is to be a integer vector. These problems could be solved by the \texttt{solve.QP()} approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the \texttt{solve.QP()} approach.
 
-\hypertarget{functions}{%
-\section{Functions}\label{functions}}
+\hypertarget{discrete-problems-and-transaction-costs}{%
+\section{Discrete Problems and Transaction Costs}\label{discrete-problems-and-transaction-costs}}
+
+A continuous solution for a portfolio is not sufficient for the practice, because most of the time only integer amounts of assets can be bought. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g.~ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a \texttt{solve.QP()} approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function \texttt{fn()}. In a portfolio with net asset value \(\text{nav}\) consisting of only American stocks with weights \(w_i\) and closing prices \(p_i\) can be discretized to \(w_i^d\) by the following formula:
+
+\[
+  w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
+\]
+
+\hypertarget{example-discrete-itp}{%
+\section{Example: Discrete ITP}\label{example-discrete-itp}}
+
+This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP focuses to track the S\&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, \(1 < \sum w_i > 0.99\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
+
+\includegraphics{Master_Thesis_files/figure-latex/pso9-1.png}
+
+It can be seen that the rounded \texttt{solve.QP()} solution still has a good fitness but the constraints are not satisfied. The PSO has no constrain breaks and still reached a fitness close to the rounded \texttt{solve.QP()}. The PSO with \texttt{solve.QP()} solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the \texttt{solve.QP()} and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for problems in practice.
 
   \bibliography{book.bib,packages.bib}
 
