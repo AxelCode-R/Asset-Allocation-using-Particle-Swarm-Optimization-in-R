@@ -128,9 +128,14 @@ p %>% html_save()
 
 
 ## Index-Tracking Portfolio (ITP)
-Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor's 500 Index (S&P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost [@Desm2016]. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance is exactly equal to the performance of the benchmark, neglecting transaction costs. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reweight daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark's assets. To this end, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&P 500 might consist of the one hundred highest-weighted assets in the S&P 500. Now is the time to optimize the portfolio to match the benchmark performance, taking into account investor constraints such as ratings, investment sectors, and others. Typically, this is accomplished by reducing the variance between portfolio and benchmark returns:
+Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor's 500 Index (S&P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost [@Desm2016]. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reweight daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark's assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&P 500 might consist of the one hundred highest-weighted assets in the S&P 500. The ITP can be modeled in two ways analysed in [@IuGa2019]. 
+
+
+### ITP with TEV objective
+The classic and widely used model tries to reduce the variance of tracking error (TEV) with the following formula:
+
 $$
- minimize \ \ Var(r_{p}-r_{bm})
+ minimize \ \ Var(TE) = Var(r_{p}-r_{bm})
 $$
 
 To obtain the portfolio weights $w$, one needs to substitute $r_{p}$ as follows:
@@ -194,7 +199,50 @@ $$
 d = Cov(r_{bm}, R)
 $$
 
-It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only.
+It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only. Despite the fact that this model is often used, it has a big disadvantage in that it cannot detect constant deviations in the returns. For this reason, the following model exists, which focuses on the MSE.
+
+### ITP with MSE objective
+A good explanation of the ITP with MSE objective can be found in [ahmedbadary](https://ahmedbadary.github.io/work_files/research/conv_opt/hw/iftp). The objective is to minimize the mean square tracking error of the daily portfolio returns $r_{p, t}$ and daily benchmark returns $r_{b,t}$ on $T$ days:
+
+$$
+  \frac{1}{T} \sum^T_{t=1}(r_{t, p}-r_{t, b})^2
+$$
+The formula can be rewritten as vector norm:
+$$
+  \frac{1}{T} \left\Vert r_{p}-r_{b} \right\Vert_2^2
+$$
+Which results in the following minimization with neglected stretching factor:
+$$
+ min \ \  \left\Vert r_{p}-r_{b} \right\Vert_2^2
+$$
+The portfolio returns $r_p$ needs to be substituted to contain the portfolio weights $w$ like in the TEV objective above. This results in the below transformation of the problem:
+$$
+  \left\Vert r_{p}-r_{b} \right\Vert_2^2 
+  = \left\Vert R \times w-r_{b} \right\Vert_2^2 
+  = (R \times w-r_{b})^T \times (R \times w-r_{b}) 
+  = (w^T \times R^T-r_{b}^T) \times (R \times w-r_{b}) 
+  = w^T \times R^T \times R \times w - w^T \times A^T \times r_b - r_b^T \times R \times w + r_b^T \times r_b
+$$
+The minimization of this problem and the fact that the scalars $w^T \times A^T \times r_b$ and $r_b^T \times R \times w$ are equal, transforms it to:
+$$
+  \min\limits_{w} \ \  \left\Vert r_{p}-r_{b} \right\Vert_2^2 
+  = w^T \times R^T \times R \times w - 2\cdot r_b^T \times R \times w
+$$
+This leads to the equivalent general representation of the ITP as follows:
+$$
+  \min\limits_{w} \ \ \frac{1}{2} w^T D w - d^T w
+$$
+with
+$$
+D = R^T \times R
+$$
+and 
+$$
+  d = R^T \times r_b
+$$
+
+
+
 
 ### Example ITP
 This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2018-01-01/2019-12-31 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark.
