@@ -230,10 +230,10 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pso-function"><i class="fa fa-check"></i><b>8.2</b> <code>pso()</code> Function</a></li>
 <li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
 <li class="chapter" data-level="8.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-mvp"><i class="fa fa-check"></i><b>8.4</b> Example MVP</a></li>
-<li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-1"><i class="fa fa-check"></i><b>8.5</b> Example: ITP</a></li>
+<li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-mste"><i class="fa fa-check"></i><b>8.5</b> Example: ITP-MSTE</a></li>
 <li class="chapter" data-level="8.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems"><i class="fa fa-check"></i><b>8.6</b> Pros and Cons for Continuous Problems</a></li>
 <li class="chapter" data-level="8.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#discrete-problems-and-transaction-costs"><i class="fa fa-check"></i><b>8.7</b> Discrete Problems and Transaction Costs</a></li>
-<li class="chapter" data-level="8.8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-discrete-itp"><i class="fa fa-check"></i><b>8.8</b> Example: Discrete ITP</a></li>
+<li class="chapter" data-level="8.8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-discrete-itp-mste"><i class="fa fa-check"></i><b>8.8</b> Example: Discrete ITP-MSTE</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -493,7 +493,7 @@ and
 <span id="cb9-33"><a href="challenges.html#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-34"><a href="challenges.html#cb9-34" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
 <span id="cb9-35"><a href="challenges.html#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> <span class="fu">t</span>(pool_returns) <span class="sc">%*%</span> pool_returns,</span>
-<span id="cb9-36"><a href="challenges.html#cb9-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">dvec =</span> <span class="fu">as.vector</span>(<span class="fu">t</span>(pool_returns) <span class="sc">%*%</span> bm_returns),</span>
+<span id="cb9-36"><a href="challenges.html#cb9-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">dvec =</span> <span class="fu">t</span>(pool_returns) <span class="sc">%*%</span> bm_returns,</span>
 <span id="cb9-37"><a href="challenges.html#cb9-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
 <span id="cb9-38"><a href="challenges.html#cb9-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(pool_returns)), <span class="co"># sum up to 1</span></span>
 <span id="cb9-39"><a href="challenges.html#cb9-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">diag</span>(<span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">ncol</span>(pool_returns), <span class="at">ncol=</span><span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>

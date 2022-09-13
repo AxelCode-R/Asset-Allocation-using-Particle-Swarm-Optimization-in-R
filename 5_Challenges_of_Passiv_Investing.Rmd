@@ -284,7 +284,7 @@ port_returns_TEV <- xts(pool_returns %*% qp$solution, order.by=index(pool_return
 
 mat <- list(
     Dmat = t(pool_returns) %*% pool_returns,
-    dvec = as.vector(t(pool_returns) %*% bm_returns),
+    dvec = t(pool_returns) %*% bm_returns,
     Amat = t(rbind(
       rep(1, ncol(pool_returns)), # sum up to 1
       diag(1, nrow=ncol(pool_returns), ncol=ncol(pool_returns)) # long only

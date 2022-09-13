@@ -1059,10 +1059,10 @@ This example uses the \texttt{solve.QP} approach from \ref{exampleanalyticalmvp}
 
 The dots for each \(\lambda\) are connected with a grey line to visualize the error of the PSO. It can be seen that its possible to solve MVP's with a PSO approach.
 
-\hypertarget{example-itp-1}{%
-\section{Example: ITP}\label{example-itp-1}}
+\hypertarget{example-itp-mste}{%
+\section{Example: ITP-MSTE}\label{example-itp-mste}}
 
-The same ITP solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S\&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at \(1.2\), the upper bound is \(0.1\), and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach for seed 0 in the table below:
+The same ITP-MSTE solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S\&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at \(1.2\), the upper bound is \(0.1\), and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach for seed 0 in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/pso8-1.png}
 
@@ -1082,10 +1082,10 @@ A continuous solution for a portfolio is not sufficient for the practice, becaus
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
 \]
 
-\hypertarget{example-discrete-itp}{%
-\section{Example: Discrete ITP}\label{example-discrete-itp}}
+\hypertarget{example-discrete-itp-mste}{%
+\section{Example: Discrete ITP-MSTE}\label{example-discrete-itp-mste}}
 
-This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP focuses to track the S\&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, \(1 < \textstyle\sum w_i > 0.99\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP-MSTE focuses to track the S\&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, \(1 < \textstyle\sum w_i > 0.99\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/pso9-1.png}
 

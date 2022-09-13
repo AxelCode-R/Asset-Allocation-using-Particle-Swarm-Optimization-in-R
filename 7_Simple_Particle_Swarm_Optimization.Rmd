@@ -510,8 +510,8 @@ plot_ly(
 
 The dots for each $\lambda$ are connected with a grey line to visualize the error of the PSO. It can be seen that its possible to solve MVP's with a PSO approach.
 
-## Example: ITP
-The same ITP solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$, the upper bound is $0.1$, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
+## Example: ITP-MSTE
+The same ITP-MSTE solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$, the upper bound is $0.1$, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
 
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
@@ -550,8 +550,8 @@ bm_returns <- buffer(
 itp_QP <- function(pool_returns, bm_returns){
 
   mat <- list(
-    Dmat = cov(pool_returns),
-    dvec = cov(pool_returns, bm_returns),
+    Dmat = t(pool_returns) %*% pool_returns,
+    dvec = t(pool_returns) %*% bm_returns,
     Amat = t(rbind(
       rep(1, ncol(pool_returns)), # sum up to 1
       diag(1, 
@@ -582,8 +582,8 @@ itp_QP <- function(pool_returns, bm_returns){
 
 itp_PSO <- function(pool_returns, bm_returns, silent = T){
   mat <- list(
-    Dmat = cov(pool_returns),
-    dvec = cov(pool_returns, bm_returns),
+    Dmat = t(pool_returns) %*% pool_returns,
+    dvec = t(pool_returns) %*% bm_returns,
     Amat = t(rbind(
       rep(1, ncol(pool_returns)), # sum up to 1
       diag(1, 
@@ -645,7 +645,7 @@ df <- NULL
 time <- system.time(
   temp_qp <- itp_QP(pool_returns_raw, bm_returns)
 )
-df <- data.frame("type"="ITP_QP", "var"=temp_qp$var, "fitness"=temp_qp$value, "constraint"=0, "time"=time[3])
+df <- data.frame("type"="ITP-MSTE_QP", "var"=temp_qp$var, "fitness"=temp_qp$value, "constraint"=0, "time"=time[3])
 for(i in 1:10){
   time <- system.time(
     temp_pso <- itp_PSO(pool_returns = pool_returns_raw, bm_returns)
@@ -653,7 +653,7 @@ for(i in 1:10){
   df <- rbind(
     df, 
     data.frame(
-      "type"="ITP_PSO", 
+      "type"="ITP-MSTE_PSO", 
       "var"=temp_pso$var, 
       "fitness"=temp_pso$fit, 
       "constraint"=temp_pso$constraint, 
@@ -666,13 +666,13 @@ for(i in 1:10){
 df$sd <- sqrt(df$var)
 
 df_summary <- rbind(
-  df %>% filter(type == "ITP_QP"),
-  df %>% filter(type == "ITP_PSO") %>% filter(fitness == min(fitness)) %>% mutate(type = "ITP_PSO_best"),
-  df %>% filter(type == "ITP_PSO") %>% group_by(type) %>% summarise_all(., mean) %>% mutate(type = "ITP_PSO_mean")
+  df %>% filter(type == "ITP-MSTE_QP"),
+  df %>% filter(type == "ITP-MSTE_PSO") %>% filter(fitness == min(fitness)) %>% mutate(type = "ITP-MSTE_PSO_best"),
+  df %>% filter(type == "ITP-MSTE_PSO") %>% group_by(type) %>% summarise_all(., mean) %>% mutate(type = "ITP-MSTE_PSO_mean")
 )
 rownames(df_summary) <- NULL
 df_summary$var <- round(df_summary$var, 12)
-df_summary$sd <- round(df_summary$sd, 4)
+df_summary$sd <- round(df_summary$sd, 6)
 df_summary$fitness <- round(df_summary$fitness, 7)
 df_summary$constraint <- round(df_summary$constraint, 18)
 df_summary$time <- round(df_summary$time, 1)
@@ -684,6 +684,7 @@ reactable(
   columns = list(
     type = colDef(width=150),
     var = colDef(format = colFormat(digits=9), show =F),
+    sd = colDef(format = colFormat(digits=5)),
     constraint = colDef(name = "constraint break")
   )#,
   #theme = reactableTheme(style = list(fontFamily = "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"))
@@ -704,9 +705,9 @@ $$
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
 $$
 
-## Example: Discrete ITP
+## Example: Discrete ITP-MSTE
 
-This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP focuses to track the S&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, $1 < \textstyle\sum w_i > 0.99$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses to track the S&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, $1 < \textstyle\sum w_i > 0.99$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
 
 ```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
@@ -746,8 +747,8 @@ bm_returns <- buffer(
 
 pool_returns <- pool_data$returns
 mat <- list(
-  Dmat = cov(pool_returns),
-  dvec = cov(pool_returns, bm_returns),
+  Dmat = t(pool_returns) %*% pool_returns,
+  dvec = t(pool_returns) %*% bm_returns,
   Amat = t(rbind(
     rep(1, ncol(pool_returns)), # sum up to 1
     diag(1, 
@@ -775,15 +776,15 @@ time_qp <- system.time({
   prices <- last(pool_data$prices[,sub_ticker])
   res_qp_discrete <- setNames(as.vector(round(res_qp$solution*nav/prices)*prices/nav), names(res_qp$solution))
 })
-res_qp_discrete_fit <- as.numeric(0.5 * t(res_qp_discrete) %*% mat$Dmat[names(res_qp_discrete), names(res_qp_discrete)] %*% res_qp_discrete - t(as.vector(mat$dvec[names(res_qp_discrete),])) %*% res_qp_discrete)
+res_qp_discrete_fit <- as.numeric(0.5 * t(res_qp_discrete) %*% mat$Dmat[names(res_qp_discrete), names(res_qp_discrete)] %*% res_qp_discrete - t(as.vector(mat$dvec[names(res_qp_discrete)])) %*% res_qp_discrete)
 res_qp_discrete_sum_wgt <- sum(res_qp_discrete)
 
 
 # Default PSO
 pool_returns <- pool_data$returns[, sub_ticker]
 mat <- list(
-  Dmat = cov(pool_returns),
-  dvec = cov(pool_returns, bm_returns),
+  Dmat = t(pool_returns) %*% pool_returns,
+  dvec = t(pool_returns) %*% bm_returns,
   Amat = t(rbind(
     rep(1, ncol(pool_returns)), # sum up to 1
     diag(1, 
@@ -858,19 +859,6 @@ time_pso_2 <- system.time({
 pso_2_res$solution <- setNames(as.vector(round(pso_2_res$solution*nav/prices)*prices/nav), names(res_qp$solution))
 res_pso_2_fit <- as.numeric(0.5 * t(pso_2_res$solution) %*% mat$Dmat[names(pso_2_res$solution), names(pso_2_res$solution)] %*% pso_2_res$solution - t(as.vector(mat$dvec[names(pso_2_res$solution),])) %*% pso_2_res$solution)
 
-
-
-# print("solve.QP")
-# res_qp_discrete_fit
-# sum(res_qp_discrete_sum_wgt)
-# 
-# print("PSO")
-# res_pso_fit
-# sum(pso_res$solution)
-# 
-# print("PSO 2")
-# res_pso_2_fit
-# sum(pso_2_res$solution)
 
 reactable(
   data.frame(
