@@ -126,7 +126,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-09-11}
+\date{2022-09-13}
 
 \begin{document}
 \maketitle
@@ -468,7 +468,7 @@ Markowitz showed that diversifying risk across multiple assets reduces overall p
 Let there be \(N\) assets and their returns on \(T\) different days, creating a return matrix \(R \in \mathbb{R}^{T \times N}\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The covariance matrix of the returns is \(\textstyle\sum \in \mathbb{R}^{N \times N}\) and the expected returns are \(\mu \in \mathbb{R}^{N}\). The MVP with the risk aversion parameter \(\lambda \in [0,1]\), as shown in \citep{Mari2005}, can be formalized as follows:
 
 \begin{equation} 
-\underset{w}{minimize} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
+\underset{w}{min} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 \label{eq:MVP}
 \end{equation}
 
@@ -498,9 +498,15 @@ The portfolio compositions for each \(\lambda\) are:
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-Tracking Portfolio (ITP)}\label{index-tracking-portfolio-itp}}
 
-Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor's 500 Index (S\&P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost \citep{Desm2016}. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance is exactly equal to the performance of the benchmark, neglecting transaction costs. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reweight daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark's assets. To this end, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S\&P 500 might consist of the one hundred highest-weighted assets in the S\&P 500. Now is the time to optimize the portfolio to match the benchmark performance, taking into account investor constraints such as ratings, investment sectors, and others. Typically, this is accomplished by reducing the variance between portfolio and benchmark returns:
+Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor's 500 Index (S\&P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost \citep{Desm2016}. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reweight daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark's assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S\&P 500 might consist of the one hundred highest-weighted assets in the S\&P 500. The ITP can be modeled in two ways analysed in \citep{IuGa2019}.
+
+\hypertarget{itp-with-tev-objective-itp-tev}{%
+\subsection{ITP with TEV objective (ITP-TEV)}\label{itp-with-tev-objective-itp-tev}}
+
+The classic and widely used model tries to reduce the variance of tracking error (TEV) with the following formula:
+
 \[
- minimize \ \ Var(r_{p}-r_{bm})
+ min \ \ Var(TE) = Var(r_{p}-r_{bm})
 \]
 
 To obtain the portfolio weights \(w\), one needs to substitute \(r_{p}\) as follows:
@@ -552,7 +558,7 @@ The minimization problem of the ITP in the general structure required by many op
   min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
 \]
 
-Minimization problems can ignore constant terms and global stretch coefficients and still find the same minimum. This leads to a general substitution of the ITP as follows:
+Minimization problems can ignore constant terms and global stretch coefficients and still find the same minimum. This leads to a general substitution of the ITP with TEV objective as follows:
 
 \[
   D = Cov(R)
@@ -564,19 +570,64 @@ and
 d = Cov(r_{bm}, R)
 \]
 
-It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only.
+It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only. Despite the fact that this model is often used, it has a big disadvantage in that it cannot detect constant deviations in the returns. For this reason, the following model exists, which focuses on the MSE.
+
+\hypertarget{itp-with-mse-objective-itp-mste}{%
+\subsection{ITP with MSE objective (ITP-MSTE)}\label{itp-with-mse-objective-itp-mste}}
+
+A good explanation of the ITP with MSTE objective can be found in \href{https://ahmedbadary.github.io/work_files/research/conv_opt/hw/iftp}{ahmedbadary}. The objective is to minimize the mean square tracking error (MSTE) of the daily portfolio returns \(r_{t, p}\) and daily benchmark returns \(r_{t, bm}\) on \(T\) days:
+
+\[
+  \frac{1}{T} \sum^T_{t=1}(r_{t, p}-r_{t, bm})^2
+\]
+The formula can be rewritten as vector norm:
+\[
+  \frac{1}{T} \left\Vert r_{p}-r_{bm} \right\Vert_2^2
+\]
+Which results in the following minimization with neglected stretching factor:
+\[
+ min \ \  \left\Vert r_{p}-r_{bm} \right\Vert_2^2
+\]
+The portfolio returns \(r_p\) needs to be substituted to contain the portfolio weights \(w\) like in the TEV objective above. This results in the below transformation of the problem:
+
+\begin{align*}
+  \left\Vert r_{p}-r_{bm} \right\Vert_2^2 \\
+  &= \left\Vert R \times w-r_{bm} \right\Vert_2^2 \\ 
+  &= (R \times w-r_{bm})^T \times (R \times w-r_{bm}) \\ 
+  &= (w^T \times R^T-r_{bm}^T) \times (R \times w-r_{bm}) \\ 
+  &= w^T \times R^T \times R \times w - w^T \times A^T \times r_{bm} - r_{bm}^T \times R \times w + r_{bm}^T \times \end{align*}
+
+The minimization of this problem and the fact that the scalars \(w^T \times A^T \times r_{bm}\) and \(r_{bm}^T \times R \times w\) are equal, transforms it to:
+\[
+  \min\limits_{w} \ \  \left\Vert r_{p}-r_{bm} \right\Vert_2^2 
+  = w^T \times R^T \times R \times w - 2\cdot r_{bm}^T \times R \times w
+\]
+This leads to the equivalent general representation of the ITP with MSTE objective as follows:
+\[
+  \min\limits_{w} \ \ \frac{1}{2} w^T D w - d^T w
+\]
+with
+\[
+D = R^T \times R
+\]
+and
+\[
+  d = R^T \times r_{bm}
+\]
 
 \hypertarget{example-itp}{%
 \subsection{Example ITP}\label{example-itp}}
 
-This example shows the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2018-01-01/2019-12-31 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark.
-
-\begin{verbatim}
-##      AAPL       IBM      GOOG 
-## 0.2594763 0.4164918 0.3240319
-\end{verbatim}
+This example shows the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2018-01-01/2019-12-31 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
 
 \includegraphics{Master_Thesis_files/figure-latex/ITP_ex-1.png}
+The ITP-TEV and ITP-MSTE had almost the same results whith the compositions below:
+
+\begin{verbatim}
+##       type      AAPL       IBM      GOOG
+## 1  ITP-TEV 0.2594763 0.4164918 0.3240319
+## 2 ITP-MSTE 0.2588587 0.4170364 0.3241049
+\end{verbatim}
 
 \hypertarget{analytic-solver-for-quadratic-programming-problems}{%
 \chapter{Analytic Solver for Quadratic Programming Problems}\label{analytic-solver-for-quadratic-programming-problems}}
@@ -1009,7 +1060,7 @@ This example uses the \texttt{solve.QP} approach from \ref{exampleanalyticalmvp}
 The dots for each \(\lambda\) are connected with a grey line to visualize the error of the PSO. It can be seen that its possible to solve MVP's with a PSO approach.
 
 \hypertarget{example-itp-1}{%
-\section{Example ITP}\label{example-itp-1}}
+\section{Example: ITP}\label{example-itp-1}}
 
 The same ITP solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S\&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at \(1.2\), the upper bound is \(0.1\), and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach for seed 0 in the table below:
 
@@ -1034,7 +1085,7 @@ A continuous solution for a portfolio is not sufficient for the practice, becaus
 \hypertarget{example-discrete-itp}{%
 \section{Example: Discrete ITP}\label{example-discrete-itp}}
 
-This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP focuses to track the S\&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, \(1 < \sum w_i > 0.99\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP focuses to track the S\&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, \(1 < \textstyle\sum w_i > 0.99\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/pso9-1.png}
 

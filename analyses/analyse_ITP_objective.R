@@ -171,7 +171,7 @@ for(i in (1+train_months):(length(dates)-1)){
 
   print(paste0("train_interval: ", train_interval, "    test_interval: ", test_interval))
 
-  # VAR(R_p-R_bm) -> min
+  # VAR(TE) -> min
   mat <- list(
     Dmat = cov(pool_returns[train_interval, ]),
     dvec = cov(pool_returns[train_interval, ], bm_returns[train_interval, ]),
@@ -201,7 +201,7 @@ for(i in (1+train_months):(length(dates)-1)){
   )
 
 
-  # TE(R_p-R_bm) -> min
+  # MSE(TE) -> min
   mat <- list(
     Dmat = t(pool_returns[train_interval, ]) %*% pool_returns[train_interval, ],
     dvec = as.vector(t(pool_returns[train_interval, ]) %*% bm_returns[train_interval, ]),
