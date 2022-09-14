@@ -9,6 +9,7 @@ spx_composition <- buffer(
 )
 
 
+
 pool_returns <- buffer(
   get_yf(
     tickers = spx_composition %>%
