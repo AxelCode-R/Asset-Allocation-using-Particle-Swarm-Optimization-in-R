@@ -906,7 +906,7 @@ Where \(r_1\) and \(r_2\) are uniformly distributed random numbers in {[}0, 1{]}
   X^{i+1} &= X^i + V^{i+1}
 \end{align*}
 
-With current positions \(X \in \mathbb{R}^{N \times D}\), current velocities \(V \in \mathbb{R}^{N \times D}\), previous best positions \(P \in \mathbb{R}^{N \times D}\), and global best position \(p_g \in \mathbb{R}^{N}\). The parameters \(w\), \(c_p\), \(c_g\), \(r_1\) and \(r_2\) are stile scalars.
+With current positions \(X \in \mathbb{R}^{N \times D}\), current velocities \(V \in \mathbb{R}^{N \times D}\), previous best positions \(P \in \mathbb{R}^{N \times D}\), and global best position \(p_g \in \mathbb{R}^{N}\). The parameters \(w\), \(c_p\) and \(c_g\) are stile scalars. The random numbers are transformed into vectors \(r_1\) and \(r_2\), which contain uniformly distributed random numbers that are multiplied element-wise.
 
 \hypertarget{pso-function}{%
 \section{\texorpdfstring{\texttt{pso()} Function}{pso() Function}}\label{pso-function}}
@@ -985,8 +985,8 @@ The required data structure is available and the optimization can start with the
   \CommentTok{\# move particles}
 \NormalTok{  V }\OtherTok{\textless{}{-}} 
 \NormalTok{    (control}\SpecialCharTok{$}\NormalTok{w0}\SpecialCharTok{{-}}\NormalTok{(control}\SpecialCharTok{$}\NormalTok{w0}\SpecialCharTok{{-}}\NormalTok{control}\SpecialCharTok{$}\NormalTok{wN)}\SpecialCharTok{*}\NormalTok{i}\SpecialCharTok{/}\NormalTok{control}\SpecialCharTok{$}\NormalTok{maxiter) }\SpecialCharTok{*}\NormalTok{ V }\SpecialCharTok{+} 
-\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c.p }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+} 
-\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c.g }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
+\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c.p }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\FunctionTok{length}\NormalTok{(par)) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+} 
+\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c.g }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\FunctionTok{length}\NormalTok{(par)) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
 \NormalTok{  X }\OtherTok{\textless{}{-}}\NormalTok{ X }\SpecialCharTok{+}\NormalTok{ V}
   
   \CommentTok{\# set velocity to zeros if not in valid space}
@@ -1017,7 +1017,7 @@ The required data structure is available and the optimization can start with the
 \end{Highlighting}
 \end{Shaded}
 
-The best fitness after \(100\) iterations is 0.0000298 and the best possible solution is \(0\).
+The best fitness after \(100\) iterations is 0.0000001 and the best possible solution is \(0\).
 
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
@@ -1078,7 +1078,7 @@ A PSO approach has advantages and disadvantages, since on the one hand any probl
 \hypertarget{discrete-problems-and-transaction-costs}{%
 \section{Discrete Problems and Transaction Costs}\label{discrete-problems-and-transaction-costs}}
 
-A continuous solution for a portfolio is not sufficient for the practice, because most of the time only integer amounts of assets can be bought. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g.~ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a \texttt{solve.QP()} approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function \texttt{fn()}. In a portfolio with net asset value (\texttt{nav}) consisting of only American stocks with weights \(w_i\) and closing prices \(p_i\) can be discretized to \(w_i^d\) by the following formula:
+A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g.~ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a \texttt{solve.QP()} approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function \texttt{fn()}. In a portfolio with net asset value (\texttt{nav}) consisting of only American stocks with weights \(w_i\) and closing prices \(p_i\) can be discretized to \(w_i^d\) by the following formula:
 
 \[
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
@@ -1091,6 +1091,25 @@ This example analyses the error of rounding a solution with the \texttt{solve.QP
 \includegraphics{Master_Thesis_files/figure-latex/pso9-1.png}
 
 It can be seen that the rounded \texttt{solve.QP()} solution still has a good fitness but the constraints are not satisfied. The PSO has no constrain breaks and still reached a fitness close to the rounded \texttt{solve.QP()}. The PSO with \texttt{solve.QP()} solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the \texttt{solve.QP()} and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for problems in practice.
+
+\hypertarget{pso-variations}{%
+\chapter{PSO Variations}\label{pso-variations}}
+
+The standard PSO analysed in the previews chapter is capable to solve a wide range of problems but is very slow and often gets stuck in local minima. This chapter analyses different variations of the standard PSO in finance related problems. The first variant is the PSO with functional stretching, which reduces stagnation in local minimas. \ldots\ldots\ldots\ldots\ldots{}
+
+\hypertarget{function-stretching}{%
+\section{Function Stretching}\label{function-stretching}}
+
+10.1.1.301.4441.pdf
+function stretching
+
+Boudt-Wan2020\_Article\_TheEffectOfVelocitySparsityOnT
+SV-PSO CV-PSO
+oh ist nur binary PSO
+
+pso\_cardinality\_constrained.pdf
+
+DissertationHelwig (1).pdf
 
   \bibliography{book.bib,packages.bib}
 

@@ -21,7 +21,7 @@ Where $r_1$ and $r_2$ are uniformly distributed random numbers in [0, 1]. The co
   X^{i+1} &= X^i + V^{i+1}
 \end{align*}
 
-With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$, $c_g$, $r_1$ and $r_2$ are stile scalars.
+With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$ and $c_g$ are stile scalars. The random numbers are transformed into vectors $r_1$ and $r_2$, which contain uniformly distributed random numbers that are multiplied element-wise.
 
 ## `pso()` Function
 In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which returns a scalar that needs to be minimized. The function itself mainly needs a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The argument can only contain `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
@@ -86,8 +86,8 @@ for(i in 1:control$maxiter){
   # move particles
   V <- 
     (control$w0-(control$w0-control$wN)*i/control$maxiter) * V + 
-    control$c.p * runif(1) * (P-X) + 
-    control$c.g * runif(1) * (p_g-X)
+    control$c.p * runif(length(par)) * (P-X) + 
+    control$c.g * runif(length(par)) * (p_g-X)
   X <- X + V
   
   # set velocity to zeros if not in valid space
@@ -164,8 +164,8 @@ pso <- function(
     # move particles
     V <- 
       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V + 
-      control$c.p * runif(1) * (P-X) + 
-      control$c.g * runif(1) * (p_g-X)
+      control$c.p * runif(length(par)) * (P-X) + 
+      control$c.g * runif(length(par)) * (p_g-X)
     X <- X + V
     
     # set velocity to zeros if not in valid space
@@ -692,7 +692,7 @@ A PSO approach has advantages and disadvantages, since on the one hand any probl
 
 
 ## Discrete Problems and Transaction Costs
-A continuous solution for a portfolio is not sufficient for the practice, because most of the time only integer amounts of assets can be bought. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a `solve.QP()` approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function `fn()`. In a portfolio with net asset value (`nav`) consisting of only American stocks with weights $w_i$ and closing prices $p_i$ can be discretized to $w_i^d$ by the following formula:
+A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a `solve.QP()` approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function `fn()`. In a portfolio with net asset value (`nav`) consisting of only American stocks with weights $w_i$ and closing prices $p_i$ can be discretized to $w_i^d$ by the following formula:
 
 $$
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
@@ -700,7 +700,7 @@ $$
 
 ## Example: Discrete ITP-MSTE
 
-This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses to track the S&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, $1 < \textstyle\sum w_i > 0.99$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses to track the S&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, $1 \leq \textstyle\sum w_i \geq 0.99$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
 ```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 

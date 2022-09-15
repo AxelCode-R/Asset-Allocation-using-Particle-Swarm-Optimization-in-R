@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="analytic-solver-for-quadratic-programming-problems.html"/>
-<link rel="next" href="references.html"/>
+<link rel="next" href="pso-variations.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -235,6 +235,10 @@ div.csl-indent {
 <li class="chapter" data-level="7.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#discrete-problems-and-transaction-costs"><i class="fa fa-check"></i><b>7.7</b> Discrete Problems and Transaction Costs</a></li>
 <li class="chapter" data-level="7.8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-discrete-itp-mste"><i class="fa fa-check"></i><b>7.8</b> Example: Discrete ITP-MSTE</a></li>
 </ul></li>
+<li class="chapter" data-level="8" data-path="pso-variations.html"><a href="pso-variations.html"><i class="fa fa-check"></i><b>8</b> PSO Variations</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="pso-variations.html"><a href="pso-variations.html#function-stretching"><i class="fa fa-check"></i><b>8.1</b> Function Stretching</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/AxelCode-R/Master-Thesis" target="blank">GitHub Repository</a></li>
@@ -271,7 +275,7 @@ div.csl-indent {
   V^{i+1} &amp;= w \cdot V^{i} + c_p \cdot r_1^i \cdot (P^i-X^i) + c_g \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} &amp;= X^i + V^{i+1}
 \end{align*}\]</span></p>
-<p>With current positions <span class="math inline">\(X \in \mathbb{R}^{N \times D}\)</span>, current velocities <span class="math inline">\(V \in \mathbb{R}^{N \times D}\)</span>, previous best positions <span class="math inline">\(P \in \mathbb{R}^{N \times D}\)</span>, and global best position <span class="math inline">\(p_g \in \mathbb{R}^{N}\)</span>. The parameters <span class="math inline">\(w\)</span>, <span class="math inline">\(c_p\)</span>, <span class="math inline">\(c_g\)</span>, <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> are stile scalars.</p>
+<p>With current positions <span class="math inline">\(X \in \mathbb{R}^{N \times D}\)</span>, current velocities <span class="math inline">\(V \in \mathbb{R}^{N \times D}\)</span>, previous best positions <span class="math inline">\(P \in \mathbb{R}^{N \times D}\)</span>, and global best position <span class="math inline">\(p_g \in \mathbb{R}^{N}\)</span>. The parameters <span class="math inline">\(w\)</span>, <span class="math inline">\(c_p\)</span> and <span class="math inline">\(c_g\)</span> are stile scalars. The random numbers are transformed into vectors <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span>, which contain uniformly distributed random numbers that are multiplied element-wise.</p>
 </div>
 <div id="pso-function" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> <code>pso()</code> Function<a href="particle-swarm-optimization-pso.html#pso-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -322,8 +326,8 @@ div.csl-indent {
 <span id="cb23-3"><a href="particle-swarm-optimization-pso.html#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># move particles</span></span>
 <span id="cb23-4"><a href="particle-swarm-optimization-pso.html#cb23-4" aria-hidden="true" tabindex="-1"></a>  V <span class="ot">&lt;-</span> </span>
 <span id="cb23-5"><a href="particle-swarm-optimization-pso.html#cb23-5" aria-hidden="true" tabindex="-1"></a>    (control<span class="sc">$</span>w0<span class="sc">-</span>(control<span class="sc">$</span>w0<span class="sc">-</span>control<span class="sc">$</span>wN)<span class="sc">*</span>i<span class="sc">/</span>control<span class="sc">$</span>maxiter) <span class="sc">*</span> V <span class="sc">+</span> </span>
-<span id="cb23-6"><a href="particle-swarm-optimization-pso.html#cb23-6" aria-hidden="true" tabindex="-1"></a>    control<span class="sc">$</span>c.p <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">*</span> (P<span class="sc">-</span>X) <span class="sc">+</span> </span>
-<span id="cb23-7"><a href="particle-swarm-optimization-pso.html#cb23-7" aria-hidden="true" tabindex="-1"></a>    control<span class="sc">$</span>c.g <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">*</span> (p_g<span class="sc">-</span>X)</span>
+<span id="cb23-6"><a href="particle-swarm-optimization-pso.html#cb23-6" aria-hidden="true" tabindex="-1"></a>    control<span class="sc">$</span>c.p <span class="sc">*</span> <span class="fu">runif</span>(<span class="fu">length</span>(par)) <span class="sc">*</span> (P<span class="sc">-</span>X) <span class="sc">+</span> </span>
+<span id="cb23-7"><a href="particle-swarm-optimization-pso.html#cb23-7" aria-hidden="true" tabindex="-1"></a>    control<span class="sc">$</span>c.g <span class="sc">*</span> <span class="fu">runif</span>(<span class="fu">length</span>(par)) <span class="sc">*</span> (p_g<span class="sc">-</span>X)</span>
 <span id="cb23-8"><a href="particle-swarm-optimization-pso.html#cb23-8" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> X <span class="sc">+</span> V</span>
 <span id="cb23-9"><a href="particle-swarm-optimization-pso.html#cb23-9" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb23-10"><a href="particle-swarm-optimization-pso.html#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set velocity to zeros if not in valid space</span></span>
@@ -351,7 +355,7 @@ div.csl-indent {
 <span id="cb23-32"><a href="particle-swarm-optimization-pso.html#cb23-32" aria-hidden="true" tabindex="-1"></a>    trace_data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(trace_data, <span class="fu">data.frame</span>(<span class="st">&quot;iter&quot;</span><span class="ot">=</span>i, <span class="fu">t</span>(X)))</span>
 <span id="cb23-33"><a href="particle-swarm-optimization-pso.html#cb23-33" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb23-34"><a href="particle-swarm-optimization-pso.html#cb23-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>The best fitness after <span class="math inline">\(100\)</span> iterations is 0.0000036 and the best possible solution is <span class="math inline">\(0\)</span>.</p>
+<p>The best fitness after <span class="math inline">\(100\)</span> iterations is 0.0001256 and the best possible solution is <span class="math inline">\(0\)</span>.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb24-1"><a href="particle-swarm-optimization-pso.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the resulting pso() function</span></span>
 <span id="cb24-2"><a href="particle-swarm-optimization-pso.html#cb24-2" aria-hidden="true" tabindex="-1"></a>pso <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
 <span id="cb24-3"><a href="particle-swarm-optimization-pso.html#cb24-3" aria-hidden="true" tabindex="-1"></a>    par, </span>
@@ -397,8 +401,8 @@ div.csl-indent {
 <span id="cb24-43"><a href="particle-swarm-optimization-pso.html#cb24-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># move particles</span></span>
 <span id="cb24-44"><a href="particle-swarm-optimization-pso.html#cb24-44" aria-hidden="true" tabindex="-1"></a>    V <span class="ot">&lt;-</span> </span>
 <span id="cb24-45"><a href="particle-swarm-optimization-pso.html#cb24-45" aria-hidden="true" tabindex="-1"></a>      (control<span class="sc">$</span>w0<span class="sc">-</span>(control<span class="sc">$</span>w0<span class="sc">-</span>control<span class="sc">$</span>wN)<span class="sc">*</span>i<span class="sc">/</span>control<span class="sc">$</span>maxiter) <span class="sc">*</span> V <span class="sc">+</span> </span>
-<span id="cb24-46"><a href="particle-swarm-optimization-pso.html#cb24-46" aria-hidden="true" tabindex="-1"></a>      control<span class="sc">$</span>c.p <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">*</span> (P<span class="sc">-</span>X) <span class="sc">+</span> </span>
-<span id="cb24-47"><a href="particle-swarm-optimization-pso.html#cb24-47" aria-hidden="true" tabindex="-1"></a>      control<span class="sc">$</span>c.g <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">*</span> (p_g<span class="sc">-</span>X)</span>
+<span id="cb24-46"><a href="particle-swarm-optimization-pso.html#cb24-46" aria-hidden="true" tabindex="-1"></a>      control<span class="sc">$</span>c.p <span class="sc">*</span> <span class="fu">runif</span>(<span class="fu">length</span>(par)) <span class="sc">*</span> (P<span class="sc">-</span>X) <span class="sc">+</span> </span>
+<span id="cb24-47"><a href="particle-swarm-optimization-pso.html#cb24-47" aria-hidden="true" tabindex="-1"></a>      control<span class="sc">$</span>c.g <span class="sc">*</span> <span class="fu">runif</span>(<span class="fu">length</span>(par)) <span class="sc">*</span> (p_g<span class="sc">-</span>X)</span>
 <span id="cb24-48"><a href="particle-swarm-optimization-pso.html#cb24-48" aria-hidden="true" tabindex="-1"></a>    X <span class="ot">&lt;-</span> X <span class="sc">+</span> V</span>
 <span id="cb24-49"><a href="particle-swarm-optimization-pso.html#cb24-49" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb24-50"><a href="particle-swarm-optimization-pso.html#cb24-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set velocity to zeros if not in valid space</span></span>
@@ -865,7 +869,7 @@ div.csl-indent {
 </div>
 <div id="discrete-problems-and-transaction-costs" class="section level2 hasAnchor" number="7.7">
 <h2><span class="header-section-number">7.7</span> Discrete Problems and Transaction Costs<a href="particle-swarm-optimization-pso.html#discrete-problems-and-transaction-costs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A continuous solution for a portfolio is not sufficient for the practice, because most of the time only integer amounts of assets can be bought. It’s even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a <code>solve.QP()</code> approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn’t have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function <code>fn()</code>. In a portfolio with net asset value (<code>nav</code>) consisting of only American stocks with weights <span class="math inline">\(w_i\)</span> and closing prices <span class="math inline">\(p_i\)</span> can be discretized to <span class="math inline">\(w_i^d\)</span> by the following formula:</p>
+<p>A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It’s even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a <code>solve.QP()</code> approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn’t have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function <code>fn()</code>. In a portfolio with net asset value (<code>nav</code>) consisting of only American stocks with weights <span class="math inline">\(w_i\)</span> and closing prices <span class="math inline">\(p_i\)</span> can be discretized to <span class="math inline">\(w_i^d\)</span> by the following formula:</p>
 <p><span class="math display">\[
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
 \]</span></p>
@@ -1058,7 +1062,7 @@ Konstantinos Parsopoulos, Michael N. Vrahatis. 2002. <span>“Recent Approaches 
         </div>
       </div>
 <a href="analytic-solver-for-quadratic-programming-problems.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="pso-variations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
