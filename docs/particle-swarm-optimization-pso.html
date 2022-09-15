@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 Particle Swarm Optimization (PSO) | Asset Allocation using Particle Swarm Optimization in R</title>
+  <title>Chapter 7 Particle Swarm Optimization (PSO) | Asset Allocation using Particle Swarm Optimization in R</title>
   <meta name="description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.28.1 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 Particle Swarm Optimization (PSO) | Asset Allocation using Particle Swarm Optimization in R" />
+  <meta property="og:title" content="Chapter 7 Particle Swarm Optimization (PSO) | Asset Allocation using Particle Swarm Optimization in R" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   <meta name="github-repo" content="AxelCode-R/Master-Thesis" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 Particle Swarm Optimization (PSO) | Asset Allocation using Particle Swarm Optimization in R" />
+  <meta name="twitter:title" content="Chapter 7 Particle Swarm Optimization (PSO) | Asset Allocation using Particle Swarm Optimization in R" />
   
   <meta name="twitter:description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-09-13" />
+<meta name="date" content="2022-09-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -160,80 +160,80 @@ div.csl-indent {
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="abstract.html"><a href="abstract.html"><i class="fa fa-check"></i><b>1</b> Abstract</a></li>
-<li class="chapter" data-level="2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html"><i class="fa fa-check"></i><b>2</b> Software information and usage</a>
+<li class="chapter" data-level="" data-path="abstract.html"><a href="abstract.html"><i class="fa fa-check"></i>Abstract</a></li>
+<li class="chapter" data-level="1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html"><i class="fa fa-check"></i><b>1</b> Software information and usage</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-version-and-packages"><i class="fa fa-check"></i><b>2.1</b> R-Version and Packages</a></li>
-<li class="chapter" data-level="2.2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#reproducibility"><i class="fa fa-check"></i><b>2.2</b> Reproducibility</a></li>
-<li class="chapter" data-level="2.3" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-functions"><i class="fa fa-check"></i><b>2.3</b> R-functions</a></li>
+<li class="chapter" data-level="1.1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-version-and-packages"><i class="fa fa-check"></i><b>1.1</b> R-Version and Packages</a></li>
+<li class="chapter" data-level="1.2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#reproducibility"><i class="fa fa-check"></i><b>1.2</b> Reproducibility</a></li>
+<li class="chapter" data-level="1.3" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-functions"><i class="fa fa-check"></i><b>1.3</b> R-functions</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="open-data-sources.html"><a href="open-data-sources.html"><i class="fa fa-check"></i><b>3</b> Open Data Sources</a>
+<li class="chapter" data-level="2" data-path="open-data-sources.html"><a href="open-data-sources.html"><i class="fa fa-check"></i><b>2</b> Open Data Sources</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="open-data-sources.html"><a href="open-data-sources.html#r-functions-1"><i class="fa fa-check"></i><b>3.1</b> R-Functions</a>
+<li class="chapter" data-level="2.1" data-path="open-data-sources.html"><a href="open-data-sources.html#r-functions-1"><i class="fa fa-check"></i><b>2.1</b> R-Functions</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="open-data-sources.html"><a href="open-data-sources.html#get_yf"><i class="fa fa-check"></i><b>3.1.1</b> <code>get_yf()</code></a></li>
-<li class="chapter" data-level="3.1.2" data-path="open-data-sources.html"><a href="open-data-sources.html#buffer"><i class="fa fa-check"></i><b>3.1.2</b> <code>buffer()</code></a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="mathfundations.html"><a href="mathfundations.html"><i class="fa fa-check"></i><b>4</b> Mathematical Fundations</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="mathfundations.html"><a href="mathfundations.html#basic-operators"><i class="fa fa-check"></i><b>4.1</b> Basic Operators</a></li>
-<li class="chapter" data-level="4.2" data-path="mathfundations.html"><a href="mathfundations.html#return-calculation"><i class="fa fa-check"></i><b>4.2</b> Return Calculation</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="mathfundations.html"><a href="mathfundations.html#simple-returns"><i class="fa fa-check"></i><b>4.2.1</b> Simple Returns</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="mathfundations.html"><a href="mathfundations.html#markowitz-modern-portfolio-theory-mpt"><i class="fa fa-check"></i><b>4.3</b> Markowitz Modern Portfolio Theory (MPT)</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="mathfundations.html"><a href="mathfundations.html#assumptions-of-markowitz-portfolio-theory"><i class="fa fa-check"></i><b>4.3.1</b> Assumptions of Markowitz Portfolio Theory</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="mathfundations.html"><a href="mathfundations.html#portfolio-math"><i class="fa fa-check"></i><b>4.4</b> Portfolio Math</a>
-<ul>
-<li class="chapter" data-level="4.4.1" data-path="mathfundations.html"><a href="mathfundations.html#expected-returns"><i class="fa fa-check"></i><b>4.4.1</b> Expected Returns</a></li>
-<li class="chapter" data-level="4.4.2" data-path="mathfundations.html"><a href="mathfundations.html#expected-portfolio-returns"><i class="fa fa-check"></i><b>4.4.2</b> Expected Portfolio Returns</a></li>
-<li class="chapter" data-level="4.4.3" data-path="mathfundations.html"><a href="mathfundations.html#covariance"><i class="fa fa-check"></i><b>4.4.3</b> Covariance</a></li>
-<li class="chapter" data-level="4.4.4" data-path="mathfundations.html"><a href="mathfundations.html#portvar"><i class="fa fa-check"></i><b>4.4.4</b> Portfolio Variance</a></li>
-<li class="chapter" data-level="4.4.5" data-path="mathfundations.html"><a href="mathfundations.html#portfolioreturns"><i class="fa fa-check"></i><b>4.4.5</b> Portfolio Returns</a></li>
-</ul></li>
-<li class="chapter" data-level="4.5" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>4.5</b> R-Functions</a>
-<ul>
-<li class="chapter" data-level="4.5.1" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>4.5.1</b> <code>pri_to_ret()</code></a></li>
-<li class="chapter" data-level="4.5.2" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>4.5.2</b> <code>ret_to_cumret()</code></a></li>
-<li class="chapter" data-level="4.5.3" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>4.5.3</b> <code>ret_to_geomeanret()</code></a></li>
-<li class="chapter" data-level="4.5.4" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>4.5.4</b> <code>calc_portfolio_returns()</code></a></li>
+<li class="chapter" data-level="2.1.1" data-path="open-data-sources.html"><a href="open-data-sources.html#get_yf"><i class="fa fa-check"></i><b>2.1.1</b> <code>get_yf()</code></a></li>
+<li class="chapter" data-level="2.1.2" data-path="open-data-sources.html"><a href="open-data-sources.html#buffer"><i class="fa fa-check"></i><b>2.1.2</b> <code>buffer()</code></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>5</b> Activ vs Passiv Investing</a></li>
-<li class="chapter" data-level="6" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>6</b> Challenges of Passiv Investing</a>
+<li class="chapter" data-level="3" data-path="mathfundations.html"><a href="mathfundations.html"><i class="fa fa-check"></i><b>3</b> Mathematical Fundations</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>6.1</b> Mean-Variance Portfolio (MVP)</a>
+<li class="chapter" data-level="3.1" data-path="mathfundations.html"><a href="mathfundations.html#basic-operators"><i class="fa fa-check"></i><b>3.1</b> Basic Operators</a></li>
+<li class="chapter" data-level="3.2" data-path="mathfundations.html"><a href="mathfundations.html#return-calculation"><i class="fa fa-check"></i><b>3.2</b> Return Calculation</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="challenges.html"><a href="challenges.html#mvp"><i class="fa fa-check"></i><b>6.1.1</b> MVP</a></li>
-<li class="chapter" data-level="6.1.2" data-path="challenges.html"><a href="challenges.html#mvp-example"><i class="fa fa-check"></i><b>6.1.2</b> MVP example</a></li>
+<li class="chapter" data-level="3.2.1" data-path="mathfundations.html"><a href="mathfundations.html#simple-returns"><i class="fa fa-check"></i><b>3.2.1</b> Simple Returns</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>6.2</b> Index-Tracking Portfolio (ITP)</a>
+<li class="chapter" data-level="3.3" data-path="mathfundations.html"><a href="mathfundations.html#markowitz-modern-portfolio-theory-mpt"><i class="fa fa-check"></i><b>3.3</b> Markowitz Modern Portfolio Theory (MPT)</a>
 <ul>
-<li class="chapter" data-level="6.2.1" data-path="challenges.html"><a href="challenges.html#itp-with-tev-objective-itp-tev"><i class="fa fa-check"></i><b>6.2.1</b> ITP with TEV objective (ITP-TEV)</a></li>
-<li class="chapter" data-level="6.2.2" data-path="challenges.html"><a href="challenges.html#itp-with-mse-objective-itp-mste"><i class="fa fa-check"></i><b>6.2.2</b> ITP with MSE objective (ITP-MSTE)</a></li>
-<li class="chapter" data-level="6.2.3" data-path="challenges.html"><a href="challenges.html#example-itp"><i class="fa fa-check"></i><b>6.2.3</b> Example ITP</a></li>
+<li class="chapter" data-level="3.3.1" data-path="mathfundations.html"><a href="mathfundations.html#assumptions-of-markowitz-portfolio-theory"><i class="fa fa-check"></i><b>3.3.1</b> Assumptions of Markowitz Portfolio Theory</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="mathfundations.html"><a href="mathfundations.html#portfolio-math"><i class="fa fa-check"></i><b>3.4</b> Portfolio Math</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="mathfundations.html"><a href="mathfundations.html#expected-returns"><i class="fa fa-check"></i><b>3.4.1</b> Expected Returns</a></li>
+<li class="chapter" data-level="3.4.2" data-path="mathfundations.html"><a href="mathfundations.html#expected-portfolio-returns"><i class="fa fa-check"></i><b>3.4.2</b> Expected Portfolio Returns</a></li>
+<li class="chapter" data-level="3.4.3" data-path="mathfundations.html"><a href="mathfundations.html#covariance"><i class="fa fa-check"></i><b>3.4.3</b> Covariance</a></li>
+<li class="chapter" data-level="3.4.4" data-path="mathfundations.html"><a href="mathfundations.html#portvar"><i class="fa fa-check"></i><b>3.4.4</b> Portfolio Variance</a></li>
+<li class="chapter" data-level="3.4.5" data-path="mathfundations.html"><a href="mathfundations.html#portfolioreturns"><i class="fa fa-check"></i><b>3.4.5</b> Portfolio Returns</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>3.5</b> R-Functions</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.5.1</b> <code>pri_to_ret()</code></a></li>
+<li class="chapter" data-level="3.5.2" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.5.2</b> <code>ret_to_cumret()</code></a></li>
+<li class="chapter" data-level="3.5.3" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.5.3</b> <code>ret_to_geomeanret()</code></a></li>
+<li class="chapter" data-level="3.5.4" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.5.4</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html"><i class="fa fa-check"></i><b>7</b> Analytic Solver for Quadratic Programming Problems</a>
+<li class="chapter" data-level="4" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Investing</a></li>
+<li class="chapter" data-level="5" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>5</b> Challenges of Passiv Investing</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
-<li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a></li>
-<li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
-<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="5.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>5.1</b> Mean-Variance Portfolio (MVP)</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="challenges.html"><a href="challenges.html#mvp-objective"><i class="fa fa-check"></i><b>5.1.1</b> MVP Objective</a></li>
+<li class="chapter" data-level="5.1.2" data-path="challenges.html"><a href="challenges.html#mvp-example"><i class="fa fa-check"></i><b>5.1.2</b> MVP example</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization (PSO)</a>
+<li class="chapter" data-level="5.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>5.2</b> Index-Tracking Portfolio (ITP)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#the-algorithm"><i class="fa fa-check"></i><b>8.1</b> The Algorithm</a></li>
-<li class="chapter" data-level="8.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pso-function"><i class="fa fa-check"></i><b>8.2</b> <code>pso()</code> Function</a></li>
-<li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
-<li class="chapter" data-level="8.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-mvp"><i class="fa fa-check"></i><b>8.4</b> Example MVP</a></li>
-<li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-mste"><i class="fa fa-check"></i><b>8.5</b> Example: ITP-MSTE</a></li>
-<li class="chapter" data-level="8.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems"><i class="fa fa-check"></i><b>8.6</b> Pros and Cons for Continuous Problems</a></li>
-<li class="chapter" data-level="8.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#discrete-problems-and-transaction-costs"><i class="fa fa-check"></i><b>8.7</b> Discrete Problems and Transaction Costs</a></li>
-<li class="chapter" data-level="8.8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-discrete-itp-mste"><i class="fa fa-check"></i><b>8.8</b> Example: Discrete ITP-MSTE</a></li>
+<li class="chapter" data-level="5.2.1" data-path="challenges.html"><a href="challenges.html#itp-with-tev-objective-itp-tev"><i class="fa fa-check"></i><b>5.2.1</b> ITP with TEV objective (ITP-TEV)</a></li>
+<li class="chapter" data-level="5.2.2" data-path="challenges.html"><a href="challenges.html#itp-with-mste-objective-itp-mste"><i class="fa fa-check"></i><b>5.2.2</b> ITP with MSTE objective (ITP-MSTE)</a></li>
+<li class="chapter" data-level="5.2.3" data-path="challenges.html"><a href="challenges.html#example-itp"><i class="fa fa-check"></i><b>5.2.3</b> Example ITP</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html"><i class="fa fa-check"></i><b>6</b> Analytic Solver for Quadratic Programming Problems</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>6.1</b> Quadratic Programming (QP)</a></li>
+<li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP Solver from quadprog</a></li>
+<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="6.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>6.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>7</b> Particle Swarm Optimization (PSO)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#the-algorithm"><i class="fa fa-check"></i><b>7.1</b> The Algorithm</a></li>
+<li class="chapter" data-level="7.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pso-function"><i class="fa fa-check"></i><b>7.2</b> <code>pso()</code> Function</a></li>
+<li class="chapter" data-level="7.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>7.3</b> Animation 2-Dimensional</a></li>
+<li class="chapter" data-level="7.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-mvp"><i class="fa fa-check"></i><b>7.4</b> Example MVP</a></li>
+<li class="chapter" data-level="7.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-mste"><i class="fa fa-check"></i><b>7.5</b> Example: ITP-MSTE</a></li>
+<li class="chapter" data-level="7.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems"><i class="fa fa-check"></i><b>7.6</b> Pros and Cons for Continuous Problems</a></li>
+<li class="chapter" data-level="7.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#discrete-problems-and-transaction-costs"><i class="fa fa-check"></i><b>7.7</b> Discrete Problems and Transaction Costs</a></li>
+<li class="chapter" data-level="7.8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-discrete-itp-mste"><i class="fa fa-check"></i><b>7.8</b> Example: Discrete ITP-MSTE</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -256,26 +256,26 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="particle-swarm-optimization-pso" class="section level1 hasAnchor" number="8">
-<h1><span class="header-section-number">Chapter 8</span> Particle Swarm Optimization (PSO)<a href="particle-swarm-optimization-pso.html#particle-swarm-optimization-pso" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="particle-swarm-optimization-pso" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Particle Swarm Optimization (PSO)<a href="particle-swarm-optimization-pso.html#particle-swarm-optimization-pso" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy <span class="citation">(<a href="#ref-KeEb1995" role="doc-biblioref">James Kennedy 1995</a>)</span>. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span>. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are the low computational costs, since only basic mathematical operators are used.</p>
-<div id="the-algorithm" class="section level2 hasAnchor" number="8.1">
-<h2><span class="header-section-number">8.1</span> The Algorithm<a href="particle-swarm-optimization-pso.html#the-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Each particle <span class="math inline">\(d\)</span> with position <span class="math inline">\(x_d\)</span> moves in the search space <span class="math inline">\(\mathbb{R}^N\)</span> and has its own velocity <span class="math inline">\(v_d\)</span> and remembers its previous best position <span class="math inline">\(P_d\)</span>. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position <span class="math inline">\(p_g\)</span> of all particles. A position change from <span class="math inline">\(i\)</span> to <span class="math inline">\(i+1\)</span> can be calculated by the following two equations <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span>:</p>
-<p><span class="math display">\[\begin{align*}
+<div id="the-algorithm" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> The Algorithm<a href="particle-swarm-optimization-pso.html#the-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Each particle <span class="math inline">\(d\)</span> with position <span class="math inline">\(x_d\)</span> moves in the search space <span class="math inline">\(\mathbb{R}^N\)</span> and has its own velocity <span class="math inline">\(v_d\)</span> and remembers its previous best position <span class="math inline">\(P_d\)</span>. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position <span class="math inline">\(p_g\)</span> of all particles. A position change from <span class="math inline">\(i\)</span> to <span class="math inline">\(i+1\)</span> can be calculated by the following two equations <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span>:
+<span class="math display">\[\begin{align*}
   v_d^{i+1} &amp;= wv_d^{i} + c_p r_1^i (P_d^i - x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
   x_d^{i+1} &amp;= x_d^i + v_d^{i+1}
 \end{align*}\]</span></p>
-<p>Where <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> are uniformly distributed random numbers in [0, 1]. The cognitive parameter <span class="math inline">\(c_p\)</span> acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter <span class="math inline">\(c_g\)</span>, which is a weighting of the direction to the global best position. The inertial weight <span class="math inline">\(w\)</span> is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span> showed that these parameters can be set to <span class="math inline">\(c_p=c_g=0.5\)</span> and <span class="math inline">\(w\)</span> should decrease from <span class="math inline">\(1.2\)</span> to <span class="math inline">\(0\)</span>. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for <span class="math inline">\(d = 1, 2, \cdots, D\)</span> particles can be given in the following matrix notation:</p>
-<p><span class="math display">\[\begin{align*}
+<p>Where <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> are uniformly distributed random numbers in [0, 1]. The cognitive parameter <span class="math inline">\(c_p\)</span> acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter <span class="math inline">\(c_g\)</span>, which is a weighting of the direction to the global best position. The inertial weight <span class="math inline">\(w\)</span> is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span> showed that these parameters can be set to <span class="math inline">\(c_p=c_g=0.5\)</span> and <span class="math inline">\(w\)</span> should decrease from <span class="math inline">\(1.2\)</span> to <span class="math inline">\(0\)</span>. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for <span class="math inline">\(d = 1, 2, \cdots, D\)</span> particles can be given in the following matrix notation:
+<span class="math display">\[\begin{align*}
   V^{i+1} &amp;= w \cdot V^{i} + c_p \cdot r_1^i \cdot (P^i-X^i) + c_g \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} &amp;= X^i + V^{i+1}
 \end{align*}\]</span></p>
 <p>With current positions <span class="math inline">\(X \in \mathbb{R}^{N \times D}\)</span>, current velocities <span class="math inline">\(V \in \mathbb{R}^{N \times D}\)</span>, previous best positions <span class="math inline">\(P \in \mathbb{R}^{N \times D}\)</span>, and global best position <span class="math inline">\(p_g \in \mathbb{R}^{N}\)</span>. The parameters <span class="math inline">\(w\)</span>, <span class="math inline">\(c_p\)</span>, <span class="math inline">\(c_g\)</span>, <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> are stile scalars.</p>
 </div>
-<div id="pso-function" class="section level2 hasAnchor" number="8.2">
-<h2><span class="header-section-number">8.2</span> <code>pso()</code> Function<a href="particle-swarm-optimization-pso.html#pso-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package <code>pso</code>. The key component of the problem is a objective function called <code>fn()</code>, which returns a scalar that needs to be minimized. The function itself mainly needs a vector <code>pos</code> that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are <code>par</code>, which is a position of a particle used to derive the dimension of the problem and as the first position of a particle. The argument can only contain <code>NA</code>’s, resulting in completely random starting positions. The last two arguments are <code>lower</code> and <code>upper</code> bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called <code>control</code>. The resulting structure is:</p>
+<div id="pso-function" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> <code>pso()</code> Function<a href="particle-swarm-optimization-pso.html#pso-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package <code>pso</code>. The key component of the problem is a objective function called <code>fn()</code>, which returns a scalar that needs to be minimized. The function itself mainly needs a vector <code>pos</code> that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are <code>par</code>, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The argument can only contain <code>NA</code>’s, resulting in completely random starting positions. The last two arguments are <code>lower</code> and <code>upper</code> bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called <code>control</code>. The resulting structure is:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="particle-swarm-optimization-pso.html#cb19-1" aria-hidden="true" tabindex="-1"></a>pso <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
 <span id="cb19-2"><a href="particle-swarm-optimization-pso.html#cb19-2" aria-hidden="true" tabindex="-1"></a>    par, </span>
 <span id="cb19-3"><a href="particle-swarm-optimization-pso.html#cb19-3" aria-hidden="true" tabindex="-1"></a>    fn, </span>
@@ -351,7 +351,7 @@ div.csl-indent {
 <span id="cb23-32"><a href="particle-swarm-optimization-pso.html#cb23-32" aria-hidden="true" tabindex="-1"></a>    trace_data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(trace_data, <span class="fu">data.frame</span>(<span class="st">&quot;iter&quot;</span><span class="ot">=</span>i, <span class="fu">t</span>(X)))</span>
 <span id="cb23-33"><a href="particle-swarm-optimization-pso.html#cb23-33" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb23-34"><a href="particle-swarm-optimization-pso.html#cb23-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>The best fitness after <span class="math inline">\(100\)</span> iterations is 0 and the best possible solution is <span class="math inline">\(0\)</span>.</p>
+<p>The best fitness after <span class="math inline">\(100\)</span> iterations is 0.0000036 and the best possible solution is <span class="math inline">\(0\)</span>.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb24-1"><a href="particle-swarm-optimization-pso.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the resulting pso() function</span></span>
 <span id="cb24-2"><a href="particle-swarm-optimization-pso.html#cb24-2" aria-hidden="true" tabindex="-1"></a>pso <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
 <span id="cb24-3"><a href="particle-swarm-optimization-pso.html#cb24-3" aria-hidden="true" tabindex="-1"></a>    par, </span>
@@ -437,9 +437,9 @@ div.csl-indent {
 <span id="cb24-83"><a href="particle-swarm-optimization-pso.html#cb24-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
 <span id="cb24-84"><a href="particle-swarm-optimization-pso.html#cb24-84" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="animation-2-dimensional" class="section level2 hasAnchor" number="8.3">
-<h2><span class="header-section-number">8.3</span> Animation 2-Dimensional<a href="particle-swarm-optimization-pso.html#animation-2-dimensional" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML version of this paper. The amazing animation template is inspired by <a href="https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/">R’tichoke</a>. The PSO core from the above chapter was used to complete the <code>pso()</code> function and is tested here with seed 0. The function <code>fn</code> to be evaluated can be found in <a href="https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/">R’tichoke</a>.</p>
+<div id="animation-2-dimensional" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Animation 2-Dimensional<a href="particle-swarm-optimization-pso.html#animation-2-dimensional" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The amazing animation template is inspired by <a href="https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/">R’tichoke</a>. The PSO core from the above chapter was used to complete the <code>pso()</code> function and is tested here with seed 0. The function <code>fn</code> to be evaluated can be found in <a href="https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/">R’tichoke</a>.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="particle-swarm-optimization-pso.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb25-2"><a href="particle-swarm-optimization-pso.html#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="particle-swarm-optimization-pso.html#cb25-3" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(pos){</span>
@@ -463,9 +463,9 @@ div.csl-indent {
 <p>The function <code>fn</code> has many local minima and a global minima at <span class="math inline">\((1,1)\)</span> with the value <span class="math inline">\(0\)</span>. The background color scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:</p>
 <p><img src="Master_Thesis_files/figure-html/gif_animate-1.gif" /><!-- --></p>
 </div>
-<div id="example-mvp" class="section level2 hasAnchor" number="8.4">
-<h2><span class="header-section-number">8.4</span> Example MVP<a href="particle-swarm-optimization-pso.html#example-mvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This example uses the <code>solve.QP</code> approach from <a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp">7.3</a> with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible <span class="math inline">\(\lambda\)</span>. The PSO has 300 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the <code>solve.QP</code> compared to the PSO are shown below:</p>
+<div id="example-mvp" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Example MVP<a href="particle-swarm-optimization-pso.html#example-mvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This example uses the <code>solve.QP()</code> approach from <a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp">6.3</a> with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible <span class="math inline">\(\lambda\)</span>. The PSO has 300 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the <code>solve.QP()</code> compared to the PSO are shown below:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb26-1"><a href="particle-swarm-optimization-pso.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb26-2"><a href="particle-swarm-optimization-pso.html#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="particle-swarm-optimization-pso.html#cb26-3" aria-hidden="true" tabindex="-1"></a>returns_raw <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
@@ -677,9 +677,9 @@ div.csl-indent {
 <p><img src="Master_Thesis_files/figure-html/pso7-1.png" width="672" /></p>
 <p>The dots for each <span class="math inline">\(\lambda\)</span> are connected with a grey line to visualize the error of the PSO. It can be seen that its possible to solve MVP’s with a PSO approach.</p>
 </div>
-<div id="example-itp-mste" class="section level2 hasAnchor" number="8.5">
-<h2><span class="header-section-number">8.5</span> Example: ITP-MSTE<a href="particle-swarm-optimization-pso.html#example-itp-mste" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The same ITP-MSTE solved with <code>solve.QP()</code> in <a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp">7.4</a> is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S&amp;P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at <span class="math inline">\(1.2\)</span>, the upper bound is <span class="math inline">\(0.1\)</span>, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the <code>solve.QP()</code> approach for seed 0 in the table below:</p>
+<div id="example-itp-mste" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Example: ITP-MSTE<a href="particle-swarm-optimization-pso.html#example-itp-mste" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The same ITP-MSTE solved with <code>solve.QP()</code> in <a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp">6.4</a> is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the S&amp;P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at <span class="math inline">\(1.2\)</span>, the upper bound is <span class="math inline">\(0.1\)</span>, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the <code>solve.QP()</code> approach for seed 0 in the table below:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb27-1"><a href="particle-swarm-optimization-pso.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb27-2"><a href="particle-swarm-optimization-pso.html#cb27-2" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb27-3"><a href="particle-swarm-optimization-pso.html#cb27-3" aria-hidden="true" tabindex="-1"></a>from <span class="ot">&lt;-</span> <span class="st">&quot;2018-01-01&quot;</span></span>
@@ -848,7 +848,7 @@ div.csl-indent {
 <span id="cb27-166"><a href="particle-swarm-optimization-pso.html#cb27-166" aria-hidden="true" tabindex="-1"></a>  <span class="at">wrap =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb27-167"><a href="particle-swarm-optimization-pso.html#cb27-167" aria-hidden="true" tabindex="-1"></a>  <span class="co">#compact = T,</span></span>
 <span id="cb27-168"><a href="particle-swarm-optimization-pso.html#cb27-168" aria-hidden="true" tabindex="-1"></a>  <span class="at">columns =</span> <span class="fu">list</span>(</span>
-<span id="cb27-169"><a href="particle-swarm-optimization-pso.html#cb27-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">colDef</span>(<span class="at">width=</span><span class="dv">150</span>),</span>
+<span id="cb27-169"><a href="particle-swarm-optimization-pso.html#cb27-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="fu">colDef</span>(<span class="at">width=</span><span class="dv">180</span>),</span>
 <span id="cb27-170"><a href="particle-swarm-optimization-pso.html#cb27-170" aria-hidden="true" tabindex="-1"></a>    <span class="at">var =</span> <span class="fu">colDef</span>(<span class="at">format =</span> <span class="fu">colFormat</span>(<span class="at">digits=</span><span class="dv">9</span>), <span class="at">show =</span>F),</span>
 <span id="cb27-171"><a href="particle-swarm-optimization-pso.html#cb27-171" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">colDef</span>(<span class="at">format =</span> <span class="fu">colFormat</span>(<span class="at">digits=</span><span class="dv">5</span>)),</span>
 <span id="cb27-172"><a href="particle-swarm-optimization-pso.html#cb27-172" aria-hidden="true" tabindex="-1"></a>    <span class="at">constraint =</span> <span class="fu">colDef</span>(<span class="at">name =</span> <span class="st">&quot;constraint break&quot;</span>)</span>
@@ -859,19 +859,19 @@ div.csl-indent {
 <p><img src="Master_Thesis_files/figure-html/pso8-1.png" width="672" /></p>
 <p>It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.</p>
 </div>
-<div id="pros-and-cons-for-continuous-problems" class="section level2 hasAnchor" number="8.6">
-<h2><span class="header-section-number">8.6</span> Pros and Cons for Continuous Problems<a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="pros-and-cons-for-continuous-problems" class="section level2 hasAnchor" number="7.6">
+<h2><span class="header-section-number">7.6</span> Pros and Cons for Continuous Problems<a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the <code>solve.QP()</code> approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the <code>solve.QP()</code> alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for <span class="math inline">\(x\)</span> is to be a integer vector. These problems could be solved by the <code>solve.QP()</code> approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the <code>solve.QP()</code> approach.</p>
 </div>
-<div id="discrete-problems-and-transaction-costs" class="section level2 hasAnchor" number="8.7">
-<h2><span class="header-section-number">8.7</span> Discrete Problems and Transaction Costs<a href="particle-swarm-optimization-pso.html#discrete-problems-and-transaction-costs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A continuous solution for a portfolio is not sufficient for the practice, because most of the time only integer amounts of assets can be bought. It’s even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a <code>solve.QP()</code> approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn’t have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function <code>fn()</code>. In a portfolio with net asset value <span class="math inline">\(\text{nav}\)</span> consisting of only American stocks with weights <span class="math inline">\(w_i\)</span> and closing prices <span class="math inline">\(p_i\)</span> can be discretized to <span class="math inline">\(w_i^d\)</span> by the following formula:</p>
+<div id="discrete-problems-and-transaction-costs" class="section level2 hasAnchor" number="7.7">
+<h2><span class="header-section-number">7.7</span> Discrete Problems and Transaction Costs<a href="particle-swarm-optimization-pso.html#discrete-problems-and-transaction-costs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A continuous solution for a portfolio is not sufficient for the practice, because most of the time only integer amounts of assets can be bought. It’s even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a <code>solve.QP()</code> approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn’t have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function <code>fn()</code>. In a portfolio with net asset value (<code>nav</code>) consisting of only American stocks with weights <span class="math inline">\(w_i\)</span> and closing prices <span class="math inline">\(p_i\)</span> can be discretized to <span class="math inline">\(w_i^d\)</span> by the following formula:</p>
 <p><span class="math display">\[
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
 \]</span></p>
 </div>
-<div id="example-discrete-itp-mste" class="section level2 hasAnchor" number="8.8">
-<h2><span class="header-section-number">8.8</span> Example: Discrete ITP-MSTE<a href="particle-swarm-optimization-pso.html#example-discrete-itp-mste" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="example-discrete-itp-mste" class="section level2 hasAnchor" number="7.8">
+<h2><span class="header-section-number">7.8</span> Example: Discrete ITP-MSTE<a href="particle-swarm-optimization-pso.html#example-discrete-itp-mste" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This example analyses the error of rounding a solution with the <code>solve.QP()</code> approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the <code>solve.QP()</code> and uses it as starting position of one particle. The ITP-MSTE focuses to track the S&amp;P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, <span class="math inline">\(1 &lt; \textstyle\sum w_i &gt; 0.99\)</span> and <span class="math inline">\(\text{nav} = 10000\)</span> in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO’s have 200 particles and 100 iterations. The results can be observed in the table below:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb28-1"><a href="particle-swarm-optimization-pso.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb28-2"><a href="particle-swarm-optimization-pso.html#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -939,7 +939,7 @@ div.csl-indent {
 <span id="cb28-64"><a href="particle-swarm-optimization-pso.html#cb28-64" aria-hidden="true" tabindex="-1"></a>  prices <span class="ot">&lt;-</span> <span class="fu">last</span>(pool_data<span class="sc">$</span>prices[,sub_ticker])</span>
 <span id="cb28-65"><a href="particle-swarm-optimization-pso.html#cb28-65" aria-hidden="true" tabindex="-1"></a>  res_qp_discrete <span class="ot">&lt;-</span> <span class="fu">setNames</span>(<span class="fu">as.vector</span>(<span class="fu">round</span>(res_qp<span class="sc">$</span>solution<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav), <span class="fu">names</span>(res_qp<span class="sc">$</span>solution))</span>
 <span id="cb28-66"><a href="particle-swarm-optimization-pso.html#cb28-66" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb28-67"><a href="particle-swarm-optimization-pso.html#cb28-67" aria-hidden="true" tabindex="-1"></a>res_qp_discrete_fit <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">t</span>(res_qp_discrete) <span class="sc">%*%</span> mat<span class="sc">$</span>Dmat[<span class="fu">names</span>(res_qp_discrete), <span class="fu">names</span>(res_qp_discrete)] <span class="sc">%*%</span> res_qp_discrete <span class="sc">-</span> <span class="fu">t</span>(<span class="fu">as.vector</span>(mat<span class="sc">$</span>dvec[<span class="fu">names</span>(res_qp_discrete)])) <span class="sc">%*%</span> res_qp_discrete)</span>
+<span id="cb28-67"><a href="particle-swarm-optimization-pso.html#cb28-67" aria-hidden="true" tabindex="-1"></a>res_qp_discrete_fit <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">t</span>(res_qp_discrete) <span class="sc">%*%</span> mat<span class="sc">$</span>Dmat[<span class="fu">names</span>(res_qp_discrete), <span class="fu">names</span>(res_qp_discrete)] <span class="sc">%*%</span> res_qp_discrete <span class="sc">-</span> <span class="fu">t</span>(<span class="fu">as.vector</span>(mat<span class="sc">$</span>dvec[<span class="fu">names</span>(res_qp_discrete), ])) <span class="sc">%*%</span> res_qp_discrete)</span>
 <span id="cb28-68"><a href="particle-swarm-optimization-pso.html#cb28-68" aria-hidden="true" tabindex="-1"></a>res_qp_discrete_sum_wgt <span class="ot">&lt;-</span> <span class="fu">sum</span>(res_qp_discrete)</span>
 <span id="cb28-69"><a href="particle-swarm-optimization-pso.html#cb28-69" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-70"><a href="particle-swarm-optimization-pso.html#cb28-70" aria-hidden="true" tabindex="-1"></a></span>

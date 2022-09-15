@@ -10,14 +10,12 @@ The PSO was developed by J. Kennedy as a global optimization method based on swa
 
 ## The Algorithm
 Each particle $d$ with position $x_d$ moves in the search space $\mathbb{R}^N$ and has its own velocity $v_d$ and remembers its previous best position $P_d$. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
-
 \begin{align*}
   v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i - x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
 Where $r_1$ and $r_2$ are uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_p$ acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter $c_g$, which is a weighting of the direction to the global best position. The inertial weight $w$ is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for $d = 1, 2, \cdots, D$ particles can be given in the following matrix notation:
-
 \begin{align*}
   V^{i+1} &= w \cdot V^{i} + c_p \cdot r_1^i \cdot (P^i-X^i) + c_g \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} &= X^i + V^{i+1}
@@ -26,7 +24,7 @@ Where $r_1$ and $r_2$ are uniformly distributed random numbers in [0, 1]. The co
 With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$, $c_g$, $r_1$ and $r_2$ are stile scalars.
 
 ## `pso()` Function
-In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which returns a scalar that needs to be minimized. The function itself mainly needs a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is a position of a particle used to derive the dimension of the problem and as the first position of a particle. The argument can only contain `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
+In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which returns a scalar that needs to be minimized. The function itself mainly needs a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The argument can only contain `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
 ```{r pso1}
 pso <- function(
     par, 
@@ -74,8 +72,6 @@ V <- mrunif(
 ```
 
 The velocities are compressed by a factor of 4 to start with a maximum movement of one quarter of the space in each axis. The personal best positions `P` are the same as `X` and the global best position is the position with the smallest fitness:
-
-
 ```{r pso4}
 P <- X
 P_fit <- X_fit
@@ -84,7 +80,6 @@ p_g_fit <- which.min(P_fit)
 ```
 
 The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space, they are pushed back to the edge and the velocities are set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.
-
 ```{r pso5}
 trace_data <- NULL
 for(i in 1:control$maxiter){
@@ -214,8 +209,7 @@ pso <- function(
 
 
 ## Animation 2-Dimensional
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML version of this paper. The amazing animation template is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). The PSO core from the above chapter was used to complete the `pso()` function and is tested here with seed 0. The function `fn` to be evaluated can be found in [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
-
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The amazing animation template is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). The PSO core from the above chapter was used to complete the `pso()` function and is tested here with seed 0. The function `fn` to be evaluated can be found in [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
 ```{r gif_create}
 set.seed(0)
 
@@ -295,7 +289,7 @@ if(!knitr::is_latex_output()){
 
 
 ## Example MVP
-This example uses the `solve.QP` approach from \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the `solve.QP` compared to the PSO are shown below:
+This example uses the `solve.QP()` approach from \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the `solve.QP()` compared to the PSO are shown below:
 
 ```{r pso7, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
@@ -511,8 +505,7 @@ plot_ly(
 The dots for each $\lambda$ are connected with a grey line to visualize the error of the PSO. It can be seen that its possible to solve MVP's with a PSO approach.
 
 ## Example: ITP-MSTE
-The same ITP-MSTE solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the variance of the returns of itself and the S&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$, the upper bound is $0.1$, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
-
+The same ITP-MSTE solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the S&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$, the upper bound is $0.1$, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
  
@@ -682,7 +675,7 @@ reactable(
   wrap = FALSE,
   #compact = T,
   columns = list(
-    type = colDef(width=150),
+    type = colDef(width=180),
     var = colDef(format = colFormat(digits=9), show =F),
     sd = colDef(format = colFormat(digits=5)),
     constraint = colDef(name = "constraint break")
@@ -699,7 +692,7 @@ A PSO approach has advantages and disadvantages, since on the one hand any probl
 
 
 ## Discrete Problems and Transaction Costs
-A continuous solution for a portfolio is not sufficient for the practice, because most of the time only integer amounts of assets can be bought. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a `solve.QP()` approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function `fn()`. In a portfolio with net asset value $\text{nav}$ consisting of only American stocks with weights $w_i$ and closing prices $p_i$ can be discretized to $w_i^d$ by the following formula:
+A continuous solution for a portfolio is not sufficient for the practice, because most of the time only integer amounts of assets can be bought. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a `solve.QP()` approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function `fn()`. In a portfolio with net asset value (`nav`) consisting of only American stocks with weights $w_i$ and closing prices $p_i$ can be discretized to $w_i^d$ by the following formula:
 
 $$
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
@@ -708,7 +701,6 @@ $$
 ## Example: Discrete ITP-MSTE
 
 This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses to track the S&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, $1 < \textstyle\sum w_i > 0.99$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
-
 ```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
@@ -776,7 +768,7 @@ time_qp <- system.time({
   prices <- last(pool_data$prices[,sub_ticker])
   res_qp_discrete <- setNames(as.vector(round(res_qp$solution*nav/prices)*prices/nav), names(res_qp$solution))
 })
-res_qp_discrete_fit <- as.numeric(0.5 * t(res_qp_discrete) %*% mat$Dmat[names(res_qp_discrete), names(res_qp_discrete)] %*% res_qp_discrete - t(as.vector(mat$dvec[names(res_qp_discrete)])) %*% res_qp_discrete)
+res_qp_discrete_fit <- as.numeric(0.5 * t(res_qp_discrete) %*% mat$Dmat[names(res_qp_discrete), names(res_qp_discrete)] %*% res_qp_discrete - t(as.vector(mat$dvec[names(res_qp_discrete), ])) %*% res_qp_discrete)
 res_qp_discrete_sum_wgt <- sum(res_qp_discrete)
 
 

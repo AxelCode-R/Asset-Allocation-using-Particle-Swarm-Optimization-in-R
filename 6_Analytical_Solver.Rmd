@@ -4,12 +4,12 @@ editor_options:
   chunk_output_type: console
 ---
 # Analytic Solver for Quadratic Programming Problems
-The advantages and disadvantages of analytical solvers for quadratic programming problems are discussed in this chapter. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver solves quadratic problems; only the applications and analysis are discussed. The main reason for dealing with quadratic programming solution methods is to use them as a benchmark for PSO.
+The advantages and disadvantages of analytical solvers for quadratic programming problems are discussed in this chapter. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver solves quadratic problems; only the applications and analysis are discussed. The main reason for dealing with analytic solvers for quadratic programming problems is to use them as a benchmark for PSO.
 
 ## Quadratic Programming (QP)
 A quadratic program is a minimization problem of a function that returns a scalar value and consists of a quadratic term and a linear term that depend on the variable of interest. In addition, the problem may be constrained by several linear inequalities that bound the solution. The general formulation used is to find $x$ that minimizes the following problem:
 $$
-  min \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
+  \min\limits_{x} \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
 $$
 and is valid under the linear constraints:
 $$
@@ -20,7 +20,6 @@ Some other sources notate the problem with different signs or coefficients, all 
 
 ## QP Solver from quadprog
 The most common free QP solver used in R comes from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf), which consists of a single function called `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani published in [@GoId1982] and [@GoId1983]. It uses the above QP with the condition that $D$ must be a symmetric positive definite matrix. This means that $D\in \mathbb{R}^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in \mathbb{R}^N$, which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix $\sum$, but it is possible to find the nearest positive definite matrix of $\textstyle\sum$ using the function `nearPD()` from the [matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R package. The error encountered often does not exceed a percentage change in elements over $10^{-15} \%$, which is negligible for the context of this work. The function `solve.QP()` for an $N$ dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
-
 + `Dmat`: Symmetric positive definite matrix $D \in \mathbb{R}^{N \times N}$ of the quadratic term
 + `dvec`: Vector $d \in \mathbb{R}^{N}$ of the linear term
 + `Amat`: Constraint matrix $A$
@@ -28,12 +27,11 @@ The most common free QP solver used in R comes from the package [quadprog](https
 + `meq = 1`: means that the first row of $A$ is treated as an equality constraint
 
 The return of `solve.QP()` is a list and contains, among others, the following attributes of interest:
-
 + `solution`: Vector containing the solution $x$ of the quadratic programming problem (e.g. portfolio weights)
 + `value`: Scalar, the value of the quadratic function at the solution
 
 ## Example: Solving MVP with `solve.QP()` {#exampleanalyticalmvp}
-This section provides insights into the effects of diversification and the use of `solve.QP` by creating ten different efficiency frontiers from a pool of ten assets. Each efficiency frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
+This section provides insights into the effects of diversification and the use of `solve.QP()` by creating ten different efficiency frontiers from a pool of ten assets. Each efficiency frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
 ```{r qp_mvp1, class.source="code_fold_it_collapsed"}
 returns_raw <- buffer(
   get_yf(
@@ -50,7 +48,7 @@ vars <- sapply(returns_raw, var)
 returns_raw <- returns_raw[, order(vars, decreasing = F)]
 ```
 
-The next step is to create a function `mvp()` that has the arguments `return` and `lambda`. It computes the expected returns `mu` and the estimated positive definite covariance `cov`. It then solves an MVP with constraints $\textstyle\sum w = 1$ and $w \geq 0$, which yields the key features `mu`, `var` and `composition` of the portfolio. 
+The next step is to create a function `mvp()` that has the arguments `return` and `lambda`. It computes the expected returns `mu` and the estimated positive definite covariance `cov`. It then solves an MVP with constraints $\textstyle\sum w_i = 1$ and $w_i \geq 0$, which yields the key features `mu`, `var` and `composition` of the portfolio. 
 
 ```{r qp_mvp2, class.source="code_fold_it_collapsed"}
 mvp <- function(returns, lambda){
@@ -169,8 +167,8 @@ It can be seen, that each asset added results in a minimum variance portfolio wi
 
 
 
-## Example: Solving ITP with `solve.QP()` {#exampleitpsolveqp}
-This example analyzes how many assets are needed to minimize the variance between the replication and historical returns of the S&P 500 from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded and serve as the new asset pool for the next replication until only five assets are left. First, the required data can be downloaded from the `R/` directory using existing functions. The function `get_spx_composition()` uses web scraping to read the components of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and converts them into monthly compositions of the S&P 500. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the S&P 500:
+## Example: Solving ITP-MSTE with `solve.QP()` {#exampleitpsolveqp}
+This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the S&P 500 from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded and serve as the new asset pool for the next replication until only five assets are left. First, the required data can be downloaded from the `R/` directory using existing functions. The function `get_spx_composition()` uses web scraping to read the components of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and converts them into monthly compositions of the S&P 500. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the S&P 500:
 
 ```{r qp_itp1, class.source="code_fold_it_collapsed"}
 from <- "2018-01-01"
@@ -203,13 +201,13 @@ bm_returns <- buffer(
 ) %>% setNames(., "S&P 500")
 
 ```
-The required data is now available and the function for the ITP can be created. It requires `pool_returns` with variable number of columns and the single-column matrix `bm_returns`.
+The required data is now available and the function for the ITP-MSTE can be created. It requires `pool_returns` with variable number of columns and the single-column matrix `bm_returns`.
 ```{r qp_itp2, class.source="code_fold_it_collapsed"}
 
 itp <- function(pool_returns, bm_returns){
   mat <- list(
-    Dmat = cov(pool_returns),
-    dvec = cov(pool_returns, bm_returns),
+    Dmat = t(pool_returns) %*% pool_returns,
+    dvec = t(pool_returns) %*% bm_returns,
     Amat = t(rbind(
       rep(1, ncol(pool_returns)), # sum up to 1
       diag(1, 

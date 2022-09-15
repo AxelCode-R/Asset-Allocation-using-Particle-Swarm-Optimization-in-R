@@ -40,12 +40,12 @@ In 1952, Harry Markowitz published his first seminal paper, which had a signific
 ### Assumptions of Markowitz Portfolio Theory
 The following list contains all Markowitz assumptions according to [@Mari2005]:
 
-+ Perfect market without taxes or transaction costs.
-+ Short sales are disallowed.
-+ Assets are infinitely divisible.
-+ Expected Returns, Variances and Covariances contain all information.
++ Perfect market without taxes or transaction costs
++ Short sales are disallowed
++ Assets are infinitely divisible
++ Expected Returns, Variances and Covariances contain all information
 + Investors are risk-adverse, they will only accept greater risk if they
-are compensated with a higher expected return.
+are compensated with a higher expected return
 
 The assumption that the returns are normally distributed is not required, but is assumed in this case to simplify the problem. It is obvious that these assumptions are unrealistic in reality. More details on the requirements for using other distributions can be found in [@Mari2005]. 
 
@@ -82,7 +82,7 @@ The following formula can be used to get the expected returns of a vector with n
  =
  \mu
 \end{align*}
-and $\mu_i$ can be estimated in R using historical data and the formula for the geometric mean of returns (also called compound returns). The function to calculate the geometric mean of the returns from an xts object can be found in \@ref(geomeanret). 
+and $\mu_i$ can be estimated in R using historical data and the formula for the geometric mean of returns (also called compound returns). The function to calculate the geometric mean of returns from an xts object can be found in \@ref(geomeanret). 
 
 
 ### Expected Portfolio Returns
@@ -159,7 +159,6 @@ Let $R$ be a random vector with $N$ normally distributed elements and $w$ a weig
 \end{align*}
 
 Since $(R - \mu) \times w$ is a scalar, it can be transformed from $((R - \mu) \times w)^2$ to $((R - \mu) \times w)^T \cdot ((R - \mu) \times w)$ and results in:
-
 \begin{align*}
   Var(R \times w) &= E[((R - \mu) \cdot w)^T \times ((R - \mu) \times w)]\\ 
   &= E[(w^T \times (R - \mu)^T) \cdot ((R - \mu) \times w)]\\ 

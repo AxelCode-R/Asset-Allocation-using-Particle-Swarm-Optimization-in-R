@@ -18,6 +18,10 @@ p0 <- function(...){
   print(paste0(...))
 }
 
+cat0 <- function(...){
+  cat(paste0(..., "\n"))
+}
+
 m0 <- function(...){
   message(paste0(...))
 }

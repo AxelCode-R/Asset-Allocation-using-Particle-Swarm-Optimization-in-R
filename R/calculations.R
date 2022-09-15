@@ -17,3 +17,22 @@ pri_to_ret <- function(data_xts){
 mrunif <- function(nr, nc, lower, upper) {
   return(matrix(runif(nr*nc,0,1),nrow=nr,ncol=nc)*(upper-lower)+lower)
 }
+
+ret_to_geomeanret <- function(xts_ret){
+  sapply((1+xts_ret), prod)^(1/nrow(xts_ret))-1
+}
+
+
+calc_portfolio_returns <- function(xts_returns, weights, name="portfolio"){
+  if(sum(weights)!=1){
+    xts_returns$temp___X1 <- 0
+    weights <- c(weights, 1-sum(weights))
+  }
+  res <- cumprod((1+xts_returns)) * matrix(
+    rep(weights, nrow(xts_returns)), ncol=length(weights), byrow=T)
+  res <- xts(
+    rowSums(res/c(1, rowSums(res[-nrow(xts_returns),])))-1,
+    order.by=index(xts_returns)) %>%
+    setNames(., name)
+  return(res)
+}

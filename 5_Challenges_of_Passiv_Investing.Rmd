@@ -10,7 +10,7 @@ In this chapter, we analyze two common challenges of passive investing and creat
 ## Mean-Variance Portfolio (MVP)
 Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier.
 
-### MVP
+### MVP Objective
 Let there be $N$ assets and their returns on $T$ different days, creating a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP with the risk aversion parameter $\lambda \in [0,1]$, as shown in [@Mari2005], can be formalized as follows:
 
 \begin{equation} 
@@ -40,17 +40,17 @@ plotly_line_chart_xts(ret_to_cumret(returns)) %>%
 
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \@ref(mathfundations):
 
-```{r MVP_ex3, results = "hold", include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
-p0("estimation of expected daily returns")
+```{r MVP_ex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
+cat0("estimation of expected daily returns:")
 mu
-
-p0("estimation of positiv definite covariance matrix")
+cat("\n")
 cov <- as.matrix(nearPD(cov(returns))$mat)
+cat0("estimation of positiv definite covariance matrix:")
 cov
 ```
 
-This is all the data necessary to solve the MVP with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the "long only" constraint, where the weights should sum to 1.
+This is all the data necessary to solve the MVP with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the long only ($w_i \geq 0 \ \forall \ i$) constraint and the weights should sum to 1.
 
 ```{r MVP_ex4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 portfolios <- data.frame()
@@ -125,7 +125,7 @@ for(i in 1:ncol(portfolios)){
 p %>% html_save()
 
 ```
-
+It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased $\lambda$, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
 
 ## Index-Tracking Portfolio (ITP)
 Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor's 500 Index (S&P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost [@Desm2016]. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reweight daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark's assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&P 500 might consist of the one hundred highest-weighted assets in the S&P 500. The ITP can be modeled in two ways analysed in [@IuGa2019]. 
@@ -163,7 +163,6 @@ $$
 Var(R \times w) = w^T \times Cov(R) \times w
 $$
 And the last term can be solved in the same way as in [@Eric2021]:
-
 \begin{align*}
   Cov(A \times a, b) &= Cov(b, A \times a) \\
   &= E[(b-\mu_{b})(A \times a-\mu_{A} \times a)] \\
@@ -173,7 +172,6 @@ And the last term can be solved in the same way as in [@Eric2021]:
 \end{align*}
 
 This results in the final formula of the ITP:
-
 \begin{align*}
   Var(r_{p}-r_{bm}) & = Var(R \times w - r_{bm}) \\
   & = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
@@ -184,7 +182,7 @@ This results in the final formula of the ITP:
 The minimization problem of the ITP in the general structure required by many optimizers is:
 
 $$
-  min(\frac{1}{2} \cdot b^T \times D \times b -d^T \times b)
+  \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w -d^T \times w
 $$
 
 Minimization problems can ignore constant terms and global stretch coefficients and still find the same minimum. This leads to a general substitution of the ITP with TEV objective as follows:
@@ -199,10 +197,10 @@ $$
 d = Cov(r_{bm}, R)
 $$
 
-It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only. Despite the fact that this model is often used, it has a big disadvantage in that it cannot detect constant deviations in the returns. For this reason, the following model exists, which focuses on the MSE.
+It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only. Despite the fact that this model is often used, it has a big disadvantage in that it cannot detect constant deviations in the returns. For this reason, the following model exists, which focuses on the mean square tracking error of returns (MSTE).
 
-### ITP with MSE objective (ITP-MSTE)
-A good explanation of the ITP with MSTE objective can be found in [ahmedbadary](https://ahmedbadary.github.io/work_files/research/conv_opt/hw/iftp). The objective is to minimize the mean square tracking error (MSTE) of the daily portfolio returns $r_{t, p}$ and daily benchmark returns $r_{t, bm}$ on $T$ days:
+### ITP with MSTE objective (ITP-MSTE)
+A good explanation of the ITP with MSTE objective can be found in [ahmedbadary](https://ahmedbadary.github.io/work_files/research/conv_opt/hw/iftp). The objective is to minimize the mean square tracking error (MSTE) of daily portfolio returns $r_{t, p}$ and daily benchmark returns $r_{t, bm}$ on $T$ days:
 
 $$
   \frac{1}{T} \sum^T_{t=1}(r_{t, p}-r_{t, bm})^2
@@ -216,22 +214,21 @@ $$
  min \ \  \left\Vert r_{p}-r_{bm} \right\Vert_2^2
 $$
 The portfolio returns $r_p$ needs to be substituted to contain the portfolio weights $w$ like in the TEV objective above. This results in the below transformation of the problem:
-
 \begin{align*}
-  \left\Vert r_{p}-r_{bm} \right\Vert_2^2 \\
-  &= \left\Vert R \times w-r_{bm} \right\Vert_2^2 \\ 
+  \left\Vert r_{p}-r_{bm} \right\Vert_2^2 &= \left\Vert R \times w-r_{bm} \right\Vert_2^2 \\ 
   &= (R \times w-r_{bm})^T \times (R \times w-r_{bm}) \\ 
   &= (w^T \times R^T-r_{bm}^T) \times (R \times w-r_{bm}) \\ 
-  &= w^T \times R^T \times R \times w - w^T \times A^T \times r_{bm} - r_{bm}^T \times R \times w + r_{bm}^T \times \end{align*}
+  &= w^T \times R^T \times R \times w - w^T \times A^T \times r_{bm} - r_{bm}^T \times R \times w + r_{bm}^T \times r_{bm} 
+\end{align*}
 
-The minimization of this problem and the fact that the scalars $w^T \times A^T \times r_{bm}$ and $r_{bm}^T \times R \times w$ are equal, transforms it to:
+The minimization and the fact that the scalars $w^T \times R^T \times r_{bm}$ and $r_{bm}^T \times R \times w$ are equal, transforms the problem to:
 $$
   \min\limits_{w} \ \  \left\Vert r_{p}-r_{bm} \right\Vert_2^2 
   = w^T \times R^T \times R \times w - 2\cdot r_{bm}^T \times R \times w
 $$
 This leads to the equivalent general representation of the ITP with MSTE objective as follows:
 $$
-  \min\limits_{w} \ \ \frac{1}{2} w^T D w - d^T w
+  \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w - d^T \times w
 $$
 with
 $$

@@ -8,6 +8,7 @@ rmd_files: ["index.Rmd",
             "5_Challenges_of_Passiv_Investing.Rmd",
             "6_Analytical_Solver.Rmd",
             "7_Simple_Particle_Swarm_Optimization.Rmd",
+            "8_PSO_Variations.Rmd",
             "references.Rmd"]
 output_dir: "docs"
 language:
