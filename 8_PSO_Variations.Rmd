@@ -12,6 +12,254 @@ The standard PSO analysed in the previews chapter is capable to solve a wide ran
 ## Function Stretching
 
 
+```{r}
+pso <- function(
+    par,
+    fn,
+    lower,
+    upper,
+    control = list()
+){
+
+  # use default control values if not set
+  control_ = list(
+    s = 10, # swarm size
+    c.p = 0.5, # inherit best
+    c.g = 0.5, # global best
+    maxiter = 200, # iterations
+    w0 = 1.2, # starting inertia weight
+    wN = 0, # ending inertia weight
+    save_traces = F, # save more information
+    fn_stretching = F
+  )
+  control <- c(control, control_[!names(control_) %in% names(control)])
+  
+  fn1 <- function(pos){fn(pos)}
+    
+  # init data-structure
+  X <- mrunif(
+    nr = length(par), nc=control$s, lower=lower, upper=upper
+  )
+  if(all(!is.na(par))){
+    X[, 1] <- par
+  }
+  X_fit <- apply(X, 2, fn1)
+  V <- mrunif(
+    nr = length(par), nc=control$s,
+    lower=-(upper-lower), upper=(upper-lower)
+  )/4
+  P <- X
+  P_fit <- X_fit
+  p_g <- P[, which.min(P_fit)]
+  p_g_fit <- min(P_fit)
+
+
+  trace_data <- NULL
+  for(i in 1:control$maxiter){
+
+    # move particles
+    V <-
+      (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
+      control$c.p * runif(length(par)) * (P-X) +
+      control$c.g * runif(length(par)) * (p_g-X)
+    X <- X + V
+
+    # set velocity to zeros if not in valid space
+    V[X > upper] <- -V[X > upper]
+    V[X < lower] <- -V[X < lower]
+
+    # move into valid space
+    X[X > upper] <- upper
+    X[X < lower] <- lower
+
+    # evaluate objective function
+    X_fit <- apply(X, 2, fn1)
+
+    # save new previews best
+    P[, P_fit > X_fit] <- X[, P_fit > X_fit]
+    P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+
+    # save new global best
+    if(any(P_fit < p_g_fit)){
+      p_g <- P[, which.min(P_fit)]
+      p_g_fit <- min(P_fit)
+    }
+    
+    if(control$fn_stretching){
+      fn1 <- function(pos){
+        res <- fn(pos)
+        G <- res + 1.5 * sqrt(sum((pos - p_g)^2)) * (sign(res - p_g_fit) + 1)
+        H <- G + 0.5 * (sign(res - p_g_fit) + 1)/(tanh(0.1 * (G - p_g_fit)))
+        return(H)
+      }
+    }
+
+    if(control$save_traces){
+      trace_data <- rbind(trace_data, data.frame("iter"=i, "mean_fit" = mean(P_fit), "best_fit" = p_g_fit, t(X)))
+    }
+  }
+
+  res <- list(
+    "solution" = p_g,
+    "fitness" = p_g_fit
+  )
+  if(control$save_traces){
+    res$trace_data <- trace_data
+  }
+  return(res)
+}
+
+
+
+set.seed(0)
+res_pso_time <- system.time({
+  res_pso <- pso(
+    par <- rep(NA, 2),
+    fn <- function(pos){
+      -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - 
+      exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + 
+      exp(1) + 20
+    },
+    lower <- -10,
+    upper <- 10,
+    control = list(
+      s = 10, # swarm size
+      c.p = 0.5, # inherit best
+      c.g = 0.5, # global best
+      maxiter = 100, # iterations
+      w0 = 1.2, # starting inertia weight
+      wN = 0, # ending inertia weight
+      save_traces = T, # save more information
+      fn_stretching = F
+    )
+  )
+})
+
+set.seed(0)
+res_pso_fns_time <- system.time({
+  res_pso_fns <- pso(
+    par <- rep(NA, 2),
+    fn <- function(pos){
+      -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - 
+      exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + 
+      exp(1) + 20
+    },
+    lower <- -10,
+    upper <- 10,
+    control = list(
+      s = 10, # swarm size
+      c.p = 0.5, # inherit best
+      c.g = 0.5, # global best
+      maxiter = 100, # iterations
+      w0 = 1.2, # starting inertia weight
+      wN = 0, # ending inertia weight
+      save_traces = T, # save more information
+      fn_stretching = T
+    )
+  )
+})
+
+df <- rbind(data.frame(
+    "type" = "PSO", res_pso$trace_data %>% select(iter, mean_fit, best_fit)
+  ),
+  data.frame(
+    "type" = "PSO-fnS", res_pso_fns$trace_data %>% select(iter, mean_fit, best_fit)
+  )
+)
+
+plot_ly(data = df, x=~iter, y=~mean_fit, name = ~paste0("mean_fit_", type), mode="lines", type = 'scatter') %>%   add_trace(x=~iter, y=~best_fit, name = ~paste0("best_fit_", type), mode="lines", type = 'scatter')
+  
+
+
+
+
+
+
+
+set.seed(0)
+ 
+from <- "2018-01-01"
+to <- "2019-12-31"
+
+spx_composition <- buffer(
+  get_spx_composition(),
+  "AS_spx_composition"
+)
+
+
+pool_returns_raw <- buffer(
+  get_yf(
+    tickers = spx_composition %>% 
+      filter(Date<=to) %>% 
+      filter(Date==max(Date)) %>% 
+      pull(Ticker), 
+    from = from, 
+    to = to
+  )$returns, 
+  "AS_sp500_assets"
+)
+pool_returns_raw <- 
+  pool_returns_raw[, colSums(is.na(pool_returns_raw))==0]
+
+
+bm_returns <- buffer(
+  get_yf(tickers = "%5EGSPC", from = from, to = to)$returns, 
+  "AS_sp500"
+) %>% setNames(., "S&P 500")
+
+
+
+
+mat <- list(
+  Dmat = t(pool_returns) %*% pool_returns,
+  dvec = t(pool_returns) %*% bm_returns,
+  Amat = t(rbind(
+    rep(1, ncol(pool_returns)), # sum up to 1
+    diag(1, 
+         nrow=ncol(pool_returns), 
+         ncol=ncol(pool_returns)) # long only
+  )),
+  bvec = c(
+    1, # sum up to 1
+    rep(0, ncol(pool_returns)) # long only
+  ),
+  meq = 1
+)
+
+calc_fit <- function(x){
+  as.numeric(0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x)
+}
+calc_const <- function(x){
+  const <- t(mat$Amat) %*% x - mat$bvec
+  const[mat$meq] <- -max(0, abs(const[mat$meq]+0.01)-0.01)
+  -min(0, const)
+}
+
+
+pso_res <- pso(
+  par = rep(0, ncol(pool_returns)),
+  fn = function(x){
+    fitness <- calc_fit(x)
+    constraints <- calc_const(x)
+    return(fitness+10*constraints)
+  },
+  lower = 0,
+  upper = 0.1,
+  control = list(
+    s = 100, # swarm size
+    c.p = 0.5, # inherit best
+    c.g = 0.5, # global best
+    maxiter = 100, # iterations
+    w0 = 1.2, # starting inertia weight
+    wN = 0, # ending inertia weight
+    save_traces = F, # save more information
+    fn_stretching = T
+  )
+)
+
+```
+
+
 
 
 10.1.1.301.4441.pdf

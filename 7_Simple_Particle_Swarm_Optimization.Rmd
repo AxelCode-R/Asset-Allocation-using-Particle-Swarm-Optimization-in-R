@@ -76,7 +76,7 @@ The velocities are compressed by a factor of 4 to start with a maximum movement 
 P <- X
 P_fit <- X_fit
 p_g <- P[, which.min(P_fit)]
-p_g_fit <- which.min(P_fit)
+p_g_fit <- min(P_fit)
 ```
 
 The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space, they are pushed back to the edge and the velocities are set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.
@@ -155,7 +155,7 @@ pso <- function(
   P <- X
   P_fit <- X_fit
   p_g <- P[, which.min(P_fit)]
-  p_g_fit <- which.min(P_fit)
+  p_g_fit <- min(P_fit)
   
   
   trace_data <- NULL
@@ -379,8 +379,8 @@ mvp_PSO <- function(returns, lambda, silent = T){
     }
     calc_const <- function(x){
       const <- t(mat$Amat) %*% x - mat$bvec
-      const[mat$meq] <- -max(0, abs(const[mat$meq])-0.01)
-      -sum(min(0, const))
+      const[mat$meq] <- -max(0, abs(const[mat$meq]+0.01)-0.01)
+      -min(0, const)
     }
     pso_res <- pso(
       par = rep(NA, ncol(returns)),
@@ -502,10 +502,10 @@ plot_ly(
   html_save()
 ```
 
-The dots for each $\lambda$ are connected with a grey line to visualize the error of the PSO. It can be seen that its possible to solve MVP's with a PSO approach.
+The dots for each $\lambda$ are connected with a grey line to visualize the error of the PSO. It turns out that it is possible to solve MVP's with a PSO approach. It is noticeable that some PSO runs are trapped in local minimas and thus show a deviation from the `solve.QP()` approach, which can often be fixed by repeated runs. 
 
 ## Example: ITP-MSTE
-The same ITP-MSTE solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the S&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$, the upper bound is $0.1$, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
+The same ITP-MSTE solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the S&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$, the upper bound is $0.05$, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
  
@@ -595,7 +595,8 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
   }
   calc_const <- function(x){
     const <- t(mat$Amat) %*% x - mat$bvec
-    const[mat$meq] <- -max(0, abs(const[mat$meq])-0.01)
+    const[mat$meq] <- -max(0, abs(const[mat$meq]+0.01)-0.01)
+    #-sum(pmin(0, const))
     -min(0, const)
   }
   pso_res <- pso(
@@ -606,7 +607,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
       return(fitness+10*constraints)
     },
     lower = 0,
-    upper = 0.1,
+    upper = 0.05,
     control = list(
       s = 100, # swarm size
       c.p = 0.5, # inherit best

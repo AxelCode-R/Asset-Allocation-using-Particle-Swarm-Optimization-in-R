@@ -35,7 +35,7 @@ pso <- function(
   P <- X
   P_fit <- X_fit
   p_g <- P[, which.min(P_fit)]
-  p_g_fit <- which.min(P_fit)
+  p_g_fit <- min(P_fit)
 
 
   trace_data <- NULL
