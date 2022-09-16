@@ -595,9 +595,9 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
   }
   calc_const <- function(x){
     const <- t(mat$Amat) %*% x - mat$bvec
-    const[mat$meq] <- -max(0, abs(const[mat$meq]+0.01)-0.01)
-    #-sum(pmin(0, const))
-    -min(0, const)
+    const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
+    #-min(0, const)
+    -sum(pmin(0, const))
   }
   pso_res <- pso(
     par = rep(0, ncol(pool_returns)),
@@ -796,8 +796,9 @@ calc_fit <- function(x){
 }
 calc_const <- function(x){
   const <- t(mat$Amat) %*% x - mat$bvec
-  const[mat$meq] <- -max(0, abs(const[mat$meq]+0.01)-0.01)
-  -min(0, const)
+  const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
+  #-min(0, const)
+  -sum(pmin(0, const))
 }
 time_pso <- system.time({
   pso_res <- pso(

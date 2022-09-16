@@ -44,8 +44,8 @@ pso <- function(
     # move particles
     V <-
       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
-      control$c.p * runif(length(par)) * (P-X) +
-      control$c.g * runif(length(par)) * (p_g-X)
+      control$c.p * runif(1) * (P-X) +
+      control$c.g * runif(1) * (p_g-X)
     X <- X + V
 
     # set velocity to zeros if not in valid space
