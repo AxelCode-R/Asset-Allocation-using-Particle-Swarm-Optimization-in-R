@@ -126,7 +126,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-09-16}
+\date{2022-09-17}
 
 \begin{document}
 \maketitle
@@ -961,11 +961,11 @@ Now it is time to initialize the random positions \texttt{X}, their fitness \tex
 \NormalTok{V }\OtherTok{\textless{}{-}} \FunctionTok{mrunif}\NormalTok{(}
   \AttributeTok{nr =} \FunctionTok{length}\NormalTok{(par), }\AttributeTok{nc=}\NormalTok{control}\SpecialCharTok{$}\NormalTok{s, }
   \AttributeTok{lower=}\SpecialCharTok{{-}}\NormalTok{(upper}\SpecialCharTok{{-}}\NormalTok{lower), }\AttributeTok{upper=}\NormalTok{(upper}\SpecialCharTok{{-}}\NormalTok{lower)}
-\NormalTok{)}\SpecialCharTok{/}\DecValTok{4}
+\NormalTok{)}\SpecialCharTok{/}\DecValTok{10}
 \end{Highlighting}
 \end{Shaded}
 
-The velocities are compressed by a factor of 4 to start with a maximum movement of one quarter of the space in each axis. The personal best positions \texttt{P} are the same as \texttt{X} and the global best position is the position with the smallest fitness:
+The velocities are compressed by a factor of 10 to start with a maximum movement of one tenth of the space in each axis. The personal best positions \texttt{P} are the same as \texttt{X} and the global best position is the position with the smallest fitness:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1319,8 +1319,8 @@ The standard PSO analysed in the previews chapter is capable to solve a wide ran
 \NormalTok{\}}
 \NormalTok{calc\_const }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
 \NormalTok{  const }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(mat}\SpecialCharTok{$}\NormalTok{Amat) }\SpecialCharTok{\%*\%}\NormalTok{ x }\SpecialCharTok{{-}}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{bvec}
-\NormalTok{  const[mat}\SpecialCharTok{$}\NormalTok{meq] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FunctionTok{max}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{abs}\NormalTok{(const[mat}\SpecialCharTok{$}\NormalTok{meq]}\SpecialCharTok{+}\FloatTok{0.01}\NormalTok{)}\SpecialCharTok{{-}}\FloatTok{0.01}\NormalTok{)}
-  \SpecialCharTok{{-}}\FunctionTok{min}\NormalTok{(}\DecValTok{0}\NormalTok{, const)}
+\NormalTok{  const[mat}\SpecialCharTok{$}\NormalTok{meq] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FunctionTok{max}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{abs}\NormalTok{(const[mat}\SpecialCharTok{$}\NormalTok{meq]}\SpecialCharTok{+}\FloatTok{0.005}\NormalTok{)}\SpecialCharTok{{-}}\FloatTok{0.005}\NormalTok{)}
+  \FunctionTok{sum}\NormalTok{(}\FunctionTok{pmin}\NormalTok{(}\DecValTok{0}\NormalTok{, const)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
 \NormalTok{\}}
 
 

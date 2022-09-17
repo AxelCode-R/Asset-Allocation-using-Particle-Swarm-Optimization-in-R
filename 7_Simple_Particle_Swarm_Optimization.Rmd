@@ -25,7 +25,7 @@ With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \i
 
 ## `pso()` Function
 In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which returns a scalar that needs to be minimized. The function itself mainly needs a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The argument can only contain `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
-```{r pso1}
+```{r pso1, eval=F}
 pso <- function(
     par, 
     fn, 
@@ -68,10 +68,10 @@ X_fit <- apply(X, 2, fn)
 V <- mrunif(
   nr = length(par), nc=control$s, 
   lower=-(upper-lower), upper=(upper-lower)
-)/4
+)/10
 ```
 
-The velocities are compressed by a factor of 4 to start with a maximum movement of one quarter of the space in each axis. The personal best positions `P` are the same as `X` and the global best position is the position with the smallest fitness:
+The velocities are compressed by a factor of 10 to start with a maximum movement of one tenth of the space in each axis. The personal best positions `P` are the same as `X` and the global best position is the position with the smallest fitness:
 ```{r pso4}
 P <- X
 P_fit <- X_fit
@@ -119,90 +119,8 @@ for(i in 1:control$maxiter){
 The best fitness after $100$ iterations is `r p_g_fit` and the best possible solution is $0$.
 
 ```{r pso6, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
-# the resulting pso() function
-pso <- function(
-    par, 
-    fn, 
-    lower, 
-    upper, 
-    control = list()
-  ){
-
-  # use default control values if not set
-  control_ = list(
-    s = 10, # swarm size
-    c.p = 0.5, # inherit best
-    c.g = 0.5, # global best
-    maxiter = 200, # iterations
-    w0 = 1.2, # starting inertia weight
-    wN = 0, # ending inertia weight
-    save_traces = F # save more information
-  )
-  control <- c(control, control_[!names(control_) %in% names(control)])
-  
-  # init data-structure
-  X <- mrunif(
-    nr = length(par), nc=control$s, lower=lower, upper=upper
-  )
-  if(all(!is.na(par))){
-    X[, 1] <- par
-  }
-  X_fit <- apply(X, 2, fn)
-  V <- mrunif(
-    nr = length(par), nc=control$s, 
-    lower=-(upper-lower), upper=(upper-lower)
-  )/4
-  P <- X
-  P_fit <- X_fit
-  p_g <- P[, which.min(P_fit)]
-  p_g_fit <- min(P_fit)
-  
-  
-  trace_data <- NULL
-  for(i in 1:control$maxiter){
-    
-    # move particles
-    V <- 
-      (control$w0-(control$w0-control$wN)*i/control$maxiter) * V + 
-      control$c.p * runif(length(par)) * (P-X) + 
-      control$c.g * runif(length(par)) * (p_g-X)
-    X <- X + V
-    
-    # set velocity to zeros if not in valid space
-    V[X > upper] <- -V[X > upper]
-    V[X < lower] <- -V[X < lower]
-    
-    # move into valid space
-    X[X > upper] <- upper
-    X[X < lower] <- lower
-    
-    # evaluate objective function
-    X_fit <- apply(X, 2, fn)
-    
-    # save new previews best
-    P[, P_fit > X_fit] <- X[, P_fit > X_fit]
-    P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
-    
-    # save new global best
-    if(any(P_fit < p_g_fit)){
-      p_g <- P[, which.min(P_fit)]
-      p_g_fit <- min(P_fit)
-    }
-    
-    if(control$save_traces){
-      trace_data <- rbind(trace_data, data.frame("iter"=i, t(X)))
-    }
-  }
-  
-  res <- list(
-    "solution" = p_g,
-    "fitness" = p_g_fit
-  )
-  if(control$save_traces){
-    res$trace_data <- trace_data
-  }
-  return(res)
-}
+# load default PSO
+source("R/PSO_functions.R")
 ```
 
 
@@ -379,20 +297,20 @@ mvp_PSO <- function(returns, lambda, silent = T){
     }
     calc_const <- function(x){
       const <- t(mat$Amat) %*% x - mat$bvec
-      const[mat$meq] <- -max(0, abs(const[mat$meq]+0.01)-0.01)
-      -min(0, const)
+      const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
+      sum(pmin(0, const)^2)
     }
     pso_res <- pso(
-      par = rep(NA, ncol(returns)),
+      par = rep(0, ncol(returns)),
       fn = function(x){
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness + 10 * constraints)
+        return(fitness + 5 * constraints)
       },
       lower = 0,
       upper = 1,
       control = list(
-        s = 300, # swarm size
+        s = 200, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
         maxiter = 200, # iterations
@@ -431,7 +349,7 @@ mvp_PSO <- function(returns, lambda, silent = T){
 
 df <- NULL
 runs <- 100
-for(i in 0:round((runs-1)/2)){
+for(i in 0:round((runs-1)*0.4)){
   lambda <- 1-i/runs
   temp <- mvp_QP(returns = returns_raw, lambda = lambda)
   df <- rbind(df, data.frame("type"="QP_MVP", "lambda"=lambda, "mu"=temp$mu, "var"=temp$var, "constraint"=0))
@@ -596,20 +514,19 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
   calc_const <- function(x){
     const <- t(mat$Amat) %*% x - mat$bvec
     const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
-    #-min(0, const)
-    -sum(pmin(0, const))
+    sum(pmin(0, const)^2)
   }
   pso_res <- pso(
     par = rep(0, ncol(pool_returns)),
     fn = function(x){
       fitness <- calc_fit(x)
       constraints <- calc_const(x)
-      return(fitness+10*constraints)
+      return(fitness+5*constraints)
     },
     lower = 0,
     upper = 0.05,
     control = list(
-      s = 100, # swarm size
+      s = 200, # swarm size
       c.p = 0.5, # inherit best
       c.g = 0.5, # global best
       maxiter = 100, # iterations
@@ -797,8 +714,7 @@ calc_fit <- function(x){
 calc_const <- function(x){
   const <- t(mat$Amat) %*% x - mat$bvec
   const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
-  #-min(0, const)
-  -sum(pmin(0, const))
+  sum(pmin(0, const)^2)
 }
 time_pso <- system.time({
   pso_res <- pso(
@@ -807,7 +723,7 @@ time_pso <- system.time({
       x <- as.vector(round(x*nav/prices)*prices/nav)
       fitness <- calc_fit(x)
       constraints <- calc_const(x)
-      return(fitness + 10*constraints)
+      return(fitness + 5*constraints)
     },
     lower = 0,
     upper = 1,
@@ -815,7 +731,7 @@ time_pso <- system.time({
       s = 200, # swarm size
       c.p = 0.5, # inherit best
       c.g = 0.5, # global best
-      maxiter = 100, # iterations
+      maxiter = 200, # iterations
       w0 = 1.2, # starting inertia weight
       wN = 0, # ending inertia weight
       save_traces = F # save more information
@@ -835,7 +751,7 @@ time_pso_2 <- system.time({
       x <- as.vector(round(x*nav/prices)*prices/nav)
       fitness <- calc_fit(x)
       constraints <- calc_const(x)
-      return(fitness + 10*constraints)
+      return(fitness + 5*constraints)
     },
     lower = 0,
     upper = 1,
@@ -843,7 +759,7 @@ time_pso_2 <- system.time({
       s = 200, # swarm size
       c.p = 0.5, # inherit best
       c.g = 0.5, # global best
-      maxiter = 100, # iterations
+      maxiter = 200, # iterations
       w0 = 1.2, # starting inertia weight
       wN = 0, # ending inertia weight
       save_traces = F # save more information

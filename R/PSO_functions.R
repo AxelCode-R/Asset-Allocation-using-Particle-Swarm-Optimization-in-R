@@ -1,6 +1,14 @@
+# Wrapper for all PSOs
+pso <- function(type="default", ...){
+  if(type=="default"){
+    return(pso_default(...))
+  }
+}
+
+
 
 # default PSO
-pso <- function(
+pso_default <- function(
     par,
     fn,
     lower,
@@ -16,7 +24,8 @@ pso <- function(
     maxiter = 200, # iterations
     w0 = 1.2, # starting inertia weight
     wN = 0, # ending inertia weight
-    save_traces = F # save more information
+    save_traces = F, # save more information
+    save_fit = T
   )
   control <- c(control, control_[!names(control_) %in% names(control)])
 
@@ -31,7 +40,7 @@ pso <- function(
   V <- mrunif(
     nr = length(par), nc=control$s,
     lower=-(upper-lower), upper=(upper-lower)
-  )/4
+  )/10
   P <- X
   P_fit <- X_fit
   p_g <- P[, which.min(P_fit)]
@@ -39,18 +48,19 @@ pso <- function(
 
 
   trace_data <- NULL
+  fit_data <- NULL
   for(i in 1:control$maxiter){
 
     # move particles
     V <-
       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
-      control$c.p * runif(1) * (P-X) +
-      control$c.g * runif(1) * (p_g-X)
+      control$c.p * runif(length(par)) * (P-X) +
+      control$c.g * runif(length(par)) * (p_g-X)
     X <- X + V
 
     # set velocity to zeros if not in valid space
-    V[X > upper] <- -V[X > upper]
-    V[X < lower] <- -V[X < lower]
+    V[X > upper] <- 0#-V[X > upper]
+    V[X < lower] <- 0#-V[X < lower]
 
     # move into valid space
     X[X > upper] <- upper
@@ -72,6 +82,9 @@ pso <- function(
     if(control$save_traces){
       trace_data <- rbind(trace_data, data.frame("iter"=i, t(X)))
     }
+    if(control$save_fit){
+      fit_data <- rbind(fit_data, data.frame("iter"=i, "mean"=mean(P_fit), "best"=p_g_fit))
+    }
   }
 
   res <- list(
@@ -81,5 +94,15 @@ pso <- function(
   if(control$save_traces){
     res$trace_data <- trace_data
   }
+  if(control$save_fit){
+    res$fit_data <- fit_data
+  }
   return(res)
 }
+
+
+
+
+
+
+
