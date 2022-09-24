@@ -57,6 +57,15 @@ qp <- solve.QP(
   Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
 )
 
+sqrt(sum(( xts(pool_returns %*% qp$solution, order.by=index(pool_returns)) - bm_returns)^2))
+
+plotly_line_chart_xts(pool_returns %*% qp$solution - bm_returns)
+
+plotly_line_chart_xts(cbind.xts(pool_returns %*% qp$solution, bm_returns))
+
+sqrt(sum((ret_to_cumret(xts(pool_returns %*% qp$solution, order.by=index(pool_returns))) - ret_to_cumret(bm_returns))^2))
+
+plotly_line_chart_xts(ret_to_cumret(cbind.xts(pool_returns %*% qp$solution, bm_returns)))
 
 
 
@@ -85,6 +94,16 @@ qp <- solve.QP(
   Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
 )
 
+sqrt(sum(( xts(pool_returns %*% qp$solution, order.by=index(pool_returns)) - bm_returns)^2))
+
+plotly_line_chart_xts(pool_returns %*% qp$solution - bm_returns)
+
+plotly_line_chart_xts(cbind.xts(pool_returns %*% qp$solution, bm_returns))
+
+sqrt(sum((ret_to_cumret(xts(pool_returns %*% qp$solution, order.by=index(pool_returns))) - ret_to_cumret(bm_returns))^2))
+
+plotly_line_chart_xts(ret_to_cumret(cbind.xts(pool_returns %*% qp$solution, bm_returns)))
+
 
 
 # PSO with constraints
@@ -104,10 +123,16 @@ pso <- psoptim(
     maxit = 200
   )
 )
+
+sqrt(sum(( xts(pool_returns %*% pso$par, order.by=index(pool_returns)) - bm_returns)^2))
+
+plotly_line_chart_xts(pool_returns %*% pso$par - bm_returns)
+
+plotly_line_chart_xts(cbind.xts(pool_returns %*% pso$par, bm_returns))
+
 sqrt(sum((ret_to_cumret(xts(pool_returns %*% pso$par, order.by=index(pool_returns))) - ret_to_cumret(bm_returns))^2))
 
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(pool_returns %*% pso$par, bm_returns)))
-
 
 
 # PSO with transformation of positions
@@ -131,6 +156,13 @@ pso <- psoptim(
   )
 )
 pso$par <- pso$par/sum(pso$par)
+
+sqrt(sum(( xts(pool_returns %*% pso$par, order.by=index(pool_returns)) - bm_returns)^2))
+
+plotly_line_chart_xts(pool_returns %*% pso$par - bm_returns)
+
+plotly_line_chart_xts(cbind.xts(pool_returns %*% pso$par, bm_returns))
+
 sqrt(sum((ret_to_cumret(xts(pool_returns %*% pso$par, order.by=index(pool_returns))) - ret_to_cumret(bm_returns))^2))
 
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(pool_returns %*% pso$par, bm_returns)))
@@ -139,26 +171,23 @@ plotly_line_chart_xts(ret_to_cumret(cbind.xts(pool_returns %*% pso$par, bm_retur
 
 
 
-
-
-
 ######################################################################################################
 # Only Test Phase
 
-calc_portfolio_returns <-
-  function(xts_returns, weights, name="portfolio"){
-    if(sum(weights)!=1){
-      xts_returns$temp___X1 <- 0
-      weights <- c(weights, 1-sum(weights))
-    }
-    res <- cumprod((1+xts_returns)) * matrix(
-      rep(weights, nrow(xts_returns)), ncol=length(weights), byrow=T)
-    res <- xts(
-      rowSums(res/c(1, rowSums(res[-nrow(xts_returns),])))-1,
-      order.by=index(xts_returns)) %>%
-      setNames(., name)
-    return(res)
-  }
+# calc_portfolio_returns <-
+#   function(xts_returns, weights, name="portfolio"){
+#     if(sum(weights)!=1){
+#       xts_returns$temp___X1 <- 0
+#       weights <- c(weights, 1-sum(weights))
+#     }
+#     res <- cumprod((1+xts_returns)) * matrix(
+#       rep(weights, nrow(xts_returns)), ncol=length(weights), byrow=T)
+#     res <- xts(
+#       rowSums(res/c(1, rowSums(res[-nrow(xts_returns),])))-1,
+#       order.by=index(xts_returns)) %>%
+#       setNames(., name)
+#     return(res)
+#   }
 
 res <- list()
 
@@ -310,7 +339,7 @@ shapes <- lapply(dates[(train_months+1):length(dates)], function(x){
 plotly_line_chart_xts(ret_to_cumret(all_test_perfs)) %>%
   layout(shapes=shapes, yaxis=list(showgrid=F), xaxis=list(showgrid=F))
 
-save.image("analyses/save_ITP_objective.rdata")
+#save.image("analyses/save_ITP_objective2.rdata")
 
 
 
@@ -322,6 +351,21 @@ save.image("analyses/save_ITP_objective.rdata")
 
 
 
+# Compare ETFs and the S&P 500
+
+plotly_line_chart_xts(ret_to_cumret(cbind.xts(all_test_perfs, all_bms[paste0(min(index(all_test_perfs)), "/", max(index(all_test_perfs)))]))) %>%
+  layout(shapes=shapes, yaxis=list(showgrid=F), xaxis=list(showgrid=F))
 
 
+# SPDR S&P 500 ETF Trust (SPY)
+# Invesco S&P 500 UCITS ETF (SPXS.MI)
+# Lyxor S&P 500 UCITS ETF - D-EUR (SPX.MI)
+# Vanguard S&P 500 UCITS ETF (VUSA.DE)
+etf_returns <- get_yf(tickers = c("%5EGSPC" ,"SPY", "SPXS.MI", "SPX.MI", "VUSA.DE"), from = from, to = to)$returns
+all_bms <- cbind.xts(all_test_perfs, etf_returns[paste0(min(index(all_test_perfs)), "/", max(index(all_test_perfs))),])
+all_bms[is.na(all_bms)] <- 0
+all_bms <- all_bms - matrix(rep(coredata(all_bms$S.P.500), ncol(all_bms)), ncol=ncol(all_bms), byrow = F)
+
+plotly_line_chart_xts(ret_to_cumret(all_bms)) %>%
+  layout(shapes=shapes, yaxis=list(showgrid=F), xaxis=list(showgrid=F))
 

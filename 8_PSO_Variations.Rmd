@@ -231,7 +231,7 @@ calc_fit <- function(x){
 }
 calc_const <- function(x){
   const <- t(mat$Amat) %*% x - mat$bvec
-  const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
+  const[mat$meq] <- -pmax(0, abs(const[mat$meq]+0.005)-0.005)
   sum(pmin(0, const)^2)
 }
 
@@ -275,3 +275,24 @@ pso_cardinality_constrained.pdf
 
 
 DissertationHelwig (1).pdf
+
+
+
+## Lokal PSO
+neightborhood 
+Particle_Swarm_Optimization_Global_Best_or_Local_Best.pdf
+
+
+
+## Preserving Feasibility
+SCI2002Constrained.pdf
+
+
+
+## Self-Adaptive Velocity
+
+
+
+
+
+

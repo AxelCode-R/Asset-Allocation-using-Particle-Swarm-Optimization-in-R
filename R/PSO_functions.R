@@ -7,7 +7,7 @@ pso <- function(type="default", ...){
 
 
 
-# default PSO
+# Standard PSO
 pso_default <- function(
     par,
     fn,
@@ -25,7 +25,7 @@ pso_default <- function(
     w0 = 1.2, # starting inertia weight
     wN = 0, # ending inertia weight
     save_traces = F, # save more information
-    save_fit = T
+    save_fit = F
   )
   control <- c(control, control_[!names(control_) %in% names(control)])
 

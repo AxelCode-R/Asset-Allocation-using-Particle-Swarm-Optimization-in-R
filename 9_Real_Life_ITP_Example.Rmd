@@ -1,0 +1,26 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+# Real Life ITP Example
+asd
+
+## Transaction Costs
+asd
+
+## Rebalancing Constraint
+asd
+
+## Analyse Objectives
+asd
+
+## Complete ITP Example
+asd
+
+
+
+
+

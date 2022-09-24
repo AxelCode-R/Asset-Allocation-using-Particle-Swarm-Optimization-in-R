@@ -9,8 +9,8 @@ ret_to_cumret <- function(data_xts){
 
 
 pri_to_ret <- function(data_xts){
+  data_xts <- na.locf(data_xts)
   data_xts <-  data_xts/lag.xts(data_xts) - 1
-
   return(data_xts[-1,])
 }
 

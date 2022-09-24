@@ -126,7 +126,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-09-17}
+\date{2022-09-24}
 
 \begin{document}
 \maketitle
@@ -198,6 +198,8 @@ The following functions were created to increase the ease of data collection wit
 
 This function is the main wrapper for collecting data with \texttt{getSymbols()} from yahoo-finance, and converts prices to returns with the \texttt{pri\_to\_ret()} function explained in \ref{pritoret}. The output is a list containing prices and returns as \href{https://cran.r-project.org/web/packages/xts/xts.pdf}{xts} objects. The arguments that can be passed to \texttt{get\_yf()} are:
 
+\vspace{-0.4cm}
+
 \begin{itemize}
 \tightlist
 \item
@@ -227,9 +229,18 @@ This chapter provides an overview of the mathematical calculations and conventio
 \hypertarget{basic-operators}{%
 \section{Basic Operators}\label{basic-operators}}
 
-A compendium comparing commonly used mathematical symbols with R code and their meaning is given in the following table:
-
+A compendium comparing commonly used mathematical symbols with R code and their meaning is given in the following table:\\
 \includegraphics{Master_Thesis_files/figure-latex/operators-1.png}
+To understand the listed operators more deeply, the following examples visualize the resulting dimensions and should provide insights into the use of such operators.
+
+Matrix-Product:
+\[\mathcal{R}^{x \times y} \times \mathcal{R}^{y \times z} = \mathcal{R}^{x \times z} \]
+and for a vector
+\[v \in \mathcal{R}^{N \times 1}: \ \ v^T \times v = \sum v_i^2 = \text{scalar}\]
+Outer-Product:
+\[\mathcal{R}^{x \times 1} \otimes \mathcal{R}^{1 \times x} = \mathcal{R}^{x \times x} \]
+Scalar or element-wise Vector multiplication:
+\[R^{x \times y} \cdot R^{x \times y} = \begin{bmatrix}r_{11}^2 &\cdots  & r_{1y}^2 \\ \vdots & \ddots & \vdots  \\ r_{x1}^2 & \cdots & r_{xy}^2 \end{bmatrix}\]
 
 \hypertarget{return-calculation}{%
 \section{Return Calculation}\label{return-calculation}}
@@ -254,18 +265,18 @@ In 1952, Harry Markowitz published his first seminal paper, which had a signific
 
 The following list contains all Markowitz assumptions according to \citep{Mari2005}:
 
+\vspace{-0.4cm}
+
 \begin{itemize}
 \tightlist
 \item
   Perfect market without taxes or transaction costs
 \item
-  Short sales are disallowed
-\item
   Assets are infinitely divisible
 \item
   Expected Returns, Variances and Covariances contain all information
 \item
-  Investors are risk-adverse, they will only accept greater risk if they
+  Investors are risk-averse, they will only accept greater risk if they
   are compensated with a higher expected return
 \end{itemize}
 
@@ -470,13 +481,12 @@ In this chapter, we analyze two common challenges of passive investing and creat
 \hypertarget{mean-variance-portfolio-mvp}{%
 \section{Mean-Variance Portfolio (MVP)}\label{mean-variance-portfolio-mvp}}
 
-Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier.
+Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier. Markowitz's original MVP without constraints can be solved in a closed form, which is explained in \citep{Eric2021}. These types of MVP's have no practical use, so only MVP's with constraints and without closed forms are of interest in this thesis.
 
 \hypertarget{mvp-objective}{%
 \subsection{MVP Objective}\label{mvp-objective}}
 
 Let there be \(N\) assets and their returns on \(T\) different days, creating a return matrix \(R \in \mathbb{R}^{T \times N}\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The covariance matrix of the returns is \(\textstyle\sum \in \mathbb{R}^{N \times N}\) and the expected returns are \(\mu \in \mathbb{R}^{N}\). The MVP with the risk aversion parameter \(\lambda \in [0,1]\), as shown in \citep{Mari2005}, can be formalized as follows:
-
 \begin{equation} 
 \underset{w}{min} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 \label{eq:MVP}
@@ -489,10 +499,8 @@ The risk aversion parameter \(\lambda\) defines the tradeoff between risk and re
 
 All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each \(\lambda\). First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.
 
-The cumulative daily returns are:
-
+The cumulative daily returns are:\\
 \includegraphics{Master_Thesis_files/figure-latex/MVP_ex2-1.png}
-
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \ref{mathfundations}:
 
 \begin{verbatim}
@@ -509,12 +517,9 @@ GOOG 0.0001798891 0.0001158595 0.0002728725
 
 This is all the data necessary to solve the MVP with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). All 100 portfolios are computed by solving a quadratic minimization problem with the long only (\(w_i \geq 0 \ \forall \ i\)) constraint and the weights should sum to 1.
 
-The resulting daily returns and standard deviations are converted to annual returns and standard deviations and plotted to create the efficiency frontier:
-
+The resulting daily returns and standard deviations are plotted to create the efficiency frontier:\\
 \includegraphics{Master_Thesis_files/figure-latex/MVP_ex5-1.png}
-
-The portfolio compositions for each \(\lambda\) are:
-
+The portfolio compositions for each \(\lambda\) are:\\
 \includegraphics{Master_Thesis_files/figure-latex/MVP_ex6-1.png}
 It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased \(\lambda\), the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
 
@@ -526,33 +531,28 @@ Indices are baskets of assets that are used to track the performance of a partic
 \hypertarget{itp-with-tev-objective-itp-tev}{%
 \subsection{ITP with TEV objective (ITP-TEV)}\label{itp-with-tev-objective-itp-tev}}
 
-The classic and widely used model tries to reduce the variance of tracking error (TEV) with the following formula:
-
+The classic and widely used model tries to reduce the variance of the tracking error (TEV) with the following formula:
 \[
  min \ \ Var(TE) = Var(r_{p}-r_{bm})
 \]
 
 To obtain the portfolio weights \(w\), one needs to substitute \(r_{p}\) as follows:
-
 \[
   r_{p} = R \times w
 \]
 
 The variance is then solved until a quadratic problem is presented as a function of portfolio weights \(w\):
-
 \begin{align*}
  Var(r_{p}-r_{bm}) &= Var(R \times w - r_{bm}) \\
  &= Var(R \times w) + Var(r_{bm}) - 2 \cdot Cov(R \times w,r_{bm}) 
 \end{align*}
 
 Now the three terms can be solved, starting with the simplest one.
-
 \[
 Var(r_{bm}) = \sigma_{bm}^2 = constant
 \]
 
 The variance of the portfolio can be solved with \ref{portvar}:
-
 \[
 Var(R \times w) = w^T \times Cov(R) \times w
 \]
@@ -574,19 +574,15 @@ This results in the final formula of the ITP:
 \end{align*}
 
 The minimization problem of the ITP in the general structure required by many optimizers is:
-
 \[
   \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w -d^T \times w
 \]
 
 Minimization problems can ignore constant terms and global stretch coefficients and still find the same minimum. This leads to a general substitution of the ITP with TEV objective as follows:
-
 \[
   D = Cov(R)
 \]
-
 and
-
 \[
 d = Cov(r_{bm}, R)
 \]
@@ -672,11 +668,22 @@ Some other sources notate the problem with different signs or coefficients, all 
 \section{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
 
 The most common free QP solver used in R comes from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog}, which consists of a single function called \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani published in \citep{GoId1982} and \citep{GoId1983}. It uses the above QP with the condition that \(D\) must be a symmetric positive definite matrix. This means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in \mathbb{R}^N\), which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix \(\sum\), but it is possible to find the nearest positive definite matrix of \(\textstyle\sum\) using the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{matrix} R package. The error encountered often does not exceed a percentage change in elements over \(10^{-15} \%\), which is negligible for the context of this work. The function \texttt{solve.QP()} for an \(N\) dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
-+ \texttt{Dmat}: Symmetric positive definite matrix \(D \in \mathbb{R}^{N \times N}\) of the quadratic term
-+ \texttt{dvec}: Vector \(d \in \mathbb{R}^{N}\) of the linear term
-+ \texttt{Amat}: Constraint matrix \(A\)
-+ \texttt{bvec}: Constraint vector \(b_0\)
-+ \texttt{meq\ =\ 1}: means that the first row of \(A\) is treated as an equality constraint
+
+\vspace{-0.4cm}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{Dmat}: Symmetric positive definite matrix \(D \in \mathbb{R}^{N \times N}\) of the quadratic term
+\item
+  \texttt{dvec}: Vector \(d \in \mathbb{R}^{N}\) of the linear term
+\item
+  \texttt{Amat}: Constraint matrix \(A\)
+\item
+  \texttt{bvec}: Constraint vector \(b_0\)
+\item
+  \texttt{meq\ =\ 1}: means that the first row of \(A\) is treated as an equality constraint
+\end{itemize}
 
 The return of \texttt{solve.QP()} is a list and contains, among others, the following attributes of interest:
 + \texttt{solution}: Vector containing the solution \(x\) of the quadratic programming problem (e.g.~portfolio weights)
@@ -1009,15 +1016,11 @@ The required data structure is available and the optimization can start with the
 \NormalTok{    p\_g }\OtherTok{\textless{}{-}}\NormalTok{ P[, }\FunctionTok{which.min}\NormalTok{(P\_fit)]}
 \NormalTok{    p\_g\_fit }\OtherTok{\textless{}{-}} \FunctionTok{min}\NormalTok{(P\_fit)}
 \NormalTok{  \}}
-  
-  \ControlFlowTok{if}\NormalTok{(control}\SpecialCharTok{$}\NormalTok{save\_traces}\SpecialCharTok{==}\ConstantTok{TRUE}\NormalTok{)\{}
-\NormalTok{    trace\_data }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(trace\_data, }\FunctionTok{data.frame}\NormalTok{(}\StringTok{"iter"}\OtherTok{=}\NormalTok{i, }\FunctionTok{t}\NormalTok{(X)))}
-\NormalTok{  \}}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
-The best fitness after \(100\) iterations is 0.0000001 and the best possible solution is \(0\).
+The best fitness after \(100\) iterations is 0.0070456 and the best possible solution is \(0\).
 
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
@@ -1042,7 +1045,7 @@ This section provides insights into the behavior of the PSO by visualizing multi
   \AttributeTok{control =} \FunctionTok{list}\NormalTok{(}
     \AttributeTok{s =} \DecValTok{10}\NormalTok{,}
     \AttributeTok{maxiter =} \DecValTok{30}\NormalTok{,}
-    \AttributeTok{w0 =} \FloatTok{0.8}\NormalTok{,}
+    \AttributeTok{w0 =} \FloatTok{1.2}\NormalTok{,}
     \AttributeTok{save\_traces =}\NormalTok{ T}
 \NormalTok{  )}
 \NormalTok{)}
@@ -1051,7 +1054,52 @@ This section provides insights into the behavior of the PSO by visualizing multi
 
 The function \texttt{fn} has many local minima and a global minima at \((1,1)\) with the value \(0\). The background color scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:
 
-\animategraphics[loop, width=8cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{50}
+\begin{center}
+\animategraphics[loop, width=10cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{80}
+\end{center}
+
+\hypertarget{simple-constraint-handling}{%
+\section{Simple Constraint Handling}\label{simple-constraint-handling}}
+
+The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure. This can be used to create a generic constraint handling function for these particular QP's. Both problems must satisfy the following equation:
+\[
+  A^T \times x - b_0 \geq \vec{0}
+\]
+Because of \texttt{meq=1}, the first value is considered as equality condition. This can be achieved by transforming the first value with the \texttt{abs()} function, which returns the absolute value. Equality is hard to achieve with the PSO, so it is transformed into a boundary constraint, with upper and lower boundary. Since \texttt{meq=1} always describes the constraint \(\sum w_i = 1\), it can be transformed into \(1 \leq \textstyle\sum w_i \geq 0.99\) to obtain a constraint sufficient for most practical applications. The final vector contains constraint breaks if the elements are negative. All of these negative elements are squared and summed to calculate a value representing the intensity of the constraint breaks. All this can be done with the following R function, which requires a \texttt{mat} object in the parent environment containing the matrices for the QP:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{calc\_const }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{  const }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(mat}\SpecialCharTok{$}\NormalTok{Amat) }\SpecialCharTok{\%*\%}\NormalTok{ x }\SpecialCharTok{{-}}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{bvec}
+\NormalTok{  const[mat}\SpecialCharTok{$}\NormalTok{meq] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FunctionTok{pmax}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{abs}\NormalTok{(const[mat}\SpecialCharTok{$}\NormalTok{meq]}\SpecialCharTok{+}\FloatTok{0.005}\NormalTok{)}\SpecialCharTok{{-}}\FloatTok{0.005}\NormalTok{)}
+  \FunctionTok{sum}\NormalTok{(}\FunctionTok{pmin}\NormalTok{(}\DecValTok{0}\NormalTok{, const)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+The new objective function \texttt{fn()} is transformed and consists of two parts. The first part is to evaluate the unconstrained objective of the QP with the following function:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{calc\_fit }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
+  \FloatTok{0.5} \SpecialCharTok{*} \FunctionTok{t}\NormalTok{(x) }\SpecialCharTok{\%*\%}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{Dmat }\SpecialCharTok{\%*\%}\NormalTok{ x }\SpecialCharTok{{-}} \FunctionTok{t}\NormalTok{(mat}\SpecialCharTok{$}\NormalTok{dvec) }\SpecialCharTok{\%*\%}\NormalTok{ x}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+The second part is the function \texttt{calc\_const()}. Since breaking constraints is much worse than losing fitness, it must have a higher weight (e.g.~5) which must be fine-tuned. This results in the final \texttt{fn()} function composition:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{  fitness }\OtherTok{\textless{}{-}} \FunctionTok{calc\_fit}\NormalTok{(x)}
+\NormalTok{  constraints }\OtherTok{\textless{}{-}} \FunctionTok{calc\_const}\NormalTok{(x)}
+  \FunctionTok{return}\NormalTok{(fitness }\SpecialCharTok{+} \DecValTok{5} \SpecialCharTok{*}\NormalTok{ constraints)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+This approach to dealing with constraints is called the penalization method and is definitely the most straightforward approach. Its disadvantage is the fact that the PSO has to find a balance between the violation of constraints and the goal. As explained in \citep{InSi2008}, there are three other constraint handling methods, but the results show that none of them is superior. The treatment of constraints should be chosen appropriately for the given problem. For example, it may be useful to use the feasibility preservation technique to obtain a solution that is guaranteed not to break any constraints. The disadvantages here are longer computation time and less exploration of particles, since only feasible solutions can be stored as personal or global best solutions.
 
 \hypertarget{example-mvp}{%
 \section{Example MVP}\label{example-mvp}}
@@ -1073,10 +1121,10 @@ It can be seen that in all PSO runs, sufficient fitness was achieved with neglig
 \hypertarget{pros-and-cons-for-continuous-problems}{%
 \section{Pros and Cons for Continuous Problems}\label{pros-and-cons-for-continuous-problems}}
 
-A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the \texttt{solve.QP()} approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the \texttt{solve.QP()} alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for \(x\) is to be a integer vector. These problems could be solved by the \texttt{solve.QP()} approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the \texttt{solve.QP()} approach.
+A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the \texttt{solve.QP()} approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the \texttt{solve.QP()} alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for th variable of interest \(x\) is to be a integer vector. These kind of problems could be solved by the \texttt{solve.QP()} approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the \texttt{solve.QP()} approach.
 
-\hypertarget{discrete-problems-and-transaction-costs}{%
-\section{Discrete Problems and Transaction Costs}\label{discrete-problems-and-transaction-costs}}
+\hypertarget{discrete-problems}{%
+\section{Discrete Problems}\label{discrete-problems}}
 
 A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g.~ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a \texttt{solve.QP()} approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function \texttt{fn()}. In a portfolio with net asset value (\texttt{nav}) consisting of only American stocks with weights \(w_i\) and closing prices \(p_i\) can be discretized to \(w_i^d\) by the following formula:
 
@@ -1087,10 +1135,10 @@ A continuous solution for a portfolio is not sufficient for practical purposes, 
 \hypertarget{example-discrete-itp-mste}{%
 \section{Example: Discrete ITP-MSTE}\label{example-discrete-itp-mste}}
 
-This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP-MSTE focuses to track the S\&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, \(1 \leq \textstyle\sum w_i \geq 0.99\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP-MSTE focuses to track the S\&P 500 with its top 100 weighted assets and tries to construct a portfolio with the constraints long only, \(1 \leq \textstyle\sum w_i \geq 0.99\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
 \includegraphics{Master_Thesis_files/figure-latex/pso9-1.png}
 
-It can be seen that the rounded \texttt{solve.QP()} solution still has a good fitness but the constraints are not satisfied. The PSO has no constrain breaks and still reached a fitness close to the rounded \texttt{solve.QP()}. The PSO with \texttt{solve.QP()} solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the \texttt{solve.QP()} and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for problems in practice.
+It can be seen that the rounded \texttt{solve.QP()} solution still has a good fitness but the constraints are not satisfied. The PSO has no constraint breaks and still reached a fitness close to the rounded \texttt{solve.QP()}. The PSO with \texttt{solve.QP()} solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the \texttt{solve.QP()} and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for problems in practice.
 
 \hypertarget{pso-variations}{%
 \chapter{PSO Variations}\label{pso-variations}}
@@ -1260,7 +1308,7 @@ The standard PSO analysed in the previews chapter is capable to solve a wide ran
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-4-1.pdf}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-7-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1319,7 +1367,7 @@ The standard PSO analysed in the previews chapter is capable to solve a wide ran
 \NormalTok{\}}
 \NormalTok{calc\_const }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
 \NormalTok{  const }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(mat}\SpecialCharTok{$}\NormalTok{Amat) }\SpecialCharTok{\%*\%}\NormalTok{ x }\SpecialCharTok{{-}}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{bvec}
-\NormalTok{  const[mat}\SpecialCharTok{$}\NormalTok{meq] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FunctionTok{max}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{abs}\NormalTok{(const[mat}\SpecialCharTok{$}\NormalTok{meq]}\SpecialCharTok{+}\FloatTok{0.005}\NormalTok{)}\SpecialCharTok{{-}}\FloatTok{0.005}\NormalTok{)}
+\NormalTok{  const[mat}\SpecialCharTok{$}\NormalTok{meq] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FunctionTok{pmax}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{abs}\NormalTok{(const[mat}\SpecialCharTok{$}\NormalTok{meq]}\SpecialCharTok{+}\FloatTok{0.005}\NormalTok{)}\SpecialCharTok{{-}}\FloatTok{0.005}\NormalTok{)}
   \FunctionTok{sum}\NormalTok{(}\FunctionTok{pmin}\NormalTok{(}\DecValTok{0}\NormalTok{, const)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
 \NormalTok{\}}
 
@@ -1357,6 +1405,50 @@ oh ist nur binary PSO
 pso\_cardinality\_constrained.pdf
 
 DissertationHelwig (1).pdf
+
+\hypertarget{lokal-pso}{%
+\section{Lokal PSO}\label{lokal-pso}}
+
+neightborhood
+Particle\_Swarm\_Optimization\_Global\_Best\_or\_Local\_Best.pdf
+
+\hypertarget{preserving-feasibility}{%
+\section{Preserving Feasibility}\label{preserving-feasibility}}
+
+SCI2002Constrained.pdf
+
+\hypertarget{self-adaptive-velocity}{%
+\section{Self-Adaptive Velocity}\label{self-adaptive-velocity}}
+
+\hypertarget{real-life-itp-example}{%
+\chapter{Real Life ITP Example}\label{real-life-itp-example}}
+
+asd
+
+\hypertarget{transaction-costs}{%
+\section{Transaction Costs}\label{transaction-costs}}
+
+asd
+
+\hypertarget{rebalancing-constraint}{%
+\section{Rebalancing Constraint}\label{rebalancing-constraint}}
+
+asd
+
+\hypertarget{analyse-objectives}{%
+\section{Analyse Objectives}\label{analyse-objectives}}
+
+asd
+
+\hypertarget{complete-itp-example}{%
+\section{Complete ITP Example}\label{complete-itp-example}}
+
+asd
+
+\hypertarget{conclusion}{%
+\chapter{Conclusion}\label{conclusion}}
+
+asd
 
   \bibliography{book.bib,packages.bib}
 

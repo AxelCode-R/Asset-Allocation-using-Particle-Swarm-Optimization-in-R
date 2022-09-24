@@ -7,14 +7,13 @@ editor_options:
 This chapter provides an overview of the mathematical calculations and conventions used in this thesis. It is important to note that most mathematical formulas are written in matrix notation. In most cases, this will result in a direct translation to R code. All necessary assumptions required for the modeled return structure are listed in this chapter so that any reader can understand the formulas given. It is important to note that reality is too complex and can only be partially modeled. Simple, basic models are used that do not stand up to reality, but these models or variations of them are commonly used in the financial world and have proven to be helpful. The complexity of solving advanced and basic models does not differ in PSO because the dimension of the objective function is based on the number of elements that can be selected, see chapter \@ref(challenges).
 
 ## Basic Operators
-A compendium comparing commonly used mathematical symbols with R code and their meaning is given in the following table:
-
+A compendium comparing commonly used mathematical symbols with R code and their meaning is given in the following table:  
 ```{r operators, echo=F}
 reactable(
   data.frame(
     "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;"),
     "R"= c("%*%", "%*%","t(A)", "*"),
-    "Meaning" = c("Matrix or Vector multiplication and Cross-Product", "Outer Product", "Transpose of Matrix or Vector A", "Scalar or elementwise Vector multiplication")
+    "Meaning" = c("Matrix-Product", "Outer-Product", "Transpose of Matrix or Vector A", "Scalar or element-wise Vector multiplication")
   ), 
   columns <- list(
     Latex = colDef(name = "Latex/Displayed", html = T),
@@ -24,6 +23,16 @@ reactable(
 ) %>% 
   html_save()
 ```
+To understand the listed operators more deeply, the following examples visualize the resulting dimensions and should provide insights into the use of such operators.  
+
+Matrix-Product:
+$$\mathcal{R}^{x \times y} \times \mathcal{R}^{y \times z} = \mathcal{R}^{x \times z} $$
+and for a vector
+$$v \in \mathcal{R}^{N \times 1}: \ \ v^T \times v = \sum v_i^2 = \text{scalar}$$
+Outer-Product:
+$$\mathcal{R}^{x \times 1} \otimes \mathcal{R}^{1 \times x} = \mathcal{R}^{x \times x} $$
+Scalar or element-wise Vector multiplication:
+$$R^{x \times y} \cdot R^{x \times y} = \begin{bmatrix}r_{11}^2 &\cdots  & r_{1y}^2 \\ \vdots & \ddots & \vdots  \\ r_{x1}^2 & \cdots & r_{xy}^2 \end{bmatrix}$$
 
 ## Return Calculation
 Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices](https://www.investopedia.com/terms/a/adjusted closingprice.asp), which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.
@@ -38,13 +47,13 @@ $$
 In 1952, Harry Markowitz published his first seminal paper, which had a significant impact on modern finance, primarily by outlining the implications of diversification and efficient portfolios. The definition of an efficient portfolio is a portfolio that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification might be, "A portfolio has the same return but less variance than the sum of its parts." This is true when assets are not perfectly correlated, as bad and good performance can offset each other, reducing the likelihood of extreme events. For more information, see [@Mari2005].
 
 ### Assumptions of Markowitz Portfolio Theory
-The following list contains all Markowitz assumptions according to [@Mari2005]:
+The following list contains all Markowitz assumptions according to [@Mari2005]:  
 
+\vspace{-0.4cm}
 + Perfect market without taxes or transaction costs
-+ Short sales are disallowed
 + Assets are infinitely divisible
 + Expected Returns, Variances and Covariances contain all information
-+ Investors are risk-adverse, they will only accept greater risk if they
++ Investors are risk-averse, they will only accept greater risk if they
 are compensated with a higher expected return
 
 The assumption that the returns are normally distributed is not required, but is assumed in this case to simplify the problem. It is obvious that these assumptions are unrealistic in reality. More details on the requirements for using other distributions can be found in [@Mari2005]. 

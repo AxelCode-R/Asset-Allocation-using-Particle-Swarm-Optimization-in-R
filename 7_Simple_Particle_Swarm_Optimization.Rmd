@@ -110,10 +110,6 @@ for(i in 1:control$maxiter){
     p_g <- P[, which.min(P_fit)]
     p_g_fit <- min(P_fit)
   }
-  
-  if(control$save_traces==TRUE){
-    trace_data <- rbind(trace_data, data.frame("iter"=i, t(X)))
-  }
 }
 ```
 The best fitness after $100$ iterations is `r p_g_fit` and the best possible solution is $0$.
@@ -145,7 +141,7 @@ res <- pso(
   control = list(
     s = 10,
     maxiter = 30,
-    w0 = 0.8,
+    w0 = 1.2,
     save_traces = T
   )
 )
@@ -189,12 +185,18 @@ anim <- ggplot(res$trace_data) +
 
 if(!knitr::is_latex_output()){
   temp <- sapply(list.files('gifs/pso_2dim/', full.names = T), file.remove)
-  suppressMessages(animate(anim, renderer = file_renderer('gifs/pso_2dim/'), device = "jpeg", nframes=100))
+  suppressMessages(animate(anim, renderer = file_renderer('gifs/pso_2dim/'), device = "jpeg", nframes=100, fps=10, duration=10,  start_pause = 10))
   images <- list.files('gifs/pso_2dim/')
   for(i in 1:length(images)){
     file.rename(
       paste0('gifs/pso_2dim/',images[i]), 
-      paste0("gifs/pso_2dim/gganim_plot", as.numeric(gsub(".jpg", "", gsub(pattern = "gganim_plot","", images[i]))), ".jpg")
+      paste0("gifs/pso_2dim/gganim_plot", as.numeric(gsub(".jpg", "", gsub(pattern = "gganim_plot","", images[i])))+10, ".jpg")
+    )
+  }
+  for(i in 10:1){
+    file.copy(
+      from = 'gifs/pso_2dim/gganim_plot11.jpg',
+      to = paste0("gifs/pso_2dim/gganim_plot", i, ".jpg")
     )
   }
   anim
@@ -202,9 +204,39 @@ if(!knitr::is_latex_output()){
 
 ```
 ```{=latex}
-\animategraphics[loop, width=8cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{50}
+\begin{center}
+\animategraphics[loop, width=10cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{80}
+\end{center}
 ```
 
+## Simple Constraint Handling
+The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure. This can be used to create a generic constraint handling function for these particular QP's. Both problems must satisfy the following equation:
+$$
+  A^T \times x - b_0 \geq \vec{0}
+$$
+Because of `meq=1`, the first value is considered as equality condition. This can be achieved by transforming the first value with the `abs()` function, which returns the absolute value. Equality is hard to achieve with the PSO, so it is transformed into a boundary constraint, with upper and lower boundary. Since `meq=1` always describes the constraint $\sum w_i = 1$, it can be transformed into $1 \leq \textstyle\sum w_i \geq 0.99$ to obtain a constraint sufficient for most practical applications. The final vector contains constraint breaks if the elements are negative. All of these negative elements are squared and summed to calculate a value representing the intensity of the constraint breaks. All this can be done with the following R function, which requires a `mat` object in the parent environment containing the matrices for the QP:
+```{r}
+calc_const <- function(x){
+  const <- t(mat$Amat) %*% x - mat$bvec
+  const[mat$meq] <- -pmax(0, abs(const[mat$meq]+0.005)-0.005)
+  sum(pmin(0, const)^2)
+}
+```
+The new objective function `fn()` is transformed and consists of two parts. The first part is to evaluate the unconstrained objective of the QP with the following function:
+```{r}
+calc_fit <- function(x){
+  0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
+}
+```
+The second part is the function `calc_const()`. Since breaking constraints is much worse than losing fitness, it must have a higher weight (e.g. 5) which must be fine-tuned. This results in the final `fn()` function composition:
+```{r}
+fn <- function(x){
+  fitness <- calc_fit(x)
+  constraints <- calc_const(x)
+  return(fitness + 5 * constraints)
+}
+```
+This approach to dealing with constraints is called the penalization method and is definitely the most straightforward approach. Its disadvantage is the fact that the PSO has to find a balance between the violation of constraints and the goal. As explained in [@InSi2008], there are three other constraint handling methods, but the results show that none of them is superior. The treatment of constraints should be chosen appropriately for the given problem. For example, it may be useful to use the feasibility preservation technique to obtain a solution that is guaranteed not to break any constraints. The disadvantages here are longer computation time and less exploration of particles, since only feasible solutions can be stored as personal or global best solutions.
 
 ## Example MVP
 This example uses the `solve.QP()` approach from \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the `solve.QP()` compared to the PSO are shown below:
@@ -276,7 +308,7 @@ mvp_PSO <- function(returns, lambda, silent = T){
   tc <- tryCatch({
     mu <- ret_to_geomeanret(returns)
 
-    cov <- as.matrix(nearPD(cov(returns))$mat)
+    cov <- cov(returns) #as.matrix(nearPD(cov(returns))$mat)
 
     mat <- list(
       Dmat = lambda * cov,
@@ -310,13 +342,14 @@ mvp_PSO <- function(returns, lambda, silent = T){
       lower = 0,
       upper = 1,
       control = list(
-        s = 200, # swarm size
+        s = 300, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
         maxiter = 200, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
-        save_traces = F # save more information
+        save_traces = F, # save more information
+        save_fit = F
       )
     )
     if(!silent){
@@ -513,7 +546,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
   }
   calc_const <- function(x){
     const <- t(mat$Amat) %*% x - mat$bvec
-    const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
+    const[mat$meq] <- -pmax(0, abs(const[mat$meq]+0.005)-0.005)
     sum(pmin(0, const)^2)
   }
   pso_res <- pso(
@@ -606,10 +639,10 @@ reactable(
 It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
 
 ## Pros and Cons for Continuous Problems
-A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP()` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP()` alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for $x$ is to be a integer vector. These problems could be solved by the `solve.QP()` approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP()` approach.
+A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP()` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP()` alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for th variable of interest $x$ is to be a integer vector. These kind of problems could be solved by the `solve.QP()` approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP()` approach.
 
 
-## Discrete Problems and Transaction Costs
+## Discrete Problems
 A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a `solve.QP()` approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function `fn()`. In a portfolio with net asset value (`nav`) consisting of only American stocks with weights $w_i$ and closing prices $p_i$ can be discretized to $w_i^d$ by the following formula:
 
 $$
@@ -618,7 +651,7 @@ $$
 
 ## Example: Discrete ITP-MSTE
 
-This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses to track the S&P 500 with its top 100 weighted assets and tries to construct a portfolio with long only, $1 \leq \textstyle\sum w_i \geq 0.99$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 100 iterations. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses to track the S&P 500 with its top 100 weighted assets and tries to construct a portfolio with the constraints long only, $1 \leq \textstyle\sum w_i \geq 0.99$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
 ```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
@@ -713,7 +746,7 @@ calc_fit <- function(x){
 }
 calc_const <- function(x){
   const <- t(mat$Amat) %*% x - mat$bvec
-  const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
+  const[mat$meq] <- -pmax(0, abs(const[mat$meq]+0.005)-0.005)
   sum(pmin(0, const)^2)
 }
 time_pso <- system.time({
@@ -786,7 +819,7 @@ reactable(
   html_save()
 ```
 
-It can be seen that the rounded `solve.QP()` solution still has a good fitness but the constraints are not satisfied. The PSO has no constrain breaks and still reached a fitness close to the rounded `solve.QP()`. The PSO with `solve.QP()` solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the `solve.QP()` and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for problems in practice. 
+It can be seen that the rounded `solve.QP()` solution still has a good fitness but the constraints are not satisfied. The PSO has no constraint breaks and still reached a fitness close to the rounded `solve.QP()`. The PSO with `solve.QP()` solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the `solve.QP()` and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for problems in practice. 
 
 
 

@@ -9,6 +9,8 @@ rmd_files: ["index.Rmd",
             "6_Analytical_Solver.Rmd",
             "7_Simple_Particle_Swarm_Optimization.Rmd",
             "8_PSO_Variations.Rmd",
+            "9_Real_Life_ITP_Example.Rmd",
+            "10_Conclusion.Rmd",
             "references.Rmd"]
 output_dir: "docs"
 language:

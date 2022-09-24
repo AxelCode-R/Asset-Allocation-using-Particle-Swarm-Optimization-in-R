@@ -56,13 +56,8 @@ calc_fit <- function(x){
 }
 calc_const <- function(x){
   const <- t(mat$Amat) %*% x - mat$bvec
-  const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
-  res <- sum(pmin(0, const)^2)
-  if(res>0){
-    res #+ 1
-  }else{
-    res
-  }
+  const[mat$meq] <- -pmax(0, abs(const[mat$meq]+0.005)-0.005)
+  sum(pmin(0, const)^2)
 }
 
 

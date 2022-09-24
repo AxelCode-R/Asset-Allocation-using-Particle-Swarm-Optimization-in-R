@@ -1,13 +1,8 @@
 
 get_yf <- function(tickers, from="2018-01-01", to="2019-12-31", price_type="close", return_type="adjusted", print=F){
-  # load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/data/spx_composition.rdata")
-  # tickers <- unique(spx_composition$Ticker)
-  # from <- "2020-01-01"
-  # to <- "2021-01-01"
 
   e <- new.env()
 
-  #getSymbols("%5EGSPC", src="yahoo", env = e)
   try({
     info <- suppressMessages(suppressWarnings(quantmod::getSymbols(tickers, env = e, from = as.Date(from)-days(5), to = to)))
     if(print){print(info)}

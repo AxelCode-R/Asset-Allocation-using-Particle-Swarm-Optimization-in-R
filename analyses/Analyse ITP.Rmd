@@ -1,0 +1,73 @@
+---
+title: "Analyse ITP"
+output:
+  pdf_document: default
+  html_document: default
+date: '2022-09-24'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+source("global.R")
+```
+
+# Analyse ITP
+Hier soll nochmal alles zusammengefasst werden, um genau herauszufinden welche ITP Ansätze zu stabieleren Ergebnissen führen. Es werden folgende vier Ansätze analysiert:
+
+### ITP-TEV
+Ziel ist es die Varianz des tracking-errors der Returns zu minimieren.
+
+### ITP-MSTE
+Ziel ist es den mean-square-error des tracking-error der returns zu minimieren.
+
+### ITP-Kurse
+Ziel ist es den mean-square-error der historischen Kurse, der Benchmark und des Portfolios mit Zeit-homogenen Gewichten zu generieren. Annahme ist, dass sich dieses Portfolio auch in der Zukunft sehr ähnlich zur Benchmark verhält. Dieses Problem kann nur mit dem PSO gelöst werden und das über zwei verschiedene PSO ansätze. PSO_CONST steht für ein normales PSO welches in der objective function constraints wie long only und $\sum w = 1$ als straf-wert auf die fittness aufschlägt. PSO_TRANS erfüllt automatisch die $\sum w = 1$ constraint, da die portfolio weights immer auf 100% normiert werden und somit ist kein constraint händlich nötig (gilt nur für long only und $\sum w = 1$, da sie durch die Transformation immer erfüllt sind).
+
+
+
+## Auflistung der Rahmenbedingungen
+Ziel ist es den S&P500 zu replizieren und es sind dafür alle Assets erlaubt, die über die ganze Zeitperiode in der der Backtest läuft, keine fehlenden Werte aufweisen und am Ende der Periode im S&P500 sind. Die Daten werden für der zeitraum 2018-01-01 bis 2019-12-31 gezogen und der Backtest wird innerhalb dieser Periode mit verschiedenen Haltedauern der Portfolios generiert. Die Haltedauer wird in den nachfolgenden Charts durch die grauen senkrechten Linien visualisiert. Jedes der Portfolios hat eine long only und eine $\sum w = 1$ constraint.
+
+## Analyse für 1 Monat Haltedauer
+
+Chart der Kurse:
+```{r}
+load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/analyses/save_ITP_objective2.rdata")
+plotly_line_chart_xts(ret_to_cumret(all_test_perfs)) %>%
+  layout(shapes=shapes, yaxis=list(showgrid=F), xaxis=list(showgrid=F))
+```
+Chart der Differenz der Kurse und anderen ETFs:
+```{r}
+
+etf_returns <- get_yf(tickers = c("%5EGSPC" ,"SPY", "SPXS.MI", "SPX.MI", "VUSA.DE"), from = from, to = to)$returns
+all_bms <- cbind.xts(all_test_perfs, etf_returns[paste0(min(index(all_test_perfs)), "/", max(index(all_test_perfs))),])
+all_bms[is.na(all_bms)] <- 0
+all_bms <- all_bms - matrix(rep(coredata(all_bms$S.P.500), ncol(all_bms)), ncol=ncol(all_bms), byrow = F)
+
+plotly_line_chart_xts(ret_to_cumret(all_bms)) %>%
+  layout(shapes=shapes, yaxis=list(showgrid=F), xaxis=list(showgrid=F))
+
+
+```
+
+## Analyse für 1 Tag Haltedauer
+
+Chart der Kurse:
+```{r}
+load("C:/Users/Axel/Desktop/Master-Thesis-All/Master-Thesis/analyses/save_ITP_objective_long_daily_v1.rdata")
+plotly_line_chart_xts(ret_to_cumret(all_test_perfs)) %>%
+  layout(shapes=shapes, yaxis=list(showgrid=F), xaxis=list(showgrid=F))
+```
+Chart der Differenz der Kurse und anderen ETFs:
+```{r}
+
+etf_returns <- get_yf(tickers = c("%5EGSPC" ,"SPY", "SPXS.MI", "SPX.MI", "VUSA.DE"), from = from, to = to)$returns
+all_bms <- cbind.xts(all_test_perfs, etf_returns[paste0(min(index(all_test_perfs)), "/", max(index(all_test_perfs))),])
+all_bms[is.na(all_bms)] <- 0
+all_bms <- all_bms - matrix(rep(coredata(all_bms$S.P.500), ncol(all_bms)), ncol=ncol(all_bms), byrow = F)
+
+plotly_line_chart_xts(ret_to_cumret(all_bms)) %>%
+  layout(shapes=shapes, yaxis=list(showgrid=F), xaxis=list(showgrid=F))
+
+
+```

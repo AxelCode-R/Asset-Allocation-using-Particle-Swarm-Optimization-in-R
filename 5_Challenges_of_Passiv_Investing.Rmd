@@ -8,11 +8,10 @@ editor_options:
 In this chapter, we analyze two common challenges of passive investing and create simple use cases to test the PSO. The first challenge is the mean-variance portfolio (MVP) from Markowitz's modern portfolio theory, which, simply put, is an optimal allocation of assets in terms of risk and return. The second challenge is the index tracking problem, which attempts to construct a portfolio with minimal tracking error to a given benchmark.
 
 ## Mean-Variance Portfolio (MVP)
-Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier.
+Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier. Markowitz's original MVP without constraints can be solved in a closed form, which is explained in [@Eric2021]. These types of MVP's have no practical use, so only MVP's with constraints and without closed forms are of interest in this thesis.
 
 ### MVP Objective
 Let there be $N$ assets and their returns on $T$ different days, creating a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP with the risk aversion parameter $\lambda \in [0,1]$, as shown in [@Mari2005], can be formalized as follows:
-
 \begin{equation} 
 \underset{w}{min} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 (\#eq:MVP)
@@ -22,24 +21,20 @@ The risk aversion parameter $\lambda$ defines the tradeoff between risk and retu
 
 
 ### MVP example
-All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.
-
+All possible MVPs together define the efficiency frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.  
 ```{r MVP_ex1, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
   "CPI_3_assets"
 )
 ``` 
-The cumulative daily returns are:
-
+The cumulative daily returns are:  
 ```{r MVP_ex2, echo = F}
 plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
   html_save()
 
 ```
-
-The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \@ref(mathfundations):
-
+The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \@ref(mathfundations):  
 ```{r MVP_ex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
 cat0("estimation of expected daily returns:")
@@ -50,8 +45,7 @@ cat0("estimation of positiv definite covariance matrix:")
 cov
 ```
 
-This is all the data necessary to solve the MVP with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the long only ($w_i \geq 0 \ \forall \ i$) constraint and the weights should sum to 1.
-
+This is all the data necessary to solve the MVP with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the long only ($w_i \geq 0 \ \forall \ i$) constraint and the weights should sum to 1.  
 ```{r MVP_ex4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 portfolios <- data.frame()
 mu_and_var <- NULL
@@ -87,14 +81,8 @@ portfolios <- data.frame(portfolios)
 colnames(portfolios) <- colnames(returns)
 
 ```
-
-The resulting daily returns and standard deviations are converted to annual returns and standard deviations and plotted to create the efficiency frontier:
-
+The resulting daily returns and standard deviations are plotted to create the efficiency frontier:  
 ```{r MVP_ex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
-# annualize
-mu_and_var$mu <- (1+mu_and_var$mu)^250-1
-mu_and_var$sd <- mu_and_var$sd * sqrt(250)
-
 plot_ly(data = mu_and_var) %>%
   add_lines(y = ~mu, x = ~sd, name = "efficient frontier") %>%
   add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps") %>%
@@ -113,9 +101,7 @@ plot_ly(data = mu_and_var) %>%
   html_save()
 
 ```
-
-The portfolio compositions for each $\lambda$ are:
-
+The portfolio compositions for each $\lambda$ are:  
 ```{r MVP_ex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
 p <- plot_ly(type="bar") %>% layout(title="Portfolio compositions", barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="wgt"))
 for(i in 1:ncol(portfolios)){
@@ -132,33 +118,28 @@ Indices are baskets of assets that are used to track the performance of a partic
 
 
 ### ITP with TEV objective (ITP-TEV)
-The classic and widely used model tries to reduce the variance of tracking error (TEV) with the following formula:
-
+The classic and widely used model tries to reduce the variance of the tracking error (TEV) with the following formula:
 $$
  min \ \ Var(TE) = Var(r_{p}-r_{bm})
 $$
 
 To obtain the portfolio weights $w$, one needs to substitute $r_{p}$ as follows:
-
 $$
   r_{p} = R \times w
 $$
 
 The variance is then solved until a quadratic problem is presented as a function of portfolio weights $w$:
-
 \begin{align*}
  Var(r_{p}-r_{bm}) &= Var(R \times w - r_{bm}) \\
  &= Var(R \times w) + Var(r_{bm}) - 2 \cdot Cov(R \times w,r_{bm}) 
 \end{align*}
 
 Now the three terms can be solved, starting with the simplest one.
-
 $$
 Var(r_{bm}) = \sigma_{bm}^2 = constant
 $$
 
 The variance of the portfolio can be solved with \@ref(portvar):
-
 $$
 Var(R \times w) = w^T \times Cov(R) \times w
 $$
@@ -180,19 +161,15 @@ This results in the final formula of the ITP:
 \end{align*}
 
 The minimization problem of the ITP in the general structure required by many optimizers is:
-
 $$
   \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w -d^T \times w
 $$
 
 Minimization problems can ignore constant terms and global stretch coefficients and still find the same minimum. This leads to a general substitution of the ITP with TEV objective as follows:
-
 $$
   D = Cov(R)
 $$
-
 and
-
 $$
 d = Cov(r_{bm}, R)
 $$
