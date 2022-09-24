@@ -32,6 +32,9 @@ library(metR)
 library(ggpubr)
 
 
+options(dplyr.summarise.inform = FALSE)
+
+
 # alphavantage API-KEY
 api_key <- Sys.getenv("api_key")
 
