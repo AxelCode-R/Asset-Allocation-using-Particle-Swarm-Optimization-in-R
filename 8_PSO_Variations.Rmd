@@ -233,10 +233,11 @@ qp <- solve.QP(
   Dmat = mat$Dmat, dvec = mat$dvec, 
   Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
 )
-sub_ticker <- colnames(pool_returns)[order(qp$solution, decreasing = T)[1:100]]
+sub_ticker <- colnames(pool_returns)[order(qp$solution, decreasing = T)[1:50]]
 pool_data$returns <- pool_data$returns[, sub_ticker]
 pool_data$prices <- pool_data$prices[, sub_ticker]
 
+prices <- last(pool_data$prices)
 
 mat <- list(
   Dmat = t(pool_data$returns) %*% pool_data$returns,
@@ -271,17 +272,18 @@ for(i in 1:100){
     res_pso <- pso(
       par = rep(0, ncol(pool_data$returns)),
       fn = function(x){
+        x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness+5*constraints)
+        return(fitness+10*constraints)
       },
       lower = 0,
       upper = 0.1,
       control = list(
-        s = 50, # swarm size
+        s = 100, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 30, # iterations
+        maxiter = 100, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T # save more information
@@ -294,17 +296,18 @@ for(i in 1:100){
     res_pso_fns <- pso_fn_stretching(
       par = rep(0, ncol(pool_data$returns)),
       fn = function(x){
+        x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness+5*constraints)
+        return(fitness+10*constraints)
       },
       lower = 0,
       upper = 0.1,
       control = list(
-        s = 50, # swarm size
+        s = 100, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 30, # iterations
+        maxiter = 100, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         fn_stretching = T,
@@ -329,10 +332,26 @@ for(i in 1:100){
 
 
 
-df_res <- df %>% group_by(type, iter) %>% summarise(time=mean(time), mean_fit = mean(mean_fit), best_fit = mean(best_fit)) %>% ungroup()
+df_res <- df %>% 
+  #mutate(best_fit = best_fit +1) %>% 
+  group_by(iter, type) %>% 
+  summarise(time=mean(time), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), mean_fit = mean(mean_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
+  ungroup()
 
-plot_ly(data = df_res, x=~iter, y=~best_fit, name = ~paste0("best_fit_", type), mode="lines", type = 'scatter')
+# plot_ly(data = df_res, x=~iter, y=~best_fit_agg, name = ~paste0("best_fit_", type), mode="lines", type = 'scatter') %>% 
+#   add_trace(data = df_res, x=~iter, y=~best_fit_q1, name = ~paste0("best_fit_", type)) %>% 
+#   add_trace(data = df_res, x=~iter, y=~best_fit_q3, name = ~paste0("best_fit_", type), fill="tonexty") %>% 
+#   layout(yaxis=list(range=c(min(df_res$best_fit_agg)-0.01, mean(df_res[df_res$iter>5,]$best_fit_agg)+0.01)))
 
+plot_ly() %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)") %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_median, name = "PSO-fnS", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q1, name = "PSO-fnS_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q3, name = "PSO-fnS_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)") %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>3,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>3,]$best_fit_q3)+0.001), title="best fitness"))
+  
 
 ```
 
