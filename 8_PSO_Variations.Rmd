@@ -9,12 +9,9 @@ editor_options:
 The standard PSO analysed in the previews chapter is capable to solve a wide range of problems but is very slow and often gets stuck in local minima. This chapter analyses different variations of the standard PSO in finance related problems. The first variant is the PSO with functional stretching, which should reduces stagnation in local minimas. ...............
 
 ### Testproblem: Discrete ITP-MSTE
-All variations are tested on a discrete ITP-MSTE to track the S&P 500 with a tracking portfolio consisting of the top 50 assets in the S&P 500. The daily data to solve the ITP is from 2018-01-01 till 2019-12-31 and the assets need to be present in the S&P 500 at the end of the time frame and have none missing values. The top 50 assets are selected by solving a continuous ITP-MSTE with a `solve.QP()` approach and the assets with the 50 highest weights are choosen. The tracking portfolio is discrete and has a net asset value of ten thousand USD. The tracking portfolio gets discretized by the closing prices on 2019-12-31 and the returns are calculated as simple returns from adjusted closing prices. The maximal weight for each asset is 10% to decrease the dimensional space of the problem. Additional constraints are long only and the portfolio weights $w$ should satisfy $1 \leq \textstyle\sum w_i \geq 0.99$. All variations are run 100 times and compared to 100 runs of the standard PSO function created in the previews chapter. The swarm size for the PSO and all variations is 100 and the iterations are set to 50.  
+All variants are tested on a discrete ITP-MSTE to track the S&P 500 with a tracking portfolio consisting of the top 50 assets in the S&P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S&P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using a `solve.QP()` approach and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of ten thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31 and returns are calculated as simple returns from the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $1 \leq \textstyle\sum w_i \geq 0.99$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variations is 100 and the iterations are set to 50. 
 
-The standard PSO has the following behavior :
-
-
-The next chart analyses the behavior of the 100 standard PSO runs in each iteration, by plotting the median best fitness reached at each iteration. The confidence bands for the 95% and 5% quantiles of the best fitnesses are plotted in the same color as the median with less transparency:
+The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved at each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 nav <- 10000
  
@@ -152,7 +149,7 @@ plot_ly() %>%
   layout(yaxis=list(range=c(min(df_res[df_res$iter>3,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>3,]$best_fit_q3)+0.001), title="best fitness")) %>% 
   html_save()
 ```
-The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 ```{r, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
@@ -170,8 +167,9 @@ reactable(
 
 ## Function Stretching
 
+(Recent_approaches_to_global_optimization_problems_.pdf)
 
-```{r}
+```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 pso_fn_stretching <- function(
     par,
@@ -315,10 +313,6 @@ df_res <- rbind(df_SPSO, df) %>%
   summarise(time_mean=mean(time), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
-# plot_ly(data = df_res, x=~iter, y=~best_fit_agg, name = ~paste0("best_fit_", type), mode="lines", type = 'scatter') %>% 
-#   add_trace(data = df_res, x=~iter, y=~best_fit_q1, name = ~paste0("best_fit_", type)) %>% 
-#   add_trace(data = df_res, x=~iter, y=~best_fit_q3, name = ~paste0("best_fit_", type), fill="tonexty") %>% 
-#   layout(yaxis=list(range=c(min(df_res$best_fit_agg)-0.01, mean(df_res[df_res$iter>5,]$best_fit_agg)+0.01)))
 
 plot_ly() %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
