@@ -36,11 +36,11 @@ plotly_line_chart_xts(ret_to_cumret(returns)) %>%
 ```
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \@ref(mathfundations):  
 ```{r MVP_ex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
-mu <- sapply((1+returns), prod)^(1/nrow(returns))-1
+mu <- ret_to_geomeanret(returns)
 cat0("estimation of expected daily returns:")
 mu
 cat("\n")
-cov <- as.matrix(nearPD(cov(returns))$mat)
+cov <- as.matrix(nearPD(cov_(returns, mu))$mat)
 cat0("estimation of positiv definite covariance matrix:")
 cov
 ```
@@ -84,8 +84,8 @@ colnames(portfolios) <- colnames(returns)
 The resulting daily returns and standard deviations are plotted to create the efficiency frontier:  
 ```{r MVP_ex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
 plot_ly(data = mu_and_var) %>%
-  add_lines(y = ~mu, x = ~sd, name = "efficient frontier") %>%
-  add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps") %>%
+  add_lines(y = ~mu, x = ~sd, name = "efficient frontier", mode="lines", type = 'scatter') %>%
+  add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps", type = 'scatter') %>%
   layout(
     title = "3-Asset MVP",
     yaxis = list(range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
@@ -112,6 +112,182 @@ p %>% html_save()
 
 ```
 It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased $\lambda$, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
+
+### MVP Compare Estimators
+The above MVP used a geometric mean return to estimate the expected return $\mu$ and used it as well in the estimation of $\textstyle\sum$. This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean return. The following chart illustrates the efficient frontier for a MVP with arithmetic mean return as estimator of $\mu$ versus a MVP with geometric mean return as estimator of $\mu$. To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean return:
+
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+
+cov_ <- function(mat, mean_vec=NULL){
+  if(is.null(mean_vec)){
+    mat_mean <- matrix(data=1, nrow=nrow(mat)) %*% apply(mat, 2, mean)
+  }else{
+    mat_mean <- matrix(data=1, nrow=nrow(mat)) %*% mean_vec
+  }
+  mat <- mat - mat_mean
+
+  return((nrow(mat)-1)^(-1) * t(mat) %*% mat)
+}
+
+
+
+
+returns <- buffer(
+  get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns,
+  "CPI_3_assets"
+)
+
+# save geo to compare results
+mu_arit <- apply(returns, 2, mean) #ret_to_geomeanret(returns)
+cov_arit <- cov(returns)
+
+mu <- ret_to_geomeanret(returns) #apply(returns, 2, mean) #ret_to_geomeanret(returns)
+cov <- cov_(returns, mean_vec = mu)
+
+
+portfolios <- data.frame()
+mu_and_var <- NULL
+for(lambda in seq(0.01,1, 0.01)){
+  mat <- list(
+    Dmat = lambda * cov,
+    dvec = (1 - lambda) * mu,
+    Amat = t(rbind(
+      rep(1, ncol(returns)), # sum up to 1
+      diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+    )),
+    bvec = c(
+      1, # sum up to 1
+      rep(0, ncol(returns)) # long only
+    ),
+    meq = 1
+  )
+
+  qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+
+  port <- xts(returns %*% qp$solution, order.by=index(returns))
+
+  mu_and_var <- rbind(
+    mu_and_var,
+    data.frame("lambda" = lambda, "mu" = mu_arit %*% qp$solution, "sd" = sqrt(t(qp$solution) %*% cov_arit %*% qp$solution))
+  )
+  portfolios <- rbind(
+    portfolios,
+    qp$solution
+  )
+}
+portfolios <- data.frame(portfolios)
+colnames(portfolios) <- colnames(returns)
+
+all <- data.frame(type="geo_mean", mu_and_var)
+
+
+# 
+# mu <- ret_to_geomeanret(returns) #apply(returns, 2, mean) #ret_to_geomeanret(returns)
+# cov <- cov(returns)
+# 
+# 
+# portfolios <- data.frame()
+# mu_and_var <- NULL
+# for(lambda in seq(0.01,1, 0.01)){
+#   mat <- list(
+#     Dmat = lambda * cov,
+#     dvec = (1 - lambda) * mu,
+#     Amat = t(rbind(
+#       rep(1, ncol(returns)), # sum up to 1
+#       diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+#     )),
+#     bvec = c(
+#       1, # sum up to 1
+#       rep(0, ncol(returns)) # long only
+#     ),
+#     meq = 1
+#   )
+# 
+#   qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+# 
+#   port <- xts(returns %*% qp$solution, order.by=index(returns))
+# 
+#   mu_and_var <- rbind(
+#     mu_and_var,
+#     data.frame("lambda" = lambda, "mu" = mu_arit %*% qp$solution, "sd" = sqrt(t(qp$solution) %*% cov_arit %*% qp$solution))
+#   )
+#   portfolios <- rbind(
+#     portfolios,
+#     qp$solution
+#   )
+# }
+# portfolios <- data.frame(portfolios)
+# colnames(portfolios) <- colnames(returns)
+# 
+# all <- rbind(all, data.frame(type="geo_mean_and_cov_with_arith", mu_and_var))
+
+
+
+mu <- apply(returns, 2, mean)
+cov <- cov(returns)
+
+
+
+portfolios <- data.frame()
+mu_and_var <- NULL
+for(lambda in seq(0.01,1, 0.01)){
+  mat <- list(
+    Dmat = lambda * cov,
+    dvec = (1 - lambda) * mu,
+    Amat = t(rbind(
+      rep(1, ncol(returns)), # sum up to 1
+      diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+    )),
+    bvec = c(
+      1, # sum up to 1
+      rep(0, ncol(returns)) # long only
+    ),
+    meq = 1
+  )
+
+  qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
+
+  port <- xts(returns %*% qp$solution, order.by=index(returns))
+
+  mu_and_var <- rbind(
+    mu_and_var,
+    data.frame("lambda" = lambda, "mu" = mu_arit %*% qp$solution, "sd" = sqrt(t(qp$solution) %*% cov_arit %*% qp$solution))
+  )
+  portfolios <- rbind(
+    portfolios,
+    qp$solution
+  )
+}
+portfolios <- data.frame(portfolios)
+colnames(portfolios) <- colnames(returns)
+
+all <- rbind(all, data.frame(type="arith_mean", mu_and_var))
+
+
+
+plot_ly() %>%
+  add_lines(data = all %>% filter(type=="geo_mean"), y = ~mu, x = ~sd, name="geo_mean", mode="lines", type = 'scatter') %>%
+  add_trace(data = all %>% filter(type=="geo_mean"), x = ~sd, y=~mu, name="geo_mean", mode="markers", type = 'scatter') %>%
+  add_lines(data = all %>% filter(type=="arith_mean"), y = ~mu, x = ~sd, name="arith_mean", mode="lines", type = 'scatter') %>%
+  add_trace(data = all %>% filter(type=="arith_mean"), x = ~sd, y=~mu, name="arith_mean", mode="markers", type = 'scatter') %>%
+  # add_lines(data = all %>% filter(type=="geo_mean_and_cov_with_arith"), y = ~mu, x = ~sd, name="geo_mean_and_cov_with_arith", mode="lines", type = 'scatter') %>%
+  # add_trace(data = all %>% filter(type=="geo_mean_and_cov_with_arith"), x = ~sd, y=~mu, name="geo_mean_and_cov_with_arith", mode="markers", type = 'scatter') %>%
+  layout(
+    title = "3-Asset MVP: arith_mean or geo_mean",
+    yaxis = list(title = "mu (arithmetic)", range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
+    xaxis = list(title = "sd (arithmetic)", range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05)),
+    margin = list(
+      l = 10,
+      r = 10,
+      b = 70,
+      t = 50,
+      pad = 4
+    )
+  ) %>%
+  html_save()
+```
+It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimation needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with $\lambda$ are sufficient to create test-cases for the PSO. The later examples with the MVP will allways use the geometric mean return as estimation for the expected returns.
+
 
 ## Index-Tracking Portfolio (ITP)
 Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor's 500 Index (S&P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost [@Desm2016]. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reweight daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark's assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&P 500 might consist of the one hundred highest-weighted assets in the S&P 500. The ITP can be modeled in two ways analysed in [@IuGa2019]. 

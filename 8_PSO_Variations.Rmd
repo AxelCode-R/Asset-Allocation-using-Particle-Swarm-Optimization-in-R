@@ -9,11 +9,12 @@ editor_options:
 The standard PSO analysed in the previews chapter is capable to solve a wide range of problems but is very slow and often gets stuck in local minima. This chapter analyses different variations of the standard PSO in finance related problems. The first variant is the PSO with functional stretching, which should reduces stagnation in local minimas. ...............
 
 ### Testproblem: Discrete ITP-MSTE
-All variants are tested on a discrete ITP-MSTE to track the S&P 500 with a tracking portfolio consisting of the top 50 assets in the S&P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S&P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using a `solve.QP()` approach and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of ten thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31 and returns are calculated as simple returns from the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $1 \leq \textstyle\sum w_i \geq 0.99$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variations is 100 and the iterations are set to 50. 
+All variants are tested on a discrete ITP-MSTE to track the S&P 500 with a tracking portfolio consisting of the top 50 assets in the S&P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S&P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using a `solve.QP()` approach and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31 and returns are calculated as simple returns from the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $1 \leq \textstyle\sum w_i \geq 0.99$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variations is 100 and the iterations are set to 100. 
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved at each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
+
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
-nav <- 10000
+nav <- 20000
  
 from <- "2018-01-01"
 to <- "2019-12-31"
@@ -119,7 +120,7 @@ for(i in 1:100){
         s = 100, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 50, # iterations
+        maxiter = 100, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T # save more information
@@ -131,7 +132,7 @@ for(i in 1:100){
     data.frame(
       "run" = i,
       suppressWarnings(rbind(data.frame(
-        "type" = "PSO", "time"=res_SPSO_time[3], res_SPSO$fit_data %>% select(iter, "mean_fit"=mean, "best_fit"=best)
+        "type" = "PSO", "time"=res_SPSO_time[3], "const_break"=calc_const(res_SPSO$solution), res_SPSO$fit_data %>% select(iter, "mean_fit"=mean, "best_fit"=best)
       )))
     )
   )
@@ -139,7 +140,7 @@ for(i in 1:100){
 
 df_res <- df_SPSO %>% 
   group_by(iter, type) %>% 
-  summarise(time_mean=mean(time), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
+  summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
 plot_ly() %>% 
@@ -150,11 +151,13 @@ plot_ly() %>%
   html_save()
 ```
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
 ```{r, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   columns = list(
     time_mean = colDef(format = colFormat(digits=2)),
+    const_break_mean = colDef(format = colFormat(digits=4)),
     best_fit_q1 = colDef(format = colFormat(digits=4)),
     best_fit_q3 = colDef(format = colFormat(digits=4)),
     best_fit_mean = colDef(format = colFormat(digits=4)),
@@ -171,106 +174,10 @@ reactable(
 
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
-pso_fn_stretching <- function(
-    par,
-    fn,
-    lower,
-    upper,
-    control = list()
-){
-
-  # use default control values if not set
-  control_ = list(
-    s = 10, # swarm size
-    c.p = 0.5, # inherit best
-    c.g = 0.5, # global best
-    maxiter = 200, # iterations
-    w0 = 1.2, # starting inertia weight
-    wN = 0, # ending inertia weight
-    save_fit = F, # save more information
-    fn_stretching = F
-  )
-  control <- c(control, control_[!names(control_) %in% names(control)])
-  
-  fn1 <- function(pos){fn(pos)}
-    
-  # init data-structure
-  X <- mrunif(
-    nr = length(par), nc=control$s, lower=lower, upper=upper
-  )
-  if(all(!is.na(par))){
-    X[, 1] <- par
-  }
-  X_fit <- apply(X, 2, fn1)
-  V <- mrunif(
-    nr = length(par), nc=control$s,
-    lower=-(upper-lower), upper=(upper-lower)
-  )/10
-  P <- X
-  P_fit <- X_fit
-  p_g <- P[, which.min(P_fit)]
-  p_g_fit <- min(P_fit)
-
-
-  trace_fit <- NULL
-  for(i in 1:control$maxiter){
-
-    # move particles
-    V <-
-      (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
-      control$c.p * runif(length(par)) * (P-X) +
-      control$c.g * runif(length(par)) * (p_g-X)
-    X <- X + V
-
-    # set velocity to zeros if not in valid space
-    V[X > upper] <- 0
-    V[X < lower] <- 0
-
-    # move into valid space
-    X[X > upper] <- upper
-    X[X < lower] <- lower
-
-    # evaluate objective function
-    X_fit <- apply(X, 2, fn1)
-
-    # save new previews best
-    P[, P_fit > X_fit] <- X[, P_fit > X_fit]
-    P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
-
-    # save new global best
-    if(any(P_fit < p_g_fit)){
-      p_g <- P[, which.min(P_fit)]
-      p_g_fit <- min(P_fit)
-    }
-    
-    if(control$fn_stretching && as.numeric(i/control$maxiter/0.1) %% 1 == 0){
-      fn1 <- function(pos){
-        res <- fn(pos)
-        G <- res + 1.5 * sqrt(sum((pos - p_g)^2)) * (sign(res - p_g_fit) + 1)
-        H <- G + 0.5 * (sign(res - p_g_fit) + 1)/(tanh(0.1 * (G - p_g_fit)))
-        return(H)
-      }
-    }
-
-    if(control$save_fit){
-      trace_fit <- rbind(trace_fit, data.frame("iter"=i, "mean_fit" = mean(P_fit), "best_fit" = p_g_fit))
-    }
-  }
-
-  res <- list(
-    "solution" = p_g,
-    "fitness" = p_g_fit
-  )
-  if(control$save_fit){
-    res$trace_fit <- trace_fit
-  }
-  return(res)
-}
-
+# R/PSO_functions.R : pso_fn_stretching()
 
 df <- NULL
 for(i in 1:100){
-
   res_pso_fns_time <- system.time({
     res_pso_fns <- pso_fn_stretching(
       par = rep(0, ncol(pool_data$returns)),
@@ -286,7 +193,7 @@ for(i in 1:100){
         s = 100, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 50, # iterations
+        maxiter = 100, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         fn_stretching = T,
@@ -299,7 +206,7 @@ for(i in 1:100){
     data.frame(
       "run" = i,
       suppressWarnings(data.frame(
-        "type" = "PSO-fnS", "time"=res_pso_fns_time[3], res_pso_fns$trace_fit %>% select(iter, mean_fit, best_fit)
+        "type" = "PSO-fnS", "time"=res_pso_fns_time[3], "const_break"=calc_const(res_pso_fns$solution), res_pso_fns$trace_fit %>% select(iter, mean_fit, best_fit)
       ))
     )
   )
@@ -310,7 +217,7 @@ for(i in 1:100){
 df_res <- rbind(df_SPSO, df) %>% 
   #mutate(best_fit = best_fit +1) %>% 
   group_by(iter, type) %>% 
-  summarise(time_mean=mean(time), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
+  summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
 
@@ -327,11 +234,13 @@ plot_ly() %>%
 
 ```
 The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+
 ```{r, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   columns = list(
     time_mean = colDef(format = colFormat(digits=2)),
+    const_break_mean = colDef(format = colFormat(digits=4)),
     best_fit_q1 = colDef(format = colFormat(digits=4)),
     best_fit_q3 = colDef(format = colFormat(digits=4)),
     best_fit_mean = colDef(format = colFormat(digits=4)),
@@ -363,6 +272,85 @@ DissertationHelwig (1).pdf
 neightborhood 
 Particle_Swarm_Optimization_Global_Best_or_Local_Best.pdf
 
+```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+set.seed(0)
+# R/PSO_functions.R : pso_local()
+
+df <- NULL
+for(i in 1:100){
+
+  res_pso_local_time <- system.time({
+    res_pso_local <- pso_local(
+      par = rep(0, ncol(pool_data$returns)),
+      fn = function(x){
+        x <- as.vector(round(x*nav/prices)*prices/nav)
+        fitness <- calc_fit(x)
+        constraints <- calc_const(x)
+        return(fitness+10*constraints)
+      },
+      lower = 0,
+      upper = 0.1,
+      control = list(
+        s = 100, # swarm size
+        c.p = 0.5, # inherit best
+        c.g = 0.5, # global best
+        maxiter = 100, # iterations
+        w0 = 1.2, # starting inertia weight
+        wN = 0, # ending inertia weight
+        save_fit = T,
+        k=20
+      )
+    )
+  })
+  
+  df <- rbind(df, 
+    data.frame(
+      "run" = i,
+      suppressWarnings(data.frame(
+        "type" = "PSO-local", "time"=res_pso_local_time[3], "const_break"=calc_const(res_pso_local$solution), res_pso_local$fit_data %>% select(iter, "mean_fit"=mean, "best_fit" = best)
+      ))
+    )
+  )
+}
+
+
+
+df_res <- rbind(df_SPSO, df) %>% 
+  #mutate(best_fit = best_fit +1) %>% 
+  group_by(iter, type) %>% 
+  summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
+  ungroup()
+
+
+plot_ly() %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_median, name = "PSO-local", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q1, name = "PSO-local_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q3, name = "PSO-local_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>7,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>7,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  html_save()
+  
+
+```
+The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+
+```{r, echo=F}
+reactable(
+  df_res[df_res$iter==max(df_res$iter),],
+  columns = list(
+    time_mean = colDef(format = colFormat(digits=2)),
+    const_break_mean = colDef(format = colFormat(digits=4)),
+    best_fit_q1 = colDef(format = colFormat(digits=4)),
+    best_fit_q3 = colDef(format = colFormat(digits=4)),
+    best_fit_mean = colDef(format = colFormat(digits=4)),
+    best_fit_median = colDef(format = colFormat(digits=4))
+  )
+) %>% 
+  html_save()
+```
+
 
 
 ## Preserving Feasibility
@@ -375,5 +363,100 @@ SCI2002Constrained.pdf
 
 
 
+## Test Local and Preserving Feasibility
+```{r, echo=F}
+# res_PSO_l_preF <- pso_local_prevFeas(
+#   par = rep(0, ncol(pool_data$returns)),
+#   fn_fit = function(x){
+#     x <- as.vector(round(x*nav/prices)*prices/nav)
+#     fitness <- calc_fit(x)
+#     constraints <- calc_const(x)
+#     return(fitness)
+#   },
+#   fn_const = function(x){
+#     x <- as.vector(round(x*nav/prices)*prices/nav)
+#     constraints <- calc_const(x)
+#     return(10*constraints)
+#   },
+#   lower = 0,
+#   upper = 0.1,
+#   control = list(
+#     s = 100, # swarm size
+#     c.p = 0.5, # inherit best
+#     c.g = 0.5, # global best
+#     maxiter = 100, # iterations
+#     w0 = 1.2, # starting inertia weight
+#     wN = 0, # ending inertia weight
+#     save_fit = T, # save more information
+#     k=20
+#   )
+# )
+# 
+
+
+set.seed(0)
+# R/PSO_functions.R : pso_local_prevFeas()
+
+df <- NULL
+for(i in 1:100){
+
+  res_pso_l_preF_time <- system.time({
+    res_pso_l_preF <- pso_local_prevFeas(
+      par = rep(0, ncol(pool_data$returns)),
+      fn_fit = function(x){
+        x <- as.vector(round(x*nav/prices)*prices/nav)
+        fitness <- calc_fit(x)
+        constraints <- calc_const(x)
+        return(fitness)
+      },
+      fn_const = function(x){
+        x <- as.vector(round(x*nav/prices)*prices/nav)
+        constraints <- calc_const(x)
+        return(10*constraints)
+      },
+      lower = 0,
+      upper = 0.1,
+      control = list(
+        s = 100, # swarm size
+        c.p = 0.5, # inherit best
+        c.g = 0.5, # global best
+        maxiter = 100, # iterations
+        w0 = 1.2, # starting inertia weight
+        wN = 0, # ending inertia weight
+        save_fit = T, # save more information
+        k=30
+      )
+    )
+  })
+  
+  df <- rbind(df, 
+    data.frame(
+      "run" = i,
+      suppressWarnings(data.frame(
+        "type" = "PSO-local-prevFeas", "time"=res_pso_l_preF_time[3], "const_break"=calc_const(res_pso_l_preF$solution), res_pso_l_preF$fit_data %>% select(iter, "mean_fit"=mean, "best_fit" = best)
+      ))
+    )
+  )
+}
+
+
+df_res <- rbind(df_SPSO, df) %>% 
+  #mutate(best_fit = best_fit +1) %>% 
+  group_by(iter, type) %>% 
+  summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
+  ungroup()
+
+
+plot_ly() %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-local-prevFeas"), x=~iter, y=~best_fit_median, name = "PSO-local-prevFeas", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-local-prevFeas"), x=~iter, y=~best_fit_q1, name = "PSO-local-prevFeas_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-local-prevFeas"), x=~iter, y=~best_fit_q3, name = "PSO-local-prevFeas_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>7,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>7,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  html_save()
+
+```
 
 

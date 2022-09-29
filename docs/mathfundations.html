@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-09-26" />
+<meta name="date" content="2022-09-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -209,6 +209,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="5.1.1" data-path="challenges.html"><a href="challenges.html#mvp-objective"><i class="fa fa-check"></i><b>5.1.1</b> MVP Objective</a></li>
 <li class="chapter" data-level="5.1.2" data-path="challenges.html"><a href="challenges.html#mvp-example"><i class="fa fa-check"></i><b>5.1.2</b> MVP example</a></li>
+<li class="chapter" data-level="5.1.3" data-path="challenges.html"><a href="challenges.html#mvp-compare-estimators"><i class="fa fa-check"></i><b>5.1.3</b> MVP Compare Estimators</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>5.2</b> Index-Tracking Portfolio (ITP)</a>
 <ul>
@@ -243,6 +244,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="pso-variations.html"><a href="pso-variations.html#lokal-pso"><i class="fa fa-check"></i><b>8.2</b> Lokal PSO</a></li>
 <li class="chapter" data-level="8.3" data-path="pso-variations.html"><a href="pso-variations.html#preserving-feasibility"><i class="fa fa-check"></i><b>8.3</b> Preserving Feasibility</a></li>
 <li class="chapter" data-level="8.4" data-path="pso-variations.html"><a href="pso-variations.html#self-adaptive-velocity"><i class="fa fa-check"></i><b>8.4</b> Self-Adaptive Velocity</a></li>
+<li class="chapter" data-level="8.5" data-path="pso-variations.html"><a href="pso-variations.html#test-local-and-preserving-feasibility"><i class="fa fa-check"></i><b>8.5</b> Test Local and Preserving Feasibility</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html"><i class="fa fa-check"></i><b>9</b> Real Life ITP Example</a>
 <ul>
@@ -461,17 +463,17 @@ and can be estimated in R with the basis function <code>cov()</code> and histori
 </div>
 <div id="geomeanret" class="section level3 hasAnchor" number="3.5.3">
 <h3><span class="header-section-number">3.5.3</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The geometric mean of returns is a better estimator than the arithmetic mean of returns because it captures the exact mean price changes over a period of time. The variance estimated from the daily returns is a daily variance, so the returns must have the same time base. This can be done by calculating the geometric mean of the returns from multiple daily returns. Assuming there is an asset with returns <span class="math inline">\(r_1 = 0.01\)</span>, <span class="math inline">\(r_2=0.03\)</span>, and <span class="math inline">\(r_3=0.02\)</span>, it follows that the geometric mean return <span class="math inline">\(r^{id}\)</span> can be calculated as:
+<p>The geometric mean of returns is a better estimator than the arithmetic mean of returns because it captures the exact mean price changes over a period of time. The variance estimated from the daily returns is a daily variance, so the returns must have the same time base. This can be done by calculating the geometric mean of the returns from multiple daily returns. Assuming there is an asset with returns <span class="math inline">\(r_1 = 0.01\)</span>, <span class="math inline">\(r_2=-0.03\)</span>, and <span class="math inline">\(r_3=0.02\)</span>, it follows that the geometric mean return <span class="math inline">\(r^{geom}\)</span> can be calculated as:
 <span class="math display">\[
-  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
+  r^{geom} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = -0.0002353887
 \]</span>
 And the advantage is that it is a daily average return that gives exactly the same result as the real return, that is:
 <span class="math display">\[
-  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
+  (1+r^{geom})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
 \]</span>
-This is not the case with the arithmetic mean of the returns. The general formula for calculating the mean geometric return of <span class="math inline">\(n\)</span> days is:
+This is not the case with the arithmetic mean of the returns. The general formula for calculating the geometric mean return of <span class="math inline">\(n\)</span> days is:
 <span class="math display">\[
-  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
+  r^{geom} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
 \]</span>
 and as R code:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="mathfundations.html#cb1-1" aria-hidden="true" tabindex="-1"></a>ret_to_geomeanret <span class="ot">&lt;-</span> <span class="cf">function</span>(xts_ret){</span>

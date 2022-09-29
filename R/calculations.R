@@ -36,3 +36,16 @@ calc_portfolio_returns <- function(xts_returns, weights, name="portfolio"){
     setNames(., name)
   return(res)
 }
+
+
+
+cov_ <- function(mat, mean_vec=NULL){
+  if(is.null(mean_vec)){
+    mat_mean <- matrix(data=1, nrow=nrow(mat)) %*% apply(mat, 2, mean)
+  }else{
+    mat_mean <- matrix(data=1, nrow=nrow(mat)) %*% mean_vec
+  }
+  mat <- mat - mat_mean
+
+  return((nrow(mat)-1)^(-1) * t(mat) %*% mat)
+}

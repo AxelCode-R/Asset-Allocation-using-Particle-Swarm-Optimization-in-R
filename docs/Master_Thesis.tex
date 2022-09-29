@@ -126,7 +126,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-09-26}
+\date{2022-09-29}
 
 \begin{document}
 \maketitle
@@ -413,17 +413,17 @@ This calculation of portfolio returns is implemented in the function \texttt{cal
 \hypertarget{geomeanret}{%
 \subsection{\texorpdfstring{\texttt{ret\_to\_geomeanret()}}{ret\_to\_geomeanret()}}\label{geomeanret}}
 
-The geometric mean of returns is a better estimator than the arithmetic mean of returns because it captures the exact mean price changes over a period of time. The variance estimated from the daily returns is a daily variance, so the returns must have the same time base. This can be done by calculating the geometric mean of the returns from multiple daily returns. Assuming there is an asset with returns \(r_1 = 0.01\), \(r_2=0.03\), and \(r_3=0.02\), it follows that the geometric mean return \(r^{id}\) can be calculated as:
+The geometric mean of returns is a better estimator than the arithmetic mean of returns because it captures the exact mean price changes over a period of time. The variance estimated from the daily returns is a daily variance, so the returns must have the same time base. This can be done by calculating the geometric mean of the returns from multiple daily returns. Assuming there is an asset with returns \(r_1 = 0.01\), \(r_2=-0.03\), and \(r_3=0.02\), it follows that the geometric mean return \(r^{geom}\) can be calculated as:
 \[
-  r^{id} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = 0.01996732
+  r^{geom} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = -0.0002353887
 \]
 And the advantage is that it is a daily average return that gives exactly the same result as the real return, that is:
 \[
-  (1+r^{id})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
+  (1+r^{geom})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
 \]
-This is not the case with the arithmetic mean of the returns. The general formula for calculating the mean geometric return of \(n\) days is:
+This is not the case with the arithmetic mean of the returns. The general formula for calculating the geometric mean return of \(n\) days is:
 \[
-  r^{id} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
+  r^{geom} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
 \]
 and as R code:
 
@@ -510,9 +510,9 @@ estimation of expected daily returns:
 
 estimation of positiv definite covariance matrix:
              AAPL          IBM         GOOG
-AAPL 0.0003011998 0.0001177670 0.0001798891
-IBM  0.0001177670 0.0002047502 0.0001158595
-GOOG 0.0001798891 0.0001158595 0.0002728725
+AAPL 0.0003012226 0.0001177826 0.0001799097
+IBM  0.0001177826 0.0002047608 0.0001158735
+GOOG 0.0001799097 0.0001158735 0.0002728911
 \end{verbatim}
 
 This is all the data necessary to solve the MVP with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). All 100 portfolios are computed by solving a quadratic minimization problem with the long only (\(w_i \geq 0 \ \forall \ i\)) constraint and the weights should sum to 1.
@@ -522,6 +522,14 @@ The resulting daily returns and standard deviations are plotted to create the ef
 The portfolio compositions for each \(\lambda\) are:\\
 \includegraphics{Master_Thesis_files/figure-latex/MVP_ex6-1.png}
 It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased \(\lambda\), the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
+
+\hypertarget{mvp-compare-estimators}{%
+\subsection{MVP Compare Estimators}\label{mvp-compare-estimators}}
+
+The above MVP used a geometric mean return to estimate the expected return \(\mu\) and used it as well in the estimation of \(\textstyle\sum\). This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean return. The following chart illustrates the efficient frontier for a MVP with arithmetic mean return as estimator of \(\mu\) versus a MVP with geometric mean return as estimator of \(\mu\). To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean return:
+
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png}
+It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimation needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with \(\lambda\) are sufficient to create test-cases for the PSO. The later examples with the MVP will allways use the geometric mean return as estimation for the expected returns.
 
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-Tracking Portfolio (ITP)}\label{index-tracking-portfolio-itp}}
@@ -1148,21 +1156,24 @@ The standard PSO analysed in the previews chapter is capable to solve a wide ran
 \hypertarget{testproblem-discrete-itp-mste}{%
 \subsection{Testproblem: Discrete ITP-MSTE}\label{testproblem-discrete-itp-mste}}
 
-All variations are tested on a discrete ITP-MSTE to track the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500. The daily data to solve the ITP is from 2018-01-01 till 2019-12-31 and the assets need to be present in the S\&P 500 at the end of the time frame and have none missing values. The top 50 assets are selected by solving a continuous ITP-MSTE with a \texttt{solve.QP()} approach and the assets with the 50 highest weights are choosen. The tracking portfolio is discrete and has a net asset value of ten thousand USD. The tracking portfolio gets discretized by the closing prices on 2019-12-31 and the returns are calculated as simple returns from adjusted closing prices. The maximal weight for each asset is 10\% to decrease the dimensional space of the problem. Additional constraints are long only and the portfolio weights \(w\) should satisfy \(1 \leq \textstyle\sum w_i \geq 0.99\). All variations are run 100 times and compared to 100 runs of the standard PSO function created in the previews chapter. The swarm size for the PSO and all variations is 100 and the iterations are set to 50.
+All variants are tested on a discrete ITP-MSTE to track the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S\&P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using a \texttt{solve.QP()} approach and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31 and returns are calculated as simple returns from the adjusted closing prices. The maximum weighting for each asset is 10\% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights \(w\) should satisfy \(1 \leq \textstyle\sum w_i \geq 0.99\). All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variations is 100 and the iterations are set to 100.
 
-The next chart analyses the behavior of the 100 standard PSO runs in each iteration, by plotting the median best fitness reached at each iteration. The confidence bands for the 95\% and 5\% quantiles of the best fitnesses are plotted in the same color as the median with less transparency:
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-7-1.png}
-The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved at each iteration. The confidence bands for the 95\% and 5\% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
+
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-8-1.png}
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
 
 \hypertarget{function-stretching}{%
 \section{Function Stretching}\label{function-stretching}}
 
 (Recent\_approaches\_to\_global\_optimization\_problems\_.pdf)
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
-The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
+The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
 
 10.1.1.301.4441.pdf
 function stretching
@@ -1181,6 +1192,11 @@ DissertationHelwig (1).pdf
 neightborhood
 Particle\_Swarm\_Optimization\_Global\_Best\_or\_Local\_Best.pdf
 
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
+The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
+
 \hypertarget{preserving-feasibility}{%
 \section{Preserving Feasibility}\label{preserving-feasibility}}
 
@@ -1188,6 +1204,11 @@ SCI2002Constrained.pdf
 
 \hypertarget{self-adaptive-velocity}{%
 \section{Self-Adaptive Velocity}\label{self-adaptive-velocity}}
+
+\hypertarget{test-local-and-preserving-feasibility}{%
+\section{Test Local and Preserving Feasibility}\label{test-local-and-preserving-feasibility}}
+
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-14-1.png}
 
 \hypertarget{real-life-itp-example}{%
 \chapter{Real Life ITP Example}\label{real-life-itp-example}}
