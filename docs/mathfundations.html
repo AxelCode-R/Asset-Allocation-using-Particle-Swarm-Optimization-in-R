@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-09-29" />
+<meta name="date" content="2022-10-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -221,7 +221,7 @@ div.csl-indent {
 <li class="chapter" data-level="6" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html"><i class="fa fa-check"></i><b>6</b> Analytic Solver for Quadratic Programming Problems</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>6.1</b> Quadratic Programming (QP)</a></li>
-<li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP Solver from quadprog</a></li>
+<li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP-Solver from quadprog</a></li>
 <li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
 <li class="chapter" data-level="6.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>6.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
 </ul></li>
@@ -286,10 +286,10 @@ To understand the listed operators more deeply, the following examples visualize
 <p>Matrix-Product:
 <span class="math display">\[\mathcal{R}^{x \times y} \times \mathcal{R}^{y \times z} = \mathcal{R}^{x \times z} \]</span>
 and for a vector
-<span class="math display">\[v \in \mathcal{R}^{N \times 1}: \ \ v^T \times v = \sum v_i^2 = \text{scalar}\]</span>
+<span class="math display">\[v \in \mathcal{R}^{N \times 1}: \ \ \mathcal{R}^{1 \times N} \times \mathcal{R}^{N \times 1} = v^T \times v = \sum v_i^2 = \text{scalar}\]</span>
 Outer-Product:
 <span class="math display">\[\mathcal{R}^{x \times 1} \otimes \mathcal{R}^{1 \times x} = \mathcal{R}^{x \times x} \]</span>
-Scalar or element-wise Vector multiplication:
+Scalar or element-wise Matrix multiplication:
 <span class="math display">\[R^{x \times y} \cdot R^{x \times y} = \begin{bmatrix}r_{11}^2 &amp;\cdots  &amp; r_{1y}^2 \\ \vdots &amp; \ddots &amp; \vdots  \\ r_{x1}^2 &amp; \cdots &amp; r_{xy}^2 \end{bmatrix}\]</span></p>
 </div>
 <div id="return-calculation" class="section level2 hasAnchor" number="3.2">

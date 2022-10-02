@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-09-29" />
+<meta name="date" content="2022-10-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -221,7 +221,7 @@ div.csl-indent {
 <li class="chapter" data-level="6" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html"><i class="fa fa-check"></i><b>6</b> Analytic Solver for Quadratic Programming Problems</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>6.1</b> Quadratic Programming (QP)</a></li>
-<li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP Solver from quadprog</a></li>
+<li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP-Solver from quadprog</a></li>
 <li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
 <li class="chapter" data-level="6.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>6.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
 </ul></li>
@@ -375,11 +375,11 @@ The portfolio compositions for each <span class="math inline">\(\lambda\)</span>
 <span id="cb8-5"><a href="challenges.html#cb8-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb8-6"><a href="challenges.html#cb8-6" aria-hidden="true" tabindex="-1"></a>p <span class="sc">%&gt;%</span> <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/MVP_ex6-1.png" width="672" />
-It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased <span class="math inline">\(\lambda\)</span>, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.</p>
+It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased in <span class="math inline">\(\lambda\)</span>, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.</p>
 </div>
 <div id="mvp-compare-estimators" class="section level3 hasAnchor" number="5.1.3">
 <h3><span class="header-section-number">5.1.3</span> MVP Compare Estimators<a href="challenges.html#mvp-compare-estimators" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The above MVP used a geometric mean return to estimate the expected return <span class="math inline">\(\mu\)</span> and used it as well in the estimation of <span class="math inline">\(\textstyle\sum\)</span>. This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean return. The following chart illustrates the efficient frontier for a MVP with arithmetic mean return as estimator of <span class="math inline">\(\mu\)</span> versus a MVP with geometric mean return as estimator of <span class="math inline">\(\mu\)</span>. To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean return:</p>
+<p>The above MVP used a geometric mean returns to estimate the expected returns <span class="math inline">\(\mu\)</span> and used it as well in the estimation of <span class="math inline">\(\textstyle\sum\)</span>. This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean returns. The following chart illustrates the efficient frontier for a MVP with arithmetic mean returns as estimator of <span class="math inline">\(\mu\)</span> versus a MVP with geometric mean returns as estimator of <span class="math inline">\(\mu\)</span>. To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean returns:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb9-1"><a href="challenges.html#cb9-1" aria-hidden="true" tabindex="-1"></a>cov_ <span class="ot">&lt;-</span> <span class="cf">function</span>(mat, <span class="at">mean_vec=</span><span class="cn">NULL</span>){</span>
 <span id="cb9-2"><a href="challenges.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(mean_vec)){</span>
 <span id="cb9-3"><a href="challenges.html#cb9-3" aria-hidden="true" tabindex="-1"></a>    mat_mean <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data=</span><span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">nrow</span>(mat)) <span class="sc">%*%</span> <span class="fu">apply</span>(mat, <span class="dv">2</span>, mean)</span>
@@ -548,7 +548,7 @@ It can be observed that the minimum variance portfolio was achieved with a diver
 <span id="cb9-166"><a href="challenges.html#cb9-166" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb9-167"><a href="challenges.html#cb9-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimation needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with <span class="math inline">\(\lambda\)</span> are sufficient to create test-cases for the PSO. The later examples with the MVP will allways use the geometric mean return as estimation for the expected returns.</p>
+It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with <span class="math inline">\(\lambda\)</span> are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.</p>
 </div>
 </div>
 <div id="index-tracking-portfolio-itp" class="section level2 hasAnchor" number="5.2">
@@ -558,7 +558,7 @@ It can be seen, that both estimators produce portfolios on the same efficient fr
 <h3><span class="header-section-number">5.2.1</span> ITP with TEV objective (ITP-TEV)<a href="challenges.html#itp-with-tev-objective-itp-tev" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The classic and widely used model tries to reduce the variance of the tracking error (TEV) with the following formula:
 <span class="math display">\[
-min \ \ Var(TE) = Var(r_{p}-r_{bm})
+\min \ \ Var(TE) = Var(r_{p}-r_{bm})
 \]</span></p>
 <p>To obtain the portfolio weights <span class="math inline">\(w\)</span>, one needs to substitute <span class="math inline">\(r_{p}\)</span> as follows:
 <span class="math display">\[
@@ -647,7 +647,7 @@ and
 </div>
 <div id="example-itp" class="section level3 hasAnchor" number="5.2.3">
 <h3><span class="header-section-number">5.2.3</span> Example ITP<a href="challenges.html#example-itp" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This example shows the results of tracking the S&amp;P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2018-01-01/2019-12-31 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:</p>
+<p>This example shows the results of tracking the S&amp;P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb10-1"><a href="challenges.html#cb10-1" aria-hidden="true" tabindex="-1"></a>pool_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb10-2"><a href="challenges.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2019-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
 <span id="cb10-3"><a href="challenges.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_3_assets&quot;</span></span>

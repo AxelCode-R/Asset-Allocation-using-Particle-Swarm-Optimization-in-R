@@ -13,7 +13,7 @@ All variants are tested on a discrete ITP-MSTE to track the S&P 500 with a track
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved at each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
-```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r variants1, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 nav <- 20000
  
 from <- "2018-01-01"
@@ -117,10 +117,10 @@ for(i in 1:100){
       lower = 0,
       upper = 0.1,
       control = list(
-        s = 100, # swarm size
+        s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 100, # iterations
+        maxiter = 200, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T # save more information
@@ -150,29 +150,67 @@ plot_ly() %>%
   layout(yaxis=list(range=c(min(df_res[df_res$iter>3,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>3,]$best_fit_q3)+0.001), title="best fitness")) %>% 
   html_save()
 ```
-The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
-```{r, echo=F}
+The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+
+```{r variants2, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   columns = list(
-    time_mean = colDef(format = colFormat(digits=2)),
-    const_break_mean = colDef(format = colFormat(digits=4)),
-    best_fit_q1 = colDef(format = colFormat(digits=4)),
-    best_fit_q3 = colDef(format = colFormat(digits=4)),
-    best_fit_mean = colDef(format = colFormat(digits=4)),
-    best_fit_median = colDef(format = colFormat(digits=4))
-  )
+    iter = colDef(width=60),
+    type = colDef(width=90),
+    time_mean = colDef(format = colFormat(digits=2), width=90),
+    const_break_mean = colDef(format = colFormat(digits=4), width=150),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
+    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+  ),
+  compact = T,
+  rownames = F
 ) %>% 
-  html_save()
+  html_save(., vwidth = 1000)
 ```
 
 
 ## Function Stretching
-
+A PSO often gets stuck in local minimas, that means if the global best position is a local minima with a neighborhood around it that contains only higher fitnesses, it's hard for the PSO to escape and find the global minima. Function stretching tried to accomplish that the PSO can escape from such local minimas, by transforming the fitness function in a manner that 
+[@PaVr2002]
 (Recent_approaches_to_global_optimization_problems_.pdf)
 
-```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r}
+fn <- function(pos){
+  cos(pos)+1/10 * pos
+}
+
+fn1 <- function(pos, pos_best, pos_best_fit){
+  res <- fn(pos)
+  G <- res + 10^4/2 * sqrt(sum((pos - pos_best)^2))/length(pos) * (sign(res - pos_best_fit) + 1)
+  H <- G + 0.5 * (sign(res - pos_best_fit) + 1)/(tanh(10^(-10) * (G - pos_best_fit)))
+  return(H)
+}
+
+X <- seq(-10, 10, 0.001)
+x_best <- pi-asin(1/10)
+x_best_fit <- fn(x_best)
+
+
+# plot_ly() %>% 
+#   add_trace(x=X, y=sapply(X, fn), type="scatter", mode="lines", name="fn") %>% 
+#   add_trace(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched") %>% 
+#   layout(yaxis=list(range=c(min(sapply(X, fn)), max(sapply(X, fn))*30)))
+
+
+p1 <- plot_ly(x=X, y=sapply(X, fn), type="scatter", mode="lines", name="fn")
+p2 <- plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched") %>% 
+  layout(yaxis=list(range=c(-2, 20)*10^5))
+
+subplot(p1, p2, shareY=T, nrows=2)
+
+
+```
+
+```{r variants3, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 # R/PSO_functions.R : pso_fn_stretching()
 
@@ -190,10 +228,10 @@ for(i in 1:100){
       lower = 0,
       upper = 0.1,
       control = list(
-        s = 100, # swarm size
+        s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 100, # iterations
+        maxiter = 200, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         fn_stretching = T,
@@ -233,21 +271,26 @@ plot_ly() %>%
   
 
 ```
+
 The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
 
-```{r, echo=F}
+```{r variants4, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   columns = list(
-    time_mean = colDef(format = colFormat(digits=2)),
-    const_break_mean = colDef(format = colFormat(digits=4)),
-    best_fit_q1 = colDef(format = colFormat(digits=4)),
-    best_fit_q3 = colDef(format = colFormat(digits=4)),
-    best_fit_mean = colDef(format = colFormat(digits=4)),
-    best_fit_median = colDef(format = colFormat(digits=4))
-  )
+    iter = colDef(width=60),
+    type = colDef(width=90),
+    time_mean = colDef(format = colFormat(digits=2), width=90),
+    const_break_mean = colDef(format = colFormat(digits=4), width=150),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
+    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+  ),
+  compact = T,
+  rownames = F
 ) %>% 
-  html_save()
+  html_save(., vwidth = 1000)
 ```
 
 
@@ -269,10 +312,23 @@ DissertationHelwig (1).pdf
 
 
 ## Lokal PSO
-neightborhood 
-Particle_Swarm_Optimization_Global_Best_or_Local_Best.pdf
+A local PSO is a more generic case of the global PSO. It's only difference lies in the selection of the global best particle, by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$ and the global best particle in it's neighborhood is named local best particle of $x_i$. If the neighborhood is chosen big enough to contain all particles, it matches with the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ stated in [@Enge2013] would be:
 
-```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+$$
+  N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
+$$
+with
+$$
+  \bar{k} = floor(\frac{k}{2}) = \lfloor \frac{k}{2} \rfloor
+$$
+To visualize this, the following image defines the neighborhoods $N(x_4, 4)$ and $N(x_1, 4)$:
+
+![Visualize Neighborhoods](img/PSO_local_chart.jpg)
+In the later case, it can be seen, that overflowing boundary's will continue on the opposite site of the arranged particles.
+
+The new PSO is called PSO-local and is evaluated on the test problem with $k=20$:
+
+```{r variants5, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 # R/PSO_functions.R : pso_local()
 
@@ -291,10 +347,10 @@ for(i in 1:100){
       lower = 0,
       upper = 0.1,
       control = list(
-        s = 100, # swarm size
+        s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 100, # iterations
+        maxiter = 200, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T,
@@ -334,24 +390,29 @@ plot_ly() %>%
   
 
 ```
+
 The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
 
-```{r, echo=F}
+```{r variants6, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   columns = list(
-    time_mean = colDef(format = colFormat(digits=2)),
-    const_break_mean = colDef(format = colFormat(digits=4)),
-    best_fit_q1 = colDef(format = colFormat(digits=4)),
-    best_fit_q3 = colDef(format = colFormat(digits=4)),
-    best_fit_mean = colDef(format = colFormat(digits=4)),
-    best_fit_median = colDef(format = colFormat(digits=4))
-  )
+    iter = colDef(width=60),
+    type = colDef(width=90),
+    time_mean = colDef(format = colFormat(digits=2), width=90),
+    const_break_mean = colDef(format = colFormat(digits=4), width=150),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
+    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+  ),
+  compact = T,
+  rownames = F
 ) %>% 
-  html_save()
+  html_save(., vwidth = 1000)
 ```
 
-
+It can be seen that it is superior to the standard PSO in this case. Particularly in preventing stagnation in local minimas, that can be seen in the tighter quantile bands at the end.
 
 ## Preserving Feasibility
 SCI2002Constrained.pdf
@@ -364,7 +425,7 @@ SCI2002Constrained.pdf
 
 
 ## Test Local and Preserving Feasibility
-```{r, echo=F}
+```{r variants_last, echo=F}
 # res_PSO_l_preF <- pso_local_prevFeas(
 #   par = rep(0, ncol(pool_data$returns)),
 #   fn_fit = function(x){
@@ -417,10 +478,10 @@ for(i in 1:100){
       lower = 0,
       upper = 0.1,
       control = list(
-        s = 100, # swarm size
+        s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 100, # iterations
+        maxiter = 200, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T, # save more information

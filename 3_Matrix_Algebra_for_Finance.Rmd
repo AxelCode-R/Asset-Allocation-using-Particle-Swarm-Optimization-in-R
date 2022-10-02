@@ -13,7 +13,7 @@ reactable(
   data.frame(
     "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;"),
     "R"= c("%*%", "%*%","t(A)", "*"),
-    "Meaning" = c("Matrix-Product", "Outer-Product", "Transpose of Matrix or Vector A", "Scalar or element-wise Vector multiplication")
+    "Meaning" = c("Matrix-Product", "Outer-Product", "Transpose of Matrix or Vector A", "Scalar or element-wise Matrix multiplication")
   ), 
   columns <- list(
     Latex = colDef(name = "Latex/Displayed", html = T),
@@ -28,10 +28,10 @@ To understand the listed operators more deeply, the following examples visualize
 Matrix-Product:
 $$\mathcal{R}^{x \times y} \times \mathcal{R}^{y \times z} = \mathcal{R}^{x \times z} $$
 and for a vector
-$$v \in \mathcal{R}^{N \times 1}: \ \ v^T \times v = \sum v_i^2 = \text{scalar}$$
+$$v \in \mathcal{R}^{N \times 1}: \ \ \mathcal{R}^{1 \times N} \times \mathcal{R}^{N \times 1} = v^T \times v = \sum v_i^2 = \text{scalar}$$
 Outer-Product:
 $$\mathcal{R}^{x \times 1} \otimes \mathcal{R}^{1 \times x} = \mathcal{R}^{x \times x} $$
-Scalar or element-wise Vector multiplication:
+Scalar or element-wise Matrix multiplication:
 $$R^{x \times y} \cdot R^{x \times y} = \begin{bmatrix}r_{11}^2 &\cdots  & r_{1y}^2 \\ \vdots & \ddots & \vdots  \\ r_{x1}^2 & \cdots & r_{xy}^2 \end{bmatrix}$$
 
 ## Return Calculation

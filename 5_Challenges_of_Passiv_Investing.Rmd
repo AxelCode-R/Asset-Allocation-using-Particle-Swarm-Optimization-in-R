@@ -111,10 +111,10 @@ for(i in 1:ncol(portfolios)){
 p %>% html_save()
 
 ```
-It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased $\lambda$, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
+It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased in $\lambda$, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
 
 ### MVP Compare Estimators
-The above MVP used a geometric mean return to estimate the expected return $\mu$ and used it as well in the estimation of $\textstyle\sum$. This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean return. The following chart illustrates the efficient frontier for a MVP with arithmetic mean return as estimator of $\mu$ versus a MVP with geometric mean return as estimator of $\mu$. To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean return:
+The above MVP used a geometric mean returns to estimate the expected returns $\mu$ and used it as well in the estimation of $\textstyle\sum$. This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean returns. The following chart illustrates the efficient frontier for a MVP with arithmetic mean returns as estimator of $\mu$ versus a MVP with geometric mean returns as estimator of $\mu$. To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean returns:
 
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 
@@ -286,7 +286,7 @@ plot_ly() %>%
   ) %>%
   html_save()
 ```
-It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimation needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with $\lambda$ are sufficient to create test-cases for the PSO. The later examples with the MVP will allways use the geometric mean return as estimation for the expected returns.
+It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with $\lambda$ are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.
 
 
 ## Index-Tracking Portfolio (ITP)
@@ -296,7 +296,7 @@ Indices are baskets of assets that are used to track the performance of a partic
 ### ITP with TEV objective (ITP-TEV)
 The classic and widely used model tries to reduce the variance of the tracking error (TEV) with the following formula:
 $$
- min \ \ Var(TE) = Var(r_{p}-r_{bm})
+ \min \ \ Var(TE) = Var(r_{p}-r_{bm})
 $$
 
 To obtain the portfolio weights $w$, one needs to substitute $r_{p}$ as follows:
@@ -396,7 +396,7 @@ $$
 
 
 ### Example ITP
-This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2018-01-01/2019-12-31 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
+This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
 
 ```{r ITP_ex, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 pool_returns <- buffer(

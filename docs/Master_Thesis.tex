@@ -126,7 +126,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-09-29}
+\date{2022-10-02}
 
 \begin{document}
 \maketitle
@@ -236,10 +236,10 @@ To understand the listed operators more deeply, the following examples visualize
 Matrix-Product:
 \[\mathcal{R}^{x \times y} \times \mathcal{R}^{y \times z} = \mathcal{R}^{x \times z} \]
 and for a vector
-\[v \in \mathcal{R}^{N \times 1}: \ \ v^T \times v = \sum v_i^2 = \text{scalar}\]
+\[v \in \mathcal{R}^{N \times 1}: \ \ \mathcal{R}^{1 \times N} \times \mathcal{R}^{N \times 1} = v^T \times v = \sum v_i^2 = \text{scalar}\]
 Outer-Product:
 \[\mathcal{R}^{x \times 1} \otimes \mathcal{R}^{1 \times x} = \mathcal{R}^{x \times x} \]
-Scalar or element-wise Vector multiplication:
+Scalar or element-wise Matrix multiplication:
 \[R^{x \times y} \cdot R^{x \times y} = \begin{bmatrix}r_{11}^2 &\cdots  & r_{1y}^2 \\ \vdots & \ddots & \vdots  \\ r_{x1}^2 & \cdots & r_{xy}^2 \end{bmatrix}\]
 
 \hypertarget{return-calculation}{%
@@ -521,15 +521,15 @@ The resulting daily returns and standard deviations are plotted to create the ef
 \includegraphics{Master_Thesis_files/figure-latex/MVP_ex5-1.png}
 The portfolio compositions for each \(\lambda\) are:\\
 \includegraphics{Master_Thesis_files/figure-latex/MVP_ex6-1.png}
-It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased \(\lambda\), the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
+It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased in \(\lambda\), the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
 
 \hypertarget{mvp-compare-estimators}{%
 \subsection{MVP Compare Estimators}\label{mvp-compare-estimators}}
 
-The above MVP used a geometric mean return to estimate the expected return \(\mu\) and used it as well in the estimation of \(\textstyle\sum\). This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean return. The following chart illustrates the efficient frontier for a MVP with arithmetic mean return as estimator of \(\mu\) versus a MVP with geometric mean return as estimator of \(\mu\). To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean return:
+The above MVP used a geometric mean returns to estimate the expected returns \(\mu\) and used it as well in the estimation of \(\textstyle\sum\). This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean returns. The following chart illustrates the efficient frontier for a MVP with arithmetic mean returns as estimator of \(\mu\) versus a MVP with geometric mean returns as estimator of \(\mu\). To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean returns:
 
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png}
-It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimation needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with \(\lambda\) are sufficient to create test-cases for the PSO. The later examples with the MVP will allways use the geometric mean return as estimation for the expected returns.
+It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with \(\lambda\) are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.
 
 \hypertarget{index-tracking-portfolio-itp}{%
 \section{Index-Tracking Portfolio (ITP)}\label{index-tracking-portfolio-itp}}
@@ -541,7 +541,7 @@ Indices are baskets of assets that are used to track the performance of a partic
 
 The classic and widely used model tries to reduce the variance of the tracking error (TEV) with the following formula:
 \[
- min \ \ Var(TE) = Var(r_{p}-r_{bm})
+ \min \ \ Var(TE) = Var(r_{p}-r_{bm})
 \]
 
 To obtain the portfolio weights \(w\), one needs to substitute \(r_{p}\) as follows:
@@ -642,7 +642,7 @@ and
 \hypertarget{example-itp}{%
 \subsection{Example ITP}\label{example-itp}}
 
-This example shows the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame is 2018-01-01/2019-12-31 and the goal is to minimize the variance of the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
+This example shows the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
 
 \includegraphics{Master_Thesis_files/figure-latex/ITP_ex-1.png}
 The ITP-TEV and ITP-MSTE had almost the same results whith the compositions below:
@@ -673,9 +673,9 @@ and is valid under the linear constraints:
 Some other sources notate the problem with different signs or coefficients, all of which are interchangeable with the above problem. In addition, the above problem has the same notation used in the R package \texttt{quadprog}, which reduces the substitution overhead. All modern programming languages have many solvers for quadratic problems. They differ mainly in the computation time for certain problems and the requirements. Some commercial QP solvers additionally accept more complex constraints, such as absolute (e.g., \(|A^T \times x| \geq a_0\)) or mixed-integer (e.g., \(x \in \mathbb{N}\)). Especially the mixed-integer constraint problems lead to a huge increase in memory requirements.
 
 \hypertarget{qp-solver-from-quadprog}{%
-\section{QP Solver from quadprog}\label{qp-solver-from-quadprog}}
+\section{QP-Solver from quadprog}\label{qp-solver-from-quadprog}}
 
-The most common free QP solver used in R comes from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog}, which consists of a single function called \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani published in \citep{GoId1982} and \citep{GoId1983}. It uses the above QP with the condition that \(D\) must be a symmetric positive definite matrix. This means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in \mathbb{R}^N\), which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix \(\sum\), but it is possible to find the nearest positive definite matrix of \(\textstyle\sum\) using the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{matrix} R package. The error encountered often does not exceed a percentage change in elements over \(10^{-15} \%\), which is negligible for the context of this work. The function \texttt{solve.QP()} for an \(N\) dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
+The most common free QP-Solver used in R comes from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog}, which consists of a single function called \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani published in \citep{GoId1982} and \citep{GoId1983}. It uses the above QP with the condition that \(D\) must be a symmetric positive definite matrix. This means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in \mathbb{R}^N\), which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix \(\sum\), but it is possible to find the nearest positive definite matrix of \(\textstyle\sum\) using the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{matrix} R package. The error encountered often does not exceed a percentage change in elements over \(10^{-15} \%\), which is negligible for the context of this work. The function \texttt{solve.QP()} for an \(N\) dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
 
 \vspace{-0.4cm}
 
@@ -728,7 +728,7 @@ The next step is to create a function \texttt{mvp()} that has the arguments \tex
 \NormalTok{  tc }\OtherTok{\textless{}{-}} \FunctionTok{tryCatch}\NormalTok{(\{}
 \NormalTok{    mu }\OtherTok{\textless{}{-}} \FunctionTok{ret\_to\_geomeanret}\NormalTok{(returns)}
 
-\NormalTok{    cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov}\NormalTok{(returns))}\SpecialCharTok{$}\NormalTok{mat)}
+\NormalTok{    cov }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(}\FunctionTok{nearPD}\NormalTok{(}\FunctionTok{cov\_}\NormalTok{(returns, mu))}\SpecialCharTok{$}\NormalTok{mat)}
 
 \NormalTok{    mat }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
       \AttributeTok{Dmat =}\NormalTok{ lambda }\SpecialCharTok{*}\NormalTok{ cov,}
@@ -1028,7 +1028,7 @@ The required data structure is available and the optimization can start with the
 \end{Highlighting}
 \end{Shaded}
 
-The best fitness after \(100\) iterations is 0.0070456 and the best possible solution is \(0\).
+The best fitness after \(100\) iterations is 0.0000038 and the best possible solution is \(0\).
 
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
@@ -1160,20 +1160,63 @@ All variants are tested on a discrete ITP-MSTE to track the S\&P 500 with a trac
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved at each iteration. The confidence bands for the 95\% and 5\% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-8-1.png}
-The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+\includegraphics{Master_Thesis_files/figure-latex/variants1-1.png}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
+The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+
+\includegraphics{Master_Thesis_files/figure-latex/variants2-1.png}
 
 \hypertarget{function-stretching}{%
 \section{Function Stretching}\label{function-stretching}}
 
 (Recent\_approaches\_to\_global\_optimization\_problems\_.pdf)
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pos)\{}
+  \FunctionTok{cos}\NormalTok{(pos)}\SpecialCharTok{+}\DecValTok{1}\SpecialCharTok{/}\DecValTok{10} \SpecialCharTok{*}\NormalTok{ pos}
+\NormalTok{\}}
+
+\NormalTok{fn1 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pos, pos\_best, pos\_best\_fit)\{}
+\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{fn}\NormalTok{(pos)}
+\NormalTok{  G }\OtherTok{\textless{}{-}}\NormalTok{ res }\SpecialCharTok{+} \DecValTok{3} \SpecialCharTok{*} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{sum}\NormalTok{((pos }\SpecialCharTok{{-}}\NormalTok{ pos\_best)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)) }\SpecialCharTok{*}\NormalTok{ (}\FunctionTok{sign}\NormalTok{(res }\SpecialCharTok{{-}}\NormalTok{ pos\_best\_fit) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{)}
+\NormalTok{  H }\OtherTok{\textless{}{-}}\NormalTok{ G }\SpecialCharTok{+} \FloatTok{0.5} \SpecialCharTok{*}\NormalTok{ (}\FunctionTok{sign}\NormalTok{(res }\SpecialCharTok{{-}}\NormalTok{ pos\_best\_fit) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{)}\SpecialCharTok{/}\NormalTok{(}\FunctionTok{tanh}\NormalTok{(}\FloatTok{0.01} \SpecialCharTok{*}\NormalTok{ (G }\SpecialCharTok{{-}}\NormalTok{ pos\_best\_fit)))}
+  \FunctionTok{return}\NormalTok{(H)}
+\NormalTok{\}}
+
+\NormalTok{X }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{, }\FloatTok{0.01}\NormalTok{)}
+\NormalTok{x\_best }\OtherTok{\textless{}{-}}\NormalTok{ pi}
+\NormalTok{x\_best\_fit }\OtherTok{\textless{}{-}} \FunctionTok{fn}\NormalTok{(x\_best)}
+
+\FunctionTok{fn1}\NormalTok{(}\AttributeTok{pos =} \DecValTok{1}\NormalTok{, }\AttributeTok{pos\_best=}\NormalTok{x\_best, }\AttributeTok{pos\_best\_fit=}\NormalTok{x\_best\_fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 20.59137
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\AttributeTok{x=}\NormalTok{X, }\AttributeTok{y=}\FunctionTok{fn}\NormalTok{(X))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\AttributeTok{x=}\NormalTok{X, }\AttributeTok{y=}\FunctionTok{sapply}\NormalTok{(X, fn1, }\AttributeTok{pos\_best=}\NormalTok{x\_best, }\AttributeTok{pos\_best\_fit=}\NormalTok{x\_best\_fit))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-8-2.pdf}
+
+\includegraphics{Master_Thesis_files/figure-latex/variants3-1.png}
+
 The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/variants4-1.png}
 
 10.1.1.301.4441.pdf
 function stretching
@@ -1189,13 +1232,29 @@ DissertationHelwig (1).pdf
 \hypertarget{lokal-pso}{%
 \section{Lokal PSO}\label{lokal-pso}}
 
-neightborhood
-Particle\_Swarm\_Optimization\_Global\_Best\_or\_Local\_Best.pdf
+A local PSO is a more generic case of the global PSO. It's only difference lies in the selection of the global best particle, by defining a neighborhood. Each particle \(x_i\) has a neighborhood \(N(x_i, \bar{k})\) and the global best particle in it's neighborhood is named local best particle of \(x_i\). If the neighborhood is chosen big enough to contain all particles, it matches with the standard PSO (global PSO). A simple definition of a neighborhood with \(k\) neighbors for particles \(x_i\) stated in \citep{Enge2013} would be:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
+\[
+  N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
+\]
+with
+\[
+  \bar{k} = floor(k/2) = \lfloor k/2 \rfloor
+\]
+To visualize this, the following image defines the neighborhoods \(N(x_4, 4)\) and \(N(x_1, 4)\):
+
+\includegraphics{img/PSO_local_chart.jpg}
+In the later case, it can be seen, that overflowing boundary's will continue on the opposite site of the arranged particles.
+
+The new PSO is called PSO-local and is evaluated on the test problem with \(k=20\):
+
+\includegraphics{Master_Thesis_files/figure-latex/variants5-1.png}
+
 The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/variants6-1.png}
+
+It can be seen that it is superior to the standard PSO in this case. Particularly in preventing stagnation in local minimas, that can be seen in the tighter quantile bands at the end.
 
 \hypertarget{preserving-feasibility}{%
 \section{Preserving Feasibility}\label{preserving-feasibility}}
@@ -1208,7 +1267,7 @@ SCI2002Constrained.pdf
 \hypertarget{test-local-and-preserving-feasibility}{%
 \section{Test Local and Preserving Feasibility}\label{test-local-and-preserving-feasibility}}
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-14-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/variants_last-1.png}
 
 \hypertarget{real-life-itp-example}{%
 \chapter{Real Life ITP Example}\label{real-life-itp-example}}

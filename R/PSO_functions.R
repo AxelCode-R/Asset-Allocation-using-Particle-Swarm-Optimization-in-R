@@ -144,7 +144,8 @@ pso_fn_stretching <- function(
   P_fit <- X_fit
   p_g <- P[, which.min(P_fit)]
   p_g_fit <- min(P_fit)
-
+  # save_p_g <- p_g
+  # save_p_g_fit <- p_g_fit
 
   stagnate <- 0
   trace_fit <- NULL
@@ -180,20 +181,47 @@ pso_fn_stretching <- function(
       stagnate <- stagnate + 1
     }
 
-    if(control$fn_stretching && stagnate>0.1*control$maxiter){
+    if(control$fn_stretching && stagnate>(0.1*control$maxiter) && i < (0.8*control$maxiter)){
+      #break()
       fn1 <- function(pos){
         res <- fn(pos)
-        G <- res + 10^4/2 * sqrt(sum((pos - p_g)^2)) * (sign(res - p_g_fit) + 1)
-        H <- G + 0.5 * (sign(res - p_g_fit) + 1)/(tanh(10^-10 * (G - p_g_fit)))
+        G <- res + 10^4/2 * sqrt(sum((pos - fn1_p_g)^2)) * (sign(res - fn1_p_g_fit) + 1)
+        H <- G + 0.5 * (sign(res - fn1_p_g_fit) + 1)/(tanh(10^(-10) * (G - fn1_p_g_fit)))
         return(H)
       }
+      fn1_p_g <- p_g
+      fn1_p_g_fit <- p_g_fit
+
       stagnate <- 0
+
+
+      # X <- mrunif(
+      #   nr = length(par), nc=control$s, lower=lower, upper=upper
+      # )
+      # V <- mrunif(
+      #   nr = length(par), nc=control$s,
+      #   lower=-(upper-lower), upper=(upper-lower)
+      # )/10
+
+
+      # P_fit <- apply(P, 2, fn1)
+      #
+      # save_p_g <- p_g
+      # save_p_g_fit <- p_g_fit
+      # p_g <- P[, which.min(P_fit)]
+      # p_g_fit <- min(P_fit)
+
     }
 
     if(control$save_fit){
-      trace_fit <- rbind(trace_fit, data.frame("iter"=i, "mean_fit" = mean(P_fit), "best_fit" = p_g_fit))
+      trace_fit <- rbind(trace_fit, data.frame("iter"=i, "mean_fit" = mean(P_fit), "best_fit" = p_g_fit ))
     }
   }
+
+  # if(save_p_g_fit < p_g_fit){
+  #   p_g_fit <- save_p_g_fit
+  #   p_g <- save_p_g
+  # }
 
   res <- list(
     "solution" = p_g,
