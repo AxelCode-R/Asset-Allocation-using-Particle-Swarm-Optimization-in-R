@@ -181,8 +181,8 @@ pso_fn_stretching <- function(
       stagnate <- stagnate + 1
     }
 
-    if(control$fn_stretching && stagnate>(0.1*control$maxiter) && i < (0.8*control$maxiter)){
-      #break()
+    if(control$fn_stretching && stagnate>10 && i < (control$maxiter-20)){
+
       fn1 <- function(pos){
         res <- fn(pos)
         G <- res + 10^4/2 * sqrt(sum((pos - fn1_p_g)^2)) * (sign(res - fn1_p_g_fit) + 1)
@@ -191,6 +191,8 @@ pso_fn_stretching <- function(
       }
       fn1_p_g <- p_g
       fn1_p_g_fit <- p_g_fit
+
+      P_fit <- apply(P, 2, fn1)
 
       stagnate <- 0
 
@@ -233,6 +235,135 @@ pso_fn_stretching <- function(
   return(res)
 }
 
+# pso_fn_stretching2 <- function(
+#     par,
+#     fn,
+#     lower,
+#     upper,
+#     control = list()
+# ){
+#
+#   # use default control values if not set
+#   control_ = list(
+#     s = 10, # swarm size
+#     c.p = 0.5, # inherit best
+#     c.g = 0.5, # global best
+#     maxiter = 200, # iterations
+#     w0 = 1.2, # starting inertia weight
+#     wN = 0, # ending inertia weight
+#     save_fit = F, # save more information
+#     fn_stretching = F
+#   )
+#   control <- c(control, control_[!names(control_) %in% names(control)])
+#
+#   fn1 <- function(pos){fn(pos)}
+#
+#   # init data-structure
+#   X <- mrunif(
+#     nr = length(par), nc=control$s, lower=lower, upper=upper
+#   )
+#   if(all(!is.na(par))){
+#     X[, 1] <- par
+#   }
+#   X_fit <- apply(X, 2, fn1)
+#   V <- mrunif(
+#     nr = length(par), nc=control$s,
+#     lower=-(upper-lower), upper=(upper-lower)
+#   )/10
+#   P <- X
+#   P_fit <- X_fit
+#   p_g <- P[, which.min(P_fit)]
+#   p_g_fit <- min(P_fit)
+#   save_p_g <- p_g
+#   save_p_g_fit <- p_g_fit
+#
+#   stagnate <- 0
+#   trace_fit <- NULL
+#   for(i in 1:control$maxiter){
+#
+#     # move particles
+#     V <-
+#       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
+#       control$c.p * runif(length(par)) * (P-X) +
+#       control$c.g * runif(length(par)) * (p_g-X)
+#     X <- X + V
+#
+#     # set velocity to zeros if not in valid space
+#     V[X > upper] <- 0
+#     V[X < lower] <- 0
+#
+#     # move into valid space
+#     X[X > upper] <- upper
+#     X[X < lower] <- lower
+#
+#     # evaluate objective function
+#     X_fit <- apply(X, 2, fn1)
+#
+#     # save new previews best
+#     P[, P_fit > X_fit] <- X[, P_fit > X_fit]
+#     P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+#
+#     # save new global best
+#     if(any(P_fit < p_g_fit)){
+#       p_g <- P[, which.min(P_fit)]
+#       p_g_fit <- min(P_fit)
+#     }else{
+#       stagnate <- stagnate + 1
+#     }
+#
+#     if(control$fn_stretching && stagnate>(0.20*control$maxiter) && i < (0.85*control$maxiter)){
+#       #break()
+#       fn1 <- function(pos){
+#         res <- fn(pos)
+#         G <- res + 10^4/2 * sqrt(sum((pos - fn1_p_g)^2))/length(pos) * (sign(res - fn1_p_g_fit) + 1)
+#         H <- G + 0.5 * (sign(res - fn1_p_g_fit) + 1)/(tanh(10^(-10) * (G - fn1_p_g_fit)))
+#         return(H)
+#       }
+#       fn1_p_g <- p_g
+#       fn1_p_g_fit <- p_g_fit
+#
+#       #P_fit <- apply(P, 2, fn1)
+#
+#       stagnate <- 0
+#
+#
+#       # X <- mrunif(
+#       #   nr = length(par), nc=control$s, lower=lower, upper=upper
+#       # )
+#       # V <- mrunif(
+#       #   nr = length(par), nc=control$s,
+#       #   lower=-(upper-lower), upper=(upper-lower)
+#       # )/10
+#
+#
+#       P_fit <- apply(P, 2, fn1)
+#
+#       save_p_g <- p_g
+#       save_p_g_fit <- p_g_fit
+#       p_g <- P[, which.min(P_fit)]
+#       p_g_fit <- min(P_fit)
+#
+#     }
+#
+#     if(control$save_fit){
+#       trace_fit <- rbind(trace_fit, data.frame("iter"=i, "mean_fit" = mean(P_fit), "best_fit" = min(p_g_fit, save_p_g_fit) ))
+#     }
+#   }
+#
+#   if(save_p_g_fit < p_g_fit){
+#     p_g_fit <- save_p_g_fit
+#     p_g <- save_p_g
+#   }
+#
+#   res <- list(
+#     "solution" = p_g,
+#     "fitness" = p_g_fit
+#   )
+#   if(control$save_fit){
+#     res$trace_fit <- trace_fit
+#   }
+#   return(res)
+# }
 
 
 

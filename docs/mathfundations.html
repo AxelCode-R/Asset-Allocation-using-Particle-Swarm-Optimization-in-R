@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-02" />
+<meta name="date" content="2022-10-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -240,8 +240,16 @@ div.csl-indent {
 <li class="chapter" data-level="8" data-path="pso-variations.html"><a href="pso-variations.html"><i class="fa fa-check"></i><b>8</b> PSO Variations</a>
 <ul>
 <li class="chapter" data-level="8.0.1" data-path="pso-variations.html"><a href="pso-variations.html#testproblem-discrete-itp-mste"><i class="fa fa-check"></i><b>8.0.1</b> Testproblem: Discrete ITP-MSTE</a></li>
-<li class="chapter" data-level="8.1" data-path="pso-variations.html"><a href="pso-variations.html#function-stretching"><i class="fa fa-check"></i><b>8.1</b> Function Stretching</a></li>
-<li class="chapter" data-level="8.2" data-path="pso-variations.html"><a href="pso-variations.html#lokal-pso"><i class="fa fa-check"></i><b>8.2</b> Lokal PSO</a></li>
+<li class="chapter" data-level="8.1" data-path="pso-variations.html"><a href="pso-variations.html#function-stretching"><i class="fa fa-check"></i><b>8.1</b> Function Stretching</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation"><i class="fa fa-check"></i><b>8.1.1</b> Implementation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="pso-variations.html"><a href="pso-variations.html#test-pso-fns"><i class="fa fa-check"></i><b>8.1.2</b> Test: <code>PSO-fnS</code></a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="pso-variations.html"><a href="pso-variations.html#local-pso"><i class="fa fa-check"></i><b>8.2</b> Local PSO</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation-1"><i class="fa fa-check"></i><b>8.2.1</b> Implementation</a></li>
+<li class="chapter" data-level="8.2.2" data-path="pso-variations.html"><a href="pso-variations.html#test-pso-local"><i class="fa fa-check"></i><b>8.2.2</b> Test: <code>PSO-local</code></a></li>
+</ul></li>
 <li class="chapter" data-level="8.3" data-path="pso-variations.html"><a href="pso-variations.html#preserving-feasibility"><i class="fa fa-check"></i><b>8.3</b> Preserving Feasibility</a></li>
 <li class="chapter" data-level="8.4" data-path="pso-variations.html"><a href="pso-variations.html#self-adaptive-velocity"><i class="fa fa-check"></i><b>8.4</b> Self-Adaptive Velocity</a></li>
 <li class="chapter" data-level="8.5" data-path="pso-variations.html"><a href="pso-variations.html#test-local-and-preserving-feasibility"><i class="fa fa-check"></i><b>8.5</b> Test Local and Preserving Feasibility</a></li>
@@ -284,11 +292,11 @@ div.csl-indent {
 <img src="Master_Thesis_files/figure-html/operators-1.png" width="672" />
 To understand the listed operators more deeply, the following examples visualize the resulting dimensions and should provide insights into the use of such operators.</p>
 <p>Matrix-Product:
-<span class="math display">\[\mathcal{R}^{x \times y} \times \mathcal{R}^{y \times z} = \mathcal{R}^{x \times z} \]</span>
+<span class="math display">\[\mathbb{R}^{x \times y} \times \mathbb{R}^{y \times z} = \mathbb{R}^{x \times z} \]</span>
 and for a vector
-<span class="math display">\[v \in \mathcal{R}^{N \times 1}: \ \ \mathcal{R}^{1 \times N} \times \mathcal{R}^{N \times 1} = v^T \times v = \sum v_i^2 = \text{scalar}\]</span>
+<span class="math display">\[v \in \mathbb{R}^{N \times 1}: \ \ \mathbb{R}^{1 \times N} \times \mathbb{R}^{N \times 1} = v^T \times v = \sum v_i^2 = \text{scalar}\]</span>
 Outer-Product:
-<span class="math display">\[\mathcal{R}^{x \times 1} \otimes \mathcal{R}^{1 \times x} = \mathcal{R}^{x \times x} \]</span>
+<span class="math display">\[\mathbb{R}^{x \times 1} \otimes \mathbb{R}^{1 \times x} = \mathbb{R}^{x \times x} \]</span>
 Scalar or element-wise Matrix multiplication:
 <span class="math display">\[R^{x \times y} \cdot R^{x \times y} = \begin{bmatrix}r_{11}^2 &amp;\cdots  &amp; r_{1y}^2 \\ \vdots &amp; \ddots &amp; \vdots  \\ r_{x1}^2 &amp; \cdots &amp; r_{xy}^2 \end{bmatrix}\]</span></p>
 </div>
@@ -336,7 +344,7 @@ w =
     w_{N}  
 \end{bmatrix}
 \]</span></p>
-<p>In this thesis, each return is simplified as being normally distributed with <span class="math inline">\(R_i = \mathcal{N}(\mu_i, \sigma_i^2)\)</span>. As a result, linear combinations of normally distributed random variables are jointly normally distributed and have a mean, variance, and covariance that can be used to fully describe them.</p>
+<p>In this thesis, each return is simplified as being normally distributed with <span class="math inline">\(R_i = \mathbb{N}(\mu_i, \sigma_i^2)\)</span>. As a result, linear combinations of normally distributed random variables are jointly normally distributed and have a mean, variance, and covariance that can be used to fully describe them.</p>
 <div id="expected-returns" class="section level3 hasAnchor" number="3.4.1">
 <h3><span class="header-section-number">3.4.1</span> Expected Returns<a href="mathfundations.html#expected-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The following formula can be used to get the expected returns of a vector with normally distributed random variables <span class="math inline">\(R \in \mathbb{R}^{1\times N}\)</span>:

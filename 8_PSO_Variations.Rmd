@@ -174,41 +174,70 @@ reactable(
 
 
 ## Function Stretching
-A PSO often gets stuck in local minimas, that means if the global best position is a local minima with a neighborhood around it that contains only higher fitnesses, it's hard for the PSO to escape and find the global minima. Function stretching tried to accomplish that the PSO can escape from such local minimas, by transforming the fitness function in a manner that 
-[@PaVr2002]
-(Recent_approaches_to_global_optimization_problems_.pdf)
+PSO often gets stuck in local minimas, that means if the current global best position is a local minima with a larger neighborhood around it containing higher fitness, it's hard for the PSO to escape and find the global minima. Function stretching tries to accomplish that the PSO can escape from such local minimas, by transforming the fitness function in a manner that is described in [@PaVr2002]. It states that after a local minima is found a two stage transformation proposed by Vrahatis 1996 can be used to stretch the original function in a way that the detected local minima transforms into a maxima, but any position with less fitness will stay unchanged. The two stages of the transformation with a detected local minima $\bar{x}$ are:
+$$
+  G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
+$$
+and
+$$
+  H(x) = G(x) + \gamma_2 \cdot \frac{\text{sign}\biggl(f(x)-f(\bar{x})\biggr)+1}{\text{tanh}\biggl( \mu \cdot (G(x)-G(\bar{x})) \biggr)}
+$$
+The function $G(\bar{x})$ can be simplified to $f(\bar{x})$ and the $\text{sign}()$ function is defined as follows:
+$$
+  \text{sign}(x) = 
+  \begin{cases}
+    1, & \text{if}\ \ x > 0\\
+    0, & \text{if}\ \ x = 0\\
+    -1, & \text{if}\ \ x < 0
+  \end{cases}
+$$
+The source suggests to choose the following parameter values as default:
+\begin{align*}
+  \gamma_1 &= 5000 \\
+  \gamma_2 &= 0.5 \\
+  \mu &= 10^{-10}
+\end{align*}
 
+To understand the transformation more deeply, it's used to stretch a simple function in $\mathbb{R}^1$, that is defined as:
 ```{r}
 fn <- function(pos){
-  cos(pos)+1/10 * pos
+  cos(pos) + 1/10 * pos
 }
-
+```
+and the domain of definition is chosen to be $x \in [-20, 20]$. Suppose the PSO gets stuck in the local minima located at $\bar{x} = \pi - \text{arcsin}(\frac{1}{10})$. The initial function and the transformed function is plotted in the chart below, respectively:
+```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 fn1 <- function(pos, pos_best, pos_best_fit){
   res <- fn(pos)
-  G <- res + 10^4/2 * sqrt(sum((pos - pos_best)^2))/length(pos) * (sign(res - pos_best_fit) + 1)
+  G <- res + 5000 * sqrt(sum((pos - pos_best)^2))/length(pos) * (sign(res - pos_best_fit) + 1)
   H <- G + 0.5 * (sign(res - pos_best_fit) + 1)/(tanh(10^(-10) * (G - pos_best_fit)))
   return(H)
 }
 
-X <- seq(-10, 10, 0.001)
+X <- seq(-20, 20, 0.001)
 x_best <- pi-asin(1/10)
 x_best_fit <- fn(x_best)
 
-
-# plot_ly() %>% 
-#   add_trace(x=X, y=sapply(X, fn), type="scatter", mode="lines", name="fn") %>% 
-#   add_trace(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched") %>% 
-#   layout(yaxis=list(range=c(min(sapply(X, fn)), max(sapply(X, fn))*30)))
-
-
 p1 <- plot_ly(x=X, y=sapply(X, fn), type="scatter", mode="lines", name="fn")
-p2 <- plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched") %>% 
+p2 <- plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched", line=list(color="orange")) %>% 
   layout(yaxis=list(range=c(-2, 20)*10^5))
 
-subplot(p1, p2, shareY=T, nrows=2)
-
-
+subplot(p1, p2, shareY=T, nrows=2) %>% 
+  html_save(., vheight=700, vwidth=800)
 ```
+It can be seen that the fitness around the local minima $\bar{x}$ are stretched upwards, which makes it much easier for the PSO to walk the hill downwards and fall into new minimas with lower fitness. All domains with lower fitness stay unchanged, which can be seen in the zoomed version of the lower chart from above:
+```{r, echo=F}
+plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched", line=list(color="orange")) %>% 
+  add_trace(x=X, y=rep(fn(pi-asin(1/10)), length(X)), type="scatter", mode="lines", name="local_minima", line=list(dash="dot", color="grey")) %>% 
+  layout(yaxis=list(range=c(1.1*min(sapply(X, fn)), 1.1*max(sapply(X, fn))))) %>% 
+  html_save(., vheight=350, vwidth=800)
+```
+
+### Implementation
+It is not possible to know if the PSO is stuck in a local minima so a stagnation value was added that increases by one, if the global best particle do not change. After ten iterations without a change, a local minima is supposed and the transformation of the objective function takes place. Afterwards all personal best fitness have to be reevaluated, to work with the evaluated space and the stagnation value is set to zero. To prevent a transformation closely at the end of all iterations, the current iteration needs to be below maximal iterations minus twenty, to enable the transformation.
+
+
+### Test PSO with Function Stretching
+The PSO with function stretching is called `PSO-fnS` and is evaluated on the test problem with $\gamma_1 = 5000$, $\gamma_2 = 0.5$ and $\mu = 10^{-10}$:
 
 ```{r variants3, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
@@ -311,7 +340,7 @@ DissertationHelwig (1).pdf
 
 
 
-## Lokal PSO
+## Local PSO
 A local PSO is a more generic case of the global PSO. It's only difference lies in the selection of the global best particle, by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$ and the global best particle in it's neighborhood is named local best particle of $x_i$. If the neighborhood is chosen big enough to contain all particles, it matches with the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ stated in [@Enge2013] would be:
 
 $$
@@ -326,7 +355,11 @@ To visualize this, the following image defines the neighborhoods $N(x_4, 4)$ and
 ![Visualize Neighborhoods](img/PSO_local_chart.jpg)
 In the later case, it can be seen, that overflowing boundary's will continue on the opposite site of the arranged particles.
 
-The new PSO is called PSO-local and is evaluated on the test problem with $k=20$:
+### Implementation
+
+
+### Test Local PSO
+The PSO with particle neighborhoods is called `PSO-local` and is evaluated on the test problem with $k=20$:
 
 ```{r variants5, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
@@ -351,8 +384,8 @@ for(i in 1:100){
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
         maxiter = 200, # iterations
-        w0 = 1.2, # starting inertia weight
-        wN = 0, # ending inertia weight
+        w0 = 1, # starting inertia weight
+        wN = 0.4, # ending inertia weight
         save_fit = T,
         k=20
       )
