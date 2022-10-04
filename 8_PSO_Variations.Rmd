@@ -324,21 +324,6 @@ reactable(
 
 
 
-10.1.1.301.4441.pdf
-function stretching
-
-
-Boudt-Wan2020_Article_TheEffectOfVelocitySparsityOnT
-SV-PSO CV-PSO
-oh ist nur binary PSO
-
-
-pso_cardinality_constrained.pdf
-
-
-DissertationHelwig (1).pdf
-
-
 
 ## Local PSO
 A local PSO is a more generic case of the global PSO. It's only difference lies in the selection of the global best particle, by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$ and the global best particle in it's neighborhood is named local best particle of $x_i$. If the neighborhood is chosen big enough to contain all particles, it matches with the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ stated in [@Enge2013] would be:
@@ -356,7 +341,7 @@ To visualize this, the following image defines the neighborhoods $N(x_4, 4)$ and
 In the later case, it can be seen, that overflowing boundary's will continue on the opposite site of the arranged particles.
 
 ### Implementation
-
+First the neighbors for each particle are saved in a suited data structure bevor running the main part of the PSO. The local version has no global best overall, instead it needs to calculate the global best for each particles neighborhood in every step.
 
 ### Test Local PSO
 The PSO with particle neighborhoods is called `PSO-local` and is evaluated on the test problem with $k=20$:
