@@ -104,7 +104,7 @@ calc_const <- function(x){
 set.seed(0)
 
 df_SPSO <- NULL
-for(i in 1:100){
+for(i in 1:50){
   res_SPSO_time <- system.time({
     res_SPSO <- pso(
       par = rep(0, ncol(pool_data$returns)),
@@ -120,7 +120,7 @@ for(i in 1:100){
         s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 200, # iterations
+        maxiter = 400, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T # save more information
@@ -244,7 +244,7 @@ set.seed(0)
 # R/PSO_functions.R : pso_fn_stretching()
 
 df <- NULL
-for(i in 1:100){
+for(i in 1:50){
   res_pso_fns_time <- system.time({
     res_pso_fns <- pso_fn_stretching(
       par = rep(0, ncol(pool_data$returns)),
@@ -260,7 +260,7 @@ for(i in 1:100){
         s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 200, # iterations
+        maxiter = 400, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         fn_stretching = T,
@@ -351,7 +351,7 @@ set.seed(0)
 # R/PSO_functions.R : pso_local()
 
 df <- NULL
-for(i in 1:100){
+for(i in 1:50){
 
   res_pso_local_time <- system.time({
     res_pso_local <- pso_local(
@@ -368,7 +368,7 @@ for(i in 1:100){
         s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 200, # iterations
+        maxiter = 400, # iterations
         w0 = 1, # starting inertia weight
         wN = 0.4, # ending inertia weight
         save_fit = T,
@@ -439,6 +439,83 @@ SCI2002Constrained.pdf
 
 ## Self-Adaptive Velocity
 
+```{r variants3, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+set.seed(0)
+# R/PSO_functions.R : pso_fn_stretching()
+
+df <- NULL
+for(i in 1:50){
+  res_pso_sAvel_time <- system.time({
+    res_pso_sAvel <- pso_self_adaptive_velocity(
+      par = rep(0, ncol(pool_data$returns)),
+      fn = function(x){
+        x <- as.vector(round(x*nav/prices)*prices/nav)
+        fitness <- calc_fit(x)
+        constraints <- calc_const(x)
+        return(fitness+10*constraints)
+      },
+      lower = 0,
+      upper = 0.1,
+      control = list(
+        s = 50, # swarm size
+        maxiter = 400, # iterations
+        save_fit = T
+      )
+    )
+  })
+  
+  df <- rbind(df, 
+    data.frame(
+      "run" = i,
+      suppressWarnings(data.frame(
+        "type" = "PSO-sAvel", "time"=res_pso_sAvel_time[3], "const_break"=calc_const(res_pso_sAvel$solution), res_pso_sAvel$fit_data %>% select(iter, mean_fit=mean, best_fit=best)
+      ))
+    )
+  )
+}
+
+
+
+df_res <- rbind(df_SPSO, df) %>% 
+  #mutate(best_fit = best_fit +1) %>% 
+  group_by(iter, type) %>% 
+  summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
+  ungroup()
+
+
+plot_ly() %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-sAvel"), x=~iter, y=~best_fit_median, name = "PSO-sAvel", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-sAvel"), x=~iter, y=~best_fit_q1, name = "PSO-sAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-sAvel"), x=~iter, y=~best_fit_q3, name = "PSO-sAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>20,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>20,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  html_save()
+  
+
+```
+
+The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+
+```{r variants4, echo=F}
+reactable(
+  df_res[df_res$iter==max(df_res$iter),],
+  columns = list(
+    iter = colDef(width=60),
+    type = colDef(width=90),
+    time_mean = colDef(format = colFormat(digits=2), width=90),
+    const_break_mean = colDef(format = colFormat(digits=4), width=150),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
+    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+  ),
+  compact = T,
+  rownames = F
+) %>% 
+  html_save(., vwidth = 1000)
+```
 
 
 

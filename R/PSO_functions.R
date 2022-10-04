@@ -482,11 +482,7 @@ pso_self_adaptive_velocity <- function(
   # use default control values if not set
   control_ = list(
     s = 10, # swarm size
-    c.p = 0.5, # inherit best
-    c.g = 0.5, # global best
     maxiter = 200, # iterations
-    w0 = 1.2, # starting inertia weight
-    wN = 0, # ending inertia weight
     save_traces = F, # save more information
     save_fit = F,
     Sp = 0.8, # selection probability of velocity strategy
@@ -569,6 +565,8 @@ pso_self_adaptive_velocity <- function(
     }
 
 
+
+
     # # set velocity to zeros if not in valid space
     # V[X > upper] <- 0#-V[X > upper]
     # V[X < lower] <- 0#-V[X < lower]
@@ -579,6 +577,22 @@ pso_self_adaptive_velocity <- function(
 
     # evaluate objective function
     X_fit <- apply(X, 2, fn)
+
+    max_fit <- max(X_fit)
+    WG <- abs(X_fit-max_fit)/sum(abs(X_fit-max_fit))
+    ac_params$w <- rcauchy(length(par), sum(WG*ac_params$w), 0.2)
+    ac_params$c.p <- rcauchy(length(par), sum(WG*ac_params$c.p), 0.3)
+    ac_params$c.g <- rcauchy(length(par), sum(WG*ac_params$c.g), 0.3)
+
+    ac_params$w[ac_params$w > 1] <- runif(1)
+    ac_params$w[ac_params$w < 0] <- runif(1)/10
+
+    ac_params$c.p[ac_params$c.p > 4] <- runif(1)*4
+    ac_params$c.p[ac_params$c.p < 0] <- runif(1)
+
+    ac_params$c.g[ac_params$c.g > 4] <- runif(1)*4
+    ac_params$c.g[ac_params$c.g < 0] <- runif(1)
+
 
     # save new previews best
     P[, P_fit > X_fit] <- X[, P_fit > X_fit]
