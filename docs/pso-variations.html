@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-03" />
+<meta name="date" content="2022-10-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -243,12 +243,12 @@ div.csl-indent {
 <li class="chapter" data-level="8.1" data-path="pso-variations.html"><a href="pso-variations.html#function-stretching"><i class="fa fa-check"></i><b>8.1</b> Function Stretching</a>
 <ul>
 <li class="chapter" data-level="8.1.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation"><i class="fa fa-check"></i><b>8.1.1</b> Implementation</a></li>
-<li class="chapter" data-level="8.1.2" data-path="pso-variations.html"><a href="pso-variations.html#test-pso-fns"><i class="fa fa-check"></i><b>8.1.2</b> Test: <code>PSO-fnS</code></a></li>
+<li class="chapter" data-level="8.1.2" data-path="pso-variations.html"><a href="pso-variations.html#test-pso-with-function-stretching"><i class="fa fa-check"></i><b>8.1.2</b> Test PSO with Function Stretching</a></li>
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="pso-variations.html"><a href="pso-variations.html#local-pso"><i class="fa fa-check"></i><b>8.2</b> Local PSO</a>
 <ul>
 <li class="chapter" data-level="8.2.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation-1"><i class="fa fa-check"></i><b>8.2.1</b> Implementation</a></li>
-<li class="chapter" data-level="8.2.2" data-path="pso-variations.html"><a href="pso-variations.html#test-pso-local"><i class="fa fa-check"></i><b>8.2.2</b> Test: <code>PSO-local</code></a></li>
+<li class="chapter" data-level="8.2.2" data-path="pso-variations.html"><a href="pso-variations.html#test-local-pso"><i class="fa fa-check"></i><b>8.2.2</b> Test Local PSO</a></li>
 </ul></li>
 <li class="chapter" data-level="8.3" data-path="pso-variations.html"><a href="pso-variations.html#preserving-feasibility"><i class="fa fa-check"></i><b>8.3</b> Preserving Feasibility</a></li>
 <li class="chapter" data-level="8.4" data-path="pso-variations.html"><a href="pso-variations.html#self-adaptive-velocity"><i class="fa fa-check"></i><b>8.4</b> Self-Adaptive Velocity</a></li>
@@ -380,7 +380,7 @@ div.csl-indent {
 <span id="cb33-88"><a href="pso-variations.html#cb33-88" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb33-89"><a href="pso-variations.html#cb33-89" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-90"><a href="pso-variations.html#cb33-90" aria-hidden="true" tabindex="-1"></a>df_SPSO <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb33-91"><a href="pso-variations.html#cb33-91" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
+<span id="cb33-91"><a href="pso-variations.html#cb33-91" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>){</span>
 <span id="cb33-92"><a href="pso-variations.html#cb33-92" aria-hidden="true" tabindex="-1"></a>  res_SPSO_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb33-93"><a href="pso-variations.html#cb33-93" aria-hidden="true" tabindex="-1"></a>    res_SPSO <span class="ot">&lt;-</span> <span class="fu">pso</span>(</span>
 <span id="cb33-94"><a href="pso-variations.html#cb33-94" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
@@ -396,7 +396,7 @@ div.csl-indent {
 <span id="cb33-104"><a href="pso-variations.html#cb33-104" aria-hidden="true" tabindex="-1"></a>        <span class="at">s =</span> <span class="dv">50</span>, <span class="co"># swarm size</span></span>
 <span id="cb33-105"><a href="pso-variations.html#cb33-105" aria-hidden="true" tabindex="-1"></a>        <span class="at">c.p =</span> <span class="fl">0.5</span>, <span class="co"># inherit best</span></span>
 <span id="cb33-106"><a href="pso-variations.html#cb33-106" aria-hidden="true" tabindex="-1"></a>        <span class="at">c.g =</span> <span class="fl">0.5</span>, <span class="co"># global best</span></span>
-<span id="cb33-107"><a href="pso-variations.html#cb33-107" aria-hidden="true" tabindex="-1"></a>        <span class="at">maxiter =</span> <span class="dv">200</span>, <span class="co"># iterations</span></span>
+<span id="cb33-107"><a href="pso-variations.html#cb33-107" aria-hidden="true" tabindex="-1"></a>        <span class="at">maxiter =</span> <span class="dv">400</span>, <span class="co"># iterations</span></span>
 <span id="cb33-108"><a href="pso-variations.html#cb33-108" aria-hidden="true" tabindex="-1"></a>        <span class="at">w0 =</span> <span class="fl">1.2</span>, <span class="co"># starting inertia weight</span></span>
 <span id="cb33-109"><a href="pso-variations.html#cb33-109" aria-hidden="true" tabindex="-1"></a>        <span class="at">wN =</span> <span class="dv">0</span>, <span class="co"># ending inertia weight</span></span>
 <span id="cb33-110"><a href="pso-variations.html#cb33-110" aria-hidden="true" tabindex="-1"></a>        <span class="at">save_fit =</span> T <span class="co"># save more information</span></span>
@@ -483,14 +483,14 @@ It can be seen that the fitness around the local minima <span class="math inline
 <h3><span class="header-section-number">8.1.1</span> Implementation<a href="pso-variations.html#implementation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>It is not possible to know if the PSO is stuck in a local minima so a stagnation value was added that increases by one, if the global best particle do not change. After ten iterations without a change, a local minima is supposed and the transformation of the objective function takes place. Afterwards all personal best fitness have to be reevaluated, to work with the evaluated space and the stagnation value is set to zero. To prevent a transformation closely at the end of all iterations, the current iteration needs to be below maximal iterations minus twenty, to enable the transformation.</p>
 </div>
-<div id="test-pso-fns" class="section level3 hasAnchor" number="8.1.2">
-<h3><span class="header-section-number">8.1.2</span> Test: <code>PSO-fnS</code><a href="pso-variations.html#test-pso-fns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="test-pso-with-function-stretching" class="section level3 hasAnchor" number="8.1.2">
+<h3><span class="header-section-number">8.1.2</span> Test PSO with Function Stretching<a href="pso-variations.html#test-pso-with-function-stretching" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The PSO with function stretching is called <code>PSO-fnS</code> and is evaluated on the test problem with <span class="math inline">\(\gamma_1 = 5000\)</span>, <span class="math inline">\(\gamma_2 = 0.5\)</span> and <span class="math inline">\(\mu = 10^{-10}\)</span>:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb36-1"><a href="pso-variations.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb36-2"><a href="pso-variations.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># R/PSO_functions.R : pso_fn_stretching()</span></span>
 <span id="cb36-3"><a href="pso-variations.html#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-4"><a href="pso-variations.html#cb36-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb36-5"><a href="pso-variations.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
+<span id="cb36-5"><a href="pso-variations.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>){</span>
 <span id="cb36-6"><a href="pso-variations.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  res_pso_fns_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb36-7"><a href="pso-variations.html#cb36-7" aria-hidden="true" tabindex="-1"></a>    res_pso_fns <span class="ot">&lt;-</span> <span class="fu">pso_fn_stretching</span>(</span>
 <span id="cb36-8"><a href="pso-variations.html#cb36-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
@@ -506,7 +506,7 @@ It can be seen that the fitness around the local minima <span class="math inline
 <span id="cb36-18"><a href="pso-variations.html#cb36-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">s =</span> <span class="dv">50</span>, <span class="co"># swarm size</span></span>
 <span id="cb36-19"><a href="pso-variations.html#cb36-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">c.p =</span> <span class="fl">0.5</span>, <span class="co"># inherit best</span></span>
 <span id="cb36-20"><a href="pso-variations.html#cb36-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">c.g =</span> <span class="fl">0.5</span>, <span class="co"># global best</span></span>
-<span id="cb36-21"><a href="pso-variations.html#cb36-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">maxiter =</span> <span class="dv">200</span>, <span class="co"># iterations</span></span>
+<span id="cb36-21"><a href="pso-variations.html#cb36-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">maxiter =</span> <span class="dv">400</span>, <span class="co"># iterations</span></span>
 <span id="cb36-22"><a href="pso-variations.html#cb36-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">w0 =</span> <span class="fl">1.2</span>, <span class="co"># starting inertia weight</span></span>
 <span id="cb36-23"><a href="pso-variations.html#cb36-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">wN =</span> <span class="dv">0</span>, <span class="co"># ending inertia weight</span></span>
 <span id="cb36-24"><a href="pso-variations.html#cb36-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">fn_stretching =</span> T,</span>
@@ -546,13 +546,6 @@ It can be seen that the fitness around the local minima <span class="math inline
 <p><img src="Master_Thesis_files/figure-html/variants3-1.png" width="672" /></p>
 <p>The aggregated statistics of the last iterations of all 100 runs can be found in the table below:</p>
 <p><img src="Master_Thesis_files/figure-html/variants4-1.png" width="672" /></p>
-<p>10.1.1.301.4441.pdf
-function stretching</p>
-<p>Boudt-Wan2020_Article_TheEffectOfVelocitySparsityOnT
-SV-PSO CV-PSO
-oh ist nur binary PSO</p>
-<p>pso_cardinality_constrained.pdf</p>
-<p>DissertationHelwig (1).pdf</p>
 </div>
 </div>
 <div id="local-pso" class="section level2 hasAnchor" number="8.2">
@@ -570,15 +563,16 @@ To visualize this, the following image defines the neighborhoods <span class="ma
 In the later case, it can be seen, that overflowing boundary’s will continue on the opposite site of the arranged particles.</p>
 <div id="implementation-1" class="section level3 hasAnchor" number="8.2.1">
 <h3><span class="header-section-number">8.2.1</span> Implementation<a href="pso-variations.html#implementation-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First the neighbors for each particle are saved in a suited data structure bevor running the main part of the PSO. The local version has no global best overall, instead it needs to calculate the global best for each particles neighborhood in every step.</p>
 </div>
-<div id="test-pso-local" class="section level3 hasAnchor" number="8.2.2">
-<h3><span class="header-section-number">8.2.2</span> Test: <code>PSO-local</code><a href="pso-variations.html#test-pso-local" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="test-local-pso" class="section level3 hasAnchor" number="8.2.2">
+<h3><span class="header-section-number">8.2.2</span> Test Local PSO<a href="pso-variations.html#test-local-pso" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The PSO with particle neighborhoods is called <code>PSO-local</code> and is evaluated on the test problem with <span class="math inline">\(k=20\)</span>:</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb37-1"><a href="pso-variations.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb37-2"><a href="pso-variations.html#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># R/PSO_functions.R : pso_local()</span></span>
 <span id="cb37-3"><a href="pso-variations.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-4"><a href="pso-variations.html#cb37-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb37-5"><a href="pso-variations.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
+<span id="cb37-5"><a href="pso-variations.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>){</span>
 <span id="cb37-6"><a href="pso-variations.html#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-7"><a href="pso-variations.html#cb37-7" aria-hidden="true" tabindex="-1"></a>  res_pso_local_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb37-8"><a href="pso-variations.html#cb37-8" aria-hidden="true" tabindex="-1"></a>    res_pso_local <span class="ot">&lt;-</span> <span class="fu">pso_local</span>(</span>
@@ -595,7 +589,7 @@ In the later case, it can be seen, that overflowing boundary’s will continue o
 <span id="cb37-19"><a href="pso-variations.html#cb37-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">s =</span> <span class="dv">50</span>, <span class="co"># swarm size</span></span>
 <span id="cb37-20"><a href="pso-variations.html#cb37-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">c.p =</span> <span class="fl">0.5</span>, <span class="co"># inherit best</span></span>
 <span id="cb37-21"><a href="pso-variations.html#cb37-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">c.g =</span> <span class="fl">0.5</span>, <span class="co"># global best</span></span>
-<span id="cb37-22"><a href="pso-variations.html#cb37-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">maxiter =</span> <span class="dv">200</span>, <span class="co"># iterations</span></span>
+<span id="cb37-22"><a href="pso-variations.html#cb37-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">maxiter =</span> <span class="dv">400</span>, <span class="co"># iterations</span></span>
 <span id="cb37-23"><a href="pso-variations.html#cb37-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">w0 =</span> <span class="dv">1</span>, <span class="co"># starting inertia weight</span></span>
 <span id="cb37-24"><a href="pso-variations.html#cb37-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">wN =</span> <span class="fl">0.4</span>, <span class="co"># ending inertia weight</span></span>
 <span id="cb37-25"><a href="pso-variations.html#cb37-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">save_fit =</span> T,</span>
@@ -644,6 +638,61 @@ In the later case, it can be seen, that overflowing boundary’s will continue o
 </div>
 <div id="self-adaptive-velocity" class="section level2 hasAnchor" number="8.4">
 <h2><span class="header-section-number">8.4</span> Self-Adaptive Velocity<a href="pso-variations.html#self-adaptive-velocity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb38-1"><a href="pso-variations.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
+<span id="cb38-2"><a href="pso-variations.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># R/PSO_functions.R : pso_fn_stretching()</span></span>
+<span id="cb38-3"><a href="pso-variations.html#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="pso-variations.html#cb38-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb38-5"><a href="pso-variations.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>){</span>
+<span id="cb38-6"><a href="pso-variations.html#cb38-6" aria-hidden="true" tabindex="-1"></a>  res_pso_sAvel_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
+<span id="cb38-7"><a href="pso-variations.html#cb38-7" aria-hidden="true" tabindex="-1"></a>    res_pso_sAvel <span class="ot">&lt;-</span> <span class="fu">pso_self_adaptive_velocity</span>(</span>
+<span id="cb38-8"><a href="pso-variations.html#cb38-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
+<span id="cb38-9"><a href="pso-variations.html#cb38-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
+<span id="cb38-10"><a href="pso-variations.html#cb38-10" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
+<span id="cb38-11"><a href="pso-variations.html#cb38-11" aria-hidden="true" tabindex="-1"></a>        fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>
+<span id="cb38-12"><a href="pso-variations.html#cb38-12" aria-hidden="true" tabindex="-1"></a>        constraints <span class="ot">&lt;-</span> <span class="fu">calc_const</span>(x)</span>
+<span id="cb38-13"><a href="pso-variations.html#cb38-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(fitness<span class="sc">+</span><span class="dv">10</span><span class="sc">*</span>constraints)</span>
+<span id="cb38-14"><a href="pso-variations.html#cb38-14" aria-hidden="true" tabindex="-1"></a>      },</span>
+<span id="cb38-15"><a href="pso-variations.html#cb38-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">lower =</span> <span class="dv">0</span>,</span>
+<span id="cb38-16"><a href="pso-variations.html#cb38-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">upper =</span> <span class="fl">0.1</span>,</span>
+<span id="cb38-17"><a href="pso-variations.html#cb38-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">control =</span> <span class="fu">list</span>(</span>
+<span id="cb38-18"><a href="pso-variations.html#cb38-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">s =</span> <span class="dv">50</span>, <span class="co"># swarm size</span></span>
+<span id="cb38-19"><a href="pso-variations.html#cb38-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">maxiter =</span> <span class="dv">400</span>, <span class="co"># iterations</span></span>
+<span id="cb38-20"><a href="pso-variations.html#cb38-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">save_fit =</span> T</span>
+<span id="cb38-21"><a href="pso-variations.html#cb38-21" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb38-22"><a href="pso-variations.html#cb38-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb38-23"><a href="pso-variations.html#cb38-23" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb38-24"><a href="pso-variations.html#cb38-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb38-25"><a href="pso-variations.html#cb38-25" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df, </span>
+<span id="cb38-26"><a href="pso-variations.html#cb38-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb38-27"><a href="pso-variations.html#cb38-27" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;run&quot;</span> <span class="ot">=</span> i,</span>
+<span id="cb38-28"><a href="pso-variations.html#cb38-28" aria-hidden="true" tabindex="-1"></a>      <span class="fu">suppressWarnings</span>(<span class="fu">data.frame</span>(</span>
+<span id="cb38-29"><a href="pso-variations.html#cb38-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;type&quot;</span> <span class="ot">=</span> <span class="st">&quot;PSO-sAvel&quot;</span>, <span class="st">&quot;time&quot;</span><span class="ot">=</span>res_pso_sAvel_time[<span class="dv">3</span>], <span class="st">&quot;const_break&quot;</span><span class="ot">=</span><span class="fu">calc_const</span>(res_pso_sAvel<span class="sc">$</span>solution), res_pso_sAvel<span class="sc">$</span>fit_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(iter, <span class="at">mean_fit=</span>mean, <span class="at">best_fit=</span>best)</span>
+<span id="cb38-30"><a href="pso-variations.html#cb38-30" aria-hidden="true" tabindex="-1"></a>      ))</span>
+<span id="cb38-31"><a href="pso-variations.html#cb38-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb38-32"><a href="pso-variations.html#cb38-32" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-33"><a href="pso-variations.html#cb38-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb38-34"><a href="pso-variations.html#cb38-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-35"><a href="pso-variations.html#cb38-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-36"><a href="pso-variations.html#cb38-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-37"><a href="pso-variations.html#cb38-37" aria-hidden="true" tabindex="-1"></a>df_res <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df_SPSO, df) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-38"><a href="pso-variations.html#cb38-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">#mutate(best_fit = best_fit +1) %&gt;% </span></span>
+<span id="cb38-39"><a href="pso-variations.html#cb38-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(iter, type) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-40"><a href="pso-variations.html#cb38-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">time_mean=</span><span class="fu">mean</span>(time), <span class="at">const_break_mean=</span><span class="fu">mean</span>(const_break), <span class="at">best_fit_q1 =</span> <span class="fu">quantile</span>(best_fit, <span class="fl">0.05</span>), <span class="at">best_fit_q3 =</span> <span class="fu">quantile</span>(best_fit, <span class="fl">0.95</span>), <span class="at">best_fit_mean =</span> <span class="fu">mean</span>(best_fit), <span class="at">best_fit_median =</span> <span class="fu">quantile</span>(best_fit, <span class="fl">0.5</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-41"><a href="pso-variations.html#cb38-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb38-42"><a href="pso-variations.html#cb38-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-43"><a href="pso-variations.html#cb38-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-44"><a href="pso-variations.html#cb38-44" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb38-45"><a href="pso-variations.html#cb38-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> df_res <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;PSO&quot;</span>), <span class="at">x=</span><span class="sc">~</span>iter, <span class="at">y=</span><span class="sc">~</span>best_fit_median, <span class="at">name =</span> <span class="st">&quot;PSO&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>, <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color=</span><span class="st">&quot;rgba(255, 51, 0, 1)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-46"><a href="pso-variations.html#cb38-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> df_res <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;PSO&quot;</span>), <span class="at">x=</span><span class="sc">~</span>iter, <span class="at">y=</span><span class="sc">~</span>best_fit_q1, <span class="at">name =</span> <span class="st">&quot;PSO_q1&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>, <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color=</span><span class="st">&quot;rgba(255, 51, 0, 0.4)&quot;</span>), <span class="at">showlegend=</span>F) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-47"><a href="pso-variations.html#cb38-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> df_res <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;PSO&quot;</span>), <span class="at">x=</span><span class="sc">~</span>iter, <span class="at">y=</span><span class="sc">~</span>best_fit_q3, <span class="at">name =</span> <span class="st">&quot;PSO_q3&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>, <span class="at">fill=</span><span class="st">&quot;tonexty&quot;</span>, <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color=</span><span class="st">&quot;rgba(255, 51, 0, 0.4)&quot;</span>), <span class="at">fillcolor =</span> <span class="st">&quot;rgba(255, 51, 0, 0.4)&quot;</span>, <span class="at">showlegend=</span>F) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-48"><a href="pso-variations.html#cb38-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> df_res <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;PSO-sAvel&quot;</span>), <span class="at">x=</span><span class="sc">~</span>iter, <span class="at">y=</span><span class="sc">~</span>best_fit_median, <span class="at">name =</span> <span class="st">&quot;PSO-sAvel&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>,<span class="at">line =</span> <span class="fu">list</span>(<span class="at">color=</span><span class="st">&quot;rgba(0, 102, 204, 1)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-49"><a href="pso-variations.html#cb38-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> df_res <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;PSO-sAvel&quot;</span>), <span class="at">x=</span><span class="sc">~</span>iter, <span class="at">y=</span><span class="sc">~</span>best_fit_q1, <span class="at">name =</span> <span class="st">&quot;PSO-sAvel_q1&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>, <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color=</span><span class="st">&quot;rgba(0, 102, 204, 0.3)&quot;</span>), <span class="at">showlegend=</span>F) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-50"><a href="pso-variations.html#cb38-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">data =</span> df_res <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;PSO-sAvel&quot;</span>), <span class="at">x=</span><span class="sc">~</span>iter, <span class="at">y=</span><span class="sc">~</span>best_fit_q3, <span class="at">name =</span> <span class="st">&quot;PSO-sAvel_q3&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>, <span class="at">fill=</span><span class="st">&quot;tonexty&quot;</span>, <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color=</span><span class="st">&quot;rgba(0, 102, 204, 0.3)&quot;</span>), <span class="at">fillcolor =</span> <span class="st">&quot;rgba(0, 102, 204, 0.3)&quot;</span>, <span class="at">showlegend=</span>F) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-51"><a href="pso-variations.html#cb38-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">20</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">-</span><span class="fl">0.001</span>,  <span class="fu">max</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">20</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">+</span><span class="fl">0.001</span>), <span class="at">title=</span><span class="st">&quot;best fitness&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-52"><a href="pso-variations.html#cb38-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
+<p><img src="Master_Thesis_files/figure-html/variants7-1.png" width="672" /></p>
+<p>The aggregated statistics of the last iterations of all 100 runs can be found in the table below:</p>
+<p><img src="Master_Thesis_files/figure-html/variants8-1.png" width="672" /></p>
 </div>
 <div id="test-local-and-preserving-feasibility" class="section level2 hasAnchor" number="8.5">
 <h2><span class="header-section-number">8.5</span> Test Local and Preserving Feasibility<a href="pso-variations.html#test-local-and-preserving-feasibility" class="anchor-section" aria-label="Anchor link to header"></a></h2>

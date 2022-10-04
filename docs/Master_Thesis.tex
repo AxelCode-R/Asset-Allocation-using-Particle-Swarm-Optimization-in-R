@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-03}
+\date{2022-10-04}
 
 \begin{document}
 \maketitle
@@ -1216,8 +1216,8 @@ It can be seen that the fitness around the local minima \(\bar{x}\) are stretche
 
 It is not possible to know if the PSO is stuck in a local minima so a stagnation value was added that increases by one, if the global best particle do not change. After ten iterations without a change, a local minima is supposed and the transformation of the objective function takes place. Afterwards all personal best fitness have to be reevaluated, to work with the evaluated space and the stagnation value is set to zero. To prevent a transformation closely at the end of all iterations, the current iteration needs to be below maximal iterations minus twenty, to enable the transformation.
 
-\hypertarget{test-pso-fns}{%
-\subsection{\texorpdfstring{Test: \texttt{PSO-fnS}}{Test: PSO-fnS}}\label{test-pso-fns}}
+\hypertarget{test-pso-with-function-stretching}{%
+\subsection{Test PSO with Function Stretching}\label{test-pso-with-function-stretching}}
 
 The PSO with function stretching is called \texttt{PSO-fnS} and is evaluated on the test problem with \(\gamma_1 = 5000\), \(\gamma_2 = 0.5\) and \(\mu = 10^{-10}\):
 
@@ -1226,17 +1226,6 @@ The PSO with function stretching is called \texttt{PSO-fnS} and is evaluated on 
 The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/variants4-1.png}
-
-10.1.1.301.4441.pdf
-function stretching
-
-Boudt-Wan2020\_Article\_TheEffectOfVelocitySparsityOnT
-SV-PSO CV-PSO
-oh ist nur binary PSO
-
-pso\_cardinality\_constrained.pdf
-
-DissertationHelwig (1).pdf
 
 \hypertarget{local-pso}{%
 \section{Local PSO}\label{local-pso}}
@@ -1258,8 +1247,10 @@ In the later case, it can be seen, that overflowing boundary's will continue on 
 \hypertarget{implementation-1}{%
 \subsection{Implementation}\label{implementation-1}}
 
-\hypertarget{test-pso-local}{%
-\subsection{\texorpdfstring{Test: \texttt{PSO-local}}{Test: PSO-local}}\label{test-pso-local}}
+First the neighbors for each particle are saved in a suited data structure bevor running the main part of the PSO. The local version has no global best overall, instead it needs to calculate the global best for each particles neighborhood in every step.
+
+\hypertarget{test-local-pso}{%
+\subsection{Test Local PSO}\label{test-local-pso}}
 
 The PSO with particle neighborhoods is called \texttt{PSO-local} and is evaluated on the test problem with \(k=20\):
 
@@ -1278,6 +1269,12 @@ SCI2002Constrained.pdf
 
 \hypertarget{self-adaptive-velocity}{%
 \section{Self-Adaptive Velocity}\label{self-adaptive-velocity}}
+
+\includegraphics{Master_Thesis_files/figure-latex/variants7-1.png}
+
+The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+
+\includegraphics{Master_Thesis_files/figure-latex/variants8-1.png}
 
 \hypertarget{test-local-and-preserving-feasibility}{%
 \section{Test Local and Preserving Feasibility}\label{test-local-and-preserving-feasibility}}

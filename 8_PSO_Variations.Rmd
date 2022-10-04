@@ -438,8 +438,10 @@ SCI2002Constrained.pdf
 
 
 ## Self-Adaptive Velocity
+A PSO approach with self-adaptive velocity, which tries to reduce hyper parameters, was analyzed in [@FaYa2014]. The self-adaptive velocity is enabled by having multiple velocity update schemes which will be used randomly. Additionally all hyper parameters are self-adaptive in a manner that each particle has its own coefficients $c.g$, $c.p$ and $w$, that change after each iteration dependent on inter alia the distance to the maximal fitness. The resulting PSO has no real hyper parameters that needs to be adjusted, which enables it to be used as a general purpose PSO. 
 
-```{r variants3, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+
+```{r variants7, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 # R/PSO_functions.R : pso_fn_stretching()
 
@@ -498,7 +500,7 @@ plot_ly() %>%
 
 The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
 
-```{r variants4, echo=F}
+```{r variants8, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   columns = list(
