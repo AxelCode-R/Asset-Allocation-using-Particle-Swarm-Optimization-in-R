@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-04}
+\date{2022-10-06}
 
 \begin{document}
 \maketitle
@@ -1270,6 +1270,99 @@ SCI2002Constrained.pdf
 \hypertarget{self-adaptive-velocity}{%
 \section{Self-Adaptive Velocity}\label{self-adaptive-velocity}}
 
+A PSO approach with self-adaptive velocity, which tries to reduce hyper parameters, was analyzed in \citep{FaYa2014}. The self-adaptive velocity is enabled by having multiple velocity update schemes which will be used randomly. Additionally all hyper parameters are self-adaptive in a manner that each particle has its own coefficients \(c_g\), \(c_p\) and \(w\), that change after each iteration dependent on inter alia the distance to the maximal fitness. The resulting PSO has no real hyper parameters that needs to be adjusted, which enables it, to be used as a general purpose PSO.
+
+\hypertarget{implementation-2}{%
+\subsection{Implementation}\label{implementation-2}}
+
+The process of this PSO variant differs too much from the standard PSO, which is why all changes are aggregated into steps:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\item
+  Initialize\\
+  Each particle \(d\) has to initialize it's own inertia weight \(w_d^0=0.5\) and the acceleration coefficients \(c_{p,d}^0 = c_{g,d}^0 = 2\).
+\item
+  Velocity and Positions\\
+  Update the velocity of each particle \(d\) with the following switch-case for a uniform random number \(r = \text{Unif}(0,1)\) in iteration \(i+1\):
+  \begin{align*}
+    v_d^{i+1} &= w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot Z \cdot (P_{d}^i-x_d^i) + c_{g,d}^i \cdot Z \cdot (p_{g}^i-x_d^i) \\
+    Z &= \begin{cases}
+   \text{Unif}(0,1), & \text{if}\ \ r > 0.8\\
+   \text{Cauchy}(\mu_1, \sigma_1), & \text{if}\ \ 0.8 \geq r > 0.4\\
+   \text{Cauchy}(\mu_2, \sigma_2), & \text{if}\ \ 0.4 \geq r\\
+    \end{cases}
+  \end{align*}
+  with
+  \begin{align*}
+    \mu_1 &= 0.1 \cdot (1-(\frac{i}{i_{max}})^2) + 0.3 \\
+    \sigma_1 &= 0.1 \\
+    \mu_2 &= 0.4 \cdot (1-(\frac{i}{i_{max}})^2) + 0.2 \\
+    \sigma_2 &= 0.4
+  \end{align*}
+  and \(\text{Cauchy}(\mu, \sigma)\) is a random number generated from the Cauchy distribution, that can be obtained with \texttt{rcauchy()} in R. The position update is the same as in the standard PSO. If a particle \(d\) left the feasible search space in it's coordinate \(z\), it gets pushed back with the following switch-case for \(r = \text{Unif}(0,1)\):
+  \[
+    x_{d,z} = 
+    \begin{cases}
+   \text{generate uniform in feasable space}, & \text{if}\ \ r > 0.7\\
+   \text{push back to boundary}, & \text{otherwise}\ \ \\
+    \end{cases}
+  \]
+\item
+  Evaluate Fitness\\
+  The same way as in the standard PSO.
+\item
+  Self-Adaptive Control Parameters\\
+  For a objective function \(f()\) and the maximal fitness of all particles \(f_{max} = max(f(X^{i+1}))\), the parameters \(w_d^{i}\), \(c_{p,d}^{i}\) and \(c_{g,d}^{i}\) for each particle \(d\) are adjusted as follows:
+  \begin{align*}
+    W^i_d &= \frac{\left| f(x_d^{i+1})-f_{max} \right|}{\sum_d\left| f(x_d^{i+1})-f_{max} \right|} \\
+    w_d^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot w_d^{i}, 0.2) \\
+    c_{p,d}^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot c_{p,d}^{i}, 0.3) \\
+    c_{g,d}^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot c_{g,d}^{i}, 0.3)
+  \end{align*}
+  And afterwards the parameters are pushed back to there voundarys with the following formulas:
+  \[
+  w_d^{i+1} = 
+    \begin{cases}
+   \text{Unif}(0,1), & \text{if}\ \ w_d^{i+1} > 1\\
+   \text{Unif}(0,0.1), & \text{if}\ \  0 > w_d^{i+1}\\
+   w_d^{i+1}, & \text{otherwise}
+    \end{cases}\\
+  c_{p,d}^{i+1} = 
+    \begin{cases}
+   \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{p,d}^{i+1} > 4\\
+   \text{Unif}(0,1), & \text{if}\ \  0 > c_{p,d}^{i+1}\\
+   c_{p,d}^{i+1}, & \text{otherwise}
+    \end{cases}\\
+  c_{g,d}^{i+1} = 
+    \begin{cases}
+   \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{g,d}^{i+1} > 4\\
+   \text{Unif}(0,1), & \text{if}\ \  0 > c_{g,d}^{i+1}\\
+   c_{g,d}^{i+1}, & \text{otherwise}
+    \end{cases}\\
+  \]
+\item
+  Update best Positions\\
+  Update personal best \(P\) and global best \(p_g\) positions as in the standard PSO.
+\item
+  Repeat\\
+  Step 2 to 5 are repeated until the maximal iterations \(i_{max}\) is reached.
+\end{enumerate}
+
+\hypertarget{analyse-implementation}{%
+\subsection{Analyse Implementation}\label{analyse-implementation}}
+
+The random use of the distributions, for the velocity update, increases the diversity of the swarm. The coefficients on iteration \(i\) with 100 maximal iterations are distributed as follows:\\
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
+It can be seen, that randomness of the movement is increased compared to the uniform distribution and the center of the Cauchy distributions decreases slowly to the absolute term. Additionaly do the two Cauchy distributions differ in exploration and exploitation ability's, seen by the height in \([0, 1]\).
+
+The adjusting of the control parameters is even harder to interpret. The value \(W_d^i\) is a weighting of the distances to the worst fitness, which results in a higher weight for particles with a good fitness. Later the control parameters are adjusted by using the Cauchy distribution with a weighted value of the previous control parameters as center, in which the control parameters that produced better fitness are higher weighted. This will result in random control parameters, that are distributed around the best previous control parameters. The resulting behavior can be destribed with a small quote: ``If exploration is beneficial, more exploration is done. If not, more exploitation is done.''
+
+\hypertarget{test-pso-with-self-adaptive-velocity}{%
+\subsection{Test PSO with Self-Adaptive Velocity}\label{test-pso-with-self-adaptive-velocity}}
+
+The PSO with self-adaptive velocity is called \texttt{PSO-SAvel} and is evaluated on the test problem with the constants used in the implementation section:
+
 \includegraphics{Master_Thesis_files/figure-latex/variants7-1.png}
 
 The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
@@ -1278,8 +1371,6 @@ The aggregated statistics of the last iterations of all 100 runs can be found in
 
 \hypertarget{test-local-and-preserving-feasibility}{%
 \section{Test Local and Preserving Feasibility}\label{test-local-and-preserving-feasibility}}
-
-\includegraphics{Master_Thesis_files/figure-latex/variants_last-1.png}
 
 \hypertarget{real-life-itp-example}{%
 \chapter{Real Life ITP Example}\label{real-life-itp-example}}
