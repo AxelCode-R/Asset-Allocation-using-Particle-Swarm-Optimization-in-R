@@ -104,7 +104,7 @@ calc_const <- function(x){
 set.seed(0)
 
 df_SPSO <- NULL
-for(i in 1:50){
+for(i in 1:100){
   res_SPSO_time <- system.time({
     res_SPSO <- pso(
       par = rep(0, ncol(pool_data$returns)),
@@ -244,7 +244,7 @@ set.seed(0)
 # R/PSO_functions.R : pso_fn_stretching()
 
 df <- NULL
-for(i in 1:50){
+for(i in 1:100){
   res_pso_fns_time <- system.time({
     res_pso_fns <- pso_fn_stretching(
       par = rep(0, ncol(pool_data$returns)),
@@ -351,7 +351,7 @@ set.seed(0)
 # R/PSO_functions.R : pso_local()
 
 df <- NULL
-for(i in 1:50){
+for(i in 1:100){
 
   res_pso_local_time <- system.time({
     res_pso_local <- pso_local(
@@ -438,17 +438,114 @@ SCI2002Constrained.pdf
 
 
 ## Self-Adaptive Velocity
-A PSO approach with self-adaptive velocity, which tries to reduce hyper parameters, was analyzed in [@FaYa2014]. The self-adaptive velocity is enabled by having multiple velocity update schemes which will be used randomly. Additionally all hyper parameters are self-adaptive in a manner that each particle has its own coefficients $c.g$, $c.p$ and $w$, that change after each iteration dependent on inter alia the distance to the maximal fitness. The resulting PSO has no real hyper parameters that needs to be adjusted, which enables it to be used as a general purpose PSO. 
+A PSO approach with self-adaptive velocity, which tries to reduce hyper parameters, was analyzed in [@FaYa2014]. The self-adaptive velocity is enabled by having multiple velocity update schemes which will be used randomly. Additionally all hyper parameters are self-adaptive in a manner that each particle has its own coefficients $c_g$, $c_p$ and $w$, that change after each iteration dependent on inter alia the distance to the maximal fitness. The resulting PSO has no real hyper parameters that needs to be adjusted, which enables it, to be used as a general purpose PSO. 
 
+### Implementation
+The process of this PSO variant differs too much from the standard PSO, which is why all changes are aggregated into steps:
+1) Initialize
+Each particle $d$ has to initialize it's own inertia weight $w_d^0=0.5$ and the acceleration coefficients $c_{p,d}^0 = c_{g,d}^0 = 2$.
+
+2) Velocity and Positions
+Update the velocity of each particle $d$ with the following switch-case for a uniform random number $r \in \text{Unif}(0,1)$ in iteration $i+1$:
+$$
+  v_d^{i+1} = 
+  \begin{cases}
+    w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot \text{Unif}(0,1) \cdot (P_{d}^i-x_d^i) + c_{g,d}^i \cdot \text{Unif}(0,1) \cdot (p_{g}^i-x_d^i), & \text{if}\ \ r > 0.8\\
+    w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot \text{Cauchy}(\mu_1, \sigma_1) \cdot (P_{d}^i-x_d^i) + c_{g,d}^i \cdot \text{Cauchy}(\mu_1, \sigma_1) \cdot (p_{g}^i-x_d^i), & \text{if}\ \ 0.8 \geq r > 0.4\\
+    w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot \text{Cauchy}(\mu_2, \sigma_2) \cdot (P_{d}^i-x_d^i) + c_{g,d}^i \cdot \text{Cauchy}(\mu_2, \sigma_2) \cdot (p_{g}^i-x_d^i), & \text{if}\ \ 0.4 \geq r\\
+  \end{cases}
+$$
+with 
+\begin{align*}
+  \mu_1 &= 0.1 \cdot (1-(\frac{i}{i_{max}})^2) + 0.3 \\
+  \sigma_1 &= 0.1 \\
+  \mu_2 &= 0.4 \cdot (1-(\frac{i}{i_{max}})^2) + 0.2 \\
+  \sigma_2 &= 0.4
+\end{align*}
+and $\text{Cauchy}(\mu, \sigma)$ is a random number generated from the Cauchy distribution, that can be obtained with `rcauchy()` in R. The position update is the same as in the standard PSO. If a particle $d$ left the feasible search space in it's coordinate $z$, it gets pushed back with the following switch-case for $r \in \text{Unif}(0,1)$:
+$$
+  x_{d,z} = 
+  \begin{cases}
+    \text{generate uniform in feasable space}, & \text{if}\ \ r > 0.7\\
+    \text{push back to boundary}, & \text{otherwise}\ \ \\
+  \end{cases}
+$$
+3) Self-Adaptive Control Parameters
+For a objective function $f()$ and the maximal fitness of all particles $f_{max} = max(f(X^{i+1}))$, the parameters $w_d^{i}$, $c_{p,d}^{i}$ and $c_{g,d}^{i}$ for each particle $d$ are adjusted as follows:
+\begin{align*}
+  W^i_d &= \frac{\left| f(x_d^{i+1})-f_{max} \right|}{\sum_d\left| f(x_d^{i+1})-f_{max} \right|} \\
+  w_d^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot w_d^{i}, 0.2) \\
+  c_{p,d}^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot c_{p,d}^{i}, 0.3) \\
+  c_{g,d}^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot c_{g,d}^{i}, 0.3)
+\end{align*}
+And afterwards the parameters are pushed back to there voundarys with the following formulas:
+$$
+w_d^{i+1} = 
+  \begin{cases}
+    \text{Unif}(0,1), & \text{if}\ \ w_d^{i+1} > 1\\
+    \text{Unif}(0,0.1), & \text{if}\ \  0 > w_d^{i+1}\\
+    w_d^{i+1}, & \text{otherwise}
+  \end{cases}\\
+c_{p,d}^{i+1} = 
+  \begin{cases}
+    \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{p,d}^{i+1} > 4\\
+    \text{Unif}(0,1), & \text{if}\ \  0 > c_{p,d}^{i+1}\\
+    c_{p,d}^{i+1}, & \text{otherwise}
+  \end{cases}\\
+c_{g,d}^{i+1} = 
+  \begin{cases}
+    \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{g,d}^{i+1} > 4\\
+    \text{Unif}(0,1), & \text{if}\ \  0 > c_{g,d}^{i+1}\\
+    c_{g,d}^{i+1}, & \text{otherwise}
+  \end{cases}\\
+$$
+4) Update best Positions
+Update personal best $P$ and global best $p_g$ positions as in the standard PSO.
+
+5) Repeat
+Step 2 to 4 are repeated until the maximal iterations $i_{max}$ is reached.
+
+
+### Analyse Implementation
+The random use of the distributions, for the velocity update, increases the diversity of the swarm. The coefficients on iteration $i$ with 100 maximal iterations are distributed as follows:   
+```{r, echo=F}
+x <- seq(-2, 3, 0.01)
+i_max <- 100
+
+p1 <- plot_ly() %>% 
+  layout(xaxis=list(range=c(-2, 3)), yaxis=list(range=c(-0.1,3.3)))
+for(i in c(1, seq(50,i_max, 50))){
+ p1 <- p1 %>% add_trace(x=x, y=dcauchy(x, 0.1*(1-(i/i_max)^2)+0.3, 0.1), mode="lines", type="scatter", name=paste0("Cauchy(mu1, sig1): i=",i))
+}
+
+p2 <- plot_ly() %>% 
+  layout(xaxis=list(range=c(-2, 3)), yaxis=list(range=c(-0.1,3.3)))
+for(i in c(1, seq(50,i_max, 50))){
+ p2 <- p2 %>% add_trace(x=x, y=dcauchy(x, 0.4*(1-(i/i_max)^2)+0.2, 0.4), mode="lines", type="scatter", name=paste0("Cauchy(mu2, sig2): i=",i))
+}
+
+p3 <- plot_ly(x=c(0,0,1,1), y=c(0,1,1,0), mode="lines", type="scatter", name="Unif(0,1)") %>% 
+  layout(xaxis=list(range=c(-2, 3)), yaxis=list(range=c(-0.1,3.3)))
+
+
+subplot(p1, p2, p3, nrows=3)
+```
+It can be seen, that randomness of the movement is increased compared to the uniform distribution and the center of the Cauchy distributions decreases slowly to the absolute term. Additionaly do the two Cauchy distributions differ in exploration and exploitation ability's, seen by the height in $[0, 1]$. 
+
+The adjusting of the control parameters is even harder to interpret. The value $W_d^i$ is a weighting of the distances to the worst fitness, which results in a higher weight for particles with a good fitness. Later the control parameters are adjusted by using the Cauchy distribution with a weighted value of the previous control parameters as center, in which the control parameters that produced better fitness are higher weighted. This will result in random control parameters, that are distributed around the best previous control parameters. The resulting behavior can be destribed with a small quote: "If exploration is beneficial, more exploration is done. If not, more exploitation is done."
+
+
+### Test PSO with Self-Adaptive Velocity
+The PSO with self-adaptive velocity is called `PSO-SAvel` and is evaluated on the test problem with the constants used in the implementation section:
 
 ```{r variants7, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
-# R/PSO_functions.R : pso_fn_stretching()
+# R/PSO_functions.R : pso_self_adaptive_velocity()
 
 df <- NULL
-for(i in 1:50){
-  res_pso_sAvel_time <- system.time({
-    res_pso_sAvel <- pso_self_adaptive_velocity(
+for(i in 1:100){
+  res_pso_SAvel_time <- system.time({
+    res_pso_SAvel <- pso_self_adaptive_velocity(
       par = rep(0, ncol(pool_data$returns)),
       fn = function(x){
         x <- as.vector(round(x*nav/prices)*prices/nav)
@@ -470,7 +567,7 @@ for(i in 1:50){
     data.frame(
       "run" = i,
       suppressWarnings(data.frame(
-        "type" = "PSO-sAvel", "time"=res_pso_sAvel_time[3], "const_break"=calc_const(res_pso_sAvel$solution), res_pso_sAvel$fit_data %>% select(iter, mean_fit=mean, best_fit=best)
+        "type" = "PSO-SAvel", "time"=res_pso_SAvel_time[3], "const_break"=calc_const(res_pso_SAvel$solution), res_pso_SAvel$fit_data %>% select(iter, mean_fit=mean, best_fit=best)
       ))
     )
   )
@@ -489,9 +586,9 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
-  add_trace(data = df_res %>% filter(type=="PSO-sAvel"), x=~iter, y=~best_fit_median, name = "PSO-sAvel", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
-  add_trace(data = df_res %>% filter(type=="PSO-sAvel"), x=~iter, y=~best_fit_q1, name = "PSO-sAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
-  add_trace(data = df_res %>% filter(type=="PSO-sAvel"), x=~iter, y=~best_fit_q3, name = "PSO-sAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_median, name = "PSO-SAvel", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q1, name = "PSO-SAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q3, name = "PSO-SAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>20,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>20,]$best_fit_q3)+0.001), title="best fitness")) %>% 
   html_save()
   
@@ -551,69 +648,69 @@ reactable(
 # )
 # 
 
-
-set.seed(0)
-# R/PSO_functions.R : pso_local_prevFeas()
-
-df <- NULL
-for(i in 1:100){
-
-  res_pso_l_preF_time <- system.time({
-    res_pso_l_preF <- pso_local_prevFeas(
-      par = rep(0, ncol(pool_data$returns)),
-      fn_fit = function(x){
-        x <- as.vector(round(x*nav/prices)*prices/nav)
-        fitness <- calc_fit(x)
-        constraints <- calc_const(x)
-        return(fitness)
-      },
-      fn_const = function(x){
-        x <- as.vector(round(x*nav/prices)*prices/nav)
-        constraints <- calc_const(x)
-        return(10*constraints)
-      },
-      lower = 0,
-      upper = 0.1,
-      control = list(
-        s = 50, # swarm size
-        c.p = 0.5, # inherit best
-        c.g = 0.5, # global best
-        maxiter = 200, # iterations
-        w0 = 1.2, # starting inertia weight
-        wN = 0, # ending inertia weight
-        save_fit = T, # save more information
-        k=30
-      )
-    )
-  })
-  
-  df <- rbind(df, 
-    data.frame(
-      "run" = i,
-      suppressWarnings(data.frame(
-        "type" = "PSO-local-prevFeas", "time"=res_pso_l_preF_time[3], "const_break"=calc_const(res_pso_l_preF$solution), res_pso_l_preF$fit_data %>% select(iter, "mean_fit"=mean, "best_fit" = best)
-      ))
-    )
-  )
-}
-
-
-df_res <- rbind(df_SPSO, df) %>% 
-  #mutate(best_fit = best_fit +1) %>% 
-  group_by(iter, type) %>% 
-  summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
-  ungroup()
-
-
-plot_ly() %>% 
-  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
-  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
-  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
-  add_trace(data = df_res %>% filter(type=="PSO-local-prevFeas"), x=~iter, y=~best_fit_median, name = "PSO-local-prevFeas", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
-  add_trace(data = df_res %>% filter(type=="PSO-local-prevFeas"), x=~iter, y=~best_fit_q1, name = "PSO-local-prevFeas_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
-  add_trace(data = df_res %>% filter(type=="PSO-local-prevFeas"), x=~iter, y=~best_fit_q3, name = "PSO-local-prevFeas_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>7,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>7,]$best_fit_q3)+0.001), title="best fitness")) %>% 
-  html_save()
+# 
+# set.seed(0)
+# # R/PSO_functions.R : pso_local_prevFeas()
+# 
+# df <- NULL
+# for(i in 1:100){
+# 
+#   res_pso_l_preF_time <- system.time({
+#     res_pso_l_preF <- pso_local_prevFeas(
+#       par = rep(0, ncol(pool_data$returns)),
+#       fn_fit = function(x){
+#         x <- as.vector(round(x*nav/prices)*prices/nav)
+#         fitness <- calc_fit(x)
+#         constraints <- calc_const(x)
+#         return(fitness)
+#       },
+#       fn_const = function(x){
+#         x <- as.vector(round(x*nav/prices)*prices/nav)
+#         constraints <- calc_const(x)
+#         return(10*constraints)
+#       },
+#       lower = 0,
+#       upper = 0.1,
+#       control = list(
+#         s = 50, # swarm size
+#         c.p = 0.5, # inherit best
+#         c.g = 0.5, # global best
+#         maxiter = 200, # iterations
+#         w0 = 1.2, # starting inertia weight
+#         wN = 0, # ending inertia weight
+#         save_fit = T, # save more information
+#         k=30
+#       )
+#     )
+#   })
+#   
+#   df <- rbind(df, 
+#     data.frame(
+#       "run" = i,
+#       suppressWarnings(data.frame(
+#         "type" = "PSO-local-prevFeas", "time"=res_pso_l_preF_time[3], "const_break"=calc_const(res_pso_l_preF$solution), res_pso_l_preF$fit_data %>% select(iter, "mean_fit"=mean, "best_fit" = best)
+#       ))
+#     )
+#   )
+# }
+# 
+# 
+# df_res <- rbind(df_SPSO, df) %>% 
+#   #mutate(best_fit = best_fit +1) %>% 
+#   group_by(iter, type) %>% 
+#   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
+#   ungroup()
+# 
+# 
+# plot_ly() %>% 
+#   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
+#   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
+#   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
+#   add_trace(data = df_res %>% filter(type=="PSO-local-prevFeas"), x=~iter, y=~best_fit_median, name = "PSO-local-prevFeas", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
+#   add_trace(data = df_res %>% filter(type=="PSO-local-prevFeas"), x=~iter, y=~best_fit_q1, name = "PSO-local-prevFeas_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
+#   add_trace(data = df_res %>% filter(type=="PSO-local-prevFeas"), x=~iter, y=~best_fit_q3, name = "PSO-local-prevFeas_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
+#   layout(yaxis=list(range=c(min(df_res[df_res$iter>7,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>7,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+#   html_save()
 
 ```
 
