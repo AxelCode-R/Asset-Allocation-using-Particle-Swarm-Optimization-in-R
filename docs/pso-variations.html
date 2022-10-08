@@ -687,26 +687,26 @@ For an objective function <span class="math inline">\(f()\)</span> and the maxim
   c_{g,d}^{i+1} &amp;= \text{Cauchy}(\sum_d W^i_d \cdot c_{g,d}^{i}, 0.3)
 \end{align*}\]</span>
 Then, the parameters are adjusted to their limits using the following formulas:
-<span class="math display">\[
-w_d^{i+1} =
+<span class="math display">\[\begin{align*}
+w_d^{i+1} &amp;=
   \begin{cases}
 \text{Unif}(0,1), &amp; \text{if}\ \ w_d^{i+1} &gt; 1\\
 \text{Unif}(0,0.1), &amp; \text{if}\ \  0 &gt; w_d^{i+1}\\
 w_d^{i+1}, &amp; \text{otherwise}
   \end{cases}\\
-c_{p,d}^{i+1} =
+c_{p,d}^{i+1} &amp;=
   \begin{cases}
 \text{Unif}(0,1) \cdot 4, &amp; \text{if}\ \ c_{p,d}^{i+1} &gt; 4\\
 \text{Unif}(0,1), &amp; \text{if}\ \  0 &gt; c_{p,d}^{i+1}\\
 c_{p,d}^{i+1}, &amp; \text{otherwise}
   \end{cases}\\
-c_{g,d}^{i+1} =
+c_{g,d}^{i+1} &amp;=
   \begin{cases}
 \text{Unif}(0,1) \cdot 4, &amp; \text{if}\ \ c_{g,d}^{i+1} &gt; 4\\
 \text{Unif}(0,1), &amp; \text{if}\ \  0 &gt; c_{g,d}^{i+1}\\
 c_{g,d}^{i+1}, &amp; \text{otherwise}
   \end{cases}\\
-\]</span></p></li>
+\end{align*}\]</span></p></li>
 <li><p>Update the best positions<br />
 Update the personal best <span class="math inline">\(P\)</span> and global best <span class="math inline">\(p_g\)</span> positions as in the standard PSO.</p></li>
 <li><p>Repeat<br />

@@ -1321,26 +1321,26 @@ The process of this PSO variant is too different from the standard PSO, so all c
     c_{g,d}^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot c_{g,d}^{i}, 0.3)
   \end{align*}
   Then, the parameters are adjusted to their limits using the following formulas:
-  \[
-  w_d^{i+1} = 
+  \begin{align*}
+  w_d^{i+1} &= 
     \begin{cases}
    \text{Unif}(0,1), & \text{if}\ \ w_d^{i+1} > 1\\
    \text{Unif}(0,0.1), & \text{if}\ \  0 > w_d^{i+1}\\
    w_d^{i+1}, & \text{otherwise}
     \end{cases}\\
-  c_{p,d}^{i+1} = 
+  c_{p,d}^{i+1} &= 
     \begin{cases}
    \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{p,d}^{i+1} > 4\\
    \text{Unif}(0,1), & \text{if}\ \  0 > c_{p,d}^{i+1}\\
    c_{p,d}^{i+1}, & \text{otherwise}
     \end{cases}\\
-  c_{g,d}^{i+1} = 
+  c_{g,d}^{i+1} &= 
     \begin{cases}
    \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{g,d}^{i+1} > 4\\
    \text{Unif}(0,1), & \text{if}\ \  0 > c_{g,d}^{i+1}\\
    c_{g,d}^{i+1}, & \text{otherwise}
     \end{cases}\\
-  \]
+  \end{align*}
 \item
   Update the best positions\\
   Update the personal best \(P\) and global best \(p_g\) positions as in the standard PSO.
