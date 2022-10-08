@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-06" />
+<meta name="date" content="2022-10-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -290,11 +290,11 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="pso-variations" class="section level1 hasAnchor" number="8">
 <h1><span class="header-section-number">Chapter 8</span> PSO Variations<a href="pso-variations.html#pso-variations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>The standard PSO analysed in the previews chapter is capable to solve a wide range of problems but is very slow and often gets stuck in local minima. This chapter analyses different variations of the standard PSO in finance related problems. The first variant is the PSO with functional stretching, which should reduces stagnation in local minimas. ……………</p>
+<p>The standard PSO analyzed in the previous chapter is capable of solving a wide range of problems, but often gets stuck in local minima. In this chapter, different variants of the standard PSO are analyzed using a problem from the financial domain. The first variant is the PSO with function stretching, which is designed to allow the PSO to escape from local minima if they are discovered. The second variant is the local PSO, which is designed to reduce the probability of getting stuck in local minima by limiting the spread of information in the swarm. The third variant, the PSO with feasibility preservation, tries to optimize within the feasibility space and therefore provide only feasible solutions. The last variant is the PSO with self-adaptive velocity, which tries to adjust the control parameters according to certain rules and randomness.</p>
 <div id="testproblem-discrete-itp-mste" class="section level3 hasAnchor" number="8.0.1">
 <h3><span class="header-section-number">8.0.1</span> Testproblem: Discrete ITP-MSTE<a href="pso-variations.html#testproblem-discrete-itp-mste" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>All variants are tested on a discrete ITP-MSTE to track the S&amp;P 500 with a tracking portfolio consisting of the top 50 assets in the S&amp;P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S&amp;P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using a <code>solve.QP()</code> approach and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31 and returns are calculated as simple returns from the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights <span class="math inline">\(w\)</span> should satisfy <span class="math inline">\(1 \leq \textstyle\sum w_i \geq 0.99\)</span>. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variations is 100 and the iterations are set to 100.</p>
-<p>The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved at each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:</p>
+<p>All variants are tested on a discrete ITP-MSTE to replicate the S&amp;P 500 with a tracking portfolio consisting of the top 50 assets in the S&amp;P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S&amp;P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using an <code>solve.QP()</code> approach, and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights <span class="math inline">\(w\)</span> should satisfy <span class="math inline">\(1 \leq \textstyle\sum w_i \geq 0.99\)</span>. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 100 and the iterations are set to 400.</p>
+<p>The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb33-1"><a href="pso-variations.html#cb33-1" aria-hidden="true" tabindex="-1"></a>nav <span class="ot">&lt;-</span> <span class="dv">20000</span></span>
 <span id="cb33-2"><a href="pso-variations.html#cb33-2" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb33-3"><a href="pso-variations.html#cb33-3" aria-hidden="true" tabindex="-1"></a>from <span class="ot">&lt;-</span> <span class="st">&quot;2018-01-01&quot;</span></span>
@@ -431,12 +431,12 @@ div.csl-indent {
 <span id="cb33-134"><a href="pso-variations.html#cb33-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">3</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">-</span><span class="fl">0.001</span>,  <span class="fu">max</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">3</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">+</span><span class="fl">0.001</span>), <span class="at">title=</span><span class="st">&quot;best fitness&quot;</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb33-135"><a href="pso-variations.html#cb33-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/variants1-1.png" width="672" /></p>
-<p>The aggregated statistics of the last iterations of all 100 runs can be found in the table below:</p>
+<p>The aggregate statistics of the last iterations of all 100 runs can be found in the table below:</p>
 <p><img src="Master_Thesis_files/figure-html/variants2-1.png" width="672" /></p>
 </div>
 <div id="function-stretching" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Function Stretching<a href="pso-variations.html#function-stretching" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>PSO often gets stuck in local minimas, that means if the current global best position is a local minima with a larger neighborhood around it containing higher fitness, it’s hard for the PSO to escape and find the global minima. Function stretching tries to accomplish that the PSO can escape from such local minimas, by transforming the fitness function in a manner that is described in <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span>. It states that after a local minima is found a two stage transformation proposed by Vrahatis 1996 can be used to stretch the original function in a way that the detected local minima transforms into a maxima, but any position with less fitness will stay unchanged. The two stages of the transformation with a detected local minima <span class="math inline">\(\bar{x}\)</span> are:
+<p>PSO often gets stuck in local minima, i.e., if the current best global position is a local minima with a larger environment around it, with only higher fitness, it is hard for the PSO to escape and find the global minima. Function stretching tries to make the PSO escape from such local minima by transforming the fitness function in a way described in <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span>. It states that after finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function so that the discovered local minimum is transformed into a maximum, but any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum <span class="math inline">\(\bar{x}\)</span> are:
 <span class="math display">\[
   G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
 \]</span>
@@ -453,17 +453,17 @@ The function <span class="math inline">\(G(\bar{x})\)</span> can be simplified t
     -1, &amp; \text{if}\ \ x &lt; 0
   \end{cases}
 \]</span>
-The source suggests to choose the following parameter values as default:
+In the source it is suggested to select the following parameter values as default:
 <span class="math display">\[\begin{align*}
   \gamma_1 &amp;= 5000 \\
   \gamma_2 &amp;= 0.5 \\
   \mu &amp;= 10^{-10}
 \end{align*}\]</span></p>
-<p>To understand the transformation more deeply, it’s used to stretch a simple function in <span class="math inline">\(\mathbb{R}^1\)</span>, that is defined as:</p>
+<p>To better understand the transformation, it is used to stretch a simple function in <span class="math inline">\(\mathbb{R}^1\)</span> defined as follows:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="pso-variations.html#cb34-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(pos){</span>
 <span id="cb34-2"><a href="pso-variations.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cos</span>(pos) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">10</span> <span class="sc">*</span> pos</span>
 <span id="cb34-3"><a href="pso-variations.html#cb34-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>and the domain of definition is chosen to be <span class="math inline">\(x \in [-20, 20]\)</span>. Suppose the PSO gets stuck in the local minima located at <span class="math inline">\(\bar{x} = \pi - \text{arcsin}(\frac{1}{10})\)</span>. The initial function and the transformed function is plotted in the chart below, respectively:</p>
+<p>and the domain of definition is chosen as <span class="math inline">\(x \in [-20, 20]\)</span>. Suppose the PSO gets stuck in the local minima at <span class="math inline">\(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\)</span>. The original function and the transformed function are shown in the following graph:</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb35-1"><a href="pso-variations.html#cb35-1" aria-hidden="true" tabindex="-1"></a>fn1 <span class="ot">&lt;-</span> <span class="cf">function</span>(pos, pos_best, pos_best_fit){</span>
 <span id="cb35-2"><a href="pso-variations.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">fn</span>(pos)</span>
 <span id="cb35-3"><a href="pso-variations.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  G <span class="ot">&lt;-</span> res <span class="sc">+</span> <span class="dv">5000</span> <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((pos <span class="sc">-</span> pos_best)<span class="sc">^</span><span class="dv">2</span>))<span class="sc">/</span><span class="fu">length</span>(pos) <span class="sc">*</span> (<span class="fu">sign</span>(res <span class="sc">-</span> pos_best_fit) <span class="sc">+</span> <span class="dv">1</span>)</span>
@@ -475,18 +475,19 @@ The source suggests to choose the following parameter values as default:
 <span id="cb35-9"><a href="pso-variations.html#cb35-9" aria-hidden="true" tabindex="-1"></a>x_best <span class="ot">&lt;-</span> pi<span class="sc">-</span><span class="fu">asin</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)</span>
 <span id="cb35-10"><a href="pso-variations.html#cb35-10" aria-hidden="true" tabindex="-1"></a>x_best_fit <span class="ot">&lt;-</span> <span class="fu">fn</span>(x_best)</span>
 <span id="cb35-11"><a href="pso-variations.html#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-12"><a href="pso-variations.html#cb35-12" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x=</span>X, <span class="at">y=</span><span class="fu">sapply</span>(X, fn), <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">name=</span><span class="st">&quot;fn&quot;</span>)</span>
-<span id="cb35-13"><a href="pso-variations.html#cb35-13" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x=</span>X, <span class="at">y=</span><span class="fu">sapply</span>(X, fn1, <span class="at">pos_best=</span>x_best, <span class="at">pos_best_fit=</span>x_best_fit), <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">name=</span><span class="st">&quot;fn_stretched&quot;</span>, <span class="at">line=</span><span class="fu">list</span>(<span class="at">color=</span><span class="st">&quot;orange&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb35-14"><a href="pso-variations.html#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">20</span>)<span class="sc">*</span><span class="dv">10</span><span class="sc">^</span><span class="dv">5</span>))</span>
-<span id="cb35-15"><a href="pso-variations.html#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-16"><a href="pso-variations.html#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="fu">subplot</span>(p1, p2, <span class="at">shareY=</span>T, <span class="at">nrows=</span><span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb35-17"><a href="pso-variations.html#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>(., <span class="at">vheight=</span><span class="dv">700</span>, <span class="at">vwidth=</span><span class="dv">800</span>)</span></code></pre></div>
+<span id="cb35-12"><a href="pso-variations.html#cb35-12" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x=</span>X, <span class="at">y=</span><span class="fu">sapply</span>(X, fn), <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">name=</span><span class="st">&quot;fn&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-13"><a href="pso-variations.html#cb35-13" aria-hidden="true" tabindex="-1"></a>   <span class="fu">add_trace</span>(<span class="at">x=</span>X, <span class="at">y=</span><span class="fu">rep</span>(<span class="fu">fn</span>(pi<span class="sc">-</span><span class="fu">asin</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)), <span class="fu">length</span>(X)), <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">name=</span><span class="st">&quot;local_minima&quot;</span>, <span class="at">line=</span><span class="fu">list</span>(<span class="at">dash=</span><span class="st">&quot;dot&quot;</span>, <span class="at">color=</span><span class="st">&quot;grey&quot;</span>))</span>
+<span id="cb35-14"><a href="pso-variations.html#cb35-14" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x=</span>X, <span class="at">y=</span><span class="fu">sapply</span>(X, fn1, <span class="at">pos_best=</span>x_best, <span class="at">pos_best_fit=</span>x_best_fit), <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">name=</span><span class="st">&quot;fn_stretched&quot;</span>, <span class="at">line=</span><span class="fu">list</span>(<span class="at">color=</span><span class="st">&quot;orange&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-15"><a href="pso-variations.html#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">20</span>)<span class="sc">*</span><span class="dv">10</span><span class="sc">^</span><span class="dv">5</span>))</span>
+<span id="cb35-16"><a href="pso-variations.html#cb35-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-17"><a href="pso-variations.html#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="fu">subplot</span>(p1, p2, <span class="at">shareY=</span>T, <span class="at">nrows=</span><span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-18"><a href="pso-variations.html#cb35-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>(., <span class="at">vheight=</span><span class="dv">700</span>, <span class="at">vwidth=</span><span class="dv">800</span>)</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/unnamed-chunk-9-1.png" width="672" />
-It can be seen that the fitness around the local minima <span class="math inline">\(\bar{x}\)</span> are stretched upwards, which makes it much easier for the PSO to walk the hill downwards and fall into new minimas with lower fitness. All domains with lower fitness stay unchanged, which can be seen in the zoomed version of the lower chart from above:
+It can be seen that the fitness is stretched upward around the local minima <span class="math inline">\(\bar{x}\)</span>, making it much easier for the PSO to move down the hill and fall into new minima with lower fitness. All the lower fitness regions remain unchanged, as can be seen in the zoomed version of the bottom diagram from above:
 <img src="Master_Thesis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <div id="implementation" class="section level3 hasAnchor" number="8.1.1">
 <h3><span class="header-section-number">8.1.1</span> Implementation<a href="pso-variations.html#implementation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>It is not possible to know if the PSO is stuck in a local minima so a stagnation value was added that increases by one, if the global best particle do not change. After ten iterations without a change, a local minima is supposed and the transformation of the objective function takes place. Afterwards all personal best fitness have to be reevaluated, to work with the evaluated space and the stagnation value is set to zero. To prevent a transformation closely at the end of all iterations, the current iteration needs to be below maximal iterations minus twenty, to enable the transformation.</p>
+<p>Since it is not possible to know if the PSO is stuck in a local minima, a stagnation value was added that increases by one if the global best particle does not change. After ten iterations with no change, a local minima is assumed and the transformation of the objective function takes place. After that, all personal best fitness values must be re-evaluated to work with the evaluated space and the stagnation value is set to zero. To prevent transformation just at the end of all iterations, the current iteration must be less than the maximum iteration minus twenty to allow transformation to occur.</p>
 </div>
 <div id="test-pso-with-function-stretching" class="section level3 hasAnchor" number="8.1.2">
 <h3><span class="header-section-number">8.1.2</span> Test PSO with Function Stretching<a href="pso-variations.html#test-pso-with-function-stretching" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -549,13 +550,13 @@ It can be seen that the fitness around the local minima <span class="math inline
 <span id="cb36-56"><a href="pso-variations.html#cb36-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">3</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">-</span><span class="fl">0.001</span>,  <span class="fu">max</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">3</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">+</span><span class="fl">0.001</span>), <span class="at">title=</span><span class="st">&quot;best fitness&quot;</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb36-57"><a href="pso-variations.html#cb36-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/variants3-1.png" width="672" /></p>
-<p>The aggregated statistics of the last iterations of all 100 runs can be found in the table below:</p>
+<p>The aggregate statistics of the last iterations of all 100 runs can be found in the table below:</p>
 <p><img src="Master_Thesis_files/figure-html/variants4-1.png" width="672" /></p>
 </div>
 </div>
 <div id="local-pso" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> Local PSO<a href="pso-variations.html#local-pso" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A local PSO is a more generic case of the global PSO. It’s only difference lies in the selection of the global best particle, by defining a neighborhood. Each particle <span class="math inline">\(x_i\)</span> has a neighborhood <span class="math inline">\(N(x_i, \bar{k})\)</span> and the global best particle in it’s neighborhood is named local best particle of <span class="math inline">\(x_i\)</span>. If the neighborhood is chosen big enough to contain all particles, it matches with the standard PSO (global PSO). A simple definition of a neighborhood with <span class="math inline">\(k\)</span> neighbors for particles <span class="math inline">\(x_i\)</span> stated in <span class="citation">(<a href="#ref-Enge2013" role="doc-biblioref">Engelbrecht 2013</a>)</span> would be:</p>
+<p>A local PSO is a more general case of the global PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle <span class="math inline">\(x_i\)</span> has a neighborhood <span class="math inline">\(N(x_i, \bar{k})\)</span>, and the global best particle in its neighborhood is called the local best particle of <span class="math inline">\(x_i\)</span>. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with <span class="math inline">\(k\)</span> neighbors for particles <span class="math inline">\(x_i\)</span> given in <span class="citation">(<a href="#ref-Enge2013" role="doc-biblioref">Engelbrecht 2013</a>)</span> would be:</p>
 <p><span class="math display">\[
   N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
 \]</span>
@@ -563,16 +564,16 @@ with
 <span class="math display">\[
   \bar{k} = floor(\frac{k}{2}) = \lfloor \frac{k}{2} \rfloor
 \]</span>
-To visualize this, the following image defines the neighborhoods <span class="math inline">\(N(x_4, 4)\)</span> and <span class="math inline">\(N(x_1, 4)\)</span>:</p>
+To illustrate this, the following figure defines the neighborhoods <span class="math inline">\(N(x_4, 4)\)</span> and <span class="math inline">\(N(x_1, 4)\)</span>:</p>
 <p><img src="img/PSO_local_chart.jpg" alt="Visualize Neighborhoods" />
-In the later case, it can be seen, that overflowing boundary’s will continue on the opposite site of the arranged particles.</p>
+In the latter case, it can be seen that the overflowing boundary will continue on the opposite side of the arranged particles.</p>
 <div id="implementation-1" class="section level3 hasAnchor" number="8.2.1">
 <h3><span class="header-section-number">8.2.1</span> Implementation<a href="pso-variations.html#implementation-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>First the neighbors for each particle are saved in a suited data structure bevor running the main part of the PSO. The local version has no global best overall, instead it needs to calculate the global best for each particles neighborhood in every step.</p>
+<p>First, the neighbors for each particle are stored in a suitable data structure before the main part of the PSO is executed. In the local version there is no global best particle, instead the global best particle for the neighborhood of each particle has to be calculated in each step.</p>
 </div>
 <div id="test-local-pso" class="section level3 hasAnchor" number="8.2.2">
 <h3><span class="header-section-number">8.2.2</span> Test Local PSO<a href="pso-variations.html#test-local-pso" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The PSO with particle neighborhoods is called <code>PSO-local</code> and is evaluated on the test problem with <span class="math inline">\(k=20\)</span>:</p>
+<p>The PSO with particle neighborhoods is called <code>PSO-local</code> and evaluated on the test problem with <span class="math inline">\(k=20\)</span>:</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb37-1"><a href="pso-variations.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb37-2"><a href="pso-variations.html#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># R/PSO_functions.R : pso_local()</span></span>
 <span id="cb37-3"><a href="pso-variations.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -632,9 +633,9 @@ In the later case, it can be seen, that overflowing boundary’s will continue o
 <span id="cb37-57"><a href="pso-variations.html#cb37-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">7</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">-</span><span class="fl">0.001</span>,  <span class="fu">max</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">7</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">+</span><span class="fl">0.001</span>), <span class="at">title=</span><span class="st">&quot;best fitness&quot;</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb37-58"><a href="pso-variations.html#cb37-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/variants5-1.png" width="672" /></p>
-<p>The aggregated statistics of the last iterations of all 100 runs can be found in the table below:</p>
+<p>The aggregate statistics of the last iterations of all 100 runs can be found in the table below:</p>
 <p><img src="Master_Thesis_files/figure-html/variants6-1.png" width="672" /></p>
-<p>It can be seen that it is superior to the standard PSO in this case. Particularly in preventing stagnation in local minimas, that can be seen in the tighter quantile bands at the end.</p>
+<p>It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.</p>
 </div>
 </div>
 <div id="preserving-feasibility" class="section level2 hasAnchor" number="8.3">
@@ -643,14 +644,14 @@ In the later case, it can be seen, that overflowing boundary’s will continue o
 </div>
 <div id="self-adaptive-velocity" class="section level2 hasAnchor" number="8.4">
 <h2><span class="header-section-number">8.4</span> Self-Adaptive Velocity<a href="pso-variations.html#self-adaptive-velocity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A PSO approach with self-adaptive velocity, which tries to reduce hyper parameters, was analyzed in <span class="citation">(<a href="#ref-FaYa2014" role="doc-biblioref">Qinqin Fan 2014</a>)</span>. The self-adaptive velocity is enabled by having multiple velocity update schemes which will be used randomly. Additionally all hyper parameters are self-adaptive in a manner that each particle has its own coefficients <span class="math inline">\(c_g\)</span>, <span class="math inline">\(c_p\)</span> and <span class="math inline">\(w\)</span>, that change after each iteration dependent on inter alia the distance to the maximal fitness. The resulting PSO has no real hyper parameters that needs to be adjusted, which enables it, to be used as a general purpose PSO.</p>
+<p>A self-adaptive velocity PSO approach that attempts to reduce hyperparameters was analyzed in <span class="citation">(<a href="#ref-FaYa2014" role="doc-biblioref">Qinqin Fan 2014</a>)</span>. The self-adaptive velocity is enabled by multiple velocity update schemes that are used randomly. In addition, all hyperparameters are self-adaptive in the way that each particle has its own coefficients <span class="math inline">\(c_g\)</span>, <span class="math inline">\(c_p\)</span>, and <span class="math inline">\(w\)</span>, which change after each iteration depending on the distance to maximum fitness, among other factors. The resulting PSO has no real hyperparameters to adjust, which allows it to be used as a general-purpose PSO.</p>
 <div id="implementation-2" class="section level3 hasAnchor" number="8.4.1">
 <h3><span class="header-section-number">8.4.1</span> Implementation<a href="pso-variations.html#implementation-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The process of this PSO variant differs too much from the standard PSO, which is why all changes are aggregated into steps:</p>
+<p>The process of this PSO variant is too different from the standard PSO, so all changes are combined in steps:</p>
 <ol style="list-style-type: decimal">
 <li><p>Initialize<br />
-Each particle <span class="math inline">\(d\)</span> has to initialize it’s own inertia weight <span class="math inline">\(w_d^0=0.5\)</span> and the acceleration coefficients <span class="math inline">\(c_{p,d}^0 = c_{g,d}^0 = 2\)</span>.</p></li>
-<li><p>Velocity and Positions<br />
+Each particle <span class="math inline">\(d\)</span> must initialize its own inertial weight <span class="math inline">\(w_d^0=0.5\)</span> and acceleration coefficients <span class="math inline">\(c_{p,d}^0 = c_{g,d}^0 = 2\)</span>.</p></li>
+<li><p>Velocity and positions<br />
 Update the velocity of each particle <span class="math inline">\(d\)</span> with the following switch-case for a uniform random number <span class="math inline">\(r = \text{Unif}(0,1)\)</span> in iteration <span class="math inline">\(i+1\)</span>:
 <span class="math display">\[\begin{align*}
   v_d^{i+1} &amp;= w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot Z \cdot (P_{d}^i-x_d^i) + c_{g,d}^i \cdot Z \cdot (p_{g}^i-x_d^i) \\
@@ -667,7 +668,7 @@ with
   \mu_2 &amp;= 0.4 \cdot (1-(\frac{i}{i_{max}})^2) + 0.2 \\
   \sigma_2 &amp;= 0.4
 \end{align*}\]</span>
-and <span class="math inline">\(\text{Cauchy}(\mu, \sigma)\)</span> is a random number generated from the Cauchy distribution, that can be obtained with <code>rcauchy()</code> in R. The position update is the same as in the standard PSO. If a particle <span class="math inline">\(d\)</span> left the feasible search space in it’s coordinate <span class="math inline">\(z\)</span>, it gets pushed back with the following switch-case for <span class="math inline">\(r = \text{Unif}(0,1)\)</span>:
+and <span class="math inline">\(\text{Cauchy}(\mu, \sigma)\)</span> is a random number generated from the Cauchy distribution obtained with <code>rcauchy()</code> in R. The position update is the same as for the standard PSO. When a particle <span class="math inline">\(d\)</span> has left the feasible search space in its coordinate <span class="math inline">\(z\)</span>, it is moved back with the following switch-case for <span class="math inline">\(r = \text{Unif}(0,1)\)</span>:
 <span class="math display">\[
   x_{d,z} =
   \begin{cases}
@@ -675,17 +676,17 @@ and <span class="math inline">\(\text{Cauchy}(\mu, \sigma)\)</span> is a random 
 \text{push back to boundary}, &amp; \text{otherwise}\ \ \\
   \end{cases}
 \]</span></p></li>
-<li><p>Evaluate Fitness<br />
-The same way as in the standard PSO.</p></li>
-<li><p>Self-Adaptive Control Parameters<br />
-For a objective function <span class="math inline">\(f()\)</span> and the maximal fitness of all particles <span class="math inline">\(f_{max} = max(f(X^{i+1}))\)</span>, the parameters <span class="math inline">\(w_d^{i}\)</span>, <span class="math inline">\(c_{p,d}^{i}\)</span> and <span class="math inline">\(c_{g,d}^{i}\)</span> for each particle <span class="math inline">\(d\)</span> are adjusted as follows:
+<li><p>Fitness evaluation<br />
+In the same way as for the standard PSO.</p></li>
+<li><p>Self-adaptive control parameters<br />
+For an objective function <span class="math inline">\(f()\)</span> and the maximum fitness of all particles <span class="math inline">\(f_{max} = \text{max}(f(X^{i+1}))\)</span>, the parameters <span class="math inline">\(w_d^{i}\)</span>, <span class="math inline">\(c_{p,d}^{i}\)</span> and <span class="math inline">\(c_{g,d}^{i}\)</span> are adapted for each particle <span class="math inline">\(d\)</span> as follows:
 <span class="math display">\[\begin{align*}
   W^i_d &amp;= \frac{\left| f(x_d^{i+1})-f_{max} \right|}{\sum_d\left| f(x_d^{i+1})-f_{max} \right|} \\
   w_d^{i+1} &amp;= \text{Cauchy}(\sum_d W^i_d \cdot w_d^{i}, 0.2) \\
   c_{p,d}^{i+1} &amp;= \text{Cauchy}(\sum_d W^i_d \cdot c_{p,d}^{i}, 0.3) \\
   c_{g,d}^{i+1} &amp;= \text{Cauchy}(\sum_d W^i_d \cdot c_{g,d}^{i}, 0.3)
 \end{align*}\]</span>
-And afterwards the parameters are pushed back to there voundarys with the following formulas:
+Then, the parameters are adjusted to their limits using the following formulas:
 <span class="math display">\[
 w_d^{i+1} =
   \begin{cases}
@@ -706,22 +707,22 @@ c_{g,d}^{i+1} =
 c_{g,d}^{i+1}, &amp; \text{otherwise}
   \end{cases}\\
 \]</span></p></li>
-<li><p>Update best Positions<br />
-Update personal best <span class="math inline">\(P\)</span> and global best <span class="math inline">\(p_g\)</span> positions as in the standard PSO.</p></li>
+<li><p>Update the best positions<br />
+Update the personal best <span class="math inline">\(P\)</span> and global best <span class="math inline">\(p_g\)</span> positions as in the standard PSO.</p></li>
 <li><p>Repeat<br />
-Step 2 to 5 are repeated until the maximal iterations <span class="math inline">\(i_{max}\)</span> is reached.</p></li>
+Steps 2 to 5 are repeated until the maximum iteration number <span class="math inline">\(i_{max}\)</span> is reached.</p></li>
 </ol>
 </div>
 <div id="analyse-implementation" class="section level3 hasAnchor" number="8.4.2">
 <h3><span class="header-section-number">8.4.2</span> Analyse Implementation<a href="pso-variations.html#analyse-implementation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The random use of the distributions, for the velocity update, increases the diversity of the swarm. The coefficients on iteration <span class="math inline">\(i\)</span> with 100 maximal iterations are distributed as follows:<br />
+<p>The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration <span class="math inline">\(i\)</span> with 100 maximum iterations are distributed as follows:<br />
 <img src="Master_Thesis_files/figure-html/unnamed-chunk-11-1.png" width="672" />
-It can be seen, that randomness of the movement is increased compared to the uniform distribution and the center of the Cauchy distributions decreases slowly to the absolute term. Additionaly do the two Cauchy distributions differ in exploration and exploitation ability’s, seen by the height in <span class="math inline">\([0, 1]\)</span>.</p>
-<p>The adjusting of the control parameters is even harder to interpret. The value <span class="math inline">\(W_d^i\)</span> is a weighting of the distances to the worst fitness, which results in a higher weight for particles with a good fitness. Later the control parameters are adjusted by using the Cauchy distribution with a weighted value of the previous control parameters as center, in which the control parameters that produced better fitness are higher weighted. This will result in random control parameters, that are distributed around the best previous control parameters. The resulting behavior can be destribed with a small quote: “If exploration is beneficial, more exploration is done. If not, more exploitation is done.”</p>
+It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in exploration and exploitation ability, recognizable by the height in <span class="math inline">\([0, 1]\)</span>.</p>
+<p>Even more difficult to interpret is the adjusting of the control parameters. The value <span class="math inline">\(W_d^i\)</span> is a weighting of the distances to the worst fitness, resulting in a higher weighting of the particles with good fitness. Later, the control parameters are adjusted using the Cauchy distribution with a weighted value of the previous control parameters as the center, giving higher weights to the control parameters that produced better fitness. This results in random control parameters distributed around the best previous control parameters. The resulting behavior can be described with a small quote, “If exploration is beneficial, more exploration is done. If not, more is exploited.”</p>
 </div>
 <div id="test-pso-with-self-adaptive-velocity" class="section level3 hasAnchor" number="8.4.3">
 <h3><span class="header-section-number">8.4.3</span> Test PSO with Self-Adaptive Velocity<a href="pso-variations.html#test-pso-with-self-adaptive-velocity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The PSO with self-adaptive velocity is called <code>PSO-SAvel</code> and is evaluated on the test problem with the constants used in the implementation section:</p>
+<p>The PSO with self-adaptive speed is called <code>PSO-SAvel</code> and is evaluated for the test problem with the constants used in the implementation section:</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb38-1"><a href="pso-variations.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb38-2"><a href="pso-variations.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># R/PSO_functions.R : pso_self_adaptive_velocity()</span></span>
 <span id="cb38-3"><a href="pso-variations.html#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -775,7 +776,7 @@ It can be seen, that randomness of the movement is increased compared to the uni
 <span id="cb38-51"><a href="pso-variations.html#cb38-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">20</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">-</span><span class="fl">0.001</span>,  <span class="fu">max</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">20</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">+</span><span class="fl">0.001</span>), <span class="at">title=</span><span class="st">&quot;best fitness&quot;</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb38-52"><a href="pso-variations.html#cb38-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/variants7-1.png" width="672" /></p>
-<p>The aggregated statistics of the last iterations of all 100 runs can be found in the table below:</p>
+<p>The aggregate statistics of the last iterations of all 100 runs can be found in the table below:</p>
 <p><img src="Master_Thesis_files/figure-html/variants8-1.png" width="672" /></p>
 </div>
 </div>

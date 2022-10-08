@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-06}
+\date{2022-10-08}
 
 \begin{document}
 \maketitle
@@ -1154,25 +1154,25 @@ It can be seen that the rounded \texttt{solve.QP()} solution still has a good fi
 \hypertarget{pso-variations}{%
 \chapter{PSO Variations}\label{pso-variations}}
 
-The standard PSO analysed in the previews chapter is capable to solve a wide range of problems but is very slow and often gets stuck in local minima. This chapter analyses different variations of the standard PSO in finance related problems. The first variant is the PSO with functional stretching, which should reduces stagnation in local minimas. \ldots\ldots\ldots\ldots\ldots{}
+The standard PSO analyzed in the previous chapter is capable of solving a wide range of problems, but often gets stuck in local minima. In this chapter, different variants of the standard PSO are analyzed using a problem from the financial domain. The first variant is the PSO with function stretching, which is designed to allow the PSO to escape from local minima if they are discovered. The second variant is the local PSO, which is designed to reduce the probability of getting stuck in local minima by limiting the spread of information in the swarm. The third variant, the PSO with feasibility preservation, tries to optimize within the feasibility space and therefore provide only feasible solutions. The last variant is the PSO with self-adaptive velocity, which tries to adjust the control parameters according to certain rules and randomness.
 
 \hypertarget{testproblem-discrete-itp-mste}{%
 \subsection{Testproblem: Discrete ITP-MSTE}\label{testproblem-discrete-itp-mste}}
 
-All variants are tested on a discrete ITP-MSTE to track the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S\&P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using a \texttt{solve.QP()} approach and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31 and returns are calculated as simple returns from the adjusted closing prices. The maximum weighting for each asset is 10\% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights \(w\) should satisfy \(1 \leq \textstyle\sum w_i \geq 0.99\). All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variations is 100 and the iterations are set to 100.
+All variants are tested on a discrete ITP-MSTE to replicate the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S\&P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using an \texttt{solve.QP()} approach, and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10\% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights \(w\) should satisfy \(1 \leq \textstyle\sum w_i \geq 0.99\). All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 100 and the iterations are set to 400.
 
-The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved at each iteration. The confidence bands for the 95\% and 5\% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
+The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95\% and 5\% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
 \includegraphics{Master_Thesis_files/figure-latex/variants1-1.png}
 
-The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/variants2-1.png}
 
 \hypertarget{function-stretching}{%
 \section{Function Stretching}\label{function-stretching}}
 
-PSO often gets stuck in local minimas, that means if the current global best position is a local minima with a larger neighborhood around it containing higher fitness, it's hard for the PSO to escape and find the global minima. Function stretching tries to accomplish that the PSO can escape from such local minimas, by transforming the fitness function in a manner that is described in \citep{PaVr2002}. It states that after a local minima is found a two stage transformation proposed by Vrahatis 1996 can be used to stretch the original function in a way that the detected local minima transforms into a maxima, but any position with less fitness will stay unchanged. The two stages of the transformation with a detected local minima \(\bar{x}\) are:
+PSO often gets stuck in local minima, i.e., if the current best global position is a local minima with a larger environment around it, with only higher fitness, it is hard for the PSO to escape and find the global minima. Function stretching tries to make the PSO escape from such local minima by transforming the fitness function in a way described in \citep{PaVr2002}. It states that after finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function so that the discovered local minimum is transformed into a maximum, but any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum \(\bar{x}\) are:
 \[
   G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
 \]
@@ -1189,14 +1189,14 @@ The function \(G(\bar{x})\) can be simplified to \(f(\bar{x})\) and the \(\text{
     -1, & \text{if}\ \ x < 0
   \end{cases}
 \]
-The source suggests to choose the following parameter values as default:
+In the source it is suggested to select the following parameter values as default:
 \begin{align*}
   \gamma_1 &= 5000 \\
   \gamma_2 &= 0.5 \\
   \mu &= 10^{-10}
 \end{align*}
 
-To understand the transformation more deeply, it's used to stretch a simple function in \(\mathbb{R}^1\), that is defined as:
+To better understand the transformation, it is used to stretch a simple function in \(\mathbb{R}^1\) defined as follows:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1206,15 +1206,15 @@ To understand the transformation more deeply, it's used to stretch a simple func
 \end{Highlighting}
 \end{Shaded}
 
-and the domain of definition is chosen to be \(x \in [-20, 20]\). Suppose the PSO gets stuck in the local minima located at \(\bar{x} = \pi - \text{arcsin}(\frac{1}{10})\). The initial function and the transformed function is plotted in the chart below, respectively:
+and the domain of definition is chosen as \(x \in [-20, 20]\). Suppose the PSO gets stuck in the local minima at \(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\). The original function and the transformed function are shown in the following graph:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
-It can be seen that the fitness around the local minima \(\bar{x}\) are stretched upwards, which makes it much easier for the PSO to walk the hill downwards and fall into new minimas with lower fitness. All domains with lower fitness stay unchanged, which can be seen in the zoomed version of the lower chart from above:
+It can be seen that the fitness is stretched upward around the local minima \(\bar{x}\), making it much easier for the PSO to move down the hill and fall into new minima with lower fitness. All the lower fitness regions remain unchanged, as can be seen in the zoomed version of the bottom diagram from above:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
 
 \hypertarget{implementation}{%
 \subsection{Implementation}\label{implementation}}
 
-It is not possible to know if the PSO is stuck in a local minima so a stagnation value was added that increases by one, if the global best particle do not change. After ten iterations without a change, a local minima is supposed and the transformation of the objective function takes place. Afterwards all personal best fitness have to be reevaluated, to work with the evaluated space and the stagnation value is set to zero. To prevent a transformation closely at the end of all iterations, the current iteration needs to be below maximal iterations minus twenty, to enable the transformation.
+Since it is not possible to know if the PSO is stuck in a local minima, a stagnation value was added that increases by one if the global best particle does not change. After ten iterations with no change, a local minima is assumed and the transformation of the objective function takes place. After that, all personal best fitness values must be re-evaluated to work with the evaluated space and the stagnation value is set to zero. To prevent transformation just at the end of all iterations, the current iteration must be less than the maximum iteration minus twenty to allow transformation to occur.
 
 \hypertarget{test-pso-with-function-stretching}{%
 \subsection{Test PSO with Function Stretching}\label{test-pso-with-function-stretching}}
@@ -1223,14 +1223,14 @@ The PSO with function stretching is called \texttt{PSO-fnS} and is evaluated on 
 
 \includegraphics{Master_Thesis_files/figure-latex/variants3-1.png}
 
-The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/variants4-1.png}
 
 \hypertarget{local-pso}{%
 \section{Local PSO}\label{local-pso}}
 
-A local PSO is a more generic case of the global PSO. It's only difference lies in the selection of the global best particle, by defining a neighborhood. Each particle \(x_i\) has a neighborhood \(N(x_i, \bar{k})\) and the global best particle in it's neighborhood is named local best particle of \(x_i\). If the neighborhood is chosen big enough to contain all particles, it matches with the standard PSO (global PSO). A simple definition of a neighborhood with \(k\) neighbors for particles \(x_i\) stated in \citep{Enge2013} would be:
+A local PSO is a more general case of the global PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle \(x_i\) has a neighborhood \(N(x_i, \bar{k})\), and the global best particle in its neighborhood is called the local best particle of \(x_i\). If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with \(k\) neighbors for particles \(x_i\) given in \citep{Enge2013} would be:
 
 \[
   N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
@@ -1239,28 +1239,28 @@ with
 \[
   \bar{k} = floor(\frac{k}{2}) = \lfloor \frac{k}{2} \rfloor
 \]
-To visualize this, the following image defines the neighborhoods \(N(x_4, 4)\) and \(N(x_1, 4)\):
+To illustrate this, the following figure defines the neighborhoods \(N(x_4, 4)\) and \(N(x_1, 4)\):
 
 \includegraphics{img/PSO_local_chart.jpg}
-In the later case, it can be seen, that overflowing boundary's will continue on the opposite site of the arranged particles.
+In the latter case, it can be seen that the overflowing boundary will continue on the opposite side of the arranged particles.
 
 \hypertarget{implementation-1}{%
 \subsection{Implementation}\label{implementation-1}}
 
-First the neighbors for each particle are saved in a suited data structure bevor running the main part of the PSO. The local version has no global best overall, instead it needs to calculate the global best for each particles neighborhood in every step.
+First, the neighbors for each particle are stored in a suitable data structure before the main part of the PSO is executed. In the local version there is no global best particle, instead the global best particle for the neighborhood of each particle has to be calculated in each step.
 
 \hypertarget{test-local-pso}{%
 \subsection{Test Local PSO}\label{test-local-pso}}
 
-The PSO with particle neighborhoods is called \texttt{PSO-local} and is evaluated on the test problem with \(k=20\):
+The PSO with particle neighborhoods is called \texttt{PSO-local} and evaluated on the test problem with \(k=20\):
 
 \includegraphics{Master_Thesis_files/figure-latex/variants5-1.png}
 
-The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/variants6-1.png}
 
-It can be seen that it is superior to the standard PSO in this case. Particularly in preventing stagnation in local minimas, that can be seen in the tighter quantile bands at the end.
+It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
 
 \hypertarget{preserving-feasibility}{%
 \section{Preserving Feasibility}\label{preserving-feasibility}}
@@ -1270,20 +1270,20 @@ SCI2002Constrained.pdf
 \hypertarget{self-adaptive-velocity}{%
 \section{Self-Adaptive Velocity}\label{self-adaptive-velocity}}
 
-A PSO approach with self-adaptive velocity, which tries to reduce hyper parameters, was analyzed in \citep{FaYa2014}. The self-adaptive velocity is enabled by having multiple velocity update schemes which will be used randomly. Additionally all hyper parameters are self-adaptive in a manner that each particle has its own coefficients \(c_g\), \(c_p\) and \(w\), that change after each iteration dependent on inter alia the distance to the maximal fitness. The resulting PSO has no real hyper parameters that needs to be adjusted, which enables it, to be used as a general purpose PSO.
+A self-adaptive velocity PSO approach that attempts to reduce hyperparameters was analyzed in \citep{FaYa2014}. The self-adaptive velocity is enabled by multiple velocity update schemes that are used randomly. In addition, all hyperparameters are self-adaptive in the way that each particle has its own coefficients \(c_g\), \(c_p\), and \(w\), which change after each iteration depending on the distance to maximum fitness, among other factors. The resulting PSO has no real hyperparameters to adjust, which allows it to be used as a general-purpose PSO.
 
 \hypertarget{implementation-2}{%
 \subsection{Implementation}\label{implementation-2}}
 
-The process of this PSO variant differs too much from the standard PSO, which is why all changes are aggregated into steps:
+The process of this PSO variant is too different from the standard PSO, so all changes are combined in steps:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi})}
 \item
   Initialize\\
-  Each particle \(d\) has to initialize it's own inertia weight \(w_d^0=0.5\) and the acceleration coefficients \(c_{p,d}^0 = c_{g,d}^0 = 2\).
+  Each particle \(d\) must initialize its own inertial weight \(w_d^0=0.5\) and acceleration coefficients \(c_{p,d}^0 = c_{g,d}^0 = 2\).
 \item
-  Velocity and Positions\\
+  Velocity and positions\\
   Update the velocity of each particle \(d\) with the following switch-case for a uniform random number \(r = \text{Unif}(0,1)\) in iteration \(i+1\):
   \begin{align*}
     v_d^{i+1} &= w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot Z \cdot (P_{d}^i-x_d^i) + c_{g,d}^i \cdot Z \cdot (p_{g}^i-x_d^i) \\
@@ -1300,7 +1300,7 @@ The process of this PSO variant differs too much from the standard PSO, which is
     \mu_2 &= 0.4 \cdot (1-(\frac{i}{i_{max}})^2) + 0.2 \\
     \sigma_2 &= 0.4
   \end{align*}
-  and \(\text{Cauchy}(\mu, \sigma)\) is a random number generated from the Cauchy distribution, that can be obtained with \texttt{rcauchy()} in R. The position update is the same as in the standard PSO. If a particle \(d\) left the feasible search space in it's coordinate \(z\), it gets pushed back with the following switch-case for \(r = \text{Unif}(0,1)\):
+  and \(\text{Cauchy}(\mu, \sigma)\) is a random number generated from the Cauchy distribution obtained with \texttt{rcauchy()} in R. The position update is the same as for the standard PSO. When a particle \(d\) has left the feasible search space in its coordinate \(z\), it is moved back with the following switch-case for \(r = \text{Unif}(0,1)\):
   \[
     x_{d,z} = 
     \begin{cases}
@@ -1309,18 +1309,18 @@ The process of this PSO variant differs too much from the standard PSO, which is
     \end{cases}
   \]
 \item
-  Evaluate Fitness\\
-  The same way as in the standard PSO.
+  Fitness evaluation\\
+  In the same way as for the standard PSO.
 \item
-  Self-Adaptive Control Parameters\\
-  For a objective function \(f()\) and the maximal fitness of all particles \(f_{max} = max(f(X^{i+1}))\), the parameters \(w_d^{i}\), \(c_{p,d}^{i}\) and \(c_{g,d}^{i}\) for each particle \(d\) are adjusted as follows:
+  Self-adaptive control parameters\\
+  For an objective function \(f()\) and the maximum fitness of all particles \(f_{max} = \text{max}(f(X^{i+1}))\), the parameters \(w_d^{i}\), \(c_{p,d}^{i}\) and \(c_{g,d}^{i}\) are adapted for each particle \(d\) as follows:
   \begin{align*}
     W^i_d &= \frac{\left| f(x_d^{i+1})-f_{max} \right|}{\sum_d\left| f(x_d^{i+1})-f_{max} \right|} \\
     w_d^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot w_d^{i}, 0.2) \\
     c_{p,d}^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot c_{p,d}^{i}, 0.3) \\
     c_{g,d}^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot c_{g,d}^{i}, 0.3)
   \end{align*}
-  And afterwards the parameters are pushed back to there voundarys with the following formulas:
+  Then, the parameters are adjusted to their limits using the following formulas:
   \[
   w_d^{i+1} = 
     \begin{cases}
@@ -1342,30 +1342,30 @@ The process of this PSO variant differs too much from the standard PSO, which is
     \end{cases}\\
   \]
 \item
-  Update best Positions\\
-  Update personal best \(P\) and global best \(p_g\) positions as in the standard PSO.
+  Update the best positions\\
+  Update the personal best \(P\) and global best \(p_g\) positions as in the standard PSO.
 \item
   Repeat\\
-  Step 2 to 5 are repeated until the maximal iterations \(i_{max}\) is reached.
+  Steps 2 to 5 are repeated until the maximum iteration number \(i_{max}\) is reached.
 \end{enumerate}
 
 \hypertarget{analyse-implementation}{%
 \subsection{Analyse Implementation}\label{analyse-implementation}}
 
-The random use of the distributions, for the velocity update, increases the diversity of the swarm. The coefficients on iteration \(i\) with 100 maximal iterations are distributed as follows:\\
+The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration \(i\) with 100 maximum iterations are distributed as follows:\\
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
-It can be seen, that randomness of the movement is increased compared to the uniform distribution and the center of the Cauchy distributions decreases slowly to the absolute term. Additionaly do the two Cauchy distributions differ in exploration and exploitation ability's, seen by the height in \([0, 1]\).
+It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in exploration and exploitation ability, recognizable by the height in \([0, 1]\).
 
-The adjusting of the control parameters is even harder to interpret. The value \(W_d^i\) is a weighting of the distances to the worst fitness, which results in a higher weight for particles with a good fitness. Later the control parameters are adjusted by using the Cauchy distribution with a weighted value of the previous control parameters as center, in which the control parameters that produced better fitness are higher weighted. This will result in random control parameters, that are distributed around the best previous control parameters. The resulting behavior can be destribed with a small quote: ``If exploration is beneficial, more exploration is done. If not, more exploitation is done.''
+Even more difficult to interpret is the adjusting of the control parameters. The value \(W_d^i\) is a weighting of the distances to the worst fitness, resulting in a higher weighting of the particles with good fitness. Later, the control parameters are adjusted using the Cauchy distribution with a weighted value of the previous control parameters as the center, giving higher weights to the control parameters that produced better fitness. This results in random control parameters distributed around the best previous control parameters. The resulting behavior can be described with a small quote, ``If exploration is beneficial, more exploration is done. If not, more is exploited.''
 
 \hypertarget{test-pso-with-self-adaptive-velocity}{%
 \subsection{Test PSO with Self-Adaptive Velocity}\label{test-pso-with-self-adaptive-velocity}}
 
-The PSO with self-adaptive velocity is called \texttt{PSO-SAvel} and is evaluated on the test problem with the constants used in the implementation section:
+The PSO with self-adaptive speed is called \texttt{PSO-SAvel} and is evaluated for the test problem with the constants used in the implementation section:
 
 \includegraphics{Master_Thesis_files/figure-latex/variants7-1.png}
 
-The aggregated statistics of the last iterations of all 100 runs can be found in the table below:
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/variants8-1.png}
 
