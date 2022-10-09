@@ -6,7 +6,9 @@ editor_options:
   chunk_output_type: console
 ---
 # Real Life ITP Example
-asd
+
+(Vorhaben)
+focus auf testphase legen, diskrete (20k), long only, 0<w<0.1, ITP S&P500 tracken mit weniger als 50 titeln und mehr als 30, vorauswahl von assetpool?, umschichtungs constraint, transaktionskosten 1 euro, 
 
 ## Transaction Costs
 asd

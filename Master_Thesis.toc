@@ -63,7 +63,7 @@
 \contentsline {subsection}{\numberline {8.4.1}Implementation}{49}{subsection.8.4.1}%
 \contentsline {subsection}{\numberline {8.4.2}Analyse Implementation}{50}{subsection.8.4.2}%
 \contentsline {subsection}{\numberline {8.4.3}Test PSO with Self-Adaptive Velocity}{51}{subsection.8.4.3}%
-\contentsline {section}{\numberline {8.5}Test Local and Preserving Feasibility}{52}{section.8.5}%
+\contentsline {section}{\numberline {8.5}PSO R-Package}{52}{section.8.5}%
 \contentsline {chapter}{\numberline {9}Real Life ITP Example}{53}{chapter.9}%
 \contentsline {section}{\numberline {9.1}Transaction Costs}{53}{section.9.1}%
 \contentsline {section}{\numberline {9.2}Rebalancing Constraint}{53}{section.9.2}%

@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-08}
+\date{2022-10-09}
 
 \begin{document}
 \maketitle
@@ -1252,7 +1252,7 @@ First, the neighbors for each particle are stored in a suitable data structure b
 \hypertarget{test-local-pso}{%
 \subsection{Test Local PSO}\label{test-local-pso}}
 
-The PSO with particle neighborhoods is called \texttt{PSO-local} and evaluated on the test problem with \(k=20\):
+The PSO with particle neighborhoods is called \texttt{PSO-local} and evaluated on the test problem with \(k=10\):
 
 \includegraphics{Master_Thesis_files/figure-latex/variants5-1.png}
 
@@ -1369,8 +1369,14 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 
 \includegraphics{Master_Thesis_files/figure-latex/variants8-1.png}
 
-\hypertarget{test-local-and-preserving-feasibility}{%
-\section{Test Local and Preserving Feasibility}\label{test-local-and-preserving-feasibility}}
+\hypertarget{pso-r-package}{%
+\section{PSO R-Package}\label{pso-r-package}}
+
+Analyse:
+Unterschied zu meiner implementation:
+PSO-pkg hat eine bessere veolcity initialisierung aber kann volle länge haben und ich habe 1/10.
+
+\includegraphics{Master_Thesis_files/figure-latex/variants_pkg-1.png}
 
 \hypertarget{real-life-itp-example}{%
 \chapter{Real Life ITP Example}\label{real-life-itp-example}}
