@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-09}
+\date{2022-10-13}
 
 \begin{document}
 \maketitle
@@ -1313,7 +1313,7 @@ The process of this PSO variant is too different from the standard PSO, so all c
   In the same way as for the standard PSO.
 \item
   Self-adaptive control parameters\\
-  For an objective function \(f()\) and the maximum fitness of all particles \(f_{max} = \text{max}(f(X^{i+1}))\), the parameters \(w_d^{i}\), \(c_{p,d}^{i}\) and \(c_{g,d}^{i}\) are adapted for each particle \(d\) as follows:
+  For an objective function \(f()\) and the maximum fitness of all particles \(f_{max} = \text{max}(f(X^{i+1}))\), the parameters \(w_d^{i}\), \(c_{p,d}^{i}\) and \(c_{g,d}^{i}\) are adjusted for each particle \(d\) as follows:
   \begin{align*}
     W^i_d &= \frac{\left| f(x_d^{i+1})-f_{max} \right|}{\sum_d\left| f(x_d^{i+1})-f_{max} \right|} \\
     w_d^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot w_d^{i}, 0.2) \\
@@ -1354,7 +1354,7 @@ The process of this PSO variant is too different from the standard PSO, so all c
 
 The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration \(i\) with 100 maximum iterations are distributed as follows:\\
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
-It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in exploration and exploitation ability, recognizable by the height in \([0, 1]\).
+It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in explorability and exploitability, indicated by probabilities outside \([0, 1]\).
 
 Even more difficult to interpret is the adjusting of the control parameters. The value \(W_d^i\) is a weighting of the distances to the worst fitness, resulting in a higher weighting of the particles with good fitness. Later, the control parameters are adjusted using the Cauchy distribution with a weighted value of the previous control parameters as the center, giving higher weights to the control parameters that produced better fitness. This results in random control parameters distributed around the best previous control parameters. The resulting behavior can be described with a small quote, ``If exploration is beneficial, more exploration is done. If not, more is exploited.''
 
@@ -1381,7 +1381,8 @@ PSO-pkg hat eine bessere veolcity initialisierung aber kann volle länge haben u
 \hypertarget{real-life-itp-example}{%
 \chapter{Real Life ITP Example}\label{real-life-itp-example}}
 
-asd
+(Vorhaben)
+focus auf testphase legen, diskrete (20k), long only, 0\textless w\textless0.1, ITP S\&P500 tracken mit weniger als 50 titeln und mehr als 30, vorauswahl von assetpool?, umschichtungs constraint, transaktionskosten 1 euro,
 
 \hypertarget{transaction-costs}{%
 \section{Transaction Costs}\label{transaction-costs}}

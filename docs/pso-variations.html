@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-09" />
+<meta name="date" content="2022-10-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -679,7 +679,7 @@ and <span class="math inline">\(\text{Cauchy}(\mu, \sigma)\)</span> is a random 
 <li><p>Fitness evaluation<br />
 In the same way as for the standard PSO.</p></li>
 <li><p>Self-adaptive control parameters<br />
-For an objective function <span class="math inline">\(f()\)</span> and the maximum fitness of all particles <span class="math inline">\(f_{max} = \text{max}(f(X^{i+1}))\)</span>, the parameters <span class="math inline">\(w_d^{i}\)</span>, <span class="math inline">\(c_{p,d}^{i}\)</span> and <span class="math inline">\(c_{g,d}^{i}\)</span> are adapted for each particle <span class="math inline">\(d\)</span> as follows:
+For an objective function <span class="math inline">\(f()\)</span> and the maximum fitness of all particles <span class="math inline">\(f_{max} = \text{max}(f(X^{i+1}))\)</span>, the parameters <span class="math inline">\(w_d^{i}\)</span>, <span class="math inline">\(c_{p,d}^{i}\)</span> and <span class="math inline">\(c_{g,d}^{i}\)</span> are adjusted for each particle <span class="math inline">\(d\)</span> as follows:
 <span class="math display">\[\begin{align*}
   W^i_d &amp;= \frac{\left| f(x_d^{i+1})-f_{max} \right|}{\sum_d\left| f(x_d^{i+1})-f_{max} \right|} \\
   w_d^{i+1} &amp;= \text{Cauchy}(\sum_d W^i_d \cdot w_d^{i}, 0.2) \\
@@ -717,7 +717,7 @@ Steps 2 to 5 are repeated until the maximum iteration number <span class="math i
 <h3><span class="header-section-number">8.4.2</span> Analyse Implementation<a href="pso-variations.html#analyse-implementation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration <span class="math inline">\(i\)</span> with 100 maximum iterations are distributed as follows:<br />
 <img src="Master_Thesis_files/figure-html/unnamed-chunk-11-1.png" width="672" />
-It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in exploration and exploitation ability, recognizable by the height in <span class="math inline">\([0, 1]\)</span>.</p>
+It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in explorability and exploitability, indicated by probabilities outside <span class="math inline">\([0, 1]\)</span>.</p>
 <p>Even more difficult to interpret is the adjusting of the control parameters. The value <span class="math inline">\(W_d^i\)</span> is a weighting of the distances to the worst fitness, resulting in a higher weighting of the particles with good fitness. Later, the control parameters are adjusted using the Cauchy distribution with a weighted value of the previous control parameters as the center, giving higher weights to the control parameters that produced better fitness. This results in random control parameters distributed around the best previous control parameters. The resulting behavior can be described with a small quote, “If exploration is beneficial, more exploration is done. If not, more is exploited.”</p>
 </div>
 <div id="test-pso-with-self-adaptive-velocity" class="section level3 hasAnchor" number="8.4.3">
