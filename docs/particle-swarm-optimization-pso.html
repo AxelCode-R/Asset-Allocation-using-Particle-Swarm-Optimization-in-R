@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-15" />
+<meta name="date" content="2022-10-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -303,7 +303,7 @@ div.csl-indent {
   V^{i+1} &amp;= w \cdot V^{i} + c_p \cdot r_1^i \cdot (P^i-X^i) + c_g \cdot r_2^i \cdot (p_g^i - X^i) \\
   X^{i+1} &amp;= X^i + V^{i+1}
 \end{align*}\]</span></p>
-<p>With current positions <span class="math inline">\(X \in \mathbb{R}^{N \times D}\)</span>, current velocities <span class="math inline">\(V \in \mathbb{R}^{N \times D}\)</span>, previous best positions <span class="math inline">\(P \in \mathbb{R}^{N \times D}\)</span>, and global best position <span class="math inline">\(p_g \in \mathbb{R}^{N}\)</span>. The parameters <span class="math inline">\(w\)</span>, <span class="math inline">\(c_p\)</span> and <span class="math inline">\(c_g\)</span> are stile scalars. The random numbers are transformed into vectors <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span>, which contain uniformly distributed random numbers that are multiplied element-wise.</p>
+<p>With current positions <span class="math inline">\(X \in \mathbb{R}^{N \times D}\)</span>, current velocities <span class="math inline">\(V \in \mathbb{R}^{N \times D}\)</span>, previous best positions <span class="math inline">\(P \in \mathbb{R}^{N \times D}\)</span>, and global best position <span class="math inline">\(p_g \in \mathbb{R}^{N}\)</span>. The parameters <span class="math inline">\(w\)</span>, <span class="math inline">\(c_p\)</span> and <span class="math inline">\(c_g\)</span> are stile scalars. The random numbers are transformed into vectors <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span>, which contain uniformly distributed random numbers that are multiplied elementwise.</p>
 </div>
 <div id="pso-function" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> <code>pso()</code> Function<a href="particle-swarm-optimization-pso.html#pso-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -379,7 +379,7 @@ div.csl-indent {
 <span id="cb24-28"><a href="particle-swarm-optimization-pso.html#cb24-28" aria-hidden="true" tabindex="-1"></a>    p_g_fit <span class="ot">&lt;-</span> <span class="fu">min</span>(P_fit)</span>
 <span id="cb24-29"><a href="particle-swarm-optimization-pso.html#cb24-29" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb24-30"><a href="particle-swarm-optimization-pso.html#cb24-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>The best fitness after <span class="math inline">\(100\)</span> iterations is 0.0000033 and the best possible solution is <span class="math inline">\(0\)</span>.</p>
+<p>The best fitness after <span class="math inline">\(100\)</span> iterations is 0.0000153 and the best possible solution is <span class="math inline">\(0\)</span>.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb25-1"><a href="particle-swarm-optimization-pso.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load default PSO</span></span>
 <span id="cb25-2"><a href="particle-swarm-optimization-pso.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/PSO_functions.R&quot;</span>)</span></code></pre></div>
 </div>

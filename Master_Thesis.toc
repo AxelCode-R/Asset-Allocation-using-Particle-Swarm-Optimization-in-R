@@ -10,63 +10,63 @@
 \contentsline {subsection}{\numberline {2.1.2}\texttt {buffer()}}{7}{subsection.2.1.2}%
 \contentsline {chapter}{\numberline {3}Mathematical Fundations}{8}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Basic Operators}{8}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Return Calculation}{9}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Simple Returns}{9}{subsection.3.2.1}%
+\contentsline {section}{\numberline {3.2}Return Calculation}{10}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Simple Returns}{10}{subsection.3.2.1}%
 \contentsline {section}{\numberline {3.3}Markowitz Modern Portfolio Theory (MPT)}{10}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}Assumptions of Markowitz Portfolio Theory}{10}{subsection.3.3.1}%
-\contentsline {section}{\numberline {3.4}Portfolio Math}{10}{section.3.4}%
+\contentsline {section}{\numberline {3.4}Portfolio Math}{11}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}Expected Returns}{11}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Expected Portfolio Returns}{11}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}Covariance}{11}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.2}Expected Portfolio Returns}{12}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Covariance}{12}{subsection.3.4.3}%
 \contentsline {subsection}{\numberline {3.4.4}Portfolio Variance}{12}{subsection.3.4.4}%
-\contentsline {subsection}{\numberline {3.4.5}Portfolio Returns}{12}{subsection.3.4.5}%
-\contentsline {section}{\numberline {3.5}R-Functions}{13}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}\texttt {pri\_to\_ret()}}{13}{subsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.5.2}\texttt {ret\_to\_cumret()}}{13}{subsection.3.5.2}%
-\contentsline {subsection}{\numberline {3.5.3}\texttt {ret\_to\_geomeanret()}}{13}{subsection.3.5.3}%
-\contentsline {subsection}{\numberline {3.5.4}\texttt {calc\_portfolio\_returns()}}{14}{subsection.3.5.4}%
-\contentsline {chapter}{\numberline {4}Activ vs Passiv Investing}{15}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Challenges of Passiv Investing}{16}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Mean-Variance Portfolio (MVP)}{16}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}MVP Objective}{16}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}MVP example}{17}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}MVP Compare Estimators}{18}{subsection.5.1.3}%
-\contentsline {section}{\numberline {5.2}Index-Tracking Portfolio (ITP)}{19}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}ITP with TEV objective (ITP-TEV)}{20}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}ITP with MSTE objective (ITP-MSTE)}{21}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Example ITP}{22}{subsection.5.2.3}%
-\contentsline {chapter}{\numberline {6}Analytic Solver for Quadratic Programming Problems}{24}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Quadratic Programming (QP)}{24}{section.6.1}%
-\contentsline {section}{\numberline {6.2}QP-Solver from quadprog}{25}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Example: Solving MVP with \texttt {solve.QP()}}{25}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Example: Solving ITP-MSTE with \texttt {solve.QP()}}{28}{section.6.4}%
-\contentsline {chapter}{\numberline {7}Particle Swarm Optimization (PSO)}{32}{chapter.7}%
-\contentsline {section}{\numberline {7.1}The Algorithm}{32}{section.7.1}%
-\contentsline {section}{\numberline {7.2}\texttt {pso()} Function}{33}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Animation 2-Dimensional}{36}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Simple Constraint Handling}{37}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Example MVP}{38}{section.7.5}%
-\contentsline {section}{\numberline {7.6}Example: ITP-MSTE}{39}{section.7.6}%
-\contentsline {section}{\numberline {7.7}Pros and Cons for Continuous Problems}{40}{section.7.7}%
-\contentsline {section}{\numberline {7.8}Discrete Problems}{40}{section.7.8}%
-\contentsline {section}{\numberline {7.9}Example: Discrete ITP-MSTE}{40}{section.7.9}%
-\contentsline {chapter}{\numberline {8}PSO Variations}{42}{chapter.8}%
-\contentsline {subsection}{\numberline {8.0.1}Testproblem: Discrete ITP-MSTE}{42}{subsection.8.0.1}%
-\contentsline {section}{\numberline {8.1}Function Stretching}{43}{section.8.1}%
-\contentsline {subsection}{\numberline {8.1.1}Implementation}{46}{subsection.8.1.1}%
-\contentsline {subsection}{\numberline {8.1.2}Test PSO with Function Stretching}{46}{subsection.8.1.2}%
-\contentsline {section}{\numberline {8.2}Local PSO}{46}{section.8.2}%
-\contentsline {subsection}{\numberline {8.2.1}Implementation}{47}{subsection.8.2.1}%
-\contentsline {subsection}{\numberline {8.2.2}Test Local PSO}{47}{subsection.8.2.2}%
-\contentsline {section}{\numberline {8.3}Preserving Feasibility}{48}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Self-Adaptive Velocity}{48}{section.8.4}%
-\contentsline {subsection}{\numberline {8.4.1}Implementation}{49}{subsection.8.4.1}%
-\contentsline {subsection}{\numberline {8.4.2}Analyse Implementation}{50}{subsection.8.4.2}%
-\contentsline {subsection}{\numberline {8.4.3}Test PSO with Self-Adaptive Velocity}{51}{subsection.8.4.3}%
-\contentsline {section}{\numberline {8.5}PSO R-Package}{52}{section.8.5}%
-\contentsline {chapter}{\numberline {9}Real Life ITP Example}{53}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Transaction Costs}{53}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Rebalancing Constraint}{54}{section.9.2}%
-\contentsline {section}{\numberline {9.3}Analyse Objectives}{54}{section.9.3}%
-\contentsline {section}{\numberline {9.4}Complete ITP Example}{54}{section.9.4}%
-\contentsline {chapter}{\numberline {10}Conclusion}{55}{chapter.10}%
+\contentsline {subsection}{\numberline {3.4.5}Portfolio Returns}{13}{subsection.3.4.5}%
+\contentsline {section}{\numberline {3.5}R-Functions}{14}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}\texttt {pri\_to\_ret()}}{14}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}\texttt {ret\_to\_cumret()}}{14}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}\texttt {ret\_to\_geomeanret()}}{14}{subsection.3.5.3}%
+\contentsline {subsection}{\numberline {3.5.4}\texttt {calc\_portfolio\_returns()}}{15}{subsection.3.5.4}%
+\contentsline {chapter}{\numberline {4}Activ vs Passiv Investing}{16}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Challenges of Passiv Investing}{17}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Mean-Variance Portfolio (MVP)}{17}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}MVP Objective}{17}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}MVP example}{18}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}MVP Compare Estimators}{20}{subsection.5.1.3}%
+\contentsline {section}{\numberline {5.2}Index-Tracking Portfolio (ITP)}{20}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}ITP with TEV objective (ITP-TEV)}{21}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}ITP with MSTE objective (ITP-MSTE)}{22}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Example ITP}{23}{subsection.5.2.3}%
+\contentsline {chapter}{\numberline {6}Analytic Solver for Quadratic Programming Problems}{25}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Quadratic Programming (QP)}{25}{section.6.1}%
+\contentsline {section}{\numberline {6.2}QP-Solver from quadprog}{26}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Example: Solving MVP with \texttt {solve.QP()}}{26}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Example: Solving ITP-MSTE with \texttt {solve.QP()}}{29}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Particle Swarm Optimization (PSO)}{33}{chapter.7}%
+\contentsline {section}{\numberline {7.1}The Algorithm}{33}{section.7.1}%
+\contentsline {section}{\numberline {7.2}\texttt {pso()} Function}{34}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Animation 2-Dimensional}{37}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Simple Constraint Handling}{38}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Example MVP}{39}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Example: ITP-MSTE}{40}{section.7.6}%
+\contentsline {section}{\numberline {7.7}Pros and Cons for Continuous Problems}{41}{section.7.7}%
+\contentsline {section}{\numberline {7.8}Discrete Problems}{41}{section.7.8}%
+\contentsline {section}{\numberline {7.9}Example: Discrete ITP-MSTE}{41}{section.7.9}%
+\contentsline {chapter}{\numberline {8}PSO Variations}{43}{chapter.8}%
+\contentsline {subsection}{\numberline {8.0.1}Testproblem: Discrete ITP-MSTE}{43}{subsection.8.0.1}%
+\contentsline {section}{\numberline {8.1}Function Stretching}{44}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Implementation}{47}{subsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.1.2}Test PSO with Function Stretching}{47}{subsection.8.1.2}%
+\contentsline {section}{\numberline {8.2}Local PSO}{47}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Implementation}{48}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}Test Local PSO}{48}{subsection.8.2.2}%
+\contentsline {section}{\numberline {8.3}Preserving Feasibility}{49}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Self-Adaptive Velocity}{49}{section.8.4}%
+\contentsline {subsection}{\numberline {8.4.1}Implementation}{50}{subsection.8.4.1}%
+\contentsline {subsection}{\numberline {8.4.2}Analyse Implementation}{51}{subsection.8.4.2}%
+\contentsline {subsection}{\numberline {8.4.3}Test PSO with Self-Adaptive Velocity}{52}{subsection.8.4.3}%
+\contentsline {section}{\numberline {8.5}PSO R-Package}{53}{section.8.5}%
+\contentsline {chapter}{\numberline {9}Real Life ITP Example}{54}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Transaction Costs}{54}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Rebalancing Constraint}{55}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Analyse Objectives}{55}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Complete ITP Example}{55}{section.9.4}%
+\contentsline {chapter}{\numberline {10}Conclusion}{56}{chapter.10}%

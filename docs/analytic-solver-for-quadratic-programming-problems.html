@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-15" />
+<meta name="date" content="2022-10-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -319,7 +319,7 @@ and is valid under the linear constraints:
 </div>
 <div id="exampleanalyticalmvp" class="section level2 hasAnchor" number="6.3">
 <h2><span class="header-section-number">6.3</span> Example: Solving MVP with <code>solve.QP()</code><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This section provides insights into the effects of diversification and the use of <code>solve.QP()</code> by creating ten different efficiency frontiers from a pool of ten assets. Each efficiency frontier <span class="math inline">\(i \in \{1, 2, \cdots, 10\}\)</span> consists of <span class="math inline">\(N_i = i\)</span> assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:</p>
+<p>This section provides insights into the effects of diversification and the use of <code>solve.QP()</code> by creating ten different efficiency frontiers from a pool of ten assets. Each efficient frontier <span class="math inline">\(i \in \{1, 2, \cdots, 10\}\)</span> consists of <span class="math inline">\(N_i = i\)</span> assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb12-1"><a href="analytic-solver-for-quadratic-programming-problems.html#cb12-1" aria-hidden="true" tabindex="-1"></a>returns_raw <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb12-2"><a href="analytic-solver-for-quadratic-programming-problems.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(</span>
 <span id="cb12-3"><a href="analytic-solver-for-quadratic-programming-problems.html#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>, <span class="st">&quot;MSFT&quot;</span>, <span class="st">&quot;AMZN&quot;</span>, </span>
