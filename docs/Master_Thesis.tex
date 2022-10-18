@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-17}
+\date{2022-10-18}
 
 \begin{document}
 \maketitle
@@ -574,15 +574,15 @@ This is all the data necessary to solve the MVP with \(\lambda \in \{0.01, 0.02,
 
 The resulting portfolios are plotted in the daily \(\mu\)-\(\sigma\) diagram to create the efficient frontier:\\
 \includegraphics{Master_Thesis_files/figure-latex/MVP_ex5-1.png}
+
 The portfolio compositions for each \(\lambda\) are:\\
 \includegraphics{Master_Thesis_files/figure-latex/MVP_ex6-1.png}
-It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased in \(\lambda\), the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
+It can be observed that the minimum variance portfolio was achieved with a diversified composition of the three assets. With gradually decreasing \(\lambda\), the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
 
 \hypertarget{mvp-compare-estimators}{%
 \subsection{MVP Compare Estimators}\label{mvp-compare-estimators}}
 
-The above MVP used a geometric mean returns to estimate the expected returns \(\mu\) and used it as well in the estimation of \(\textstyle\sum\). This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean returns. The following chart illustrates the efficient frontier for a MVP with arithmetic mean returns as estimator of \(\mu\) versus a MVP with geometric mean returns as estimator of \(\mu\). To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean returns:
-
+The above solution for the MVP was performed using a geometric mean to estimate the expected returns \(\mu\) and was also used in the estimation of \(\textstyle\sum\). This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of \(\lambda\) using the arithmetic mean versus the geometric mean to estimate \(\mu\). The weights of the MVP's using the geometric mean are used to calculate \(\mu\) and \(\sigma\) as a function of the arithmetic mean to make both efficient frontiers comparable:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png}
 It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with \(\lambda\) are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.
 
@@ -673,7 +673,7 @@ The portfolio returns \(r_p\) needs to be substituted to contain the portfolio w
   \left\Vert r_{p}-r_{bm} \right\Vert_2^2 &= \left\Vert R \times w-r_{bm} \right\Vert_2^2 \\ 
   &= (R \times w-r_{bm})^T \times (R \times w-r_{bm}) \\ 
   &= (w^T \times R^T-r_{bm}^T) \times (R \times w-r_{bm}) \\ 
-  &= w^T \times R^T \times R \times w - w^T \times A^T \times r_{bm} - r_{bm}^T \times R \times w + r_{bm}^T \times r_{bm} 
+  &= w^T \times R^T \times R \times w - w^T \times R^T \times r_{bm} - r_{bm}^T \times R \times w + r_{bm}^T \times r_{bm} 
 \end{align*}
 
 The minimization and the fact that the scalars \(w^T \times R^T \times r_{bm}\) and \(r_{bm}^T \times R \times w\) are equal, transforms the problem to:

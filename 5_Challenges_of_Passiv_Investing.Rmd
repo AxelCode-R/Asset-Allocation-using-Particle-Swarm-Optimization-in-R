@@ -79,28 +79,20 @@ for(lambda in seq(0.01,1, 0.01)){
 }
 portfolios <- data.frame(portfolios)
 colnames(portfolios) <- colnames(returns)
-
 ```
 The resulting portfolios are plotted in the daily $\mu$-$\sigma$ diagram to create the efficient frontier:  
 ```{r MVP_ex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
-plot_ly(data = mu_and_var) %>%
+plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
   add_lines(y = ~mu, x = ~sd, name = "efficient frontier", mode="lines", type = 'scatter') %>%
   add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps", type = 'scatter') %>%
   layout(
-    yaxis = list(range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1), title=plotly::TeX("\\mu")),
-    xaxis = list(range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05), title=plotly::TeX("\\sigma"))
-    # margin = list(
-    #     l = 20,
-    #     r = 10,
-    #     b = 70,
-    #     t = 50,
-    #     pad = 4
-    # )
+    yaxis = list(title=list(text = plotly::TeX("\\mu \\text{ (geometric)}"), standoff = 10L), range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
+    xaxis = list(title=list(text = plotly::TeX("\\sigma \\text{ (geometric)}"), standoff = 10L), range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05))
   ) %>% 
   config(mathjax = 'cdn') %>% 
   html_save()
-
 ```
+
 The portfolio compositions for each $\lambda$ are:  
 ```{r MVP_ex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
 p <- plot_ly(type="bar") %>% 
@@ -109,14 +101,15 @@ for(i in 1:ncol(portfolios)){
   p <- p %>%
   add_trace(x=seq(0.01,1, 0.01), y=portfolios[, i], name = colnames(portfolios)[i])
 }
-p %>% config(mathjax = 'cdn') %>% html_save()
+p %>% 
+  config(mathjax = 'cdn') %>% 
+  html_save()
 
 ```
-It can be observed that the minimum variance portfolio was achieved with a diversified composition of the tree assets. With gradually decreased in $\lambda$, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
+It can be observed that the minimum variance portfolio was achieved with a diversified composition of the three assets. With gradually decreasing $\lambda$, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
 
 ### MVP Compare Estimators
-The above MVP used a geometric mean returns to estimate the expected returns $\mu$ and used it as well in the estimation of $\textstyle\sum$. This rises the question if the outcome differs from the classical approach of estimating these parameters with the arithmetic mean returns. The following chart illustrates the efficient frontier for a MVP with arithmetic mean returns as estimator of $\mu$ versus a MVP with geometric mean returns as estimator of $\mu$. To compare the results in one chart, all resulting portfolios are evaluated on the historical data with the arithmetic mean returns:
-
+The above solution for the MVP was performed using a geometric mean to estimate the expected returns $\mu$ and was also used in the estimation of $\textstyle\sum$. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of $\lambda$ using the arithmetic mean versus the geometric mean to estimate $\mu$. The weights of the MVP's using the geometric mean are used to calculate $\mu$ and $\sigma$ as a function of the arithmetic mean to make both efficient frontiers comparable:
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 
 cov_ <- function(mat, mean_vec=NULL){
@@ -182,46 +175,6 @@ colnames(portfolios) <- colnames(returns)
 all <- data.frame(type="geo_mean", mu_and_var)
 
 
-# 
-# mu <- ret_to_geomeanret(returns) #apply(returns, 2, mean) #ret_to_geomeanret(returns)
-# cov <- cov(returns)
-# 
-# 
-# portfolios <- data.frame()
-# mu_and_var <- NULL
-# for(lambda in seq(0.01,1, 0.01)){
-#   mat <- list(
-#     Dmat = lambda * cov,
-#     dvec = (1 - lambda) * mu,
-#     Amat = t(rbind(
-#       rep(1, ncol(returns)), # sum up to 1
-#       diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
-#     )),
-#     bvec = c(
-#       1, # sum up to 1
-#       rep(0, ncol(returns)) # long only
-#     ),
-#     meq = 1
-#   )
-# 
-#   qp <- solve.QP(Dmat = mat$Dmat, dvec = mat$dvec, Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq)
-# 
-#   port <- xts(returns %*% qp$solution, order.by=index(returns))
-# 
-#   mu_and_var <- rbind(
-#     mu_and_var,
-#     data.frame("lambda" = lambda, "mu" = mu_arit %*% qp$solution, "sd" = sqrt(t(qp$solution) %*% cov_arit %*% qp$solution))
-#   )
-#   portfolios <- rbind(
-#     portfolios,
-#     qp$solution
-#   )
-# }
-# portfolios <- data.frame(portfolios)
-# colnames(portfolios) <- colnames(returns)
-# 
-# all <- rbind(all, data.frame(type="geo_mean_and_cov_with_arith", mu_and_var))
-
 
 
 mu <- apply(returns, 2, mean)
@@ -266,25 +219,26 @@ all <- rbind(all, data.frame(type="arith_mean", mu_and_var))
 
 
 
-plot_ly() %>%
-  add_lines(data = all %>% filter(type=="geo_mean"), y = ~mu, x = ~sd, name="geo_mean", mode="lines", type = 'scatter') %>%
-  add_trace(data = all %>% filter(type=="geo_mean"), x = ~sd, y=~mu, name="geo_mean", mode="markers", type = 'scatter') %>%
-  add_lines(data = all %>% filter(type=="arith_mean"), y = ~mu, x = ~sd, name="arith_mean", mode="lines", type = 'scatter') %>%
-  add_trace(data = all %>% filter(type=="arith_mean"), x = ~sd, y=~mu, name="arith_mean", mode="markers", type = 'scatter') %>%
+plot_ly(data = all, type = 'scatter', mode="lines+markers", y = ~mu, x = ~sd, name=~type) %>%
+  # add_lines(data = all %>% filter(type=="geo_mean"), y = ~mu, x = ~sd, name="geo_mean", type = 'scatter', mode="lines+markers") %>%
+  # #add_trace(data = all %>% filter(type=="geo_mean"), x = ~sd, y=~mu, name="geo_mean", mode="markers", type = 'scatter') %>%
+  # add_lines(data = all %>% filter(type=="arith_mean"), y = ~mu, x = ~sd, name="arith_mean", type = 'scatter', mode="lines+markers") %>%
+  #add_trace(data = all %>% filter(type=="arith_mean"), x = ~sd, y=~mu, name="arith_mean", mode="markers", type = 'scatter') %>%
   # add_lines(data = all %>% filter(type=="geo_mean_and_cov_with_arith"), y = ~mu, x = ~sd, name="geo_mean_and_cov_with_arith", mode="lines", type = 'scatter') %>%
   # add_trace(data = all %>% filter(type=="geo_mean_and_cov_with_arith"), x = ~sd, y=~mu, name="geo_mean_and_cov_with_arith", mode="markers", type = 'scatter') %>%
   layout(
-    title = "3-Asset MVP: arith_mean or geo_mean",
-    yaxis = list(title = "mu (arithmetic)", range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
-    xaxis = list(title = "sd (arithmetic)", range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05)),
-    margin = list(
-      l = 10,
-      r = 10,
-      b = 70,
-      t = 50,
-      pad = 4
-    )
+    #title = "3-Asset MVP: arith_mean or geo_mean",
+    yaxis = list(title=list(text = plotly::TeX("\\mu \\text{ (arithmetic)}"), standoff = 10L), range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
+    xaxis = list(title=list(text = plotly::TeX("\\sigma \\text{ (arithmetic)}"), standoff = 10L), range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05))#,
+    # margin = list(
+    #   l = 10,
+    #   r = 10,
+    #   b = 70,
+    #   t = 50,
+    #   pad = 4
+    # )
   ) %>%
+  config(mathjax = 'cdn') %>% 
   html_save()
 ```
 It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with $\lambda$ are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.
@@ -372,7 +326,7 @@ The portfolio returns $r_p$ needs to be substituted to contain the portfolio wei
   \left\Vert r_{p}-r_{bm} \right\Vert_2^2 &= \left\Vert R \times w-r_{bm} \right\Vert_2^2 \\ 
   &= (R \times w-r_{bm})^T \times (R \times w-r_{bm}) \\ 
   &= (w^T \times R^T-r_{bm}^T) \times (R \times w-r_{bm}) \\ 
-  &= w^T \times R^T \times R \times w - w^T \times A^T \times r_{bm} - r_{bm}^T \times R \times w + r_{bm}^T \times r_{bm} 
+  &= w^T \times R^T \times R \times w - w^T \times R^T \times r_{bm} - r_{bm}^T \times R \times w + r_{bm}^T \times r_{bm} 
 \end{align*}
 
 The minimization and the fact that the scalars $w^T \times R^T \times r_{bm}$ and $r_{bm}^T \times R \times w$ are equal, transforms the problem to:

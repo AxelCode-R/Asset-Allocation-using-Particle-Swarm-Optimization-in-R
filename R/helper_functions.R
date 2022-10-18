@@ -53,8 +53,8 @@ buffer <- function(expr, rdata_file, force = FALSE){
 
 
 
-html_save <- function(html_chart, zoom = 4, vheight = 300, vwidth = 600){
-  if(!knitr::is_html_output() && !knitr::is_latex_output()){
+html_save <- function(html_chart, zoom = 4, vheight = 300, vwidth = 600, delay = 2, force = F, expand = NULL, ...){
+  if(!force && !knitr::is_html_output() && !knitr::is_latex_output() ){
     html_chart
   }else{
     if(!dir.exists("docs/")){
@@ -62,7 +62,7 @@ html_save <- function(html_chart, zoom = 4, vheight = 300, vwidth = 600){
     }
     suppressMessages({
       htmlwidgets::saveWidget(html_chart, "docs/p.html")
-      webshot2::webshot("docs/p.html", "docs/p.png", delay=1, zoom=zoom, vheight=vheight, vwidth = vwidth)
+      webshot2::webshot("docs/p.html", "docs/p.png", delay=delay, zoom=zoom, vheight=vheight, vwidth = vwidth, expand = expand, ...)
     })
   }
 }
