@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-18" />
+<meta name="date" content="2022-10-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -311,11 +311,13 @@ and is valid under the linear constraints:
 <li><code>dvec</code>: Vector <span class="math inline">\(d \in \mathbb{R}^{N}\)</span> of the linear term</li>
 <li><code>Amat</code>: Constraint matrix <span class="math inline">\(A\)</span></li>
 <li><code>bvec</code>: Constraint vector <span class="math inline">\(b_0\)</span></li>
-<li><code>meq = 1</code>: means that the first row of <span class="math inline">\(A\)</span> is treated as an equality constraint</li>
+<li><code>meq = 1</code>: means that the first <code>meq</code> columns of <span class="math inline">\(A\)</span> are treated as an equality constraint</li>
 </ul>
-<p>The return of <code>solve.QP()</code> is a list and contains, among others, the following attributes of interest:
-+ <code>solution</code>: Vector containing the solution <span class="math inline">\(x\)</span> of the quadratic programming problem (e.g. portfolio weights)
-+ <code>value</code>: Scalar, the value of the quadratic function at the solution</p>
+<p>The return of <code>solve.QP()</code> is a list and contains, among others, the following attributes of interest:</p>
+<ul>
+<li><code>solution</code>: Vector containing the solution <span class="math inline">\(x\)</span> of the quadratic programming problem (e.g. portfolio weights)</li>
+<li><code>value</code>: Scalar, the value of the quadratic function at the solution</li>
+</ul>
 </div>
 <div id="exampleanalyticalmvp" class="section level2 hasAnchor" number="6.3">
 <h2><span class="header-section-number">6.3</span> Example: Solving MVP with <code>solve.QP()</code><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -345,39 +347,41 @@ and is valid under the linear constraints:
 <span id="cb13-9"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">dvec =</span> (<span class="dv">1</span><span class="sc">-</span>lambda) <span class="sc">*</span> mu,</span>
 <span id="cb13-10"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
 <span id="cb13-11"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(returns)), <span class="co"># sum up to 1</span></span>
-<span id="cb13-12"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">diag</span>(<span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">ncol</span>(returns), <span class="at">ncol=</span><span class="fu">ncol</span>(returns)) <span class="co"># long only</span></span>
-<span id="cb13-13"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-13" aria-hidden="true" tabindex="-1"></a>      )),</span>
-<span id="cb13-14"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">bvec =</span> <span class="fu">c</span>(</span>
-<span id="cb13-15"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
-<span id="cb13-16"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(returns)) <span class="co"># long only</span></span>
-<span id="cb13-17"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-17" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb13-18"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">meq =</span> <span class="dv">1</span></span>
-<span id="cb13-19"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb13-20"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-21"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-21" aria-hidden="true" tabindex="-1"></a>    qp <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(</span>
-<span id="cb13-22"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">Dmat =</span> mat<span class="sc">$</span>Dmat, <span class="at">dvec =</span> mat<span class="sc">$</span>dvec, </span>
-<span id="cb13-23"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">Amat =</span> mat<span class="sc">$</span>Amat, <span class="at">bvec =</span> mat<span class="sc">$</span>bvec, <span class="at">meq =</span> mat<span class="sc">$</span>meq</span>
-<span id="cb13-24"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-24" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb13-25"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-26"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-26" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb13-27"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-27" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mu&quot;</span> <span class="ot">=</span> mu <span class="sc">%*%</span> qp<span class="sc">$</span>solution,</span>
-<span id="cb13-28"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-28" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="fu">t</span>(qp<span class="sc">$</span>solution) <span class="sc">%*%</span> cov <span class="sc">%*%</span> qp<span class="sc">$</span>solution,</span>
-<span id="cb13-29"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;composition&quot;</span> <span class="ot">=</span> <span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(returns))</span>
-<span id="cb13-30"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-30" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb13-31"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span></span>
-<span id="cb13-32"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-32" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e){<span class="cn">FALSE</span>})</span>
-<span id="cb13-33"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-34"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-35"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-35" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(tc){</span>
-<span id="cb13-36"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(res)</span>
-<span id="cb13-37"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-37" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
-<span id="cb13-38"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(</span>
-<span id="cb13-39"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mu&quot;</span> <span class="ot">=</span> <span class="cn">NA</span>,</span>
-<span id="cb13-40"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="cn">NA</span>,</span>
-<span id="cb13-41"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-41" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;composition&quot;</span> <span class="ot">=</span> <span class="cn">NA</span></span>
-<span id="cb13-42"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-42" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb13-43"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-43" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-44"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-44" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb13-12"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">diag</span>(</span>
+<span id="cb13-13"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-13" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">ncol</span>(returns), <span class="at">ncol=</span><span class="fu">ncol</span>(returns)</span>
+<span id="cb13-14"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-14" aria-hidden="true" tabindex="-1"></a>        ) <span class="co"># long only</span></span>
+<span id="cb13-15"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-15" aria-hidden="true" tabindex="-1"></a>      )),</span>
+<span id="cb13-16"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">bvec =</span> <span class="fu">c</span>(</span>
+<span id="cb13-17"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-17" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
+<span id="cb13-18"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(returns)) <span class="co"># long only</span></span>
+<span id="cb13-19"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-19" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb13-20"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">meq =</span> <span class="dv">1</span></span>
+<span id="cb13-21"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-22"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-23"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-23" aria-hidden="true" tabindex="-1"></a>    qp <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(</span>
+<span id="cb13-24"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">Dmat =</span> mat<span class="sc">$</span>Dmat, <span class="at">dvec =</span> mat<span class="sc">$</span>dvec, </span>
+<span id="cb13-25"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">Amat =</span> mat<span class="sc">$</span>Amat, <span class="at">bvec =</span> mat<span class="sc">$</span>bvec, <span class="at">meq =</span> mat<span class="sc">$</span>meq</span>
+<span id="cb13-26"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-27"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-28"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-28" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb13-29"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mu&quot;</span> <span class="ot">=</span> mu <span class="sc">%*%</span> qp<span class="sc">$</span>solution,</span>
+<span id="cb13-30"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-30" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="fu">t</span>(qp<span class="sc">$</span>solution) <span class="sc">%*%</span> cov <span class="sc">%*%</span> qp<span class="sc">$</span>solution,</span>
+<span id="cb13-31"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-31" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;composition&quot;</span> <span class="ot">=</span> <span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(returns))</span>
+<span id="cb13-32"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-32" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-33"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-33" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span></span>
+<span id="cb13-34"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-34" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e){<span class="cn">FALSE</span>})</span>
+<span id="cb13-35"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-36"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(tc){</span>
+<span id="cb13-38"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(res)</span>
+<span id="cb13-39"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-39" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb13-40"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(</span>
+<span id="cb13-41"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-41" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mu&quot;</span> <span class="ot">=</span> <span class="cn">NA</span>,</span>
+<span id="cb13-42"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-42" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="cn">NA</span>,</span>
+<span id="cb13-43"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-43" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;composition&quot;</span> <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb13-44"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-44" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb13-45"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-46"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-46" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Each <span class="math inline">\(\lambda \in \{0.01, 0.02, \cdots, 1\}\)</span> and each combination of ascending number of assets results in a portfolio that can be created with two for loops.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb14-1"><a href="analytic-solver-for-quadratic-programming-problems.html#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb14-2"><a href="analytic-solver-for-quadratic-programming-problems.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;index&quot;</span><span class="ot">=</span><span class="dv">1</span>, </span>

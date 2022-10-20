@@ -15,13 +15,13 @@ Each particle $d$ with position $x_d$ moves in the search space $\mathbb{R}^N$ a
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
-Where $r_1$ and $r_2$ are uniformly distributed random numbers in [0, 1]. The cognitive parameter $c_p$ acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter $c_g$, which is a weighting of the direction to the global best position. The inertial weight $w$ is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for $d = 1, 2, \cdots, D$ particles can be given in the following matrix notation:
+Where $r_1$ and $r_2$ are uniformly distributed random numbers in $[0, 1]$. The cognitive parameter $c_p$ acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter $c_g$, which is a weighting of the direction to the global best position. The inertial weight $w$ is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for $d = 1, 2, \cdots, D$ particles can be given in the following matrix notation:
 \begin{align*}
-  V^{i+1} &= w \cdot V^{i} + c_p \cdot r_1^i \cdot (P^i-X^i) + c_g \cdot r_2^i \cdot (p_g^i - X^i) \\
+  V^{i+1} &= w \cdot V^{i} + c_p \cdot \vec{r}_1^{\,i} \cdot (P^i-X^i) + c_g \cdot \vec{r}_2^{\,i} \cdot (p_g^i - X^i) \\
   X^{i+1} &= X^i + V^{i+1}
 \end{align*}
 
-With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$ and $c_g$ are stile scalars. The random numbers are transformed into vectors $r_1$ and $r_2$, which contain uniformly distributed random numbers that are multiplied elementwise.
+With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$ and $c_g$ are stile scalars. The random numbers $r_1$ and $r_2$ are replaced by the vectors $\vec{r}_1$ and $\vec{r}_2$, in which each element is a uniformly distributed random number generated in $[0, 1]$.
 
 ## `pso()` Function
 In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which returns a scalar that needs to be minimized. The function itself mainly needs a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The argument can only contain `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
@@ -123,11 +123,16 @@ source("R/PSO_functions.R")
 
 
 ## Animation 2-Dimensional
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The amazing animation template is inspired by [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). The PSO core from the above chapter was used to complete the `pso()` function and is tested here with seed 0. The function `fn` to be evaluated can be found in [R'tichoke](https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/). 
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The amazing animation template and the objective function is inspired by [@Rtic2021]. The PSO core from the above chapter was used to complete the `pso()` function and is tested here with seed 0. The objective is to minimize the following function ($f:\mathbb{R}^2 \rightarrow \mathbb{R}$):
+$$
+f(x, y) = -20\cdot e^{-0.2 \cdot \sqrt{0.5 \cdot ((x-1)^2 + (y-1)^2)}} \ - e^{0.5 \cdot ( cos(2\cdot \pi \cdot x) + cos(2\cdot \pi \cdot y))} + e + 20
+$$
+
+The following code runs the PSO and tries to minimize the objective function:
 ```{r gif_create}
 set.seed(0)
 
-fn <- function(pos){
+f <- function(pos){
   -20 * exp(-0.2 * sqrt(0.5 *((pos[1]-1)^2 + (pos[2]-1)^2))) - 
   exp(0.5*(cos(2*pi*pos[1]) + cos(2*pi*pos[2]))) + 
   exp(1) + 20
@@ -135,7 +140,7 @@ fn <- function(pos){
 
 res <- pso(
   par = rep(NA, 2),
-  fn = fn,
+  fn = f,
   lower = -10,
   upper = 10,
   control = list(
@@ -147,7 +152,7 @@ res <- pso(
 )
 ```
 
-The function `fn` has many local minima and a global minima at $(1,1)$ with the value $0$. The background color scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:
+The function `f` has many local minima and a global minima at $(1,1)$ with the value $0$. The background color scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:
 
 ```{r gif_animate, echo=F}
 grid <- expand.grid(seq(-10, 10, length.out = 100), seq(-10, 10, length.out = 100), stringsAsFactors = F)
@@ -212,28 +217,45 @@ if(!knitr::is_latex_output()){
 ## Simple Constraint Handling
 The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure. This can be used to create a generic constraint handling function for these particular QP's. Both problems must satisfy the following equation:
 $$
-  A^T \times x - b_0 \geq \vec{0}
+  A^T \times x  \geq b_0
 $$
-Because of `meq=1`, the first value is considered as equality condition. This can be achieved by transforming the first value with the `abs()` function, which returns the absolute value. Equality is hard to achieve with the PSO, so it is transformed into a boundary constraint, with upper and lower boundary. Since `meq=1` always describes the constraint $\sum w_i = 1$, it can be transformed into $1 \leq \textstyle\sum w_i \geq 0.99$ to obtain a constraint sufficient for most practical applications. The final vector contains constraint breaks if the elements are negative. All of these negative elements are squared and summed to calculate a value representing the intensity of the constraint breaks. All this can be done with the following R function, which requires a `mat` object in the parent environment containing the matrices for the QP:
+To calculate a value for the intensity of constraint breaks, the above equation gets subtracted by $b_0$ and defines:
+$$
+  c := A^T \times x - b_0
+$$
+All negative elements in the vector $c$ represent constraint breaks that are squared and summed to extract a value that describes the intensity of constraint breaks like follows:
+$$
+  c_{break} = \sum p(c_i) \cdot c_i^2
+$$
+with
+$$
+ p(x) =   \begin{cases}
+  0 &\text{ if }x \geq 0\\
+  x &\text{ if }x < 0
+  \end{cases}
+$$
+By following the name conventions of `solve.QP()` a list named `mat` is created in the parent environment, that contains the necessary inputs. The generic R function to calculate the constraint breaks can be defined as follows:
 ```{r}
 calc_const <- function(x){
   const <- t(mat$Amat) %*% x - mat$bvec
-  const[mat$meq] <- -pmax(0, abs(const[mat$meq]+0.005)-0.005)
   sum(pmin(0, const)^2)
 }
 ```
-The new objective function `fn()` is transformed and consists of two parts. The first part is to evaluate the unconstrained objective of the QP with the following function:
+
+In contrast to the `solve.QP()`, it's difficult for the PSO to find a feasible point, if equality constraints are used, which is why the equality constraint $\textstyle\sum w_i = 1$ is reduced to $0.99 \leq \textstyle\sum w_i$ and $\textstyle\sum w_i \leq 1$. 
+
+The new objective function `fn()` consists of two parts. The first part is to evaluate the unconstrained objective of the QP with the following function:
 ```{r}
 calc_fit <- function(x){
   0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x
 }
 ```
-The second part is the function `calc_const()`. Since breaking constraints is much worse than losing fitness, it must have a higher weight (e.g. 5) which must be fine-tuned. This results in the final `fn()` function composition:
+The second part is the function `calc_const()`. Since breaking constraints is much worse than losing fitness, it must have a higher intensity (e.g. 10) which must be fine-tuned. This results in the final `fn()` function composition:
 ```{r}
 fn <- function(x){
   fitness <- calc_fit(x)
   constraints <- calc_const(x)
-  return(fitness + 5 * constraints)
+  return(fitness + 10 * constraints)
 }
 ```
 This approach to dealing with constraints is called the penalization method and is definitely the most straightforward approach. Its disadvantage is the fact that the PSO has to find a balance between the violation of constraints and the goal. As explained in [@InSi2008], there are three other constraint handling methods, but the results show that none of them is superior. The treatment of constraints should be chosen appropriately for the given problem. For example, it may be useful to use the feasibility preservation technique to obtain a solution that is guaranteed not to break any constraints. The disadvantages here are longer computation time and less exploration of particles, since only feasible solutions can be stored as personal or global best solutions.
@@ -268,14 +290,16 @@ mvp_QP <- function(returns, lambda){
       Dmat = lambda * cov,
       dvec = (1-lambda) * mu,
       Amat = t(rbind(
-        rep(1, ncol(returns)), # sum up to 1
+        -rep(1, ncol(returns)), # sum w <= 1
+        rep(1, ncol(returns)), # sum w >= 0.99
         diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
       )),
       bvec = c(
-        1, # sum up to 1
+        -1, # sum w <= 1
+        0.99, # sum w >= 0.99
         rep(0, ncol(returns)) # long only
       ),
-      meq = 1
+      meq = 0
     )
   
     qp <- solve.QP(
@@ -308,20 +332,22 @@ mvp_PSO <- function(returns, lambda, silent = T){
   tc <- tryCatch({
     mu <- ret_to_geomeanret(returns)
 
-    cov <- cov(returns) #as.matrix(nearPD(cov(returns))$mat)
+    cov <- cov(returns)
 
     mat <- list(
       Dmat = lambda * cov,
       dvec = (1-lambda) * mu,
       Amat = t(rbind(
-        rep(1, ncol(returns)), # sum up to 1
+        -rep(1, ncol(returns)), # sum w <= 1
+        rep(1, ncol(returns)), # sum w >= 0.99
         diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
       )),
       bvec = c(
-        1, # sum up to 1
+        -1, # sum w <= 1
+        0.99, # sum w >= 0.99
         rep(0, ncol(returns)) # long only
       ),
-      meq = 1
+      meq = 0
     )
   
     calc_fit <- function(x){
@@ -329,7 +355,6 @@ mvp_PSO <- function(returns, lambda, silent = T){
     }
     calc_const <- function(x){
       const <- t(mat$Amat) %*% x - mat$bvec
-      const[mat$meq] <- -max(0, abs(const[mat$meq]+0.005)-0.005)
       sum(pmin(0, const)^2)
     }
     pso_res <- pso(
@@ -337,7 +362,7 @@ mvp_PSO <- function(returns, lambda, silent = T){
       fn = function(x){
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness + 5 * constraints)
+        return(fitness + 10 * constraints)
       },
       lower = 0,
       upper = 1,
@@ -437,13 +462,6 @@ plot_ly(
     ay = -30,
     ax = -30
   ) %>% 
-  # add_segments(
-  #   #data=df_diff,   
-  #   x=df_diff$sd_pso, 
-  #   y=df_diff$mu_pso, 
-  #   yend = df_diff$sd_diff,
-  #   xend = df_diff$mu_diff
-  # ) %>% 
   layout(
     xaxis=list(range=c(0.5*min(df$sd), 1.2*max(df[df$type=="QP_MVP",]$sd)), showgrid = FALSE),
     yaxis=list(range=c(0.5*min(df$mu), 1.2*max(df[df$type=="QP_MVP",]$mu)), showgrid = FALSE),
@@ -497,13 +515,15 @@ itp_QP <- function(pool_returns, bm_returns){
     Dmat = t(pool_returns) %*% pool_returns,
     dvec = t(pool_returns) %*% bm_returns,
     Amat = t(rbind(
-      rep(1, ncol(pool_returns)), # sum up to 1
+      -rep(1, ncol(pool_returns)), # sum w <= 1
+      rep(1, ncol(pool_returns)), # sum w >= 0.99
       diag(1, 
            nrow=ncol(pool_returns), 
            ncol=ncol(pool_returns)) # long only
     )),
     bvec = c(
-      1, # sum up to 1
+      -1, # sum w <= 1
+      0.99, # sum w >= 0.99
       rep(0, ncol(pool_returns)) # long only
     ),
     meq = 1
@@ -529,13 +549,15 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
     Dmat = t(pool_returns) %*% pool_returns,
     dvec = t(pool_returns) %*% bm_returns,
     Amat = t(rbind(
-      rep(1, ncol(pool_returns)), # sum up to 1
+      -rep(1, ncol(pool_returns)), # sum w <= 1
+      rep(1, ncol(pool_returns)), # sum w >= 0.99
       diag(1, 
            nrow=ncol(pool_returns), 
            ncol=ncol(pool_returns)) # long only
     )),
     bvec = c(
-      1, # sum up to 1
+      -1, # sum w <= 1
+      0.99, # sum w >= 0.99
       rep(0, ncol(pool_returns)) # long only
     ),
     meq = 1
@@ -546,7 +568,6 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
   }
   calc_const <- function(x){
     const <- t(mat$Amat) %*% x - mat$bvec
-    const[mat$meq] <- -pmax(0, abs(const[mat$meq]+0.005)-0.005)
     sum(pmin(0, const)^2)
   }
   pso_res <- pso(
@@ -554,7 +575,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
     fn = function(x){
       fitness <- calc_fit(x)
       constraints <- calc_const(x)
-      return(fitness+5*constraints)
+      return(fitness+10*constraints)
     },
     lower = 0,
     upper = 0.05,
@@ -693,13 +714,15 @@ mat <- list(
   Dmat = t(pool_returns) %*% pool_returns,
   dvec = t(pool_returns) %*% bm_returns,
   Amat = t(rbind(
-    rep(1, ncol(pool_returns)), # sum up to 1
+    -rep(1, ncol(pool_returns)), # sum w <= 1
+    rep(1, ncol(pool_returns)), # sum w >= 0.99
     diag(1, 
          nrow=ncol(pool_returns), 
          ncol=ncol(pool_returns)) # long only
   )),
   bvec = c(
-    1, # sum up to 1
+    -1, # sum w <= 1
+    0.99, # sum w >= 0.99
     rep(0, ncol(pool_returns)) # long only
   ),
   meq = 1
@@ -729,13 +752,15 @@ mat <- list(
   Dmat = t(pool_returns) %*% pool_returns,
   dvec = t(pool_returns) %*% bm_returns,
   Amat = t(rbind(
-    rep(1, ncol(pool_returns)), # sum up to 1
+    -rep(1, ncol(pool_returns)), # sum w <= 1
+    rep(1, ncol(pool_returns)), # sum w >= 0.99
     diag(1, 
          nrow=ncol(pool_returns), 
          ncol=ncol(pool_returns)) # long only
   )),
   bvec = c(
-    1, # sum up to 1
+    -1, # sum w <= 1
+    0.99, # sum w >= 0.99
     rep(0, ncol(pool_returns)) # long only
   ),
   meq = 1

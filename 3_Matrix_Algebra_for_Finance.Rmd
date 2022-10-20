@@ -13,7 +13,7 @@ reactable(
   data.frame(
     "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;"),
     "R"= c("%*%", "%*%","t(A)", "*"),
-    "Meaning" = c("Matrix product", "Outer product", "Transpose of matrix or vector A", "Scalar or elementwise Matrix multiplication")
+    "Meaning" = c("Matrix product", "Outer product", "Transpose of matrix or vector A", "Scalar or elementwise matrix multiplication")
   ), 
   columns <- list(
     Latex = colDef(name = "Latex/Displayed", html = T),

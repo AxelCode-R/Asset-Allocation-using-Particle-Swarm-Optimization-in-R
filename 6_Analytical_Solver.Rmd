@@ -26,9 +26,11 @@ The most common free QP-Solver used in R comes from the package [quadprog](https
 + `dvec`: Vector $d \in \mathbb{R}^{N}$ of the linear term
 + `Amat`: Constraint matrix $A$
 + `bvec`: Constraint vector $b_0$
-+ `meq = 1`: means that the first row of $A$ is treated as an equality constraint
++ `meq = 1`: means that the first `meq` columns of $A$ are treated as an equality constraint
 
-The return of `solve.QP()` is a list and contains, among others, the following attributes of interest:
+The return of `solve.QP()` is a list and contains, among others, the following attributes of interest:  
+
+\vspace{-0.4cm}
 + `solution`: Vector containing the solution $x$ of the quadratic programming problem (e.g. portfolio weights)
 + `value`: Scalar, the value of the quadratic function at the solution
 
@@ -64,7 +66,9 @@ mvp <- function(returns, lambda){
       dvec = (1-lambda) * mu,
       Amat = t(rbind(
         rep(1, ncol(returns)), # sum up to 1
-        diag(1, nrow=ncol(returns), ncol=ncol(returns)) # long only
+        diag(
+          1, nrow=ncol(returns), ncol=ncol(returns)
+        ) # long only
       )),
       bvec = c(
         1, # sum up to 1

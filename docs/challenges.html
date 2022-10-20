@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-18" />
+<meta name="date" content="2022-10-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -367,8 +367,8 @@ GOOG 0.0001799097 0.0001158735 0.0002728911</code></pre>
 <span id="cb7-2"><a href="challenges.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_lines</span>(<span class="at">y =</span> <span class="sc">~</span>mu, <span class="at">x =</span> <span class="sc">~</span>sd, <span class="at">name =</span> <span class="st">&quot;efficient frontier&quot;</span>, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb7-3"><a href="challenges.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">x =</span> <span class="sc">~</span>sd, <span class="at">y=</span><span class="sc">~</span>mu, <span class="at">mode=</span><span class="st">&quot;markers&quot;</span>, <span class="at">name =</span> <span class="st">&quot;lambda steps&quot;</span>, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb7-4"><a href="challenges.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(</span>
-<span id="cb7-5"><a href="challenges.html#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;mu&quot;</span>, <span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(mu_and_var<span class="sc">$</span>mu)<span class="sc">*</span><span class="fl">0.9</span>, <span class="fu">max</span>(mu_and_var<span class="sc">$</span>mu)<span class="sc">*</span><span class="fl">1.1</span>)),</span>
-<span id="cb7-6"><a href="challenges.html#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;&amp;Sigma;&quot;</span>, <span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(mu_and_var<span class="sc">$</span>sd)<span class="sc">*</span><span class="fl">0.95</span>, <span class="fu">max</span>(mu_and_var<span class="sc">$</span>sd)<span class="sc">*</span><span class="fl">1.05</span>))</span>
+<span id="cb7-5"><a href="challenges.html#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="fu">list</span>(<span class="at">text =</span> plotly<span class="sc">::</span><span class="fu">TeX</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">mu </span><span class="sc">\\</span><span class="st">text{ (geometric)}&quot;</span>), <span class="at">standoff =</span> 10L), <span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(mu_and_var<span class="sc">$</span>mu)<span class="sc">*</span><span class="fl">0.9</span>, <span class="fu">max</span>(mu_and_var<span class="sc">$</span>mu)<span class="sc">*</span><span class="fl">1.1</span>)),</span>
+<span id="cb7-6"><a href="challenges.html#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title=</span><span class="fu">list</span>(<span class="at">text =</span> plotly<span class="sc">::</span><span class="fu">TeX</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">sigma </span><span class="sc">\\</span><span class="st">text{ (geometric)}&quot;</span>), <span class="at">standoff =</span> 10L), <span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(mu_and_var<span class="sc">$</span>sd)<span class="sc">*</span><span class="fl">0.95</span>, <span class="fu">max</span>(mu_and_var<span class="sc">$</span>sd)<span class="sc">*</span><span class="fl">1.05</span>))</span>
 <span id="cb7-7"><a href="challenges.html#cb7-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb7-8"><a href="challenges.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">config</span>(<span class="at">mathjax =</span> <span class="st">&#39;cdn&#39;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb7-9"><a href="challenges.html#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
@@ -595,7 +595,7 @@ The portfolio returns <span class="math inline">\(r_p\)</span> needs to be subst
   \left\Vert r_{p}-r_{bm} \right\Vert_2^2 &amp;= \left\Vert R \times w-r_{bm} \right\Vert_2^2 \\
   &amp;= (R \times w-r_{bm})^T \times (R \times w-r_{bm}) \\
   &amp;= (w^T \times R^T-r_{bm}^T) \times (R \times w-r_{bm}) \\
-  &amp;= w^T \times R^T \times R \times w - w^T \times A^T \times r_{bm} - r_{bm}^T \times R \times w + r_{bm}^T \times r_{bm}
+  &amp;= w^T \times R^T \times R \times w - w^T \times R^T \times r_{bm} - r_{bm}^T \times R \times w + r_{bm}^T \times r_{bm}
 \end{align*}\]</span></p>
 <p>The minimization and the fact that the scalars <span class="math inline">\(w^T \times R^T \times r_{bm}\)</span> and <span class="math inline">\(r_{bm}^T \times R \times w\)</span> are equal, transforms the problem to:
 <span class="math display">\[

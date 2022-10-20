@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-18}
+\date{2022-10-20}
 
 \begin{document}
 \maketitle
@@ -745,12 +745,20 @@ The most common free QP-Solver used in R comes from the package \href{https://cr
 \item
   \texttt{bvec}: Constraint vector \(b_0\)
 \item
-  \texttt{meq\ =\ 1}: means that the first row of \(A\) is treated as an equality constraint
+  \texttt{meq\ =\ 1}: means that the first \texttt{meq} columns of \(A\) are treated as an equality constraint
 \end{itemize}
 
 The return of \texttt{solve.QP()} is a list and contains, among others, the following attributes of interest:
-+ \texttt{solution}: Vector containing the solution \(x\) of the quadratic programming problem (e.g.~portfolio weights)
-+ \texttt{value}: Scalar, the value of the quadratic function at the solution
+
+\vspace{-0.4cm}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{solution}: Vector containing the solution \(x\) of the quadratic programming problem (e.g.~portfolio weights)
+\item
+  \texttt{value}: Scalar, the value of the quadratic function at the solution
+\end{itemize}
 
 \hypertarget{exampleanalyticalmvp}{%
 \section{\texorpdfstring{Example: Solving MVP with \texttt{solve.QP()}}{Example: Solving MVP with solve.QP()}}\label{exampleanalyticalmvp}}
@@ -790,7 +798,9 @@ The next step is to create a function \texttt{mvp()} that has the arguments \tex
       \AttributeTok{dvec =}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{lambda) }\SpecialCharTok{*}\NormalTok{ mu,}
       \AttributeTok{Amat =} \FunctionTok{t}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(}
         \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(returns)), }\CommentTok{\# sum up to 1}
-        \FunctionTok{diag}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{nrow=}\FunctionTok{ncol}\NormalTok{(returns), }\AttributeTok{ncol=}\FunctionTok{ncol}\NormalTok{(returns)) }\CommentTok{\# long only}
+        \FunctionTok{diag}\NormalTok{(}
+          \DecValTok{1}\NormalTok{, }\AttributeTok{nrow=}\FunctionTok{ncol}\NormalTok{(returns), }\AttributeTok{ncol=}\FunctionTok{ncol}\NormalTok{(returns)}
+\NormalTok{        ) }\CommentTok{\# long only}
 \NormalTok{      )),}
       \AttributeTok{bvec =} \FunctionTok{c}\NormalTok{(}
         \DecValTok{1}\NormalTok{, }\CommentTok{\# sum up to 1}
@@ -970,13 +980,13 @@ Each particle \(d\) with position \(x_d\) moves in the search space \(\mathbb{R}
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
-Where \(r_1\) and \(r_2\) are uniformly distributed random numbers in {[}0, 1{]}. The cognitive parameter \(c_p\) acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter \(c_g\), which is a weighting of the direction to the global best position. The inertial weight \(w\) is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in \citep{PaVr2002} showed that these parameters can be set to \(c_p=c_g=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for \(d = 1, 2, \cdots, D\) particles can be given in the following matrix notation:
+Where \(r_1\) and \(r_2\) are uniformly distributed random numbers in \([0, 1]\). The cognitive parameter \(c_p\) acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter \(c_g\), which is a weighting of the direction to the global best position. The inertial weight \(w\) is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in \citep{PaVr2002} showed that these parameters can be set to \(c_p=c_g=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for \(d = 1, 2, \cdots, D\) particles can be given in the following matrix notation:
 \begin{align*}
-  V^{i+1} &= w \cdot V^{i} + c_p \cdot r_1^i \cdot (P^i-X^i) + c_g \cdot r_2^i \cdot (p_g^i - X^i) \\
+  V^{i+1} &= w \cdot V^{i} + c_p \cdot \vec{r}_1^{\,i} \cdot (P^i-X^i) + c_g \cdot \vec{r}_2^{\,i} \cdot (p_g^i - X^i) \\
   X^{i+1} &= X^i + V^{i+1}
 \end{align*}
 
-With current positions \(X \in \mathbb{R}^{N \times D}\), current velocities \(V \in \mathbb{R}^{N \times D}\), previous best positions \(P \in \mathbb{R}^{N \times D}\), and global best position \(p_g \in \mathbb{R}^{N}\). The parameters \(w\), \(c_p\) and \(c_g\) are stile scalars. The random numbers are transformed into vectors \(r_1\) and \(r_2\), which contain uniformly distributed random numbers that are multiplied elementwise.
+With current positions \(X \in \mathbb{R}^{N \times D}\), current velocities \(V \in \mathbb{R}^{N \times D}\), previous best positions \(P \in \mathbb{R}^{N \times D}\), and global best position \(p_g \in \mathbb{R}^{N}\). The parameters \(w\), \(c_p\) and \(c_g\) are stile scalars. The random numbers \(r_1\) and \(r_2\) are replaced by the vectors \(\vec{r}_1\) and \(\vec{r}_2\), which contain distinct uniformly distributed random numbers in \([0, 1]\).
 
 \hypertarget{pso-function}{%
 \section{\texorpdfstring{\texttt{pso()} Function}{pso() Function}}\label{pso-function}}
@@ -1088,13 +1098,18 @@ The best fitness after \(100\) iterations is 0.0000038 and the best possible sol
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
 
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The amazing animation template is inspired by \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}. The PSO core from the above chapter was used to complete the \texttt{pso()} function and is tested here with seed 0. The function \texttt{fn} to be evaluated can be found in \href{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}{R'tichoke}.
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF only works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The amazing animation template and the objective function is inspired by \citep{Rtic2021}. The PSO core from the above chapter was used to complete the \texttt{pso()} function and is tested here with seed 0. The objective is to minimize the following function (\(f:\mathbb{R}^2 \rightarrow \mathbb{R}\)):
+\[
+f(x, y) = -20\cdot e^{-0.2 \cdot \sqrt{0.5 \cdot ((x-1)^2 + (y-1)^2)}} \ - e^{0.5 \cdot ( cos(2\cdot \pi \cdot x) + cos(2\cdot \pi \cdot y))} + e + 20
+\]
+
+The following code runs the PSO and tries to minimize the objective function:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{set.seed}\NormalTok{(}\DecValTok{0}\NormalTok{)}
 
-\NormalTok{fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pos)\{}
+\NormalTok{f }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pos)\{}
   \SpecialCharTok{{-}}\DecValTok{20} \SpecialCharTok{*} \FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.2} \SpecialCharTok{*} \FunctionTok{sqrt}\NormalTok{(}\FloatTok{0.5} \SpecialCharTok{*}\NormalTok{((pos[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2} \SpecialCharTok{+}\NormalTok{ (pos[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))) }\SpecialCharTok{{-}} 
   \FunctionTok{exp}\NormalTok{(}\FloatTok{0.5}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{1}\NormalTok{]) }\SpecialCharTok{+} \FunctionTok{cos}\NormalTok{(}\DecValTok{2}\SpecialCharTok{*}\NormalTok{pi}\SpecialCharTok{*}\NormalTok{pos[}\DecValTok{2}\NormalTok{]))) }\SpecialCharTok{+} 
   \FunctionTok{exp}\NormalTok{(}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} \DecValTok{20}
@@ -1102,7 +1117,7 @@ This section provides insights into the behavior of the PSO by visualizing multi
 
 \NormalTok{res }\OtherTok{\textless{}{-}} \FunctionTok{pso}\NormalTok{(}
   \AttributeTok{par =} \FunctionTok{rep}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\DecValTok{2}\NormalTok{),}
-  \AttributeTok{fn =}\NormalTok{ fn,}
+  \AttributeTok{fn =}\NormalTok{ f,}
   \AttributeTok{lower =} \SpecialCharTok{{-}}\DecValTok{10}\NormalTok{,}
   \AttributeTok{upper =} \DecValTok{10}\NormalTok{,}
   \AttributeTok{control =} \FunctionTok{list}\NormalTok{(}
@@ -1115,7 +1130,7 @@ This section provides insights into the behavior of the PSO by visualizing multi
 \end{Highlighting}
 \end{Shaded}
 
-The function \texttt{fn} has many local minima and a global minima at \((1,1)\) with the value \(0\). The background color scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:
+The function \texttt{f} has many local minima and a global minima at \((1,1)\) with the value \(0\). The background color scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:
 
 \begin{center}
 \animategraphics[loop, width=10cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{80}
@@ -1126,21 +1141,37 @@ The function \texttt{fn} has many local minima and a global minima at \((1,1)\) 
 
 The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure. This can be used to create a generic constraint handling function for these particular QP's. Both problems must satisfy the following equation:
 \[
-  A^T \times x - b_0 \geq \vec{0}
+  A^T \times x  \geq b_0
 \]
-Because of \texttt{meq=1}, the first value is considered as equality condition. This can be achieved by transforming the first value with the \texttt{abs()} function, which returns the absolute value. Equality is hard to achieve with the PSO, so it is transformed into a boundary constraint, with upper and lower boundary. Since \texttt{meq=1} always describes the constraint \(\sum w_i = 1\), it can be transformed into \(1 \leq \textstyle\sum w_i \geq 0.99\) to obtain a constraint sufficient for most practical applications. The final vector contains constraint breaks if the elements are negative. All of these negative elements are squared and summed to calculate a value representing the intensity of the constraint breaks. All this can be done with the following R function, which requires a \texttt{mat} object in the parent environment containing the matrices for the QP:
+To calculate a value for the intensity of constraint breaks, the above equation gets subtracted by \(b_0\) and defines:
+\[
+  c := A^T \times x - b_0
+\]
+All negative elements in the vector \(c\) represent constraint breaks that are squared and summed to extract a value that describes the intensity of constraint breaks like follows:
+\[
+  c_{break} = \sum p(c_i) \cdot c_i^2
+\]
+with
+\[
+ p(x) =   \begin{cases}
+  0 &\text{ if }x \geq 0\\
+  x &\text{ if }x < 0
+  \end{cases}
+\]
+By following the name conventions of \texttt{solve.QP()} a list named \texttt{mat} is created in the parent environment, that contains the necessary inputs. The generic R function to calculate the constraint breaks can be defined as follows:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{calc\_const }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
 \NormalTok{  const }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(mat}\SpecialCharTok{$}\NormalTok{Amat) }\SpecialCharTok{\%*\%}\NormalTok{ x }\SpecialCharTok{{-}}\NormalTok{ mat}\SpecialCharTok{$}\NormalTok{bvec}
-\NormalTok{  const[mat}\SpecialCharTok{$}\NormalTok{meq] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FunctionTok{pmax}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{abs}\NormalTok{(const[mat}\SpecialCharTok{$}\NormalTok{meq]}\SpecialCharTok{+}\FloatTok{0.005}\NormalTok{)}\SpecialCharTok{{-}}\FloatTok{0.005}\NormalTok{)}
   \FunctionTok{sum}\NormalTok{(}\FunctionTok{pmin}\NormalTok{(}\DecValTok{0}\NormalTok{, const)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
-The new objective function \texttt{fn()} is transformed and consists of two parts. The first part is to evaluate the unconstrained objective of the QP with the following function:
+In contrast to the \texttt{solve.QP()}, it's difficult for the PSO to find a feasible point, if equality constraints are used, which is why the equality constraint \(\textstyle\sum w_i = 1\) is reduced to \(0.99 \leq \textstyle\sum w_i\) and \(\textstyle\sum w_i \leq 1\).
+
+The new objective function \texttt{fn()} consists of two parts. The first part is to evaluate the unconstrained objective of the QP with the following function:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1150,14 +1181,14 @@ The new objective function \texttt{fn()} is transformed and consists of two part
 \end{Highlighting}
 \end{Shaded}
 
-The second part is the function \texttt{calc\_const()}. Since breaking constraints is much worse than losing fitness, it must have a higher weight (e.g.~5) which must be fine-tuned. This results in the final \texttt{fn()} function composition:
+The second part is the function \texttt{calc\_const()}. Since breaking constraints is much worse than losing fitness, it must have a higher intensity (e.g.~10) which must be fine-tuned. This results in the final \texttt{fn()} function composition:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{fn }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
 \NormalTok{  fitness }\OtherTok{\textless{}{-}} \FunctionTok{calc\_fit}\NormalTok{(x)}
 \NormalTok{  constraints }\OtherTok{\textless{}{-}} \FunctionTok{calc\_const}\NormalTok{(x)}
-  \FunctionTok{return}\NormalTok{(fitness }\SpecialCharTok{+} \DecValTok{5} \SpecialCharTok{*}\NormalTok{ constraints)}
+  \FunctionTok{return}\NormalTok{(fitness }\SpecialCharTok{+} \DecValTok{10} \SpecialCharTok{*}\NormalTok{ constraints)}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
@@ -1211,7 +1242,7 @@ The standard PSO analyzed in the previous chapter is capable of solving a wide r
 \hypertarget{testproblem-discrete-itp-mste}{%
 \subsection{Testproblem: Discrete ITP-MSTE}\label{testproblem-discrete-itp-mste}}
 
-All variants are tested on a discrete ITP-MSTE to replicate the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S\&P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using an \texttt{solve.QP()} approach, and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10\% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights \(w\) should satisfy \(1 \leq \textstyle\sum w_i \geq 0.99\). All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 100 and the iterations are set to 400.
+All variants are tested on a discrete ITP-MSTE to replicate the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S\&P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using an \texttt{solve.QP()} approach, and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10\% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights \(w\) should satisfy \(0.99 \leq \textstyle\sum w_i \leq 1\). All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 100 and the iterations are set to 400.
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95\% and 5\% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
