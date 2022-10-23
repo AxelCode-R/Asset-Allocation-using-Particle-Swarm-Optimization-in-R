@@ -234,7 +234,7 @@ $$
   x &\text{ if }x < 0
   \end{cases}
 $$
-By following the name conventions of `solve.QP()` a list named `mat` is created in the parent environment, that contains the necessary inputs. The generic R function to calculate the constraint breaks can be defined as follows:
+By following the name conventions of `solve.QP()`, a list named `mat` is created in the parent environment, that contains the necessary inputs. The generic R function to calculate the constraint breaks can be defined as follows:
 ```{r}
 calc_const <- function(x){
   const <- t(mat$Amat) %*% x - mat$bvec

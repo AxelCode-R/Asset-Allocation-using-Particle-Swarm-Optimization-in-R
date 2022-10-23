@@ -6,14 +6,15 @@ editor_options:
 # Mathematical Fundations {#mathfundations}
 This chapter provides an overview of the mathematical calculations and conventions used in this thesis. It is important to note that most mathematical formulas are written in matrix notation. In most cases, this will result in a direct translation to R code. All necessary assumptions required for the modeled return structure are listed in this chapter so that any reader can understand the formulas given. It is important to note that reality is too complex and can only be partially modeled. Simple, basic models are used that do not stand up to reality, but these models or variations of them are commonly used in the financial world and have proven to be helpful. The complexity of solving advanced and basic models does not differ in PSO because the dimension of the objective function is based on the number of elements that can be selected, see chapter \@ref(challenges).
 
+
 ## Basic Operators
 A compendium comparing commonly used mathematical symbols with R code and their meaning is given in the following table:  
 ```{r operators, echo=F}
 reactable(
   data.frame(
-    "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;"),
-    "R"= c("%*%", "%*%","t(A)", "*"),
-    "Meaning" = c("Matrix product", "Outer product", "Transpose of matrix or vector A", "Scalar or elementwise matrix multiplication")
+    "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;", "/", "+", "-"),
+    "R"= c("%*%", "%*%","t(A)", "*", "/", "+", "-"),
+    "Meaning" = c("Matrix product", "Outer product", "Transpose of matrix or vector A", "Scalar or elementwise matrix multiplication", "Scalar or elementwise matrix division", "Scalar or elementwise matrix addition", "Scalar or elementwise matrix subtraction")
   ), 
   columns <- list(
     Latex = colDef(name = "Latex/Displayed", html = T),
@@ -57,24 +58,53 @@ $$
 \begin{bmatrix}a_{1} \cdot b_{1} &\cdots  & a_{1} \cdot b_{z} \\ \vdots & \ddots & \vdots  \\ a_{z} \cdot b_{1}  & \cdots & a_{z} \cdot b_{z} \end{bmatrix}
 $$
 
-Scalar or elementwise matrix multiplication:
-$$\cdot: \ \ R^{x \times y} \times R^{x \times y} \rightarrow R^{x \times y}$$
-with an example: 
-$$ 
+
+
+This thesis is specified for the use of R, which is why elementwise operators are very important to make code comparable to formulas. In mathematics these operators are not common. Because of this, it needs to be specified explicitly. All elementwise operators work the same way. Suppose $\square$ is one of the four elementwise operators, then follows that:
+\begin{align*}
+\square &: \ \ R^{x \times y} \times R^{x \times y}  \rightarrow R^{x \times y}\\
+\text{or }\ \square &: \ \ R^{x} \times R^{x \times y}  \rightarrow R^{x \times y}\\
+\text{or }\ \square &: \ \ R \times R^{x \times y}  \rightarrow R^{x \times y}
+\end{align*}
+
+with examples respectively: 
+$$
 \begin{bmatrix}a_{11} &\cdots  & a_{1y} \\ \vdots & \ddots & \vdots  \\ a_{x1} & \cdots & a_{xy} \end{bmatrix}
-\cdot
+\square
 \begin{bmatrix}b_{11} &\cdots  & b_{1y} \\ \vdots & \ddots & \vdots  \\ b_{x1} & \cdots & b_{xy} \end{bmatrix}
 =
-\begin{bmatrix}a_{11} \cdot b_{11} &\cdots  & a_{1y} \cdot b_{1y} \\ \vdots & \ddots & \vdots  \\ a_{x1} \cdot b_{x1}  & \cdots & a_{xy} \cdot b_{xy} \end{bmatrix}
+\begin{bmatrix}a_{11} \square b_{11} &\cdots  & a_{1y} \square b_{1y} \\ \vdots & \ddots & \vdots  \\ a_{x1} \square b_{x1}  & \cdots & a_{xy} \square b_{xy} \end{bmatrix}
 $$
+or
+$$
+\begin{bmatrix}a_{1} \\ \vdots \\ a_{x} \end{bmatrix}
+\square
+\begin{bmatrix}b_{11} &\cdots  & b_{1y} \\ \vdots & \ddots & \vdots  \\ b_{x1} & \cdots & b_{xy} \end{bmatrix}
+=
+\begin{bmatrix}a_{1} \square b_{11} &\cdots  & a_{1} \square b_{1y} \\ \vdots & \ddots & \vdots  \\ a_{x} \square b_{x1}  & \cdots & a_{x} \square b_{xy} \end{bmatrix}
+$$
+or
+$$
+a \ 
+\square
+\begin{bmatrix}b_{11} &\cdots  & b_{1y} \\ \vdots & \ddots & \vdots  \\ b_{x1} & \cdots & b_{xy} \end{bmatrix}
+=
+\begin{bmatrix}a \square b_{11} &\cdots  & a \square b_{1y} \\ \vdots & \ddots & \vdots  \\ a \square b_{x1}  & \cdots & a \square b_{xy} \end{bmatrix}
+$$
+
+
+
+
+## Formula Conventions
+In mathematics random variables are written in uppercase, which is the same for matrices. To enable a distinct apperiance of both, the random variables are written in bold and uppercase. For example should $A$ represent a matrix and $\pmb{A}$ represents a random variable.
 
 ## Return Calculation
 Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices](https://www.investopedia.com/terms/a/adjusted closingprice.asp), which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.
 
 ### Simple Returns
-The default time frame for all raw data in this thesis is one working day and only simple rates of return are used. Assuming that there is an asset with price $P_{t_i}$ on working day $t_i$ and price $P_{t_{i+1}}$ on the following working day $t_{i+1}$, the simple rate of return for $t_{i+1}$ can be calculated as follows:
+The default time frame for all raw data in this thesis is one working day and only simple rates of return are used. Assuming that there is an asset with price $p_{t_i}$ on working day $t_i$ and price $p_{t_{i+1}}$ on the following working day $t_{i+1}$, the simple rate of return for $t_{i+1}$ can be calculated as follows:
 $$
-  R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
+  r_{i+1} = \frac{p_{t_{i+1}}}{p_{t_i}}-1
 $$
 
 ## Markowitz Modern Portfolio Theory (MPT)
@@ -93,11 +123,11 @@ are compensated with a higher expected return
 The assumption that the returns are normally distributed is not required, but is assumed in this case to simplify the problem. It is obvious that these assumptions are unrealistic in reality. More details on the requirements for using other distributions can be found in [@Mari2005]. 
 
 ## Portfolio Math
-Proofs of the basic calculations required for portfolio optimization, as shown in [@Eric2021], are provided in this section. Returns are presented differently than in most sources, as this is the most common data format used in practice. Suppose there are $N$ assets described by a return vector $R$ of random variables and a portfolio weight vector $w$, respectively:
+Proofs of the basic calculations required for portfolio optimization, as shown in [@Eric2021], are provided in this section. Returns are presented differently than in most sources, as this is the most common data format used in practice. Suppose there are $N$ assets described by a return vector $\pmb{R}$ of random variables and a portfolio weight vector $w$, respectively:
 $$
-  R = 
+  \pmb{R} = 
   \begin{bmatrix}
-    R_{1} & R_{2} & \cdots & R_{N}  
+    \pmb{R}_{1} & \pmb{R}_{2} & \cdots & \pmb{R}_{N}  
  \end{bmatrix}
  , \ \ 
  w = 
@@ -109,14 +139,14 @@ $$
  \end{bmatrix}
 $$
 
-In this thesis, each return is simplified as being normally distributed with $R_i = \mathbb{N}(\mu_i, \sigma_i^2)$. As a result, linear combinations of normally distributed random variables are jointly normally distributed and have a mean, variance, and covariance that can be used to fully describe them.
+In this thesis, each return is simplified as being normally distributed with $\pmb{R}_i = \mathbb{N}(\mu_i, \sigma_i^2)$. As a result, linear combinations of normally distributed random variables are jointly normally distributed and have a mean, variance, and covariance that can be used to fully describe them.
 
 ### Expected Returns
-The following formula can be used to get the expected returns of a vector with normally distributed random variables $R \in \mathbb{R}^{1\times N}$:
+The following formula can be used to get the expected returns of a vector with normally distributed random variables $\pmb{R} \in \mathbb{R}^{1\times N}$:
 \begin{align*}
-  E[R] &=
+  E[\pmb{R}] &=
   \begin{bmatrix}
-    E[R_{1}] & E[R_{2}] & \cdots & E[R_{N}]  
+    E[\pmb{R}_{1}] & E[\pmb{R}_{2}] & \cdots & E[\pmb{R}_{N}]  
  \end{bmatrix}\\
  &=
  \begin{bmatrix}
@@ -129,14 +159,14 @@ and $\mu_i$ can be estimated in R using historical data and the formula for the 
 
 
 ### Expected Portfolio Returns
-The following equation can be used to obtain the expected portfolio return $E[R_p]$ using the formulations from the section above and a weighting vector $w$ (e.g. portfolio weights):
+The following equation can be used to obtain the expected portfolio return $E[\pmb{R}_p]$ using the formulations from the section above and a weighting vector $w$ (e.g. portfolio weights):
 \begin{align*}
-E[R_p] &=
- E[R \times w] = 
- E[R] \times w \\
+E[\pmb{R}_p] &=
+ E[\pmb{R} \times w] = 
+ E[\pmb{R}] \times w \\
  &= 
   \begin{bmatrix}
-    E[R_{1}] & E[R_{2}] & \cdots & E[R_{N}]
+    E[\pmb{R}_{1}] & E[\pmb{R}_{2}] & \cdots & E[\pmb{R}_{N}]
  \end{bmatrix}
   \times 
   \begin{bmatrix}
@@ -164,9 +194,9 @@ E[R_p] &=
 
 
 ### Covariance
-The general formula of the covariance matrix $\textstyle\sum$ of a random vector $R$ with $N$ normally distributed elements and $\sigma_{i,j}$ as correlation of two unique values is described as follows:
+The general formula of the covariance matrix $\textstyle\sum$ of a random vector $\pmb{R}$ with $N$ normally distributed elements and $\sigma_{i,j}$ as correlation of two unique values is described as follows:
 \begin{align*}
-  Cov(R) &= E[(R-\mu)^T \otimes (R-\mu)] \\
+  Cov(\pmb{R}) &= E[(\pmb{R}-\mu)^T \otimes (\pmb{R}-\mu)] \\
   &=   \begin{bmatrix}
     \sigma_1^2 & \sigma_{1,2} & \cdots & \sigma_{1,N} \\
     \sigma_{2, 1} & \sigma_2^2 & \cdots & \sigma_{2, N} \\
@@ -178,22 +208,22 @@ The general formula of the covariance matrix $\textstyle\sum$ of a random vector
 and can be estimated in R with the basis function `cov()` and historical data.
 
 ### Portfolio Variance {#portvar}
-Let $R$ be a random vector with $N$ normally distributed elements and $w$ a weight vector. Assuming that the covariance matrix $\sum$ of $R$ is known, the variance of the linear combination of $R$ can be calculated as follows:
+Let $\pmb{R}$ be a random vector with $N$ normally distributed elements and $w$ a weight vector. Assuming that the covariance matrix $\sum$ of $\pmb{R}$ is known, the variance of the linear combination of $\pmb{R}$ can be calculated as follows:
 \begin{align*}
-  Var(R \times w) &= E[(R \times w - \mu \times w)^2] \\
-  &= E[((R - \mu) \times w)^2]
+  Var(\pmb{R} \times w) &= E[(\pmb{R} \times w - \mu \times w)^2] \\
+  &= E[((\pmb{R} - \mu) \times w)^2]
 \end{align*}
 
-Since $(R - \mu) \times w$ is a scalar, it can be transformed from $((R - \mu) \times w)^2$ to $((R - \mu) \times w)^T \cdot ((R - \mu) \times w)$ and results in:
+Since $(\pmb{R} - \mu) \times w$ is a scalar, it can be transformed from $((\pmb{R} - \mu) \times w)^2$ to $((\pmb{R} - \mu) \times w)^T \cdot ((\pmb{R} - \mu) \times w)$ and results in:
 \begin{align*}
-  Var(R \times w) &= E[((R - \mu) \times w)^T \times ((R - \mu) \times w)]\\ 
-  &= E[(w^T \times (R - \mu)^T) \cdot ((R - \mu) \times w)]\\ 
-  &= w^T \times E[(R - \mu)^T \otimes (R - \mu)] \times w \\
-  &= w^T \times Cov(R) \times w \\
+  Var(\pmb{R} \times w) &= E[((\pmb{R} - \mu) \times w)^T \times ((\pmb{R} - \mu) \times w)]\\ 
+  &= E[(w^T \times (\pmb{R} - \mu)^T) \cdot ((\pmb{R} - \mu) \times w)]\\ 
+  &= w^T \times E[(\pmb{R} - \mu)^T \otimes (\pmb{R} - \mu)] \times w \\
+  &= w^T \times Cov(\pmb{R}) \times w \\
   &= w^T \times \textstyle\sum \times w
 \end{align*}
 
-The same is true for an estimate of $Var(R \times w)$ by using the estimate of $\textstyle\sum$.
+The same is true for an estimate of $Var(\pmb{R} \times w)$ by using the estimate of $\textstyle\sum$.
 
 
 

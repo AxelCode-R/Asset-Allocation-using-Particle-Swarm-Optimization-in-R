@@ -239,9 +239,7 @@ itp <- function(pool_returns, bm_returns){
   )
 }
 ```
-
-The duplication and successive discarding of assets can begin. The results are stored in `res` and used to display the results.
-
+The successive removal of assets can begin and the results are stored in `res`.
 ```{r qp_itp3, class.source="code_fold_it_collapsed"}
 res <- NULL
 n_assets <- rev(seq(5, ncol(pool_returns_raw), 5))
@@ -268,7 +266,7 @@ plot_ly(data=res, x=~N, y=~sd, mode="lines", type = 'scatter') %>%
 ```
 
 
-It can be seen that the standard deviation stagnates at about $N=100$. This leads to the conclusion that a sparse replication with one hundred assets is sufficient in this particular case to track the historical performance of the S&P 500 over this period.
+It can be seen that the standard deviation stagnates at about $N=200$. This leads to the conclusion that a sparse replication with two hundred assets is sufficient in this particular case to track the historical performance of the S&P 500 over this period.
 
 
 

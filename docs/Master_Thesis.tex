@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-20}
+\date{2022-10-23}
 
 \begin{document}
 \maketitle
@@ -268,16 +268,42 @@ with an example:
 \begin{bmatrix}a_{1} \cdot b_{1} &\cdots  & a_{1} \cdot b_{z} \\ \vdots & \ddots & \vdots  \\ a_{z} \cdot b_{1}  & \cdots & a_{z} \cdot b_{z} \end{bmatrix}
 \]
 
-Scalar or elementwise matrix multiplication:
-\[\cdot: \ \ R^{x \times y} \times R^{x \times y} \rightarrow R^{x \times y}\]
-with an example:
-\[ 
+This thesis is specified for the use of R, which is why elementwise operators are very important to make code comparable to formulas. In mathematics these operators are not common. Because of this, it needs to be specified explicitly. All elementwise operators work the same way. Suppose \(\square\) is one of the four elementwise operators, then follows that:
+\begin{align*}
+\square &: \ \ R^{x \times y} \times R^{x \times y}  \rightarrow R^{x \times y}\\
+\text{or }\ \square &: \ \ R^{x} \times R^{x \times y}  \rightarrow R^{x \times y}\\
+\text{or }\ \square &: \ \ R \times R^{x \times y}  \rightarrow R^{x \times y}
+\end{align*}
+
+with examples respectively:
+\[
 \begin{bmatrix}a_{11} &\cdots  & a_{1y} \\ \vdots & \ddots & \vdots  \\ a_{x1} & \cdots & a_{xy} \end{bmatrix}
-\cdot
+\square
 \begin{bmatrix}b_{11} &\cdots  & b_{1y} \\ \vdots & \ddots & \vdots  \\ b_{x1} & \cdots & b_{xy} \end{bmatrix}
 =
-\begin{bmatrix}a_{11} \cdot b_{11} &\cdots  & a_{1y} \cdot b_{1y} \\ \vdots & \ddots & \vdots  \\ a_{x1} \cdot b_{x1}  & \cdots & a_{xy} \cdot b_{xy} \end{bmatrix}
+\begin{bmatrix}a_{11} \square b_{11} &\cdots  & a_{1y} \square b_{1y} \\ \vdots & \ddots & \vdots  \\ a_{x1} \square b_{x1}  & \cdots & a_{xy} \square b_{xy} \end{bmatrix}
 \]
+or
+\[
+\begin{bmatrix}a_{1} \\ \vdots \\ a_{x} \end{bmatrix}
+\square
+\begin{bmatrix}b_{11} &\cdots  & b_{1y} \\ \vdots & \ddots & \vdots  \\ b_{x1} & \cdots & b_{xy} \end{bmatrix}
+=
+\begin{bmatrix}a_{1} \square b_{11} &\cdots  & a_{1} \square b_{1y} \\ \vdots & \ddots & \vdots  \\ a_{x} \square b_{x1}  & \cdots & a_{x} \square b_{xy} \end{bmatrix}
+\]
+or
+\[
+a \ 
+\square
+\begin{bmatrix}b_{11} &\cdots  & b_{1y} \\ \vdots & \ddots & \vdots  \\ b_{x1} & \cdots & b_{xy} \end{bmatrix}
+=
+\begin{bmatrix}a \square b_{11} &\cdots  & a \square b_{1y} \\ \vdots & \ddots & \vdots  \\ a \square b_{x1}  & \cdots & a \square b_{xy} \end{bmatrix}
+\]
+
+\hypertarget{formula-conventions}{%
+\section{Formula Conventions}\label{formula-conventions}}
+
+In mathematics random variables are written in uppercase, which is the same for matrices. To enable a distinct apperiance of both, the random variables are written in bold and uppercase. For example should \(A\) represent a matrix and \(\pmb{A}\) represents a random variable.
 
 \hypertarget{return-calculation}{%
 \section{Return Calculation}\label{return-calculation}}
@@ -287,9 +313,9 @@ Any portfolio optimization strategy based on historical data must start with ret
 \hypertarget{simple-returns}{%
 \subsection{Simple Returns}\label{simple-returns}}
 
-The default time frame for all raw data in this thesis is one working day and only simple rates of return are used. Assuming that there is an asset with price \(P_{t_i}\) on working day \(t_i\) and price \(P_{t_{i+1}}\) on the following working day \(t_{i+1}\), the simple rate of return for \(t_{i+1}\) can be calculated as follows:
+The default time frame for all raw data in this thesis is one working day and only simple rates of return are used. Assuming that there is an asset with price \(p_{t_i}\) on working day \(t_i\) and price \(p_{t_{i+1}}\) on the following working day \(t_{i+1}\), the simple rate of return for \(t_{i+1}\) can be calculated as follows:
 \[
-  R_{i+1} = \frac{P_{t_{i+1}}}{P_{t_i}}-1
+  r_{i+1} = \frac{p_{t_{i+1}}}{p_{t_i}}-1
 \]
 
 \hypertarget{markowitz-modern-portfolio-theory-mpt}{%
@@ -322,11 +348,11 @@ The assumption that the returns are normally distributed is not required, but is
 \hypertarget{portfolio-math}{%
 \section{Portfolio Math}\label{portfolio-math}}
 
-Proofs of the basic calculations required for portfolio optimization, as shown in \citep{Eric2021}, are provided in this section. Returns are presented differently than in most sources, as this is the most common data format used in practice. Suppose there are \(N\) assets described by a return vector \(R\) of random variables and a portfolio weight vector \(w\), respectively:
+Proofs of the basic calculations required for portfolio optimization, as shown in \citep{Eric2021}, are provided in this section. Returns are presented differently than in most sources, as this is the most common data format used in practice. Suppose there are \(N\) assets described by a return vector \(\pmb{R}\) of random variables and a portfolio weight vector \(w\), respectively:
 \[
-  R = 
+  \pmb{R} = 
   \begin{bmatrix}
-    R_{1} & R_{2} & \cdots & R_{N}  
+    \pmb{R}_{1} & \pmb{R}_{2} & \cdots & \pmb{R}_{N}  
  \end{bmatrix}
  , \ \ 
  w = 
@@ -338,16 +364,16 @@ Proofs of the basic calculations required for portfolio optimization, as shown i
  \end{bmatrix}
 \]
 
-In this thesis, each return is simplified as being normally distributed with \(R_i = \mathbb{N}(\mu_i, \sigma_i^2)\). As a result, linear combinations of normally distributed random variables are jointly normally distributed and have a mean, variance, and covariance that can be used to fully describe them.
+In this thesis, each return is simplified as being normally distributed with \(\pmb{R}_i = \mathbb{N}(\mu_i, \sigma_i^2)\). As a result, linear combinations of normally distributed random variables are jointly normally distributed and have a mean, variance, and covariance that can be used to fully describe them.
 
 \hypertarget{expected-returns}{%
 \subsection{Expected Returns}\label{expected-returns}}
 
-The following formula can be used to get the expected returns of a vector with normally distributed random variables \(R \in \mathbb{R}^{1\times N}\):
+The following formula can be used to get the expected returns of a vector with normally distributed random variables \(\pmb{R} \in \mathbb{R}^{1\times N}\):
 \begin{align*}
-  E[R] &=
+  E[\pmb{R}] &=
   \begin{bmatrix}
-    E[R_{1}] & E[R_{2}] & \cdots & E[R_{N}]  
+    E[\pmb{R}_{1}] & E[\pmb{R}_{2}] & \cdots & E[\pmb{R}_{N}]  
  \end{bmatrix}\\
  &=
  \begin{bmatrix}
@@ -361,14 +387,14 @@ and \(\mu_i\) can be estimated in R using historical data and the formula for th
 \hypertarget{expected-portfolio-returns}{%
 \subsection{Expected Portfolio Returns}\label{expected-portfolio-returns}}
 
-The following equation can be used to obtain the expected portfolio return \(E[R_p]\) using the formulations from the section above and a weighting vector \(w\) (e.g.~portfolio weights):
+The following equation can be used to obtain the expected portfolio return \(E[\pmb{R}_p]\) using the formulations from the section above and a weighting vector \(w\) (e.g.~portfolio weights):
 \begin{align*}
-E[R_p] &=
- E[R \times w] = 
- E[R] \times w \\
+E[\pmb{R}_p] &=
+ E[\pmb{R} \times w] = 
+ E[\pmb{R}] \times w \\
  &= 
   \begin{bmatrix}
-    E[R_{1}] & E[R_{2}] & \cdots & E[R_{N}]
+    E[\pmb{R}_{1}] & E[\pmb{R}_{2}] & \cdots & E[\pmb{R}_{N}]
  \end{bmatrix}
   \times 
   \begin{bmatrix}
@@ -397,9 +423,9 @@ E[R_p] &=
 \hypertarget{covariance}{%
 \subsection{Covariance}\label{covariance}}
 
-The general formula of the covariance matrix \(\textstyle\sum\) of a random vector \(R\) with \(N\) normally distributed elements and \(\sigma_{i,j}\) as correlation of two unique values is described as follows:
+The general formula of the covariance matrix \(\textstyle\sum\) of a random vector \(\pmb{R}\) with \(N\) normally distributed elements and \(\sigma_{i,j}\) as correlation of two unique values is described as follows:
 \begin{align*}
-  Cov(R) &= E[(R-\mu)^T \otimes (R-\mu)] \\
+  Cov(\pmb{R}) &= E[(\pmb{R}-\mu)^T \otimes (\pmb{R}-\mu)] \\
   &=   \begin{bmatrix}
     \sigma_1^2 & \sigma_{1,2} & \cdots & \sigma_{1,N} \\
     \sigma_{2, 1} & \sigma_2^2 & \cdots & \sigma_{2, N} \\
@@ -413,22 +439,22 @@ and can be estimated in R with the basis function \texttt{cov()} and historical 
 \hypertarget{portvar}{%
 \subsection{Portfolio Variance}\label{portvar}}
 
-Let \(R\) be a random vector with \(N\) normally distributed elements and \(w\) a weight vector. Assuming that the covariance matrix \(\sum\) of \(R\) is known, the variance of the linear combination of \(R\) can be calculated as follows:
+Let \(\pmb{R}\) be a random vector with \(N\) normally distributed elements and \(w\) a weight vector. Assuming that the covariance matrix \(\sum\) of \(\pmb{R}\) is known, the variance of the linear combination of \(\pmb{R}\) can be calculated as follows:
 \begin{align*}
-  Var(R \times w) &= E[(R \times w - \mu \times w)^2] \\
-  &= E[((R - \mu) \times w)^2]
+  Var(\pmb{R} \times w) &= E[(\pmb{R} \times w - \mu \times w)^2] \\
+  &= E[((\pmb{R} - \mu) \times w)^2]
 \end{align*}
 
-Since \((R - \mu) \times w\) is a scalar, it can be transformed from \(((R - \mu) \times w)^2\) to \(((R - \mu) \times w)^T \cdot ((R - \mu) \times w)\) and results in:
+Since \((\pmb{R} - \mu) \times w\) is a scalar, it can be transformed from \(((\pmb{R} - \mu) \times w)^2\) to \(((\pmb{R} - \mu) \times w)^T \cdot ((\pmb{R} - \mu) \times w)\) and results in:
 \begin{align*}
-  Var(R \times w) &= E[((R - \mu) \times w)^T \times ((R - \mu) \times w)]\\ 
-  &= E[(w^T \times (R - \mu)^T) \cdot ((R - \mu) \times w)]\\ 
-  &= w^T \times E[(R - \mu)^T \otimes (R - \mu)] \times w \\
-  &= w^T \times Cov(R) \times w \\
+  Var(\pmb{R} \times w) &= E[((\pmb{R} - \mu) \times w)^T \times ((\pmb{R} - \mu) \times w)]\\ 
+  &= E[(w^T \times (\pmb{R} - \mu)^T) \cdot ((\pmb{R} - \mu) \times w)]\\ 
+  &= w^T \times E[(\pmb{R} - \mu)^T \otimes (\pmb{R} - \mu)] \times w \\
+  &= w^T \times Cov(\pmb{R}) \times w \\
   &= w^T \times \textstyle\sum \times w
 \end{align*}
 
-The same is true for an estimate of \(Var(R \times w)\) by using the estimate of \(\textstyle\sum\).
+The same is true for an estimate of \(Var(\pmb{R} \times w)\) by using the estimate of \(\textstyle\sum\).
 
 \hypertarget{portfolioreturns}{%
 \subsection{Portfolio Returns}\label{portfolioreturns}}
@@ -541,7 +567,7 @@ Markowitz showed that diversifying risk across multiple assets reduces overall p
 \hypertarget{mvp-objective}{%
 \subsection{MVP Objective}\label{mvp-objective}}
 
-Let there be \(N\) assets and their returns on \(T\) different days, creating a return matrix \(R \in \mathbb{R}^{T \times N}\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The covariance matrix of the returns is \(\textstyle\sum \in \mathbb{R}^{N \times N}\) and the expected returns are \(\mu \in \mathbb{R}^{N}\). The MVP with the risk aversion parameter \(\lambda \in [0,1]\), as shown in \citep{Mari2005}, can be formalized as follows:
+Let there be \(N\) assets and their returns on \(T\) different days, creating a return matrix \(R \in \mathbb{R}^{T \times N}\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The estimated covariance matrix of the returns is \(\textstyle\sum \in \mathbb{R}^{N \times N}\) and the estimation of the expected returns are \(\mu \in \mathbb{R}^{N}\). The MVP with the risk aversion parameter \(\lambda \in [0,1]\), as shown in \citep{Mari2005}, can be formalized as follows:
 \begin{equation} 
 \underset{w}{min} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 \label{eq:MVP}
@@ -552,7 +578,7 @@ The risk aversion parameter \(\lambda\) defines the tradeoff between risk and re
 \hypertarget{mvp-example}{%
 \subsection{MVP example}\label{mvp-example}}
 
-All possible MVPs together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each \(\lambda\). First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.
+All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each \(\lambda\). First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.
 
 The cumulative daily returns are:\\
 \includegraphics{Master_Thesis_files/figure-latex/MVP_ex2-1.png}
@@ -596,47 +622,47 @@ Indices are baskets of assets that are used to track the performance of a partic
 
 The classic and widely used model tries to reduce the variance of the tracking error (TEV) with the following formula:
 \[
- \min \ \ Var(TE) = Var(r_{p}-r_{bm})
+ \min \ \ Var(TE) = Var(\pmb{R}_{p}-\pmb{R}_{bm})
 \]
 
-To obtain the portfolio weights \(w\), one needs to substitute \(r_{p}\) as follows:
+To obtain the portfolio weights \(w\), one needs to substitute \(\pmb{R}_{p}\) as follows:
 \[
-  r_{p} = R \times w
+  \pmb{R}_{p} = \pmb{R} \times w
 \]
 
 The variance is then solved until a quadratic problem is presented as a function of portfolio weights \(w\):
 \begin{align*}
- Var(r_{p}-r_{bm}) &= Var(R \times w - r_{bm}) \\
- &= Var(R \times w) + Var(r_{bm}) - 2 \cdot Cov(R \times w,r_{bm}) 
+ Var(\pmb{R}_{p}-\pmb{R}_{bm}) &= Var(\pmb{R} \times w - \pmb{R}_{bm}) \\
+ &= Var(\pmb{R} \times w) + Var(\pmb{R}_{bm}) - 2 \cdot Cov(\pmb{R} \times w,\pmb{R}_{bm}) 
 \end{align*}
 
 Now the three terms can be solved, starting with the simplest one.
 \[
-Var(r_{bm}) = \sigma_{bm}^2 = constant
+Var(\pmb{R}_{bm}) = \sigma_{bm}^2
 \]
 
 The variance of the portfolio can be solved with \ref{portvar}:
 \[
-Var(R \times w) = w^T \times Cov(R) \times w
+Var(\pmb{R} \times w) = w^T \times Cov(\pmb{R}) \times w
 \]
 And the last term can be solved in the same way as in \citep{Eric2021}:
 \begin{align*}
-  Cov(A \times a, b) &= Cov(b, A \times a) \\
-  &= E[(b-\mu_{b})(A \times a-\mu_{A} \times a)] \\
-  &= E[(b-\mu_{b})(A-\mu_{A}) \times a] \\
-  &= E[(b-\mu_{b})(A-\mu_{A})] \times a \\
-  &= Cov(A,b) \times a
+  Cov(\pmb{R} \times w, \pmb{R}_{bm}) &= Cov(\pmb{R}_{bm}, \pmb{R} \times w) \\
+  &= E[(\pmb{R}_{bm}-\mu_{bm})(\pmb{R} \times w-\mu_{\pmb{R}} \times w)] \\
+  &= E[(\pmb{R}_{bm}-\mu_{bm})(\pmb{R}-\mu_{\pmb{R}}) \times w] \\
+  &= E[(\pmb{R}_{bm}-\mu_{bm})(\pmb{R}-\mu_{\pmb{R}})] \times w \\
+  &= Cov(\pmb{R},\pmb{R}_{bm}) \times w
 \end{align*}
 
-This results in the final formula of the ITP:
+This results in the final formulation of the ITP:
 \begin{align*}
-  Var(r_{p}-r_{bm}) & = Var(R \times w - r_{bm}) \\
-  & = Var(R \times w) - 2 \cdot Cov(R \times w,r_{bm}) + Var(r_{bm})  \\
-  & = w^T \times Cov(R) \times w - 2 \cdot Cov(r_{bm}, R)^T \times w + \sigma_{bm}^2
+  Var(\pmb{R}_{p}-\pmb{R}_{bm}) & = Var(\pmb{R} \times w - \pmb{R}_{bm}) \\
+  & = Var(\pmb{R} \times w) - 2 \cdot Cov(\pmb{R} \times w,\pmb{R}_{bm}) + Var(\pmb{R}_{bm})  \\
+  & = w^T \times Cov(\pmb{R}) \times w - 2 \cdot Cov(\pmb{R}_{bm}, \pmb{R})^T \times w + \sigma_{bm}^2
   \label{eq:ITP}
 \end{align*}
 
-The minimization problem of the ITP in the general structure required by many optimizers is:
+The above problem can be estimated using the usual unbiased estimates and historical data \(R\) and \(r_{bm}\). The minimization problem of the ITP in the general structure required by many optimizers is:
 \[
   \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w -d^T \times w
 \]
@@ -939,7 +965,7 @@ The required data is now available and the function for the ITP-MSTE can be crea
 \end{Highlighting}
 \end{Shaded}
 
-The duplication and successive discarding of assets can begin. The results are stored in \texttt{res} and used to display the results.
+The successive removal of assets can begin and the results are stored in \texttt{res}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -964,7 +990,7 @@ The duplication and successive discarding of assets can begin. The results are s
 
 \includegraphics{Master_Thesis_files/figure-latex/qp_itp4-1.png}
 
-It can be seen that the standard deviation stagnates at about \(N=100\). This leads to the conclusion that a sparse replication with one hundred assets is sufficient in this particular case to track the historical performance of the S\&P 500 over this period.
+It can be seen that the standard deviation stagnates at about \(N=200\). This leads to the conclusion that a sparse replication with two hundred assets is sufficient in this particular case to track the historical performance of the S\&P 500 over this period.
 
 \hypertarget{particle-swarm-optimization-pso}{%
 \chapter{Particle Swarm Optimization (PSO)}\label{particle-swarm-optimization-pso}}
@@ -986,7 +1012,7 @@ Where \(r_1\) and \(r_2\) are uniformly distributed random numbers in \([0, 1]\)
   X^{i+1} &= X^i + V^{i+1}
 \end{align*}
 
-With current positions \(X \in \mathbb{R}^{N \times D}\), current velocities \(V \in \mathbb{R}^{N \times D}\), previous best positions \(P \in \mathbb{R}^{N \times D}\), and global best position \(p_g \in \mathbb{R}^{N}\). The parameters \(w\), \(c_p\) and \(c_g\) are stile scalars. The random numbers \(r_1\) and \(r_2\) are replaced by the vectors \(\vec{r}_1\) and \(\vec{r}_2\), which contain distinct uniformly distributed random numbers in \([0, 1]\).
+With current positions \(X \in \mathbb{R}^{N \times D}\), current velocities \(V \in \mathbb{R}^{N \times D}\), previous best positions \(P \in \mathbb{R}^{N \times D}\), and global best position \(p_g \in \mathbb{R}^{N}\). The parameters \(w\), \(c_p\) and \(c_g\) are stile scalars. The random numbers \(r_1\) and \(r_2\) are replaced by the vectors \(\vec{r}_1\) and \(\vec{r}_2\), in which each element is a uniformly distributed random number generated in \([0, 1]\).
 
 \hypertarget{pso-function}{%
 \section{\texorpdfstring{\texttt{pso()} Function}{pso() Function}}\label{pso-function}}
@@ -1158,7 +1184,7 @@ with
   x &\text{ if }x < 0
   \end{cases}
 \]
-By following the name conventions of \texttt{solve.QP()} a list named \texttt{mat} is created in the parent environment, that contains the necessary inputs. The generic R function to calculate the constraint breaks can be defined as follows:
+By following the name conventions of \texttt{solve.QP()}, a list named \texttt{mat} is created in the parent environment, that contains the necessary inputs. The generic R function to calculate the constraint breaks can be defined as follows:
 
 \begin{Shaded}
 \begin{Highlighting}[]
