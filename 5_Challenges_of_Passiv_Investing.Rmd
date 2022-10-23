@@ -4,14 +4,13 @@ editor_options:
   chunk_output_type: console
 ---
 # Challenges of Passiv Investing {#challenges}
-
-In this chapter, we analyze two common challenges of passive investing and create simple use cases to test the PSO. The first challenge is the mean-variance portfolio (MVP) from Markowitz's modern portfolio theory, which, simply put, is an optimal allocation of assets in terms of risk and return. The second challenge is the index tracking problem, which attempts to construct a portfolio with minimal tracking error to a given benchmark.
+In this chapter, two common challenges of passive investing are analyzed to create simple use cases for testing the PSO. The first challenge is the mean-variance portfolio (MVP) from Markowitz's modern portfolio theory, which, simply put, is an optimal allocation of assets in terms of risk and return. The second challenge is the index tracking problem, which attempts to construct a portfolio with minimal tracking error to a given benchmark.
 
 ## Mean-Variance Portfolio (MVP)
 Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier. The problem behind Markowitz's original MVP without constraints can be solved in a closed form, which is explained in [@Eric2021]. This type of MVP has no practical use, so only MVP problems with constraints and without closed forms are of interest in this thesis.
 
-### MVP Objective
-Let there be $N$ assets and their returns on $T$ different days, creating a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The estimated covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the estimation of the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP with the risk aversion parameter $\lambda \in [0,1]$, as shown in [@Mari2005], can be formalized as follows:
+### MVP Problem
+Let there be $N$ assets and their returns on $T$ different days, creating a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The estimated covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the estimation of the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP problem with the risk aversion parameter $\lambda \in [0,1]$, as shown in [@Mari2005], can be formalized as follows:
 \begin{equation} 
 \underset{w}{min} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 (\#eq:MVP)
@@ -21,7 +20,7 @@ The risk aversion parameter $\lambda$ defines the tradeoff between risk and retu
 
 
 ### MVP example
-All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the solution of the MVP for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.  
+All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP's for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.  
 ```{r MVP_ex1, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
@@ -45,7 +44,7 @@ cat0("estimation of positiv definite covariance matrix:")
 cov
 ```
 
-This is all the data necessary to solve the MVP with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the long only ($w_i \geq 0 \ \forall \ i$) constraint and the weights should sum to 1.  
+This is all the data necessary to solve the MVP problem with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the long only ($w_i \geq 0 \ \forall \ i$) constraint and the weights should sum to 1.  
 ```{r MVP_ex4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 portfolios <- data.frame()
 mu_and_var <- NULL
@@ -86,17 +85,17 @@ plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
   add_lines(y = ~mu, x = ~sd, name = "efficient frontier", mode="lines", type = 'scatter') %>%
   add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps", type = 'scatter') %>%
   layout(
-    yaxis = list(title=list(text = plotly::TeX("\\mu \\text{ (geometric)}"), standoff = 10L), range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
-    xaxis = list(title=list(text = plotly::TeX("\\sigma \\text{ (geometric)}"), standoff = 10L), range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05))
+    yaxis = list(title=list(text = "mu", standoff = 10L), range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
+    xaxis = list(title=list(text = "sigma", standoff = 10L), range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05))
   ) %>% 
-  config(mathjax = 'cdn') %>% 
+  #config(mathjax = 'cdn') %>% 
   html_save()
 ```
 
 The portfolio compositions for each $\lambda$ are:  
-```{r MVP_ex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
+```{r MVP_ex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", cache=F, warning=F, message=F}
 p <- plot_ly(type="bar") %>% 
-  layout(barmode="stack", xaxis = list(title=plotly::TeX("\\lambda"), autorange = "reversed"), yaxis = list(title="weight"), margin=list(b=70))
+  layout(barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="weight"), margin=list(b=70))
 for(i in 1:ncol(portfolios)){
   p <- p %>%
   add_trace(x=seq(0.01,1, 0.01), y=portfolios[, i], name = colnames(portfolios)[i])
@@ -228,8 +227,8 @@ plot_ly(data = all, type = 'scatter', mode="lines+markers", y = ~mu, x = ~sd, na
   # add_trace(data = all %>% filter(type=="geo_mean_and_cov_with_arith"), x = ~sd, y=~mu, name="geo_mean_and_cov_with_arith", mode="markers", type = 'scatter') %>%
   layout(
     #title = "3-Asset MVP: arith_mean or geo_mean",
-    yaxis = list(title=list(text = plotly::TeX("\\mu \\text{ (arithmetic)}"), standoff = 10L), range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
-    xaxis = list(title=list(text = plotly::TeX("\\sigma \\text{ (arithmetic)}"), standoff = 10L), range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05))#,
+    yaxis = list(title=list(text = "mu (arithmetic)", standoff = 10L), range=c(min(mu_and_var$mu)*0.9, max(mu_and_var$mu)*1.1)),
+    xaxis = list(title=list(text = "sigma (arithmetic)", standoff = 10L), range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05))#,
     # margin = list(
     #   l = 10,
     #   r = 10,
