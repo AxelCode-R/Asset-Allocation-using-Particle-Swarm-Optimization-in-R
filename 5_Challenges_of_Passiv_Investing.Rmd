@@ -249,17 +249,15 @@ Indices are baskets of assets that are used to track the performance of a partic
 
 
 ### ITP with TEV objective (ITP-TEV)
-The classic and widely used model tries to reduce the variance of the tracking error (TEV) with the following formula:
+The classic and widely used model tries to reduce the tracking error variance (TEV) with the following formula:
 $$
  \min \ \ Var(TE) = Var(\pmb{R}_{p}-\pmb{R}_{bm})
 $$
-
-To obtain the portfolio weights $w$, one needs to substitute $\pmb{R}_{p}$ as follows:
+where the random tracking portfolio return is $\pmb{R}_{p}$ and the random benchmark return is $\pmb{R}_{bm}$. To obtain the portfolio weights $w$, one needs to substitute the tracking portfolio return $\pmb{R}_{p}$ as follows:
 $$
   \pmb{R}_{p} = \pmb{R} \times w
 $$
-
-The variance is then solved until a quadratic problem is presented as a function of portfolio weights $w$:
+where $\pmb{R}$ is the random return vector containing the random return of each asset. The variance is then solved until a quadratic problem is presented as a function of portfolio weights $w$:
 \begin{align*}
  Var(\pmb{R}_{p}-\pmb{R}_{bm}) &= Var(\pmb{R} \times w - \pmb{R}_{bm}) \\
  &= Var(\pmb{R} \times w) + Var(\pmb{R}_{bm}) - 2 \cdot Cov(\pmb{R} \times w,\pmb{R}_{bm}) 

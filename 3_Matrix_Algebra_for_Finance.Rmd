@@ -108,15 +108,15 @@ $$
 $$
 
 ## Markowitz Modern Portfolio Theory (MPT)
-In 1952, Harry Markowitz published his first seminal paper, which had a significant impact on modern finance, primarily by outlining the implications of diversification and efficient portfolios. The definition of an efficient portfolio is a portfolio that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification might be, "A portfolio has the same return but less variance than the sum of its parts." This is true when assets are not perfectly correlated, as bad and good performance can offset each other, reducing the likelihood of extreme events. For more information, see [@Mari2005].
+In 1952, Harry Markowitz published his first seminal paper, which had a significant impact on modern finance, primarily by outlining the implications of diversification and efficient portfolios. The definition of an efficient portfolio is a portfolio that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification might be, "A portfolio has the same return but less variance than the sum of its parts." This is the case when assets are not perfectly correlated, as poor and good performance can offset each other, reducing the probability of extreme events. For more information, see [@Mari2005].
 
 ### Assumptions of Markowitz Portfolio Theory
-The following list contains all Markowitz assumptions according to [@Mari2005]:  
+This thesis focuses on problems derived from Markowitz's portfolio theory [@Mark1959] without closed form solutions studied in [@Mari2005] by excluding short selling. The following list contains these types of Markowitz assumptions according to [@Mari2005]:  
 
 \vspace{-0.4cm}
 + Perfect market without taxes or transaction costs
 + Assets are infinitely divisible
-+ Expected Returns, Variances and Covariances contain all information
++ Expected returns, variances and covariances contain all information
 + Investors are risk-averse, they will only accept greater risk if they
 are compensated with a higher expected return
 
