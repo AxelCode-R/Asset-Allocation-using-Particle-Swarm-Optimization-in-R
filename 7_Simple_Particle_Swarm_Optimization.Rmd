@@ -11,11 +11,11 @@ The PSO was developed by J. Kennedy as a global optimization method based on swa
 ## The Algorithm
 Each particle $d$ with position $x_d$ moves in the search space $\mathbb{R}^N$ and has its own velocity $v_d$ and remembers its previous best position $P_d$. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
 \begin{align*}
-  v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i - x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
+  v_d^{i+1} &= wv_d^{i} + c_p r_1^{i(d)} (P_d^i - x_d^i) + c_g r_2^{i(d)} (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
-Where $r_1$ and $r_2$ are uniformly distributed random numbers in $[0, 1]$. The cognitive parameter $c_p$ acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter $c_g$, which is a weighting of the direction to the global best position. The inertial weight $w$ is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for $d = 1, 2, \cdots, D$ particles can be given in the following matrix notation:
+Where $r_1^{i(d)}$ and $r_2^{i(d)}$ are uniformly distributed random numbers in $[0, 1]$. The cognitive parameter $c_p$ acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter $c_g$, which is a weighting of the direction to the global best position. The inertial weight $w$ is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for $d = 1, 2, \cdots, D$ particles can be given in the following matrix notation:
 \begin{align*}
   V^{i+1} &= w \cdot V^{i} + c_p \cdot \vec{r}_1^{\,i} \cdot (P^i-X^i) + c_g \cdot \vec{r}_2^{\,i} \cdot (p_g^i - X^i) \\
   X^{i+1} &= X^i + V^{i+1}
@@ -24,7 +24,7 @@ Where $r_1$ and $r_2$ are uniformly distributed random numbers in $[0, 1]$. The 
 With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$ and $c_g$ are stile scalars. The random numbers $r_1$ and $r_2$ are replaced by the vectors $\vec{r}_1$ and $\vec{r}_2$, in which each element is a uniformly distributed random number generated in $[0, 1]$.
 
 ## `pso()` Function
-In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which returns a scalar that needs to be minimized. The function itself mainly needs a vector `pos` that describes the position of a particle (e.g. weights). The other main parameters for the PSO function are `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The argument can only contain `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
+In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which returns a scalar that needs to be minimized. The objective function mainly needs a vector `pos` that describes the position of one particle (e.g. weights). The other main parameter for the PSO function is `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The vector can contain only `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
 ```{r pso1, eval=F}
 pso <- function(
     par, 
@@ -219,7 +219,7 @@ The simplest method for dealing with constraints is the penalty method, which ta
 $$
   A^T \times x  \geq b_0
 $$
-To calculate a value for the intensity of constraint breaks, the above equation gets subtracted by $b_0$ and defines:
+To calculate a value for the intensity of constraint breaks, the above inequality gets subtracted by $b_0$ and defines:
 $$
   c := A^T \times x - b_0
 $$
@@ -261,7 +261,7 @@ fn <- function(x){
 This approach to dealing with constraints is called the penalization method and is definitely the most straightforward approach. Its disadvantage is the fact that the PSO has to find a balance between the violation of constraints and the goal. As explained in [@InSi2008], there are three other constraint handling methods, but the results show that none of them is superior. The treatment of constraints should be chosen appropriately for the given problem. For example, it may be useful to use the feasibility preservation technique to obtain a solution that is guaranteed not to break any constraints. The disadvantages here are longer computation time and less exploration of particles, since only feasible solutions can be stored as personal or global best solutions.
 
 ## Example MVP
-This example uses the `solve.QP()` approach from \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the `solve.QP()` compared to the PSO are shown below:
+This example uses the `solve.QP()` approach from \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The main characteristics of all portfolios created with the `solve.QP()` compared to the PSO are shown below:
 
 ```{r pso7, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
@@ -358,7 +358,7 @@ mvp_PSO <- function(returns, lambda, silent = T){
       sum(pmin(0, const)^2)
     }
     pso_res <- pso(
-      par = rep(0, ncol(returns)),
+      par = rep(1/ncol(returns), ncol(returns)),
       fn = function(x){
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
@@ -471,10 +471,10 @@ plot_ly(
   html_save()
 ```
 
-The dots for each $\lambda$ are connected with a grey line to visualize the error of the PSO. It turns out that it is possible to solve MVP's with a PSO approach. It is noticeable that some PSO runs are trapped in local minimas and thus show a deviation from the `solve.QP()` approach, which can often be fixed by repeated runs. 
+The corresponding portfolios for each $\lambda$ are connected with a grey line to visualize the error of the PSO. It turns out that it is possible to solve MVP's with a PSO approach. It is noticable that some PSO runs were not able to reach the global minimum and thus show a deviation from the `solve.QP()` approach, which can often be fixed by repeated runs. 
 
 ## Example: ITP-MSTE
-The same ITP-MSTE solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the S&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$, the upper bound is $0.05$, and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
+The same ITP-MSTE solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the S&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$ and decreases to zero, the upper bound is $0.05$, and a starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
  
@@ -526,7 +526,7 @@ itp_QP <- function(pool_returns, bm_returns){
       0.99, # sum w >= 0.99
       rep(0, ncol(pool_returns)) # long only
     ),
-    meq = 1
+    meq = 0
   )
   
   qp <- solve.QP(
@@ -560,7 +560,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
       0.99, # sum w >= 0.99
       rep(0, ncol(pool_returns)) # long only
     ),
-    meq = 1
+    meq = 0
   )
   
   calc_fit <- function(x){
@@ -571,7 +571,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
     sum(pmin(0, const)^2)
   }
   pso_res <- pso(
-    par = rep(0, ncol(pool_returns)),
+    par = rep(1/ncol(pool_returns), ncol(pool_returns)),
     fn = function(x){
       fitness <- calc_fit(x)
       constraints <- calc_const(x)
@@ -660,19 +660,18 @@ reactable(
 It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
 
 ## Pros and Cons for Continuous Problems
-A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP()` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP()` alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for th variable of interest $x$ is to be a integer vector. These kind of problems could be solved by the `solve.QP()` approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP()` approach.
+A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP()` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP()` alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for the variable of interest $x$ is to be a integer vector. These kind of problems could be solved by the `solve.QP()` approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP()` approach.
 
 
 ## Discrete Problems
-A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a `solve.QP()` approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function `fn()`. In a portfolio with net asset value (`nav`) consisting of only American stocks with weights $w_i$ and closing prices $p_i$ can be discretized to $w_i^d$ by the following formula:
+A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often can't reach the new optimum. A solution with broken conditions is not acceptable in practice and a `solve.QP()` approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function `fn()`. In a portfolio with net asset value (`nav`) consisting of only American stocks with weights $w_i$ and closing prices $p_i$ can be discretized to $w_i^d$ by the following formula:
 
 $$
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
 $$
 
 ## Example: Discrete ITP-MSTE
-
-This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses to track the S&P 500 with its top 100 weighted assets and tries to construct a portfolio with the constraints long only, $1 \leq \textstyle\sum w_i \geq 0.99$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the S&P 500 with its top 100 assets derived from the example with discarding in \@ref(exampleitpsolveqp) and tries to construct a portfolio with the constraints long only, $0.99 \leq \textstyle\sum w_i \leq 1$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
 ```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
@@ -698,9 +697,11 @@ pool_data <- buffer(
   ), 
   "AS_sp500_asset_data"
 )
-pool_data$returns <- 
-  pool_data$returns[, colSums(is.na(pool_data$returns))==0]
-pool_data$prices <- pool_data$prices[, colnames(pool_data$returns)]
+
+load("data/assets_pool_100.rdata")
+
+pool_data$returns <- pool_data$returns[, assets_pool_100]
+pool_data$prices <- pool_data$prices[, assets_pool_100]
 
 
 bm_returns <- buffer(
@@ -725,55 +726,30 @@ mat <- list(
     0.99, # sum w >= 0.99
     rep(0, ncol(pool_returns)) # long only
   ),
-  meq = 1
+  meq = 0
 )
 
-# search 100 best tickers
-qp <- solve.QP(
-  Dmat = mat$Dmat, dvec = mat$dvec, 
-  Amat = mat$Amat, bvec = mat$bvec, meq = mat$meq
-)
-sub_ticker <- colnames(pool_returns)[order(qp$solution, decreasing = T)[1:100]]
-
-
-# Default solve.QP
-time_qp <- system.time({
-  res_qp <- itp_QP(pool_data$returns[,sub_ticker], bm_returns)
-  prices <- last(pool_data$prices[,sub_ticker])
-  res_qp_discrete <- setNames(as.vector(round(res_qp$solution*nav/prices)*prices/nav), names(res_qp$solution))
-})
-res_qp_discrete_fit <- as.numeric(0.5 * t(res_qp_discrete) %*% mat$Dmat[names(res_qp_discrete), names(res_qp_discrete)] %*% res_qp_discrete - t(as.vector(mat$dvec[names(res_qp_discrete), ])) %*% res_qp_discrete)
-res_qp_discrete_sum_wgt <- sum(res_qp_discrete)
-
-
-# Default PSO
-pool_returns <- pool_data$returns[, sub_ticker]
-mat <- list(
-  Dmat = t(pool_returns) %*% pool_returns,
-  dvec = t(pool_returns) %*% bm_returns,
-  Amat = t(rbind(
-    -rep(1, ncol(pool_returns)), # sum w <= 1
-    rep(1, ncol(pool_returns)), # sum w >= 0.99
-    diag(1, 
-         nrow=ncol(pool_returns), 
-         ncol=ncol(pool_returns)) # long only
-  )),
-  bvec = c(
-    -1, # sum w <= 1
-    0.99, # sum w >= 0.99
-    rep(0, ncol(pool_returns)) # long only
-  ),
-  meq = 1
-)
-  
 calc_fit <- function(x){
   as.numeric(0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x)
 }
 calc_const <- function(x){
   const <- t(mat$Amat) %*% x - mat$bvec
-  const[mat$meq] <- -pmax(0, abs(const[mat$meq]+0.005)-0.005)
   sum(pmin(0, const)^2)
 }
+
+# Default solve.QP
+time_qp <- system.time({
+  res_qp <- itp_QP(pool_data$returns, bm_returns)
+  prices <- last(pool_data$prices)
+  res_qp_discrete <- setNames(as.vector(round(res_qp$solution*nav/prices)*prices/nav), names(res_qp$solution))
+})
+res_qp_discrete_fit <- calc_fit(res_qp_discrete)
+res_qp_discrete_const <- calc_const(res_qp_discrete)
+res_qp_discrete_sum_wgt <- sum(res_qp_discrete)
+
+
+# Default PSO
+
 time_pso <- system.time({
   pso_res <- pso(
     par = rep(0, ncol(pool_returns)),
@@ -797,7 +773,9 @@ time_pso <- system.time({
   )
 })
 pso_res$solution <- setNames(as.vector(round(pso_res$solution*nav/prices)*prices/nav), names(res_qp$solution))
-res_pso_fit <- as.numeric(0.5 * t(pso_res$solution) %*% mat$Dmat[names(pso_res$solution), names(pso_res$solution)] %*% pso_res$solution - t(as.vector(mat$dvec[names(pso_res$solution),])) %*% pso_res$solution)
+
+res_pso_fit <- calc_fit(pso_res$solution)
+res_pso_const <- calc_const(pso_res$solution)
 
 
 
@@ -825,18 +803,20 @@ time_pso_2 <- system.time({
   )
 })
 pso_2_res$solution <- setNames(as.vector(round(pso_2_res$solution*nav/prices)*prices/nav), names(res_qp$solution))
-res_pso_2_fit <- as.numeric(0.5 * t(pso_2_res$solution) %*% mat$Dmat[names(pso_2_res$solution), names(pso_2_res$solution)] %*% pso_2_res$solution - t(as.vector(mat$dvec[names(pso_2_res$solution),])) %*% pso_2_res$solution)
-
+res_pso_2_fit <- calc_fit(pso_2_res$solution)
+res_pso_2_const <- calc_const(pso_2_res$solution)
 
 reactable(
   data.frame(
   "type" = c("solve.QP discrete", "PSO", "PSO with solve.QP as init solution"),
   "fitness" = c(res_qp_discrete_fit, res_pso_fit, res_pso_2_fit),
+  "const_break" = c(res_qp_discrete_const, res_pso_const, res_pso_2_const),
   "sum_wgt" = c(res_qp_discrete_sum_wgt, sum(pso_res$solution), sum(pso_2_res$solution)),
   "time" = c(time_qp[3], time_pso[3], time_pso_2[3])
   ),
   columns = list(
-    fitness = colDef(format = colFormat(digits=9)),
+    fitness = colDef(format = colFormat(digits=5)),
+    const_break = colDef(format = colFormat(digits=4)),
     sum_wgt = colDef(format = colFormat(digits=3)),
     time = colDef(format = colFormat(digits=3))
   )

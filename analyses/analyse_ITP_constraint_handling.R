@@ -48,7 +48,7 @@ mat <- list(
     1, # sum up to 1
     rep(0, ncol(pool_returns)) # long only
   ),
-  meq = 1
+  meq = 0
 )
 
 calc_fit <- function(x){

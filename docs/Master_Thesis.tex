@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-23}
+\date{2022-10-25}
 
 \begin{document}
 \maketitle
@@ -565,7 +565,7 @@ In this chapter, two common challenges of passive investing are analyzed to crea
 Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier. The problem behind Markowitz's original MVP without constraints can be solved in a closed form, which is explained in \citep{Eric2021}. This type of MVP has no practical use, so only MVP problems with constraints and without closed forms are of interest in this thesis.
 
 \hypertarget{mvp-problem}{%
-\subsection{MVP Problem}\label{mvp-problem}}
+\subsection{MVP: Problem}\label{mvp-problem}}
 
 Let there be \(N\) assets and their returns on \(T\) different days, creating a return matrix \(R \in \mathbb{R}^{T \times N}\). Each element \(R_{t,i}\) contains the return of the \(i\)-th asset on day \(t\). The estimated covariance matrix of the returns is \(\textstyle\sum \in \mathbb{R}^{N \times N}\) and the estimation of the expected returns are \(\mu \in \mathbb{R}^{N}\). The MVP problem with the risk aversion parameter \(\lambda \in [0,1]\), as shown in \citep{Mari2005}, can be formalized as follows:
 \begin{equation} 
@@ -576,7 +576,7 @@ Let there be \(N\) assets and their returns on \(T\) different days, creating a 
 The risk aversion parameter \(\lambda\) defines the tradeoff between risk and return. With \(\lambda = 1\), the minimization problem contains only the variance term, leading to a minimum variance portfolio, and \(\lambda = 0\) transforms the problem into a minimization of negative expected returns, leading to a maximum return portfolio. All possible portfolios created by \(\lambda \in [0, 1]\) define the efficient frontier.
 
 \hypertarget{mvp-example}{%
-\subsection{MVP example}\label{mvp-example}}
+\subsection{MVP: Example}\label{mvp-example}}
 
 All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP's for each \(\lambda\). First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.
 
@@ -606,9 +606,9 @@ The portfolio compositions for each \(\lambda\) are:\\
 It can be observed that the minimum variance portfolio was achieved with a diversified composition of the three assets. With gradually decreasing \(\lambda\), the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
 
 \hypertarget{mvp-compare-estimators}{%
-\subsection{MVP Compare Estimators}\label{mvp-compare-estimators}}
+\subsection{MVP: Compare Estimators}\label{mvp-compare-estimators}}
 
-The above solution for the MVP was performed using a geometric mean to estimate the expected returns \(\mu\) and was also used in the estimation of \(\textstyle\sum\). This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of \(\lambda\) using the arithmetic mean versus the geometric mean to estimate \(\mu\). The weights of the MVP's using the geometric mean are used to calculate \(\mu\) and \(\sigma\) as a function of the arithmetic mean to make both efficient frontiers comparable:
+The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns \(\mu\) and was also used in the estimation of \(\textstyle\sum\). This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of \(\lambda\) using the arithmetic mean versus the geometric mean to estimate \(\mu\). The weights of the MVP's using the geometric mean are used to calculate \(\mu\) and \(\sigma\) as a function of the arithmetic mean to make both efficient frontiers comparable:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png}
 It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with \(\lambda\) are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.
 
@@ -622,7 +622,7 @@ Indices are baskets of assets that are used to track the performance of a partic
 
 The classic and widely used model tries to reduce the tracking error variance (TEV) with the following formula:
 \[
- \min \ \ Var(TE) = Var(\pmb{R}_{p}-\pmb{R}_{bm})
+ \min \ \ Var(\pmb{TE}) = Var(\pmb{R}_{p}-\pmb{R}_{bm})
 \]
 where the random tracking portfolio return is \(\pmb{R}_{p}\) and the random benchmark return is \(\pmb{R}_{bm}\). To obtain the portfolio weights \(w\), one needs to substitute the tracking portfolio return \(\pmb{R}_{p}\) as follows:
 \[
@@ -679,7 +679,7 @@ It is possible to add some basic constraints, as in the MVP to sum the weights t
 \hypertarget{itp-with-mste-objective-itp-mste}{%
 \subsection{ITP with MSTE objective (ITP-MSTE)}\label{itp-with-mste-objective-itp-mste}}
 
-A good explanation of the ITP with MSTE objective can be found in \href{https://ahmedbadary.github.io/work_files/research/conv_opt/hw/iftp}{ahmedbadary}. The objective is to minimize the mean square tracking error (MSTE) of daily portfolio returns \(r_{t, p}\) and daily benchmark returns \(r_{t, bm}\) on \(T\) days:
+A good explanation of the ITP with MSTE objective can be found in \citep{AhBa2017}. The objective is to minimize the mean square tracking error (MSTE) of daily portfolio returns \(r_{t, p}\) and daily benchmark returns \(r_{t, bm}\) on \(T\) historical days:
 
 \[
   \frac{1}{T} \sum^T_{t=1}(r_{t, p}-r_{t, bm})^2
@@ -754,7 +754,7 @@ Some other sources notate the problem with different signs or coefficients, all 
 \hypertarget{qp-solver-from-quadprog}{%
 \section{QP-Solver from quadprog}\label{qp-solver-from-quadprog}}
 
-The most common free QP-Solver used in R comes from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog}, which consists of a single function called \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani published in \citep{GoId1982} and \citep{GoId1983}. It uses the above QP with the condition that \(D\) must be a symmetric positive definite matrix. This means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in \mathbb{R}^N\), which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix \(\sum\), but it is possible to find the nearest positive definite matrix of \(\textstyle\sum\) using the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{matrix} R package. The error encountered often does not exceed a percentage change in elements over \(10^{-15} \%\), which is negligible for the context of this work. The function \texttt{solve.QP()} for an \(N\) dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
+The most common free QP-Solver used in R comes from the package \href{https://cran.r-project.org/web/packages/quadprog/quadprog.pdf}{quadprog}, which consists of a single function called \texttt{solve.QP()}. Its implementation routine is the dual method of Goldfarb and Idnani published in \citep{GoId1982} and \citep{GoId1983}. It uses the above QP with the condition that \(D\) must be a symmetric positive definite matrix. This means that \(D\in \mathbb{R}^{N \times N}\) and \(x^T D x > 0 \ \forall \ x \in \mathbb{R}^N \setminus \{\vec{0}\}\), which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix \(\sum\), but it is possible to find the nearest positive definite matrix of \(\textstyle\sum\) using the function \texttt{nearPD()} from the \href{https://cran.r-project.org/web/packages/Matrix/Matrix.pdf}{matrix} R package. The error encountered often does not exceed a percentage change in elements over \(10^{-15} \%\), which is negligible for the context of this work. The function \texttt{solve.QP()} for an \(N\) dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
 
 \vspace{-0.4cm}
 
@@ -787,7 +787,7 @@ The return of \texttt{solve.QP()} is a list and contains, among others, the foll
 \hypertarget{exampleanalyticalmvp}{%
 \section{\texorpdfstring{Example: Solving MVP with \texttt{solve.QP()}}{Example: Solving MVP with solve.QP()}}\label{exampleanalyticalmvp}}
 
-This section provides insights into the effects of diversification and the use of \texttt{solve.QP()} by creating ten different efficiency frontiers from a pool of ten assets. Each efficient frontier \(i \in \{1, 2, \cdots, 10\}\) consists of \(N_i = i\) assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
+This section provides insights into the effects of diversification and the use of \texttt{solve.QP()} by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier \(i \in \{1, 2, \cdots, 10\}\) consists of \(N_i = i\) assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -893,7 +893,7 @@ It can be seen, that each asset added results in a minimum variance portfolio wi
 \hypertarget{exampleitpsolveqp}{%
 \section{\texorpdfstring{Example: Solving ITP-MSTE with \texttt{solve.QP()}}{Example: Solving ITP-MSTE with solve.QP()}}\label{exampleitpsolveqp}}
 
-This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the S\&P 500 from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded and serve as the new asset pool for the next replication until only five assets are left. First, the required data can be downloaded from the \texttt{R/} directory using existing functions. The function \texttt{get\_spx\_composition()} uses web scraping to read the components of \href{https://en.wikipedia.org/wiki/List_of_S\%26P_500_companies}{wikipedia} and converts them into monthly compositions of the S\&P 500. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the S\&P 500:
+This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the S\&P 500 from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded, and the remaining assets serve as the new asset pool for the next replication until only five assets remain. First, the required data can be downloaded from the \texttt{R/} directory using existing functions. The function \texttt{get\_spx\_composition()} uses web scraping to read the components of \href{https://en.wikipedia.org/wiki/List_of_S\%26P_500_companies}{wikipedia} and converts them into monthly compositions of the S\&P 500. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the S\&P 500:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -968,13 +968,15 @@ The successive removal of assets can begin and the results are stored in \texttt
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{res }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
+\NormalTok{asset\_pool }\OtherTok{\textless{}{-}} \ConstantTok{NULL}
 \NormalTok{n\_assets }\OtherTok{\textless{}{-}} \FunctionTok{rev}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{5}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(pool\_returns\_raw), }\DecValTok{5}\NormalTok{))}
 \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in}\NormalTok{ n\_assets)\{}
 \NormalTok{  temp }\OtherTok{\textless{}{-}} \ControlFlowTok{if}\NormalTok{(i}\SpecialCharTok{==}\FunctionTok{max}\NormalTok{(n\_assets))\{}
     \FunctionTok{itp}\NormalTok{(pool\_returns\_raw, bm\_returns)}
 \NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{}
+\NormalTok{    asset\_pool }\OtherTok{\textless{}{-}} \FunctionTok{names}\NormalTok{(}\FunctionTok{sort}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{solution, }\AttributeTok{decreasing =}\NormalTok{ T)[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{i])}
     \FunctionTok{itp}\NormalTok{(}
-\NormalTok{      pool\_returns\_raw[, }\FunctionTok{names}\NormalTok{(}\FunctionTok{sort}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{solution, }\AttributeTok{decreasing =}\NormalTok{ T)[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{i])], }
+\NormalTok{      pool\_returns\_raw[, asset\_pool], }
 \NormalTok{      bm\_returns}
 \NormalTok{    )}
 \NormalTok{  \}}
@@ -982,6 +984,16 @@ The successive removal of assets can begin and the results are stored in \texttt
 \NormalTok{    res, }
     \FunctionTok{data.frame}\NormalTok{(}\StringTok{"N"}\OtherTok{=}\NormalTok{i, }\StringTok{"var"}\OtherTok{=}\NormalTok{temp}\SpecialCharTok{$}\NormalTok{var, }\StringTok{"sd"}\OtherTok{=}\FunctionTok{sqrt}\NormalTok{(temp}\SpecialCharTok{$}\NormalTok{var), }\AttributeTok{row.names =} \ConstantTok{NULL}\NormalTok{)}
 \NormalTok{  )}
+  
+  \CommentTok{\# for later analysis}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(asset\_pool)}\SpecialCharTok{==}\DecValTok{100}\NormalTok{)\{}
+\NormalTok{    assets\_pool\_100 }\OtherTok{\textless{}{-}}\NormalTok{ asset\_pool}
+    \FunctionTok{save}\NormalTok{(assets\_pool\_100, }\AttributeTok{file=}\StringTok{"data/assets\_pool\_100.rdata"}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{length}\NormalTok{(asset\_pool)}\SpecialCharTok{==}\DecValTok{50}\NormalTok{)\{}
+\NormalTok{    assets\_pool\_50 }\OtherTok{\textless{}{-}}\NormalTok{ asset\_pool}
+    \FunctionTok{save}\NormalTok{(assets\_pool\_50, }\AttributeTok{file=}\StringTok{"data/assets\_pool\_50.rdata"}\NormalTok{)}
+\NormalTok{  \}}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
@@ -1000,11 +1012,11 @@ The PSO was developed by J. Kennedy as a global optimization method based on swa
 
 Each particle \(d\) with position \(x_d\) moves in the search space \(\mathbb{R}^N\) and has its own velocity \(v_d\) and remembers its previous best position \(P_d\). After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position \(p_g\) of all particles. A position change from \(i\) to \(i+1\) can be calculated by the following two equations \citep{PaVr2002}:
 \begin{align*}
-  v_d^{i+1} &= wv_d^{i} + c_p r_1^i (P_d^i - x_d^i) + c_g r_2^i (p_g^i - x_d^i) \\
+  v_d^{i+1} &= wv_d^{i} + c_p r_1^{i(d)} (P_d^i - x_d^i) + c_g r_2^{i(d)} (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{align*}
 
-Where \(r_1\) and \(r_2\) are uniformly distributed random numbers in \([0, 1]\). The cognitive parameter \(c_p\) acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter \(c_g\), which is a weighting of the direction to the global best position. The inertial weight \(w\) is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in \citep{PaVr2002} showed that these parameters can be set to \(c_p=c_g=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for \(d = 1, 2, \cdots, D\) particles can be given in the following matrix notation:
+Where \(r_1^{i(d)}\) and \(r_2^{i(d)}\) are uniformly distributed random numbers in \([0, 1]\). The cognitive parameter \(c_p\) acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter \(c_g\), which is a weighting of the direction to the global best position. The inertial weight \(w\) is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in \citep{PaVr2002} showed that these parameters can be set to \(c_p=c_g=0.5\) and \(w\) should decrease from \(1.2\) to \(0\). However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for \(d = 1, 2, \cdots, D\) particles can be given in the following matrix notation:
 \begin{align*}
   V^{i+1} &= w \cdot V^{i} + c_p \cdot \vec{r}_1^{\,i} \cdot (P^i-X^i) + c_g \cdot \vec{r}_2^{\,i} \cdot (p_g^i - X^i) \\
   X^{i+1} &= X^i + V^{i+1}
@@ -1015,7 +1027,7 @@ With current positions \(X \in \mathbb{R}^{N \times D}\), current velocities \(V
 \hypertarget{pso-function}{%
 \section{\texorpdfstring{\texttt{pso()} Function}{pso() Function}}\label{pso-function}}
 
-In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package \texttt{pso}. The key component of the problem is a objective function called \texttt{fn()}, which returns a scalar that needs to be minimized. The function itself mainly needs a vector \texttt{pos} that describes the position of a particle (e.g.~weights). The other main parameters for the PSO function are \texttt{par}, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The argument can only contain \texttt{NA}'s, resulting in completely random starting positions. The last two arguments are \texttt{lower} and \texttt{upper} bounds (e.g.~weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called \texttt{control}. The resulting structure is:
+In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package \texttt{pso}. The key component of the problem is a objective function called \texttt{fn()}, which returns a scalar that needs to be minimized. The objective function mainly needs a vector \texttt{pos} that describes the position of one particle (e.g.~weights). The other main parameter for the PSO function is \texttt{par}, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The vector can contain only \texttt{NA}'s, resulting in completely random starting positions. The last two arguments are \texttt{lower} and \texttt{upper} bounds (e.g.~weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called \texttt{control}. The resulting structure is:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1167,7 +1179,7 @@ The simplest method for dealing with constraints is the penalty method, which ta
 \[
   A^T \times x  \geq b_0
 \]
-To calculate a value for the intensity of constraint breaks, the above equation gets subtracted by \(b_0\) and defines:
+To calculate a value for the intensity of constraint breaks, the above inequality gets subtracted by \(b_0\) and defines:
 \[
   c := A^T \times x - b_0
 \]
@@ -1222,16 +1234,16 @@ This approach to dealing with constraints is called the penalization method and 
 \hypertarget{example-mvp}{%
 \section{Example MVP}\label{example-mvp}}
 
-This example uses the \texttt{solve.QP()} approach from \ref{exampleanalyticalmvp} with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible \(\lambda\). The PSO has 300 particles and 200 iterations for each lambda. The main characteristics of all portfolios created with the \texttt{solve.QP()} compared to the PSO are shown below:
+This example uses the \texttt{solve.QP()} approach from \ref{exampleanalyticalmvp} with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible \(\lambda\). The PSO has 300 particles and 200 iterations for each lambda. The starting position is the equally weighted vector \(v\) with \(\textstyle\sum v_i=1\). The main characteristics of all portfolios created with the \texttt{solve.QP()} compared to the PSO are shown below:
 
 \includegraphics{Master_Thesis_files/figure-latex/pso7-1.png}
 
-The dots for each \(\lambda\) are connected with a grey line to visualize the error of the PSO. It turns out that it is possible to solve MVP's with a PSO approach. It is noticeable that some PSO runs are trapped in local minimas and thus show a deviation from the \texttt{solve.QP()} approach, which can often be fixed by repeated runs.
+The corresponding portfolios for each \(\lambda\) are connected with a grey line to visualize the error of the PSO. It turns out that it is possible to solve MVP's with a PSO approach. It is noticable that some PSO runs were not able to reach the global minimum and thus show a deviation from the \texttt{solve.QP()} approach, which can often be fixed by repeated runs.
 
 \hypertarget{example-itp-mste}{%
 \section{Example: ITP-MSTE}\label{example-itp-mste}}
 
-The same ITP-MSTE solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the S\&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at \(1.2\), the upper bound is \(0.05\), and a starting position is the zero vector. The PSO was run ten times, and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach for seed 0 in the table below:
+The same ITP-MSTE solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the S\&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at \(1.2\) and decreases to zero, the upper bound is \(0.05\), and a starting position is the equally weighted vector \(v\) with \(\textstyle\sum v_i=1\). The PSO was run ten times, and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach for seed 0 in the table below:
 \includegraphics{Master_Thesis_files/figure-latex/pso8-1.png}
 
 It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
@@ -1239,12 +1251,12 @@ It can be seen that in all PSO runs, sufficient fitness was achieved with neglig
 \hypertarget{pros-and-cons-for-continuous-problems}{%
 \section{Pros and Cons for Continuous Problems}\label{pros-and-cons-for-continuous-problems}}
 
-A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the \texttt{solve.QP()} approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the \texttt{solve.QP()} alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for th variable of interest \(x\) is to be a integer vector. These kind of problems could be solved by the \texttt{solve.QP()} approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the \texttt{solve.QP()} approach.
+A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the \texttt{solve.QP()} approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the \texttt{solve.QP()} alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for the variable of interest \(x\) is to be a integer vector. These kind of problems could be solved by the \texttt{solve.QP()} approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the \texttt{solve.QP()} approach.
 
 \hypertarget{discrete-problems}{%
 \section{Discrete Problems}\label{discrete-problems}}
 
-A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g.~ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often cant reach the new optimum. A solution with broken conditions is not acceptable in practice and a \texttt{solve.QP()} approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function \texttt{fn()}. In a portfolio with net asset value (\texttt{nav}) consisting of only American stocks with weights \(w_i\) and closing prices \(p_i\) can be discretized to \(w_i^d\) by the following formula:
+A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g.~ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often can't reach the new optimum. A solution with broken conditions is not acceptable in practice and a \texttt{solve.QP()} approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function \texttt{fn()}. In a portfolio with net asset value (\texttt{nav}) consisting of only American stocks with weights \(w_i\) and closing prices \(p_i\) can be discretized to \(w_i^d\) by the following formula:
 
 \[
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}
@@ -1253,7 +1265,7 @@ A continuous solution for a portfolio is not sufficient for practical purposes, 
 \hypertarget{example-discrete-itp-mste}{%
 \section{Example: Discrete ITP-MSTE}\label{example-discrete-itp-mste}}
 
-This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP-MSTE focuses to track the S\&P 500 with its top 100 weighted assets and tries to construct a portfolio with the constraints long only, \(1 \leq \textstyle\sum w_i \geq 0.99\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the S\&P 500 with its top 100 assets derived from the example with discarding in \ref{exampleitpsolveqp} and tries to construct a portfolio with the constraints long only, \(0.99 \leq \textstyle\sum w_i \leq 1\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
 \includegraphics{Master_Thesis_files/figure-latex/pso9-1.png}
 
 It can be seen that the rounded \texttt{solve.QP()} solution still has a good fitness but the constraints are not satisfied. The PSO has no constraint breaks and still reached a fitness close to the rounded \texttt{solve.QP()}. The PSO with \texttt{solve.QP()} solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the \texttt{solve.QP()} and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for problems in practice.
@@ -1266,7 +1278,7 @@ The standard PSO analyzed in the previous chapter is capable of solving a wide r
 \hypertarget{testproblem-discrete-itp-mste}{%
 \subsection{Testproblem: Discrete ITP-MSTE}\label{testproblem-discrete-itp-mste}}
 
-All variants are tested on a discrete ITP-MSTE to replicate the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S\&P 500 at the end of the time frame and have no missing values. The top 50 assets are selected by solving a continuous ITP-MSTE using an \texttt{solve.QP()} approach, and the assets with the 50 highest weights are selected. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10\% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights \(w\) should satisfy \(0.99 \leq \textstyle\sum w_i \leq 1\). All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 100 and the iterations are set to 400.
+All variants are tested on a discrete ITP-MSTE to replicate the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500 derived from the example with discarding in \ref{exampleitpsolveqp}. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S\&P 500 at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10\% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights \(w\) should satisfy \(0.99 \leq \textstyle\sum w_i \leq 1\). All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 100 and the iterations are set to 400.
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95\% and 5\% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
