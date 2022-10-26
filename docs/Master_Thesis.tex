@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-25}
+\date{2022-10-26}
 
 \begin{document}
 \maketitle
@@ -1276,9 +1276,9 @@ It can be seen that the rounded \texttt{solve.QP()} solution still has a good fi
 The standard PSO analyzed in the previous chapter is capable of solving a wide range of problems, but often gets stuck in local minima. In this chapter, different variants of the standard PSO are analyzed using a problem from the financial domain. The first variant is the PSO with function stretching, which is designed to allow the PSO to escape from local minima if they are discovered. The second variant is the local PSO, which is designed to reduce the probability of getting stuck in local minima by limiting the spread of information in the swarm. The third variant, the PSO with feasibility preservation, tries to optimize within the feasibility space and therefore provide only feasible solutions. The last variant is the PSO with self-adaptive velocity, which tries to adjust the control parameters according to certain rules and randomness.
 
 \hypertarget{testproblem-discrete-itp-mste}{%
-\subsection{Testproblem: Discrete ITP-MSTE}\label{testproblem-discrete-itp-mste}}
+\section{Testproblem: Discrete ITP-MSTE}\label{testproblem-discrete-itp-mste}}
 
-All variants are tested on a discrete ITP-MSTE to replicate the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500 derived from the example with discarding in \ref{exampleitpsolveqp}. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S\&P 500 at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10\% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights \(w\) should satisfy \(0.99 \leq \textstyle\sum w_i \leq 1\). All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 100 and the iterations are set to 400.
+All variants are tested on a discrete ITP-MSTE to replicate the S\&P 500 with a tracking portfolio consisting of the top 50 assets in the S\&P 500 derived from the example with discarding in \ref{exampleitpsolveqp}. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S\&P 500 at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10\% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights \(w\) should satisfy \(0.99 \leq \textstyle\sum w_i \leq 1\). All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400.
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95\% and 5\% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
@@ -1292,13 +1292,16 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 \section{Function Stretching}\label{function-stretching}}
 
 PSO often gets stuck in local minima, i.e., if the current best global position is a local minima with a larger environment around it, with only higher fitness, it is hard for the PSO to escape and find the global minima. Function stretching tries to make the PSO escape from such local minima by transforming the fitness function in a way described in \citep{PaVr2002}. It states that after finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function so that the discovered local minimum is transformed into a maximum, but any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum \(\bar{x}\) are:
-\[
-  G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
-\]
+\begin{equation} 
+G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
+\label{eq:fnstretchG}
+\end{equation}
 and
-\[
+\begin{equation} 
   H(x) = G(x) + \gamma_2 \cdot \frac{\text{sign}\biggl(f(x)-f(\bar{x})\biggr)+1}{\text{tanh}\biggl( \mu \cdot (G(x)-G(\bar{x})) \biggr)}
-\]
+\label{eq:fnstretchH}
+\end{equation}
+
 The function \(G(\bar{x})\) can be simplified to \(f(\bar{x})\) and the \(\text{sign}()\) function is defined as follows:
 \[
   \text{sign}(x) = 
@@ -1315,7 +1318,13 @@ In the source it is suggested to select the following parameter values as defaul
   \mu &= 10^{-10}
 \end{align*}
 
+It is difficult to interpret both transformations exactly, especially in higher dimensions. But some concepts can be recognized by looking only at the most important parts of them. The first transformation \(G(x)\) uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function \(H(x)\) also does not change values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity with a steep fall-off to repel particles.
+
 To better understand the transformation, it is used to stretch a simple function in \(\mathbb{R}^1\) defined as follows:
+\[
+f(x) = cos(x)+\frac{1}{10}\cdot x
+\]
+translated to the objective function:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1325,7 +1334,7 @@ To better understand the transformation, it is used to stretch a simple function
 \end{Highlighting}
 \end{Shaded}
 
-and the domain of definition is chosen as \(x \in [-20, 20]\). Suppose the PSO gets stuck in the local minima at \(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\). The original function and the transformed function are shown in the following graph:
+and the domain of definition is chosen as \(x \in [-20, 20]\). Suppose the PSO gets stuck in the local minimum at \(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\). The original function \texttt{fn} and the transformed function \texttt{fn\_stretched}, which matches \(H(x)\) in \eqref{eq:fnstretchH}, are shown in the following graph:\\
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
 It can be seen that the fitness is stretched upward around the local minima \(\bar{x}\), making it much easier for the PSO to move down the hill and fall into new minima with lower fitness. All the lower fitness regions remain unchanged, as can be seen in the zoomed version of the bottom diagram from above:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
