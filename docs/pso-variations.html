@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-26" />
+<meta name="date" content="2022-10-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -439,7 +439,7 @@ In the source it is suggested to select the following parameter values as defaul
   \gamma_2 &amp;= 0.5 \\
   \mu &amp;= 10^{-10}
 \end{align*}\]</span></p>
-<p>It is difficult to interpret both transformations exactly, especially in higher dimensions. But some concepts can be recognized by looking only at the most important parts of them. The first transformation <span class="math inline">\(G(x)\)</span> uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function <span class="math inline">\(H(x)\)</span> also does not change values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity with a steep fall-off to repel particles.</p>
+<p>It is difficult to interpret both transformations exactly, especially in higher dimensions. But some concepts can be recognized by looking only at the most important parts. The first transformation <span class="math inline">\(G(x)\)</span> uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function <span class="math inline">\(H(x)\)</span> also does not change any values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity and dropping steeply to repel particles.</p>
 <p>To better understand the transformation, it is used to stretch a simple function in <span class="math inline">\(\mathbb{R}^1\)</span> defined as follows:
 <span class="math display">\[
 f(x) = cos(x)+\frac{1}{10}\cdot x

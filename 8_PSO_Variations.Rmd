@@ -10,7 +10,7 @@ The standard PSO analyzed in the previous chapter is capable of solving a wide r
 
 
 ## Testproblem: Discrete ITP-MSTE
-All variants are tested on a discrete ITP-MSTE to replicate the S&P 500 with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S&P 500 at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. 
+All variants are tested on a discrete ITP-MSTE to replicate the S&P 500 with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S&P 500 at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSOs start with an equally weighted portfolio that satisfies the condition $\textstyle\sum w_i = 1$. 
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
@@ -85,7 +85,7 @@ df_SPSO <- NULL
 for(i in 1:100){
   res_SPSO_time <- system.time({
     res_SPSO <- pso(
-      par = rep(0, ncol(pool_data$returns)),
+      par = rep(1/ncol(pool_data$returns), ncol(pool_data$returns)),
       fn = function(x){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
@@ -179,7 +179,7 @@ In the source it is suggested to select the following parameter values as defaul
   \mu &= 10^{-10}
 \end{align*}
 
-It is difficult to interpret both transformations exactly, especially in higher dimensions. But some concepts can be recognized by looking only at the most important parts. The first transformation $G(x)$ uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function $H(x)$ also does not change values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity with a steep fall-off to repel particles.
+It is difficult to interpret both transformations exactly, especially in higher dimensions. But some concepts can be recognized by looking only at the most important parts. The first transformation $G(x)$ uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function $H(x)$ also does not change any values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity and dropping steeply to repel particles.
 
 To better understand the transformation, it is used to stretch a simple function in $\mathbb{R}^1$ defined as follows:
 $$
@@ -235,7 +235,7 @@ df <- NULL
 for(i in 1:100){
   res_pso_fns_time <- system.time({
     res_pso_fns <- pso_fn_stretching(
-      par = rep(0, ncol(pool_data$returns)),
+      par = rep(1/ncol(pool_data$returns), ncol(pool_data$returns)),
       fn = function(x){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
@@ -344,7 +344,7 @@ for(i in 1:100){
 
   res_pso_local_time <- system.time({
     res_pso_local <- pso_local(
-      par = rep(0, ncol(pool_data$returns)),
+      par = rep(1/ncol(pool_data$returns), ncol(pool_data$returns)),
       fn = function(x){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
@@ -541,7 +541,7 @@ df <- NULL
 for(i in 1:100){
   res_pso_SAvel_time <- system.time({
     res_pso_SAvel <- pso_self_adaptive_velocity(
-      par = rep(0, ncol(pool_data$returns)),
+      par = rep(1/ncol(pool_data$returns), ncol(pool_data$returns)),
       fn = function(x){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)

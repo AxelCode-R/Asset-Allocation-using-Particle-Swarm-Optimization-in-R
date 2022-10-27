@@ -510,7 +510,7 @@ pso_self_adaptive_velocity <- function(
   p_g <- P[, which.min(P_fit)]
   p_g_fit <- min(P_fit)
 
-  ac_params <- data.frame("w"=rep(0.5, length(par)), "c.p"=rep(2, length(par)), "c.g"=rep(2, length(par)))
+  ac_params <- data.frame("w"=rep(0.5, control$s), "c.p"=rep(2, control$s), "c.g"=rep(2, control$s))
 
   trace_data <- NULL
   fit_data <- NULL
@@ -580,9 +580,9 @@ pso_self_adaptive_velocity <- function(
 
     max_fit <- max(X_fit)
     WG <- abs(X_fit-max_fit)/sum(abs(X_fit-max_fit))
-    ac_params$w <- rcauchy(length(par), sum(WG*ac_params$w), 0.2)
-    ac_params$c.p <- rcauchy(length(par), sum(WG*ac_params$c.p), 0.3)
-    ac_params$c.g <- rcauchy(length(par), sum(WG*ac_params$c.g), 0.3)
+    ac_params$w <- rcauchy(control$s, sum(WG*ac_params$w), 0.2)
+    ac_params$c.p <- rcauchy(control$s, sum(WG*ac_params$c.p), 0.3)
+    ac_params$c.g <- rcauchy(control$s, sum(WG*ac_params$c.g), 0.3)
 
     ac_params$w[ac_params$w > 1] <- runif(1)
     ac_params$w[ac_params$w < 0] <- runif(1)/10

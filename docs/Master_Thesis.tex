@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-10-26}
+\date{2022-10-27}
 
 \begin{document}
 \maketitle
@@ -1318,7 +1318,7 @@ In the source it is suggested to select the following parameter values as defaul
   \mu &= 10^{-10}
 \end{align*}
 
-It is difficult to interpret both transformations exactly, especially in higher dimensions. But some concepts can be recognized by looking only at the most important parts of them. The first transformation \(G(x)\) uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function \(H(x)\) also does not change values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity with a steep fall-off to repel particles.
+It is difficult to interpret both transformations exactly, especially in higher dimensions. But some concepts can be recognized by looking only at the most important parts. The first transformation \(G(x)\) uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function \(H(x)\) also does not change any values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity and dropping steeply to repel particles.
 
 To better understand the transformation, it is used to stretch a simple function in \(\mathbb{R}^1\) defined as follows:
 \[
@@ -1512,12 +1512,12 @@ PSO-pkg hat eine bessere veolcity initialisierung aber kann volle länge haben u
 (Vorhaben)
 focus auf testphase legen, diskrete (20k), long only, 0\textless w\textless0.1, ITP S\&P500 tracken mit weniger als 50 titeln und mehr als 30, vorauswahl von assetpool?, umschichtungs constraint, transaktionskosten 1 euro,
 
-The previous chapters have analyzed the capability's of a PSO and the quality of the results by solving a problem in a single timepoint. In practice, the stability of future results on multiple timepoints is of higher interest. Therefore the next sections provides additional constraints that are needed to simulate real portfolios over multiple rebalancing dates, starting by adding transaction costs to the problem. The first reblancing date will define a problem that simulates a portfolio manager that has a defined amount of cash and tries to construct a portfolio from it, like in the last chapter. After the first iteration the portfolio manager needs to sell old assets and buy new ones. Of course do this produce additional transaction costs and effort, which is why most portfolio managers consider a maximal rebalancing constraint, that tries to limit the amount of sold and bought assets. This procedure is called a backtest, which tries to simulate the performance of a portfolio dependent on the previous portfolio and the historic data of each rebalancing date. Later the objective is analyzed more deeply with focus on the forecast ability. And at last a complete backtest of a ITP in a practice near setting is evaluated and analyzed.
+The previous chapters have analyzed the capability's of a PSO and the quality of the results by solving a problem in a single timepoint. In practice, the stability of future results on multiple timepoints is of higher interest. Therefore the next sections provide additional constraints that are needed to simulate real portfolios over multiple rebalancing dates, starting by adding transaction costs to the problem. The first reblancing date will define a problem that simulates a portfolio manager that has a defined amount of cash and tries to construct a portfolio from it, like in the last chapter. After the first iteration the portfolio manager needs to sell old assets and buy new ones. Of course do this produce additional transaction costs and effort, which is why most portfolio managers consider a maximal rebalancing constraint, that tries to limit the amount of sold and bought assets. This procedure is called a backtest, which tries to simulate the performance of a portfolio dependent on the previous portfolio and the historic data of each rebalancing date. Later the objective is analyzed more deeply with focus on the forecast ability. And at last a complete backtest of a ITP in a practice near setting is evaluated and analyzed.
 
 \hypertarget{transaction-costs}{%
 \section{Transaction Costs}\label{transaction-costs}}
 
-The costs to buy or sell assets need to be considered, because it can have a huge impact after several years of investment. There are many different costs that can occur dependent on the concepts of the broker, liquidity of assets and types of assets. For more information have a look at \href{https://www.investopedia.com/terms/b/brokerage-fee.asp\#:~:text=Realtors\%20and\%20real\%20estate\%20brokers,offer\%20a\%20fixed\%2Dfee\%20service.}{Investopedia: What Is a Brokerage Fee} or \href{https://www.nyse.com/publicdocs/nyse/markets/nyse/NYSE_Price_List.pdf}{NYSE Price List}. To keep it simple, we focus on the situation of a private investor using a online broker that has a fixed fee per transaction for US equity's contained in the S\&P 500. Each transaction consists of one or multiple shares of one asset and a transaction can ether be a sell or a buy transaction. The fixed transaction fee is set on 1 euro like done by the online broker Trade Republic
+The costs to buy or sell assets need to be considered, because it can have a huge impact after several years of investment. There are many different costs that can occur dependent on the concepts of the broker, liquidity of assets and types of assets. For more information have a look at \citep{AkGa2022} or \citep{NySe2022}. To keep it simple, we focus on the situation of a private investor using a online broker that has a fixed fee per transaction for US equity's contained in the S\&P 500. Each transaction consists of one or multiple shares of one asset and a transaction can ether be a sell or a buy transaction. The fixed transaction fee is set on 1 USD like done by the online broker Trade Republic
 
 \hypertarget{rebalancing-constraint}{%
 \section{Rebalancing Constraint}\label{rebalancing-constraint}}

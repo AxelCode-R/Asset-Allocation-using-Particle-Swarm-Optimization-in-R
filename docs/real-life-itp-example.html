@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-26" />
+<meta name="date" content="2022-10-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -293,10 +293,10 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 9</span> Real Life ITP Example<a href="real-life-itp-example.html#real-life-itp-example" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>(Vorhaben)
 focus auf testphase legen, diskrete (20k), long only, 0&lt;w&lt;0.1, ITP S&amp;P500 tracken mit weniger als 50 titeln und mehr als 30, vorauswahl von assetpool?, umschichtungs constraint, transaktionskosten 1 euro,</p>
-<p>The previous chapters have analyzed the capability’s of a PSO and the quality of the results by solving a problem in a single timepoint. In practice, the stability of future results on multiple timepoints is of higher interest. Therefore the next sections provides additional constraints that are needed to simulate real portfolios over multiple rebalancing dates, starting by adding transaction costs to the problem. The first reblancing date will define a problem that simulates a portfolio manager that has a defined amount of cash and tries to construct a portfolio from it, like in the last chapter. After the first iteration the portfolio manager needs to sell old assets and buy new ones. Of course do this produce additional transaction costs and effort, which is why most portfolio managers consider a maximal rebalancing constraint, that tries to limit the amount of sold and bought assets. This procedure is called a backtest, which tries to simulate the performance of a portfolio dependent on the previous portfolio and the historic data of each rebalancing date. Later the objective is analyzed more deeply with focus on the forecast ability. And at last a complete backtest of a ITP in a practice near setting is evaluated and analyzed.</p>
+<p>The previous chapters have analyzed the capability’s of a PSO and the quality of the results by solving a problem in a single timepoint. In practice, the stability of future results on multiple timepoints is of higher interest. Therefore the next sections provide additional constraints that are needed to simulate real portfolios over multiple rebalancing dates, starting by adding transaction costs to the problem. The first reblancing date will define a problem that simulates a portfolio manager that has a defined amount of cash and tries to construct a portfolio from it, like in the last chapter. After the first iteration the portfolio manager needs to sell old assets and buy new ones. Of course do this produce additional transaction costs and effort, which is why most portfolio managers consider a maximal rebalancing constraint, that tries to limit the amount of sold and bought assets. This procedure is called a backtest, which tries to simulate the performance of a portfolio dependent on the previous portfolio and the historic data of each rebalancing date. Later the objective is analyzed more deeply with focus on the forecast ability. And at last a complete backtest of a ITP in a practice near setting is evaluated and analyzed.</p>
 <div id="transaction-costs" class="section level2 hasAnchor" number="9.1">
 <h2><span class="header-section-number">9.1</span> Transaction Costs<a href="real-life-itp-example.html#transaction-costs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The costs to buy or sell assets need to be considered, because it can have a huge impact after several years of investment. There are many different costs that can occur dependent on the concepts of the broker, liquidity of assets and types of assets. For more information have a look at <a href="https://www.investopedia.com/terms/b/brokerage-fee.asp#:~:text=Realtors%20and%20real%20estate%20brokers,offer%20a%20fixed%2Dfee%20service.">Investopedia: What Is a Brokerage Fee</a> or <a href="https://www.nyse.com/publicdocs/nyse/markets/nyse/NYSE_Price_List.pdf">NYSE Price List</a>. To keep it simple, we focus on the situation of a private investor using a online broker that has a fixed fee per transaction for US equity’s contained in the S&amp;P 500. Each transaction consists of one or multiple shares of one asset and a transaction can ether be a sell or a buy transaction. The fixed transaction fee is set on 1 euro like done by the online broker Trade Republic</p>
+<p>The costs to buy or sell assets need to be considered, because it can have a huge impact after several years of investment. There are many different costs that can occur dependent on the concepts of the broker, liquidity of assets and types of assets. For more information have a look at <span class="citation">(<a href="#ref-AkGa2022" role="doc-biblioref">GANTI 2022</a>)</span> or <span class="citation">(<a href="#ref-NySe2022" role="doc-biblioref">nyse.com 2022</a>)</span>. To keep it simple, we focus on the situation of a private investor using a online broker that has a fixed fee per transaction for US equity’s contained in the S&amp;P 500. Each transaction consists of one or multiple shares of one asset and a transaction can ether be a sell or a buy transaction. The fixed transaction fee is set on 1 USD like done by the online broker Trade Republic</p>
 </div>
 <div id="rebalancing-constraint" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Rebalancing Constraint<a href="real-life-itp-example.html#rebalancing-constraint" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -310,6 +310,15 @@ focus auf testphase legen, diskrete (20k), long only, 0&lt;w&lt;0.1, ITP S&amp;P
 <h2><span class="header-section-number">9.4</span> Complete ITP Example<a href="real-life-itp-example.html#complete-itp-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>asd</p>
 
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-AkGa2022" class="csl-entry">
+GANTI, AKHILESH. 2022. <span>“What Is a Brokerage Fee? How Fees Work, Types, and Expense.”</span> 2022. <a href="https://www.investopedia.com/terms/b/brokerage-fee.asp#:~:text=Realtors%20and%20real%20estate%20brokers,offer%20a%20fixed%2Dfee%20service.">https://www.investopedia.com/terms/b/brokerage-fee.asp#:~:text=Realtors%20and%20real%20estate%20brokers,offer%20a%20fixed%2Dfee%20service.</a>
+</div>
+<div id="ref-NySe2022" class="csl-entry">
+nyse.com. 2022. <span>“New York Stock Exchange Price List 2022.”</span> 2022. <a href="https://www.nyse.com/publicdocs/nyse/markets/nyse/NYSE_Price_List.pdf">https://www.nyse.com/publicdocs/nyse/markets/nyse/NYSE_Price_List.pdf</a>.
 </div>
 </div>
 <script src="script.js"></script>
