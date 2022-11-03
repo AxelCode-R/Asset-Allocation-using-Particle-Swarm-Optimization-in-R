@@ -15,10 +15,37 @@ The previous chapters have analyzed the capability's of a PSO and the quality of
 
 
 ## Transaction Costs
-The costs to buy or sell assets needs to be considered, because it can have a huge impact after several years of investment. There are many different costs that can occur dependent on the concepts of the broker, liquidity of assets and types of assets. For more information have a look at [@AkGa2022] or [@NySe2022]. To keep it simple, we focus on the situation of a private investor using a online broker that has a fixed fee per transaction for US equity's contained in the S&P 500. Each transaction consists of one or multiple shares of one asset and a transaction can ether be a sell or a buy transaction. The fixed transaction fee is set on 1 USD like done by the online broker Trade Republic. The PSO can consider the transaction costs by increasing the objective value. It is difficult to make the intensity of the transaction cost value compareable to the objective value. The objective value of the ITP with MSTE approach can be formalized as:
+The costs to buy or sell assets needs to be considered, because it can have a huge impact after several years of investment. There are many different costs that can occur dependent on the concepts of the broker, liquidity of assets and types of assets. For more information have a look at [@AkGa2022] or [@NySe2022]. To keep it simple, we focus on the situation of a private investor using a online broker that has a fixed fee per transaction for US equity's contained in the S&P 500. Each transaction consists of one or multiple shares of one asset and a transaction can ether be a sell or a buy transaction. The fixed transaction fee is set on 1 USD like done by the online broker Trade Republic. The PSO can consider the transaction costs by increasing the objective value, but it is difficult to make the intensity of the transaction cost value compareable to the objective value. The objective value $v^o$ of the ITP with MSTE approach as in \@ref(ITPMSTE) is defined as:
 $$
- \frac{1}{T} \left\Vert r_{p}-r_{bm} \right\Vert_2^2
+ v^o = \left\Vert r_{p}-r_{bm} \right\Vert_2^2 = \sum_{t=1}^T (r_{t,p}-r_{t,bm})^2
 $$
+The $v^o$ is the square tracking error or more precise the squared difference of the portfolio returns $r_p$ and the benchmark returns $r_{bm}$. To create a comparable value $v^{tc}$ for the transaction costs, the aim is to interpret the absolute loss by transactions as a absolute error in returns $r_{tc}$ accruing in $t_0$ (before the first data point in $t_1$). This absolute error $r_{tc}$ can be calculated by counting the transactions needed divided by the net asset value $nav$. The transactions needed can be calculated by comparing the shares vector of the previous portfolio $s^{prev}$ and the rebalanced portfolio shares vector $s^{reba}$. This results in the following formula for the absolute error return $r_{tc}$:
+$$
+ r_{tc} = \sum_{n=1}^N g(s^{prev}_n-s^{reba}_n)
+$$
+with 
+$$
+  g(x) =    \begin{cases}
+  0 &\text{, if }\ x = 0\\
+  1 &\text{, else}
+  \end{cases}
+$$
+
+This results in the following transaction costs value $v^{tc}$:
+$$
+v^{tc} = \left\Vert r_{tc} \right\Vert_2^2 = r_{tc}^2
+$$
+
+The idea is to use the $v^{tc}$ value and increase the objective value $v^o$ of the ITP with MSTE approach, but these are still not the same. The $v^o$ is the sum of squared positive or negative errors and $v^{tc}$ is a squared negative error. To increase the impact of the transaction costs there should be a coefficient $k$ to increase the intensity, which results in the following minimization problem:
+$$
+  min \ \  v^o + k \cdot v^{tc}
+$$
+A suitable value for $k$ could be calculated by dividing the number of training days with the number of holding period days increased with factor $2.5$. This can roughly be interpreted that the transaction costs error is weighted as a $2.5$ days error. For example a 4 months training period with 96 workingdays and a holdiong period of 1 month with 24 workingdays prduces the following value:
+$$
+  k = \frac{96}{24} \cdot 2.5 = 10
+$$
+If the holding period gets reduced, the intensity coefficient increases, which is a suitable behavior. Nonetheless should there be more analysed and fine tuned.
+
 
 ## Rebalancing Constraint
 asd
@@ -94,16 +121,22 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
   train_frame <- paste0(date_from, "/", date)
   test_frame <- paste0(date+1, "/", rebalance_dates[i+test_months])
   
-  ticker_in_spx <- spx_composition %>% filter(Date <= date) %>% filter(Date == max(Date)) %>% pull(Ticker)
-  ticker_temp <- ticker_in_spx
+  ticker_in_spx <- spx_composition %>% filter(Date <= date) %>% filter(Date == max(Date)) %>% pull(Ticker) %>% unique()
+  
+  valid_prices_ticker <- pool_data$prices[date, colnames(pool_data$prices) %in% ticker_in_spx]
+  valid_prices_ticker <- valid_prices_ticker[, colSums(is.na(valid_prices_ticker))==0] %>% colnames()
+  returns_all <- pool_data$returns[train_frame, colnames(pool_data$returns) %in% ticker_in_spx] %>% 
+    .[,colSums(is.na(.))==0] %>% 
+    .[, colnames(.) %in% valid_prices_ticker] %>% 
+    .[, !is.na(colnames(.))]
+  
+  ticker_temp <- colnames(returns_all)
   
   for(k in c(length(ticker_temp), seq(from=length(ticker_temp)-length(ticker_temp)%%5, to = 100, by=-5))){
     if(k!=length(ticker_temp)){
       ticker_temp <- ticker_temp[ticker_temp %in% names(res_QP$solution %>% sort(., decreasing = T) %>% .[1:k])]
     }
-    returns <- pool_data$returns[train_frame, colnames(pool_data$returns) %in% ticker_temp] %>% 
-    .[,colSums(is.na(.))==0] %>% 
-    .[, colnames(.) %in% names(pool_data$prices[date, colnames(pool_data$prices) %in% ticker_temp]) %>% .[!is.na(.)]]
+    returns <- returns_all[, colnames(returns_all) %in% ticker_temp]
   
     bm_returns <- bm_returns_raw[train_frame,]
     
@@ -147,12 +180,9 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
     tickers_old <- QP_tickers[[i-1]]
     tickers_new <- ticker_temp[!ticker_temp %in% tickers_old]
     tickers_new <- names(sort(res_QP$solution[tickers_new], decreasing = T) %>% .[1:min(length(.),10)])
-    ticker_new <- unique(c(tickers_old, tickers_new))
+    ticker_new <- unique(c(tickers_old, tickers_new)) %>% .[!is.na(.)]
     
-    returns <- pool_data$returns[train_frame, colnames(pool_data$returns) %in% ticker_new] %>% 
-    .[,colSums(is.na(.))==0] %>% 
-    .[, colnames(.) %in% names(pool_data$prices[date, colnames(pool_data$prices) %in% ticker_temp]) %>% .[!is.na(.)]] %>% 
-    .[, !is.na(colnames(.))]
+    returns <- returns_all[, colnames(returns_all) %in% ticker_new]
   
     bm_returns <- bm_returns_raw[train_frame,]
     
@@ -189,6 +219,10 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
     res_QP$solution <- setNames(res_QP$solution, colnames(returns))
     
     tickers_new <- names(sort(res_QP$solution, decreasing = T)[1:100])
+    
+    if(length(unique(tickers_new)) != 100 || sum(is.na(tickers_new)) > 0){
+      break()
+    }
     QP_tickers[[i]] <- tickers_new
     QP_solutions[[i]] <- res_QP$solution[tickers_new]/sum(res_QP$solution[tickers_new])
   }
@@ -215,6 +249,10 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
 save(QP_perf, QP_infos, QP_tickers, QP_solutions, file="analyses/ITP_long_QP_v8.rdata")
 
 
+for(i in 2:length(QP_tickers)){
+  print(paste0("in: ", sum(QP_tickers[[i-1]] %in% QP_tickers[[i]]), "   not in:", sum(!QP_tickers[[i-1]] %in% QP_tickers[[i]])))
+}
+
 rebalance_const <- function(old_wgt, new_wgt, old_shares, new_shares, nav, first_date = F, expo=1, x, returns){
   reblance_wgt <- if(first_date){
     0
@@ -225,7 +263,7 @@ rebalance_const <- function(old_wgt, new_wgt, old_shares, new_shares, nav, first
   tc_return <- sum((new_shares-old_shares)!=0)/nav
   #tc_return <- (1+ 1 * sum((new_shares-old_shares)!=0)/nav)^(6/expo)-1
   #tc_fit <- t(rep(tc_return, nrow(returns))) %*% returns %*% x
-  return(reblance_fit + 2*tc_return)
+  return(reblance_fit + 10 * tc_return^2)
 }
 
 
@@ -289,7 +327,7 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
         fn = function(x){
           shares <- round(x*as.numeric(last(MSTE_nav))/prices)
           x <- as.vector(shares*prices/as.numeric(last(MSTE_nav)))
-          fitness <- sqrt(calc_fit(x)/nrow(returns))
+          fitness <- 2*calc_fit(x)
           constraints <- calc_const(x)
           rebalance_constraint <- rebalance_const(
             old_wgt = as.vector(portfolio_wgt_temp),
@@ -313,7 +351,7 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
       )
       res_pso_SAvel_MSTE$solution <- as.vector(round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices)*prices/as.numeric(last(MSTE_nav)))
       res_pso_SAvel_MSTE$perf <- calc_portfolio_returns(pool_data$returns[test_frame, colnames(returns)], res_pso_SAvel_MSTE$solution)
-      res_pso_SAvel_MSTE$fitness <- calc_fit(res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$fitness <- 2*calc_fit(res_pso_SAvel_MSTE$solution)
       res_pso_SAvel_MSTE$const_break <- calc_const(res_pso_SAvel_MSTE$solution)
       res_pso_SAvel_MSTE$rebalance_constraint <- rebalance_const(
             old_wgt = as.vector(portfolio_wgt_temp),

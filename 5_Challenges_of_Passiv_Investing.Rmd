@@ -304,7 +304,7 @@ $$
 
 It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only. Despite the fact that this model is often used, it has a big disadvantage in that it cannot detect constant deviations in the returns. For this reason, the following model exists, which focuses on the mean square tracking error of returns (MSTE).
 
-### ITP with MSTE objective (ITP-MSTE)
+### ITP with MSTE objective (ITP-MSTE) {#ITPMSTE}
 A good explanation of the ITP with MSTE objective can be found in [@AhBa2017]. The objective is to minimize the mean square tracking error (MSTE) of daily portfolio returns $r_{t, p}$ and daily benchmark returns $r_{t, bm}$ on $T$ historical days:
 
 $$
