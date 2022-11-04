@@ -40,15 +40,23 @@ The idea is to use the $v^{tc}$ value and increase the objective value $v^o$ of 
 $$
   min \ \  v^o + k \cdot v^{tc}
 $$
-A suitable value for $k$ could be calculated by dividing the number of training days with the number of holding period days increased with factor $2.5$. This can roughly be interpreted that the transaction costs error is weighted as a $2.5$ days error. For example a 4 months training period with 96 workingdays and a holdiong period of 1 month with 24 workingdays prduces the following value:
+A suitable value for $k$ could be calculated by dividing the number of training days with the number of holding period days increased with factor $5$. This can roughly be interpreted that the transaction costs error is weighted as a $5$ days error in the test period. For example a 4 months training period with 96 working days and a holding period of 1 month with 24 working days produces the following value:
 $$
-  k = \frac{96}{24} \cdot 2.5 = 10
+  k = \frac{96}{24} \cdot 5 = 20
 $$
 If the holding period gets reduced, the intensity coefficient increases, which is a suitable behavior. Nonetheless should there be more analysed and fine tuned.
 
 
 ## Rebalancing Constraint
-asd
+The rebalancing constraint restricts the changes made in weights by taking into account the previous portfolio weights vector $w^{prev}$ recalculated to the present day by using the previous shares vector and the reblananced portfolio weights vector $w^{reba}$. The value that gets restricted by the rebalancing constraint should take into account weights that gets moved between assets and additional weights added. For example if the previous portfolio had a weights vector $w^{prev} = [0.5, 0.4]$ at the current reblancing date and the reblananced portfolio has a weights vector $w^{reba} = [0.8, 0.2]$. The rebalanced weight from the secound asset to the first is $0.2$ and the additional weight added is $0.1$, which results in a rebalancing of $0.2+0.1=0.3$ weight. This following is the foluma to calculate the reblanancing weight $w^{rb}$:
+$$
+  w^{rb} := \frac{\left\Vert w^{prev}-w^{reba} \right\Vert_1 - |\sum w^{prev} - \sum w^{reba}|}{2}+|\sum w^{prev} - \sum w^{reba}|
+$$
+and with a reblanancing constraint of $30%$ ($0.3$), the rebalanced portfolio is feasible if:
+$$
+  w^{rb} \leq 0.3
+$$
+
 
 ## Analyse Objectives
 asd
@@ -101,7 +109,7 @@ rebalance_dates <- data.frame("DATE"=index(pool_data$prices)) %>%
 #rebalance_dates <- rebalance_dates[1:13]
 
 calc_fit <- function(x){
-  as.numeric(0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x + mat$const)
+  as.numeric(0.5 * t(x) %*% mat$Dmat %*% x - t(mat$dvec) %*% x + 0.5 * mat$const)
 }
 calc_const <- function(x){
   const <- t(mat$Amat) %*% x - mat$bvec
@@ -246,33 +254,37 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
 
 }
 
-save(QP_perf, QP_infos, QP_tickers, QP_solutions, file="analyses/ITP_long_QP_v8.rdata")
+#save(QP_perf, QP_infos, QP_tickers, QP_solutions, file="analyses/ITP_long_QP_v8.rdata")
 
 
-for(i in 2:length(QP_tickers)){
-  print(paste0("in: ", sum(QP_tickers[[i-1]] %in% QP_tickers[[i]]), "   not in:", sum(!QP_tickers[[i-1]] %in% QP_tickers[[i]])))
-}
+# for(i in 2:length(QP_tickers)){
+#   print(paste0("in: ", sum(QP_tickers[[i-1]] %in% QP_tickers[[i]]), "   not in:", sum(!QP_tickers[[i-1]] %in% QP_tickers[[i]])))
+# }
 
-rebalance_const <- function(old_wgt, new_wgt, old_shares, new_shares, nav, first_date = F, expo=1, x, returns){
+rebalance_const <- function(old_wgt, new_wgt, first_date = F){
   reblance_wgt <- if(first_date){
     0
   }else{
-    sum(abs(old_wgt-new_wgt))/(sum(old_wgt)+sum(new_wgt))
+    (sum(abs(old_wgt-new_wgt))-abs(sum(old_wgt)-sum(new_wgt)))/2+abs(sum(old_wgt)-sum(new_wgt))
   }
-  reblance_fit <- max(reblance_wgt-0.3,0)*100
-  tc_return <- sum((new_shares-old_shares)!=0)/nav
-  #tc_return <- (1+ 1 * sum((new_shares-old_shares)!=0)/nav)^(6/expo)-1
-  #tc_fit <- t(rep(tc_return, nrow(returns))) %*% returns %*% x
-  return(reblance_fit + 10 * tc_return^2)
+  reblance_fit <- max(reblance_wgt-0.3,0)
+  return(reblance_fit)
 }
 
+transaction_cost_constraint <- function(old_shares, new_shares, nav){
+   tc_return <- sum((new_shares-old_shares)!=0)/nav
+   return(tc_return^2)
+}
 
+set.seed(0)
 MSTE_perf <- NULL
 MSTE_infos <- NULL
 MSTE_nav <- xts(nav, order.by = rebalance_dates[train_months+1])
 portfolio_shares <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
 portfolio_wgts <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
-
+res_pso_SAvel_MSTE <- list()
+res_pso_SAvel_MSTE$const_break <- 1
+res_pso_SAvel_MSTE$rebalance_constraint <- 1
 for(i in (train_months+1):(length(rebalance_dates)-1)){
   save_nav <- MSTE_nav[nrow(MSTE_nav),]
   print(i)
@@ -319,9 +331,14 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
   portfolio_shares_temp[is.na(portfolio_shares_temp)] <- 0
   portfolio_wgt_temp <- portfolio_shares_temp * prices / as.numeric(last(MSTE_nav))
   
-  
-  for(k in 1:80){
-    if( k == 1 || res_pso_SAvel_MSTE$const_break > 0 && res_pso_SAvel_MSTE$rebalance_constraint < 0.01 || k < 4){
+  restart <<- 4
+  for(k in 1:100){
+    if(res_pso_SAvel_MSTE$const_break == 0 && res_pso_SAvel_MSTE$rebalance_constraint < 0.1){
+      restart <<- restart - 1
+    }else{
+      restart <<- 3
+    }
+    if( k == 1 || res_pso_SAvel_MSTE$const_break != 0 || res_pso_SAvel_MSTE$rebalance_constraint > 0.1 || restart > 0){
       res_pso_SAvel_MSTE <- pso_self_adaptive_velocity(
         par = if(k==1){if(i==(train_months+1)){QP_solutions[[i]]}else{portfolio_wgt_temp}}else{res_pso_SAvel_MSTE$solution}, # QP_solutions[[date]]
         fn = function(x){
@@ -332,15 +349,14 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
           rebalance_constraint <- rebalance_const(
             old_wgt = as.vector(portfolio_wgt_temp),
             new_wgt = x,
-            old_shares = as.vector(portfolio_shares_temp),
-            new_shares = shares,
-            nav = as.numeric(last(MSTE_nav)),
-            first_date = (i == (train_months+1)),
-            expo = nrow(returns),
-            x = x, 
-            returns = returns
+            first_date = (i == (train_months+1))
           )
-          return(fitness + 100*constraints + rebalance_constraint)
+          tc_constraint <- transaction_cost_constraint(
+            old_shares = as.vector(portfolio_shares_temp), 
+            new_shares = as.vector(shares), 
+            nav = as.numeric(last(MSTE_nav))
+          )
+          return(fitness + 100*constraints + 100*rebalance_constraint + 10*tc_constraint)
         },
         lower = 0,
         upper = 0.1,
@@ -356,14 +372,13 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
       res_pso_SAvel_MSTE$rebalance_constraint <- rebalance_const(
             old_wgt = as.vector(portfolio_wgt_temp),
             new_wgt = res_pso_SAvel_MSTE$solution,
-            old_shares = as.vector(portfolio_shares_temp),
-            new_shares = round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices),
-            nav = as.numeric(last(MSTE_nav)),
-            first_date = (i == (train_months+1)),
-            expo = nrow(pool_data$returns[test_frame,]),
-            x = res_pso_SAvel_MSTE$solution, 
-            returns = returns
+            first_date = (i == (train_months+1))
           )
+      res_pso_SAvel_MSTE$transaction_cost_constraint <- transaction_cost_constraint(
+            old_shares = as.vector(portfolio_shares_temp), 
+            new_shares = round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices), 
+            nav = as.numeric(last(MSTE_nav))
+      )
     }
   }
   
@@ -388,11 +403,11 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
       "fittness" = res_pso_SAvel_MSTE$fitness,
       "const_break" = res_pso_SAvel_MSTE$const_break,
       "rebalance_constraint" = res_pso_SAvel_MSTE$rebalance_constraint,
+      "transaction_cost_constraint" = res_pso_SAvel_MSTE$transaction_cost_constraint,
       "MSTE_returns" = sum((returns %*% res_pso_SAvel_MSTE$solution - bm_returns)^2),
       "sum_wgt" = sum(portfolio_wgt),
       "min_wgt" = min(portfolio_wgt),
       "n_assets" = sum(portfolio_wgt!=0),
-      "rebalance_wgt" = sum(abs(portfolio_wgt_temp-portfolio_wgt))/(sum(portfolio_wgt_temp)+sum(portfolio_wgt)),
       "transaction_costs" = as.numeric(save_nav) - as.numeric(MSTE_nav[nrow(MSTE_nav),])
     )
   )
@@ -401,7 +416,7 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
   
 }
 
-save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v8.rdata")
+save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v11.rdata")
 
 
 
@@ -552,7 +567,7 @@ perf_all <- cbind.xts(
 perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", max(index(perf_all))),])
 
 
-save.image("analyses/ITP_praxis_v8.rdata")
+#save.image("analyses/ITP_praxis_v11.rdata")
 plotly_line_chart_xts(ret_to_cumret(perf_all))
 
 ```
