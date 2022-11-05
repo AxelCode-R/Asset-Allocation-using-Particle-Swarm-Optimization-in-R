@@ -67,7 +67,7 @@
 \contentsline {section}{\numberline {8.6}PSO R-Package}{54}{section.8.6}%
 \contentsline {chapter}{\numberline {9}Real Life ITP Example}{55}{chapter.9}%
 \contentsline {section}{\numberline {9.1}Transaction Costs}{55}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Rebalancing Constraint}{56}{section.9.2}%
-\contentsline {section}{\numberline {9.3}Analyse Objectives}{56}{section.9.3}%
-\contentsline {section}{\numberline {9.4}Complete ITP Example}{56}{section.9.4}%
-\contentsline {chapter}{\numberline {10}Conclusion}{57}{chapter.10}%
+\contentsline {section}{\numberline {9.2}Rebalancing Constraint}{57}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Objective}{57}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Complete ITP Example}{58}{section.9.4}%
+\contentsline {chapter}{\numberline {10}Conclusion}{65}{chapter.10}%

@@ -1,0 +1,1396 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.25)  5 NOV 2022 21:25
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**Master_Thesis.tex
+(./Master_Thesis.tex
+LaTeX2e <2022-06-01> patch level 5
+L3 programming layer <2022-09-28> (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/bk10.clo
+File: bk10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count185
+\c@chapter=\count186
+\c@section=\count187
+\c@subsection=\count188
+\c@subsubsection=\count189
+\c@paragraph=\count190
+\c@subparagraph=\count191
+\c@figure=\count192
+\c@table=\count193
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2022/04/08 v2.17n AMS math features
+\@mathmargin=\skip49
+For additional information on amsmath, use the `?' option.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks16
+\ex@=\dimen139
+)) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen140
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count194
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count195
+\leftroot@=\count196
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count197
+\DOTSCASE@=\count198
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box51
+\strutbox@=\box52
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen141
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count199
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count266
+\dotsspace@=\muskip16
+\c@parentequation=\count267
+\dspbrk@lvl=\count268
+\tag@help=\toks17
+\row@=\count269
+\column@=\count270
+\maxfields@=\count271
+\andhelp@=\toks18
+\eqnshift@=\dimen142
+\alignsep@=\dimen143
+\tagshift@=\dimen144
+\tagwidth@=\dimen145
+\totwidth@=\dimen146
+\lineht@=\dimen147
+\@envbody=\toks19
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks20
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
+Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 112.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks21
+\inpenc@posthook=\toks22
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verbatim
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty
+Package: microtype 2022/06/23 v3.0f Micro-typographical refinements (RS)
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks23
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count272
+)
+\MT@toks=\toks24
+\MT@tempbox=\box53
+\MT@count=\count273
+LaTeX Info: Redefining \noprotrusionifhmode on input line 1045.
+LaTeX Info: Redefining \leftprotrusion on input line 1046.
+LaTeX Info: Redefining \rightprotrusion on input line 1056.
+LaTeX Info: Redefining \textls on input line 1234.
+\MT@outer@kern=\dimen148
+LaTeX Info: Redefining \textmicrotypecontext on input line 1858.
+\MT@listname@count=\count274
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/microtype-pdftex.def
+File: microtype-pdftex.def 2022/06/23 v3.0f Definitions specific to pdftex (RS)
+LaTeX Info: Redefining \lsstyle on input line 900.
+LaTeX Info: Redefining \lslig on input line 900.
+\MT@outer@space=\skip52
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/microtype.cfg
+File: microtype.cfg 2022/06/23 v3.0f microtype main configuration file (RS)
+)) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 227.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+\stockwidth=\dimen149
+\stockheight=\dimen150
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1357.
+Package xcolor Info: Model `RGB' extended on input line 1369.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2022-09-22 v7.00t Hypertext links for LaTeX
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2022-05-17 v2.50 Cross-referencing by name of section
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count275
+)
+\@linkdim=\dimen151
+\Hy@linkcounter=\count276
+\Hy@pagecounter=\count277
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2022-09-22 v7.00t Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count278
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2022-09-22 v7.00t Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Option `unicode' set `true' on input line 4045.
+Package hyperref Info: Hyper figures OFF on input line 4162.
+Package hyperref Info: Link nesting OFF on input line 4167.
+Package hyperref Info: Hyper index ON on input line 4170.
+Package hyperref Info: Plain pages OFF on input line 4177.
+Package hyperref Info: Backreferencing OFF on input line 4182.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4410.
+\c@Hy@tempcnt=\count279
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4748.
+\XeTeXLinkMargin=\dimen152
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
+))
+\Fld@menulength=\count280
+\Field@Width=\dimen153
+\Fld@charsize=\dimen154
+Package hyperref Info: Hyper figures OFF on input line 6027.
+Package hyperref Info: Link nesting OFF on input line 6032.
+Package hyperref Info: Hyper index ON on input line 6035.
+Package hyperref Info: backreferencing OFF on input line 6042.
+Package hyperref Info: Link coloring OFF on input line 6047.
+Package hyperref Info: Link coloring with OCG OFF on input line 6052.
+Package hyperref Info: PDF/A mode OFF on input line 6057.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count281
+\c@Item=\count282
+\c@Hfootnote=\count283
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2022-09-22 v7.00t Hyperref driver for pdfTeX
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
+with kernel methods
+)
+\Fld@listcount=\count284
+\c@bookmark@seq@number=\count285
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
+)
+\Hy@SectionHShift=\skip53
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2022/06/06 4.5 verbatim text (tvz,hv)
+\FV@CodeLineNo=\count286
+\FV@InFile=\read2
+\FV@TabBox=\box54
+\c@FancyVerbLine=\count287
+\FV@StepNumber=\count288
+\FV@OutFile=\write3
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip54
+\fb@frw=\dimen155
+\fb@frh=\dimen156
+\FrameRule=\dimen157
+\FrameSep=\dimen158
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
+\LTleft=\skip55
+\LTright=\skip56
+\LTpre=\skip57
+\LTpost=\skip58
+\LTchunksize=\count289
+\LTcapwidth=\dimen159
+\LT@head=\box55
+\LT@firsthead=\box56
+\LT@foot=\box57
+\LT@lastfoot=\box58
+\LT@gbox=\box59
+\LT@cols=\count290
+\LT@rows=\count291
+\c@LT@tables=\count292
+\c@LT@chunks=\count293
+\LT@p@ftn=\toks25
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen160
+\lightrulewidth=\dimen161
+\cmidrulewidth=\dimen162
+\belowrulesep=\dimen163
+\belowbottomsep=\dimen164
+\aboverulesep=\dimen165
+\abovetopsep=\dimen166
+\cmidrulesep=\dimen167
+\cmidrulekern=\dimen168
+\defaultaddspace=\dimen169
+\@cmidla=\count294
+\@cmidlb=\count295
+\@aboverulesep=\dimen170
+\@belowrulesep=\dimen171
+\@thisruleclass=\count296
+\@lastruleclass=\count297
+\@thisrulewidth=\dimen172
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/array.sty
+Package: array 2022/03/10 v2.5f Tabular extension package (FMi)
+\col@sep=\dimen173
+\ar@mcellbox=\box60
+\extrarowheight=\dimen174
+\NC@list=\toks26
+\extratabsurround=\skip59
+\backup@length=\skip60
+\ar@cellbox=\box61
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count298
+\calc@Bcount=\count299
+\calc@Adimen=\dimen175
+\calc@Bdimen=\dimen176
+\calc@Askip=\skip61
+\calc@Bskip=\skip62
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count300
+\calc@Cskip=\skip63
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/mdwtools/footnote.sty
+Package: footnote 1997/01/28 1.13 Save footnotes around boxes
+\fn@notes=\box62
+\fn@width=\dimen177
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+)
+\Gin@req@height=\dimen178
+\Gin@req@width=\dimen179
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2020/05/29 v2.20.6
+\thm@style=\toks27
+\thm@bodyfont=\toks28
+\thm@headfont=\toks29
+\thm@notefont=\toks30
+\thm@headpunct=\toks31
+\thm@preskip=\skip64
+\thm@postskip=\skip65
+\thm@headsep=\skip66
+\dth@everypar=\toks32
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/animate/animate.sty
+Package: animate 2022/09/15 PDF & SVG animations from files and inline graphics
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/oberdiek/ifdraft.sty
+Package: ifdraft 2016/05/16 v1.4 Detect class options draft and final (HO)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/media9/pdfbase.sty
+Package: pdfbase 2022/08/04 v0.55 driver independent access to low-level PDF features
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-09-28 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count301
+\l__pdf_internal_box=\box63
+)
+\g_pbs_page_int=\count302
+\g_pbs_oc_int=\count303
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/zref/zref-abspage.sty
+Package: zref-abspage 2022-04-07 v2.34 Module abspage for zref (HO)
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/zref/zref-base.sty
+Package: zref-base 2022-04-07 v2.34 Module base for zref (HO)
+Package zref Info: New property list: main on input line 767.
+Package zref Info: New property: default on input line 768.
+Package zref Info: New property: page on input line 769.
+)
+\c@abspage=\count304
+Package zref Info: New property: abspage on input line 65.
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/ocgx2/ocgbase.sty
+Package: ocgbase 2022/08/04 v0.22 support package for ocgx2.sty
+\g_ocgbase_nd_int=\count305
+)
+\@anim@box=\box64
+\@anim@measbox=\box65
+\@anim@tmpdima=\dimen180
+\@anim@tmpdimb=\dimen181
+\@anim@num=\count306
+\@anim@curframe=\count307
+\@anim@curframe@zb=\count308
+\@anim@resizeflags=\count309
+\@anim@skipfram=\count310
+\@anim@mulframecnt=\count311
+\@anim@@tmlnfile=\read3
+\@anim@tmpcnt=\count312
+\c@@anim@ltxcnt=\count313
+\@anim@curlayer=\count314
+\@anim@lineno=\count315
+\@anim@curfield=\count316
+\@anim@@resizeflags=\count317
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fvextra/fvextra.sty
+Package: fvextra 2019/02/04 v1.4 fvextra - extensions and patches for fancyvrb
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2005/11/02 line numbers on paragraphs v4.41
+\linenopenalty=\count318
+\output=\toks33
+\linenoprevgraf=\count319
+\linenumbersep=\dimen182
+\linenumberwidth=\dimen183
+\c@linenumber=\count320
+\c@pagewiselinenumber=\count321
+\c@LN@truepage=\count322
+\c@internallinenumber=\count323
+\c@internallinenumbers=\count324
+\quotelinenumbersep=\dimen184
+\bframerule=\dimen185
+\bframesep=\dimen186
+\bframebox=\box66
+LaTeX Info: Redefining \\ on input line 3056.
+)
+\c@FV@TrueTabGroupLevel=\count325
+\c@FV@TrueTabCounter=\count326
+\FV@TabBox@Group=\box67
+\FV@TmpLength=\skip67
+\c@FV@HighlightLinesStart=\count327
+\c@FV@HighlightLinesStop=\count328
+\FV@LoopCount=\count329
+\FV@NCharsBox=\box68
+\FV@BreakIndent=\dimen187
+\FV@BreakIndentNChars=\count330
+\FV@BreakSymbolSepLeft=\dimen188
+\FV@BreakSymbolSepLeftNChars=\count331
+\FV@BreakSymbolSepRight=\dimen189
+\FV@BreakSymbolSepRightNChars=\count332
+\FV@BreakSymbolIndentLeft=\dimen190
+\FV@BreakSymbolIndentLeftNChars=\count333
+\FV@BreakSymbolIndentRight=\dimen191
+\FV@BreakSymbolIndentRightNChars=\count334
+\c@FancyVerbLineBreakLast=\count335
+\FV@LineBox=\box69
+\FV@LineIndentBox=\box70
+\FV@LineWidth=\dimen192
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip68
+\bibsep=\skip69
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count336
+) (./Master_Thesis.aux)
+\openout1 = `Master_Thesis.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 134.
+LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 134.
+LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 134.
+LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 134.
+LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 134.
+LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 134.
+LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 134.
+LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 134.
+LaTeX Font Info:    ... okay on input line 134.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 134.
+LaTeX Font Info:    ... okay on input line 134.
+LaTeX Info: Redefining \microtypecontext on input line 134.
+Package microtype Info: Applying patch `item' on input line 134.
+Package microtype Info: Applying patch `toc' on input line 134.
+Package microtype Info: Applying patch `eqnum' on input line 134.
+Package microtype Info: Applying patch `footnote' on input line 134.
+Package microtype Info: Generating PDF output.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using protrusion set `basicmath'.
+Package microtype Info: Automatic font expansion enabled (level 2),
+(microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
+Package microtype Info: Using default expansion set `alltext-nott'.
+LaTeX Info: Redefining \showhyphens on input line 134.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of interword spacing.
+Package microtype Info: No adjustment of character kerning.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-cmr.cfg
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+))
+Package hyperref Info: Link coloring OFF on input line 134.
+(./Master_Thesis.out) (./Master_Thesis.out)
+\@outlinefile=\write4
+\openout4 = `Master_Thesis.out'.
+
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 136.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
+File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 136.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 136.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
+File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 136.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
+File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 136.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 136.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 136.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 136.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 136.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) (c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+) [1
+
+
+{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./Master_Thesis.toc
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 4.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 4.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 4.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.39 ...ratic Programming Problems}{26}{chapter.6}
+                                                  % [1
+
+]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 42.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+))
+\tf@toc=\write5
+\openout5 = `Master_Thesis.toc'.
+
+[2] [3
+
+] [4
+
+]
+Chapter 1.
+[5
+
+]
+Chapter 2.
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 200.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 209.
+(c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+) [6
+
+] [7]
+Chapter 3.
+<Master_Thesis_files/figure-latex/operators-1.png, id=313, 2324.685pt x 1589.94pt>
+File: Master_Thesis_files/figure-latex/operators-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/operators-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/operators-1.png  used on input line 236.
+(pdftex.def)             Requested size: 344.99864pt x 235.95761pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--238
+[]
+ []
+
+[8
+
+]
+Overfull \hbox (0.76833pt too wide) detected at line 248
+[] \OMS/lmsy/m/n/10 ^^B [] \OT1/lmr/m/n/10 = []
+ []
+
+[9 <./Master_Thesis_files/figure-latex/operators-1.png>] [10] [11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 462--463
+
+ []
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 466--468
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 480--481
+
+ []
+
+[14]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 513.
+[15] [16]
+Chapter 4.
+
+Overfull \hbox (86.75098pt too wide) in paragraph at lines 551--553
+[]\T1/lmr/m/n/10 (-20) passiv vs ac-tiv studie \T1/lmtt/m/n/10 https://www.scirp.org/journal/paperinformation.aspx?paperid=92983 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 554--556
+[]\T1/lmr/m/n/10 (+20) gut gut []$^^\le : / / /C : /Users / Axel / Desktop / Master -[] Thesis -[] All / Ziel % 20was %
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 554--556
+\T1/lmr/m/n/10 (-10) 20beantwortet % 20werden % 20soll / Quellen % 20nur % 20wichtige / Rasmussen2003 _
+ []
+
+[17
+
+]
+Chapter 5.
+[18
+
+]
+<Master_Thesis_files/figure-latex/MVP_ex2-1.png, id=442, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/MVP_ex2-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/MVP_ex2-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/MVP_ex2-1.png  used on input line 584.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 583--586
+[]
+ []
+
+
+Underfull \hbox (badness 1178) in paragraph at lines 599--600
+[]\T1/lmr/m/n/10 (+20) This is all the data nec-es-sary to solve the MVP prob-lem with $\OML/lmm/m/it/10 ^^U \OMS/lmsy/m/n/10 2
+ []
+
+[19 <./Master_Thesis_files/figure-latex/MVP_ex2-1.png>]
+<Master_Thesis_files/figure-latex/MVP_ex5-1.png, id=453, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/MVP_ex5-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/MVP_ex5-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/MVP_ex5-1.png  used on input line 602.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+<Master_Thesis_files/figure-latex/MVP_ex6-1.png, id=454, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/MVP_ex6-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/MVP_ex6-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/MVP_ex6-1.png  used on input line 605.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 604--607
+[]
+ []
+
+<Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png, id=455, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png  used on input line 612.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 611--614
+[]
+ []
+
+[20 <./Master_Thesis_files/figure-latex/MVP_ex5-1.png> <./Master_Thesis_files/figure-latex/MVP_ex6-1.png>] [21 <./Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png>] [22] [23]
+Overfull \hbox (2.3332pt too wide) detected at line 701
+[]
+ []
+
+<Master_Thesis_files/figure-latex/ITP_ex-1.png, id=498, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/ITP_ex-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/ITP_ex-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/ITP_ex-1.png  used on input line 726.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 726--728
+[][]
+ []
+
+[24] [25 <./Master_Thesis_files/figure-latex/ITP_ex-1.png>]
+Chapter 6.
+[26
+
+]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 788.
+[27] [28]
+Overfull \vbox (2.79997pt too high) detected at line 885
+ []
+
+[29]
+<Master_Thesis_files/figure-latex/qp_mvp4-1.png, id=547, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/qp_mvp4-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/qp_mvp4-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/qp_mvp4-1.png  used on input line 889.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+
+Overfull \hbox (9.28716pt too wide) in paragraph at lines 894--894
+[]\T1/lmr/bx/n/14.4 (-20) Example: Solv-ing ITP-MSTE with \T1/lmtt/b/n/14.4 solve.QP() 
+ []
+
+[30 <./Master_Thesis_files/figure-latex/qp_mvp4-1.png>]
+Overfull \vbox (2.79997pt too high) detected at line 964
+ []
+
+[31]
+<Master_Thesis_files/figure-latex/qp_itp4-1.png, id=563, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/qp_itp4-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/qp_itp4-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/qp_itp4-1.png  used on input line 1001.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+[32] [33 <./Master_Thesis_files/figure-latex/qp_itp4-1.png>]
+Chapter 7.
+[34
+
+] [35] [36] [37]
+<./gifs/pso_2dim/gganim_plot1.jpg, id=611, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot1.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot1.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot1.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot1.jpg> <a0,fr0> <a0,fr1> <a0,fr2> <a0,fr3> <a0,fr4> <a0,fr5> <a0,fr6> <a0,fr7> <a0,fr8> <a0,fr9> <a0,fr10>
+<./gifs/pso_2dim/gganim_plot12.jpg, id=614, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot12.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot12.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot12.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot12.jpg> <a0,fr11>
+<./gifs/pso_2dim/gganim_plot13.jpg, id=617, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot13.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot13.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot13.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot13.jpg> <a0,fr12>
+<./gifs/pso_2dim/gganim_plot14.jpg, id=620, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot14.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot14.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot14.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot14.jpg> <a0,fr13>
+<./gifs/pso_2dim/gganim_plot15.jpg, id=623, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot15.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot15.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot15.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot15.jpg> <a0,fr14>
+<./gifs/pso_2dim/gganim_plot16.jpg, id=626, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot16.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot16.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot16.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot16.jpg> <a0,fr15>
+<./gifs/pso_2dim/gganim_plot17.jpg, id=629, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot17.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot17.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot17.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot17.jpg> <a0,fr16>
+<./gifs/pso_2dim/gganim_plot18.jpg, id=632, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot18.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot18.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot18.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot18.jpg> <a0,fr17>
+<./gifs/pso_2dim/gganim_plot19.jpg, id=635, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot19.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot19.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot19.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot19.jpg> <a0,fr18>
+<./gifs/pso_2dim/gganim_plot20.jpg, id=638, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot20.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot20.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot20.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot20.jpg> <a0,fr19>
+<./gifs/pso_2dim/gganim_plot21.jpg, id=641, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot21.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot21.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot21.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot21.jpg> <a0,fr20>
+<./gifs/pso_2dim/gganim_plot22.jpg, id=644, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot22.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot22.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot22.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot22.jpg> <a0,fr21>
+<./gifs/pso_2dim/gganim_plot23.jpg, id=647, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot23.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot23.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot23.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot23.jpg> <a0,fr22>
+<./gifs/pso_2dim/gganim_plot24.jpg, id=650, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot24.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot24.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot24.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot24.jpg> <a0,fr23>
+<./gifs/pso_2dim/gganim_plot25.jpg, id=653, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot25.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot25.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot25.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot25.jpg> <a0,fr24>
+<./gifs/pso_2dim/gganim_plot26.jpg, id=656, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot26.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot26.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot26.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot26.jpg> <a0,fr25>
+<./gifs/pso_2dim/gganim_plot27.jpg, id=659, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot27.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot27.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot27.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot27.jpg> <a0,fr26>
+<./gifs/pso_2dim/gganim_plot28.jpg, id=662, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot28.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot28.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot28.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot28.jpg> <a0,fr27>
+<./gifs/pso_2dim/gganim_plot29.jpg, id=665, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot29.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot29.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot29.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot29.jpg> <a0,fr28>
+<./gifs/pso_2dim/gganim_plot30.jpg, id=668, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot30.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot30.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot30.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot30.jpg> <a0,fr29>
+<./gifs/pso_2dim/gganim_plot31.jpg, id=671, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot31.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot31.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot31.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot31.jpg> <a0,fr30>
+<./gifs/pso_2dim/gganim_plot32.jpg, id=674, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot32.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot32.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot32.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot32.jpg> <a0,fr31>
+<./gifs/pso_2dim/gganim_plot33.jpg, id=677, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot33.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot33.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot33.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot33.jpg> <a0,fr32>
+<./gifs/pso_2dim/gganim_plot34.jpg, id=680, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot34.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot34.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot34.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot34.jpg> <a0,fr33>
+<./gifs/pso_2dim/gganim_plot35.jpg, id=683, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot35.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot35.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot35.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot35.jpg> <a0,fr34>
+<./gifs/pso_2dim/gganim_plot36.jpg, id=686, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot36.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot36.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot36.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot36.jpg> <a0,fr35>
+<./gifs/pso_2dim/gganim_plot37.jpg, id=689, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot37.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot37.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot37.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot37.jpg> <a0,fr36>
+<./gifs/pso_2dim/gganim_plot38.jpg, id=692, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot38.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot38.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot38.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot38.jpg> <a0,fr37>
+<./gifs/pso_2dim/gganim_plot39.jpg, id=695, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot39.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot39.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot39.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot39.jpg> <a0,fr38>
+<./gifs/pso_2dim/gganim_plot40.jpg, id=698, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot40.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot40.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot40.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot40.jpg> <a0,fr39>
+<./gifs/pso_2dim/gganim_plot41.jpg, id=701, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot41.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot41.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot41.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot41.jpg> <a0,fr40>
+<./gifs/pso_2dim/gganim_plot42.jpg, id=704, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot42.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot42.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot42.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot42.jpg> <a0,fr41>
+<./gifs/pso_2dim/gganim_plot43.jpg, id=707, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot43.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot43.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot43.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot43.jpg> <a0,fr42>
+<./gifs/pso_2dim/gganim_plot44.jpg, id=710, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot44.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot44.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot44.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot44.jpg> <a0,fr43>
+<./gifs/pso_2dim/gganim_plot45.jpg, id=713, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot45.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot45.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot45.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot45.jpg> <a0,fr44>
+<./gifs/pso_2dim/gganim_plot46.jpg, id=716, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot46.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot46.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot46.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot46.jpg> <a0,fr45>
+<./gifs/pso_2dim/gganim_plot47.jpg, id=719, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot47.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot47.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot47.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot47.jpg> <a0,fr46>
+<./gifs/pso_2dim/gganim_plot48.jpg, id=722, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot48.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot48.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot48.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot48.jpg> <a0,fr47>
+<./gifs/pso_2dim/gganim_plot49.jpg, id=725, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot49.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot49.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot49.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot49.jpg> <a0,fr48>
+<./gifs/pso_2dim/gganim_plot50.jpg, id=728, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot50.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot50.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot50.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot50.jpg> <a0,fr49>
+<./gifs/pso_2dim/gganim_plot51.jpg, id=731, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot51.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot51.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot51.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot51.jpg> <a0,fr50>
+<./gifs/pso_2dim/gganim_plot52.jpg, id=734, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot52.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot52.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot52.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot52.jpg> <a0,fr51>
+<./gifs/pso_2dim/gganim_plot53.jpg, id=737, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot53.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot53.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot53.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot53.jpg> <a0,fr52>
+<./gifs/pso_2dim/gganim_plot54.jpg, id=740, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot54.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot54.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot54.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot54.jpg> <a0,fr53>
+<./gifs/pso_2dim/gganim_plot55.jpg, id=743, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot55.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot55.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot55.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot55.jpg> <a0,fr54>
+<./gifs/pso_2dim/gganim_plot56.jpg, id=746, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot56.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot56.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot56.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot56.jpg> <a0,fr55>
+<./gifs/pso_2dim/gganim_plot57.jpg, id=749, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot57.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot57.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot57.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot57.jpg> <a0,fr56>
+<./gifs/pso_2dim/gganim_plot58.jpg, id=752, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot58.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot58.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot58.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot58.jpg> <a0,fr57>
+<./gifs/pso_2dim/gganim_plot59.jpg, id=755, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot59.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot59.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot59.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot59.jpg> <a0,fr58>
+<./gifs/pso_2dim/gganim_plot60.jpg, id=758, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot60.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot60.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot60.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot60.jpg> <a0,fr59>
+<./gifs/pso_2dim/gganim_plot61.jpg, id=761, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot61.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot61.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot61.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot61.jpg> <a0,fr60>
+<./gifs/pso_2dim/gganim_plot62.jpg, id=764, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot62.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot62.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot62.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot62.jpg> <a0,fr61>
+<./gifs/pso_2dim/gganim_plot63.jpg, id=767, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot63.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot63.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot63.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot63.jpg> <a0,fr62>
+<./gifs/pso_2dim/gganim_plot64.jpg, id=770, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot64.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot64.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot64.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot64.jpg> <a0,fr63>
+<./gifs/pso_2dim/gganim_plot65.jpg, id=773, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot65.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot65.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot65.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot65.jpg> <a0,fr64>
+<./gifs/pso_2dim/gganim_plot66.jpg, id=776, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot66.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot66.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot66.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot66.jpg> <a0,fr65>
+<./gifs/pso_2dim/gganim_plot67.jpg, id=779, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot67.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot67.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot67.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot67.jpg> <a0,fr66>
+<./gifs/pso_2dim/gganim_plot68.jpg, id=782, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot68.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot68.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot68.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot68.jpg> <a0,fr67>
+<./gifs/pso_2dim/gganim_plot69.jpg, id=786, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot69.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot69.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot69.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot69.jpg> <a0,fr68>
+<./gifs/pso_2dim/gganim_plot70.jpg, id=789, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot70.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot70.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot70.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot70.jpg> <a0,fr69>
+<./gifs/pso_2dim/gganim_plot71.jpg, id=792, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot71.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot71.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot71.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot71.jpg> <a0,fr70>
+<./gifs/pso_2dim/gganim_plot72.jpg, id=795, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot72.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot72.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot72.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot72.jpg> <a0,fr71>
+<./gifs/pso_2dim/gganim_plot73.jpg, id=798, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot73.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot73.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot73.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot73.jpg> <a0,fr72>
+<./gifs/pso_2dim/gganim_plot74.jpg, id=801, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot74.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot74.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot74.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot74.jpg> <a0,fr73>
+<./gifs/pso_2dim/gganim_plot75.jpg, id=804, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot75.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot75.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot75.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot75.jpg> <a0,fr74>
+<./gifs/pso_2dim/gganim_plot76.jpg, id=807, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot76.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot76.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot76.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot76.jpg> <a0,fr75>
+<./gifs/pso_2dim/gganim_plot77.jpg, id=810, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot77.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot77.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot77.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot77.jpg> <a0,fr76>
+<./gifs/pso_2dim/gganim_plot78.jpg, id=813, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot78.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot78.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot78.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot78.jpg> <a0,fr77>
+<./gifs/pso_2dim/gganim_plot79.jpg, id=816, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot79.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot79.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot79.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot79.jpg> <a0,fr78>
+<./gifs/pso_2dim/gganim_plot80.jpg, id=819, 505.89pt x 361.35pt>
+File: ./gifs/pso_2dim/gganim_plot80.jpg Graphic file (type jpg)
+<use ./gifs/pso_2dim/gganim_plot80.jpg>
+Package pdftex.def Info: ./gifs/pso_2dim/gganim_plot80.jpg  used on input line 1172.
+(pdftex.def)             Requested size: 345.00414pt x 246.43153pt.
+ <./gifs/pso_2dim/gganim_plot80.jpg> <a0,fr79> [38] [39] [40]
+<Master_Thesis_files/figure-latex/pso7-1.png, id=930, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/pso7-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/pso7-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/pso7-1.png  used on input line 1239.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+<Master_Thesis_files/figure-latex/pso8-1.png, id=932, 3212.0pt x 851.18pt>
+File: Master_Thesis_files/figure-latex/pso8-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/pso8-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/pso8-1.png  used on input line 1247.
+(pdftex.def)             Requested size: 344.98921pt x 91.42213pt.
+[41 <./Master_Thesis_files/figure-latex/pso7-1.png>] [42 <./Master_Thesis_files/figure-latex/pso8-1.png>]
+<Master_Thesis_files/figure-latex/pso9-1.png, id=950, 2409.0pt x 1067.99pt>
+File: Master_Thesis_files/figure-latex/pso9-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/pso9-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/pso9-1.png  used on input line 1269.
+(pdftex.def)             Requested size: 344.97696pt x 152.93977pt.
+[43 <./Master_Thesis_files/figure-latex/pso9-1.png>]
+Chapter 8.
+[44
+
+]
+<Master_Thesis_files/figure-latex/variants1-1.png, id=966, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/variants1-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants1-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants1-1.png  used on input line 1285.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+<Master_Thesis_files/figure-latex/variants2-1.png, id=967, 4015.0pt x 538.01pt>
+File: Master_Thesis_files/figure-latex/variants2-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants2-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants2-1.png  used on input line 1289.
+(pdftex.def)             Requested size: 344.97696pt x 46.2269pt.
+[45 <./Master_Thesis_files/figure-latex/variants1-1.png> <./Master_Thesis_files/figure-latex/variants2-1.png>]
+<Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png, id=980, 3212.0pt x 2810.5pt>
+File: Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png  used on input line 1338.
+(pdftex.def)             Requested size: 344.98921pt x 301.86555pt.
+<Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png, id=981, 3212.0pt x 1405.25pt>
+File: Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png  used on input line 1340.
+(pdftex.def)             Requested size: 344.98921pt x 150.93277pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1337--1341
+[]
+ []
+
+[46] [47 <./Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png> <./Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png>]
+<Master_Thesis_files/figure-latex/variants3-1.png, id=996, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/variants3-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants3-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants3-1.png  used on input line 1352.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+<Master_Thesis_files/figure-latex/variants4-1.png, id=997, 4015.0pt x 646.415pt>
+File: Master_Thesis_files/figure-latex/variants4-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants4-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants4-1.png  used on input line 1356.
+(pdftex.def)             Requested size: 344.97696pt x 55.54128pt.
+[48 <./Master_Thesis_files/figure-latex/variants3-1.png> <./Master_Thesis_files/figure-latex/variants4-1.png>]
+<img/PSO_local_chart.jpg, id=1012, 1608.60976pt x 487.22025pt>
+File: img/PSO_local_chart.jpg Graphic file (type jpg)
+<use img/PSO_local_chart.jpg>
+Package pdftex.def Info: img/PSO_local_chart.jpg  used on input line 1372.
+(pdftex.def)             Requested size: 344.98528pt x 104.4901pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1372--1374
+[][]
+ []
+
+<Master_Thesis_files/figure-latex/variants5-1.png, id=1013, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/variants5-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants5-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants5-1.png  used on input line 1385.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+[49 <./img/PSO_local_chart.jpg>]
+<Master_Thesis_files/figure-latex/variants6-1.png, id=1024, 4015.0pt x 646.415pt>
+File: Master_Thesis_files/figure-latex/variants6-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants6-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants6-1.png  used on input line 1389.
+(pdftex.def)             Requested size: 344.97696pt x 55.54128pt.
+[50 <./Master_Thesis_files/figure-latex/variants5-1.png> <./Master_Thesis_files/figure-latex/variants6-1.png>] [51]
+<Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png, id=1049, 3613.5pt x 3212.0pt>
+File: Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png  used on input line 1484.
+(pdftex.def)             Requested size: 344.99533pt x 306.66252pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1483--1486
+[]
+ []
+
+[52]
+<Master_Thesis_files/figure-latex/variants7-1.png, id=1059, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/variants7-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants7-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants7-1.png  used on input line 1494.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+[53 <./Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png>]
+<Master_Thesis_files/figure-latex/variants8-1.png, id=1068, 4015.0pt x 646.415pt>
+File: Master_Thesis_files/figure-latex/variants8-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants8-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants8-1.png  used on input line 1498.
+(pdftex.def)             Requested size: 344.97696pt x 55.54128pt.
+<Master_Thesis_files/figure-latex/variants_pkg-1.png, id=1069, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/variants_pkg-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants_pkg-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants_pkg-1.png  used on input line 1507.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+[54 <./Master_Thesis_files/figure-latex/variants7-1.png> <./Master_Thesis_files/figure-latex/variants8-1.png> <./Master_Thesis_files/figure-latex/variants_pkg-1.png>]
+Chapter 9.
+[55
+
+] [56]
+
+LaTeX Warning: Reference `exampleleitpsolveqp' on page 57 undefined on input line 1564.
+
+<img/Chapter9_PSO_Process.jpg, id=1101, 1103.12125pt x 723.70375pt>
+File: img/Chapter9_PSO_Process.jpg Graphic file (type jpg)
+<use img/Chapter9_PSO_Process.jpg>
+Package pdftex.def Info: img/Chapter9_PSO_Process.jpg  used on input line 1570.
+(pdftex.def)             Requested size: 344.99387pt x 226.33354pt.
+[57]
+<Master_Thesis_files/figure-latex/9_2-1.pdf, id=1108, 614.295pt x 794.97pt>
+File: Master_Thesis_files/figure-latex/9_2-1.pdf Graphic file (type pdf)
+<use Master_Thesis_files/figure-latex/9_2-1.pdf>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_2-1.pdf  used on input line 1579.
+(pdftex.def)             Requested size: 345.0058pt x 446.4781pt.
+[58 <./img/Chapter9_PSO_Process.jpg>]
+<Master_Thesis_files/figure-latex/9_3-1.png, id=1116, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/9_3-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/9_3-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_3-1.png  used on input line 1587.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+[59 <./Master_Thesis_files/figure-latex/9_2-1.pdf>]
+<Master_Thesis_files/figure-latex/9_4-1.png, id=1132, 2409.0pt x 887.315pt>
+File: Master_Thesis_files/figure-latex/9_4-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/9_4-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_4-1.png  used on input line 1612.
+(pdftex.def)             Requested size: 344.97696pt x 127.0665pt.
+[60 <./Master_Thesis_files/figure-latex/9_3-1.png>]
+<Master_Thesis_files/figure-latex/9_5-1.png, id=1140, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/9_5-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/9_5-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_5-1.png  used on input line 1620.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+[61 <./Master_Thesis_files/figure-latex/9_4-1.png> <./Master_Thesis_files/figure-latex/9_5-1.png>]
+<Master_Thesis_files/figure-latex/9_6-1.png, id=1148, 2409.0pt x 887.315pt>
+File: Master_Thesis_files/figure-latex/9_6-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/9_6-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_6-1.png  used on input line 1645.
+(pdftex.def)             Requested size: 344.97696pt x 127.0665pt.
+<Master_Thesis_files/figure-latex/9_7-1.png, id=1149, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/9_7-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/9_7-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_7-1.png  used on input line 1653.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+[62 <./Master_Thesis_files/figure-latex/9_6-1.png> <./Master_Thesis_files/figure-latex/9_7-1.png>]
+<Master_Thesis_files/figure-latex/9_8-1.png, id=1157, 2409.0pt x 887.315pt>
+File: Master_Thesis_files/figure-latex/9_8-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/9_8-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_8-1.png  used on input line 1678.
+(pdftex.def)             Requested size: 344.97696pt x 127.0665pt.
+<Master_Thesis_files/figure-latex/9_9-1.png, id=1158, 2409.0pt x 1204.5pt>
+File: Master_Thesis_files/figure-latex/9_9-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/9_9-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_9-1.png  used on input line 1686.
+(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
+[63 <./Master_Thesis_files/figure-latex/9_8-1.png> <./Master_Thesis_files/figure-latex/9_9-1.png>]
+<Master_Thesis_files/figure-latex/9_10-1.png, id=1166, 2409.0pt x 887.315pt>
+File: Master_Thesis_files/figure-latex/9_10-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/9_10-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_10-1.png  used on input line 1711.
+(pdftex.def)             Requested size: 344.97696pt x 127.0665pt.
+[64 <./Master_Thesis_files/figure-latex/9_10-1.png>]
+Chapter 10.
+(./Master_Thesis.bbl [65
+
+] [66
+
+]) [67] (./Master_Thesis.aux)
+
+LaTeX Warning: There were undefined references.
+
+Package rerunfilecheck Info: File `Master_Thesis.out' has not changed.
+(rerunfilecheck)             Checksum: 82B0C3A9E34BD1105F864A0F064DA89A;7698.
+ ) 
+Here is how much of TeX's memory you used:
+ 17723 strings out of 476938
+ 322384 string characters out of 5823387
+ 674808 words of memory out of 5000000
+ 38034 multiletter control sequences out of 15000+600000
+ 554311 words of font info for 186 fonts, out of 8000000 for 9000
+ 59 hyphenation exceptions out of 8191
+ 72i,17n,77p,2278b,614s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}<c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmro10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Master_Thesis.pdf (68 pages, 10025069 bytes).
+PDF statistics:
+ 1348 PDF objects out of 1440 (max. 8388607)
+ 1014 compressed objects within 11 object streams
+ 245 named destinations out of 1000 (max. 500000)
+ 48433 words of extra memory for PDF output out of 51595 (max. 10000000)
+

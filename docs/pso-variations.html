@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-27" />
+<meta name="date" content="2022-11-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -215,7 +222,7 @@ div.csl-indent {
 <li class="chapter" data-level="5.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>5.2</b> Index-Tracking Portfolio (ITP)</a>
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="challenges.html"><a href="challenges.html#itp-with-tev-objective-itp-tev"><i class="fa fa-check"></i><b>5.2.1</b> ITP with TEV objective (ITP-TEV)</a></li>
-<li class="chapter" data-level="5.2.2" data-path="challenges.html"><a href="challenges.html#itp-with-mste-objective-itp-mste"><i class="fa fa-check"></i><b>5.2.2</b> ITP with MSTE objective (ITP-MSTE)</a></li>
+<li class="chapter" data-level="5.2.2" data-path="challenges.html"><a href="challenges.html#ITPMSTE"><i class="fa fa-check"></i><b>5.2.2</b> ITP with MSTE objective (ITP-MSTE)</a></li>
 <li class="chapter" data-level="5.2.3" data-path="challenges.html"><a href="challenges.html#example-itp"><i class="fa fa-check"></i><b>5.2.3</b> Example ITP</a></li>
 </ul></li>
 </ul></li>
@@ -264,7 +271,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="9.1" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#transaction-costs"><i class="fa fa-check"></i><b>9.1</b> Transaction Costs</a></li>
 <li class="chapter" data-level="9.2" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#rebalancing-constraint"><i class="fa fa-check"></i><b>9.2</b> Rebalancing Constraint</a></li>
-<li class="chapter" data-level="9.3" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#analyse-objectives"><i class="fa fa-check"></i><b>9.3</b> Analyse Objectives</a></li>
+<li class="chapter" data-level="9.3" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#objective"><i class="fa fa-check"></i><b>9.3</b> Objective</a></li>
 <li class="chapter" data-level="9.4" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#complete-itp-example"><i class="fa fa-check"></i><b>9.4</b> Complete ITP Example</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>10</b> Conclusion</a></li>
@@ -294,7 +301,7 @@ div.csl-indent {
 <p>The standard PSO analyzed in the previous chapter is capable of solving a wide range of problems, but often gets stuck in local minima. In this chapter, different variants of the standard PSO are analyzed using a problem from the financial domain. The first variant is the PSO with function stretching, which is designed to allow the PSO to escape from local minima if they are discovered. The second variant is the local PSO, which is designed to reduce the probability of getting stuck in local minima by limiting the spread of information in the swarm. The third variant, the PSO with feasibility preservation, tries to optimize within the feasibility space and therefore provide only feasible solutions. The last variant is the PSO with self-adaptive velocity, which tries to adjust the control parameters according to certain rules and randomness.</p>
 <div id="testproblem-discrete-itp-mste" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Testproblem: Discrete ITP-MSTE<a href="pso-variations.html#testproblem-discrete-itp-mste" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>All variants are tested on a discrete ITP-MSTE to replicate the S&amp;P 500 with a tracking portfolio consisting of the top 50 assets in the S&amp;P 500 derived from the example with discarding in <a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp">6.4</a>. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S&amp;P 500 at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights <span class="math inline">\(w\)</span> should satisfy <span class="math inline">\(0.99 \leq \textstyle\sum w_i \leq 1\)</span>. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400.</p>
+<p>All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&amp;P 500 derived from the example with discarding in <a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp">6.4</a>. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights <span class="math inline">\(w\)</span> should satisfy <span class="math inline">\(0.99 \leq \textstyle\sum w_i \leq 1\)</span>. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSOs start with an equally weighted portfolio that satisfies the condition <span class="math inline">\(\textstyle\sum w_i = 1\)</span>.</p>
 <p>The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb33-1"><a href="pso-variations.html#cb33-1" aria-hidden="true" tabindex="-1"></a>nav <span class="ot">&lt;-</span> <span class="dv">20000</span></span>
 <span id="cb33-2"><a href="pso-variations.html#cb33-2" aria-hidden="true" tabindex="-1"></a> </span>
@@ -326,9 +333,9 @@ div.csl-indent {
 <span id="cb33-28"><a href="pso-variations.html#cb33-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-29"><a href="pso-variations.html#cb33-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-30"><a href="pso-variations.html#cb33-30" aria-hidden="true" tabindex="-1"></a>bm_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
-<span id="cb33-31"><a href="pso-variations.html#cb33-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="st">&quot;%5EGSPC&quot;</span>, <span class="at">from =</span> from, <span class="at">to =</span> to)<span class="sc">$</span>returns, </span>
-<span id="cb33-32"><a href="pso-variations.html#cb33-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AS_sp500&quot;</span></span>
-<span id="cb33-33"><a href="pso-variations.html#cb33-33" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">setNames</span>(., <span class="st">&quot;S&amp;P 500&quot;</span>)</span>
+<span id="cb33-31"><a href="pso-variations.html#cb33-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="st">&quot;^SP500TR&quot;</span>, <span class="at">from =</span> from, <span class="at">to =</span> to)<span class="sc">$</span>returns, </span>
+<span id="cb33-32"><a href="pso-variations.html#cb33-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AS_sp500tr&quot;</span></span>
+<span id="cb33-33"><a href="pso-variations.html#cb33-33" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">setNames</span>(., <span class="st">&quot;SP500TR&quot;</span>)</span>
 <span id="cb33-34"><a href="pso-variations.html#cb33-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-35"><a href="pso-variations.html#cb33-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-36"><a href="pso-variations.html#cb33-36" aria-hidden="true" tabindex="-1"></a>pool_returns <span class="ot">&lt;-</span> pool_data<span class="sc">$</span>returns</span>
@@ -366,7 +373,7 @@ div.csl-indent {
 <span id="cb33-68"><a href="pso-variations.html#cb33-68" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
 <span id="cb33-69"><a href="pso-variations.html#cb33-69" aria-hidden="true" tabindex="-1"></a>  res_SPSO_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb33-70"><a href="pso-variations.html#cb33-70" aria-hidden="true" tabindex="-1"></a>    res_SPSO <span class="ot">&lt;-</span> <span class="fu">pso</span>(</span>
-<span id="cb33-71"><a href="pso-variations.html#cb33-71" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
+<span id="cb33-71"><a href="pso-variations.html#cb33-71" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns), <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
 <span id="cb33-72"><a href="pso-variations.html#cb33-72" aria-hidden="true" tabindex="-1"></a>      <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
 <span id="cb33-73"><a href="pso-variations.html#cb33-73" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
 <span id="cb33-74"><a href="pso-variations.html#cb33-74" aria-hidden="true" tabindex="-1"></a>        fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>
@@ -484,7 +491,7 @@ It can be seen that the fitness is stretched upward around the local minima <spa
 <span id="cb36-5"><a href="pso-variations.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
 <span id="cb36-6"><a href="pso-variations.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  res_pso_fns_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb36-7"><a href="pso-variations.html#cb36-7" aria-hidden="true" tabindex="-1"></a>    res_pso_fns <span class="ot">&lt;-</span> <span class="fu">pso_fn_stretching</span>(</span>
-<span id="cb36-8"><a href="pso-variations.html#cb36-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
+<span id="cb36-8"><a href="pso-variations.html#cb36-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns), <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
 <span id="cb36-9"><a href="pso-variations.html#cb36-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
 <span id="cb36-10"><a href="pso-variations.html#cb36-10" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
 <span id="cb36-11"><a href="pso-variations.html#cb36-11" aria-hidden="true" tabindex="-1"></a>        fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>
@@ -567,7 +574,7 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 <span id="cb37-6"><a href="pso-variations.html#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-7"><a href="pso-variations.html#cb37-7" aria-hidden="true" tabindex="-1"></a>  res_pso_local_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb37-8"><a href="pso-variations.html#cb37-8" aria-hidden="true" tabindex="-1"></a>    res_pso_local <span class="ot">&lt;-</span> <span class="fu">pso_local</span>(</span>
-<span id="cb37-9"><a href="pso-variations.html#cb37-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
+<span id="cb37-9"><a href="pso-variations.html#cb37-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns), <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
 <span id="cb37-10"><a href="pso-variations.html#cb37-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
 <span id="cb37-11"><a href="pso-variations.html#cb37-11" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
 <span id="cb37-12"><a href="pso-variations.html#cb37-12" aria-hidden="true" tabindex="-1"></a>        fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>
@@ -715,7 +722,7 @@ It can be seen that the randomness of the motion increases compared to the unifo
 <span id="cb38-5"><a href="pso-variations.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
 <span id="cb38-6"><a href="pso-variations.html#cb38-6" aria-hidden="true" tabindex="-1"></a>  res_pso_SAvel_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb38-7"><a href="pso-variations.html#cb38-7" aria-hidden="true" tabindex="-1"></a>    res_pso_SAvel <span class="ot">&lt;-</span> <span class="fu">pso_self_adaptive_velocity</span>(</span>
-<span id="cb38-8"><a href="pso-variations.html#cb38-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
+<span id="cb38-8"><a href="pso-variations.html#cb38-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns), <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
 <span id="cb38-9"><a href="pso-variations.html#cb38-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
 <span id="cb38-10"><a href="pso-variations.html#cb38-10" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
 <span id="cb38-11"><a href="pso-variations.html#cb38-11" aria-hidden="true" tabindex="-1"></a>        fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>

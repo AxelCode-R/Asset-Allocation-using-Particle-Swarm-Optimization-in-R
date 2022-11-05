@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-10-27" />
+<meta name="date" content="2022-11-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -215,7 +222,7 @@ div.csl-indent {
 <li class="chapter" data-level="5.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>5.2</b> Index-Tracking Portfolio (ITP)</a>
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="challenges.html"><a href="challenges.html#itp-with-tev-objective-itp-tev"><i class="fa fa-check"></i><b>5.2.1</b> ITP with TEV objective (ITP-TEV)</a></li>
-<li class="chapter" data-level="5.2.2" data-path="challenges.html"><a href="challenges.html#itp-with-mste-objective-itp-mste"><i class="fa fa-check"></i><b>5.2.2</b> ITP with MSTE objective (ITP-MSTE)</a></li>
+<li class="chapter" data-level="5.2.2" data-path="challenges.html"><a href="challenges.html#ITPMSTE"><i class="fa fa-check"></i><b>5.2.2</b> ITP with MSTE objective (ITP-MSTE)</a></li>
 <li class="chapter" data-level="5.2.3" data-path="challenges.html"><a href="challenges.html#example-itp"><i class="fa fa-check"></i><b>5.2.3</b> Example ITP</a></li>
 </ul></li>
 </ul></li>
@@ -264,7 +271,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="9.1" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#transaction-costs"><i class="fa fa-check"></i><b>9.1</b> Transaction Costs</a></li>
 <li class="chapter" data-level="9.2" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#rebalancing-constraint"><i class="fa fa-check"></i><b>9.2</b> Rebalancing Constraint</a></li>
-<li class="chapter" data-level="9.3" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#analyse-objectives"><i class="fa fa-check"></i><b>9.3</b> Analyse Objectives</a></li>
+<li class="chapter" data-level="9.3" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#objective"><i class="fa fa-check"></i><b>9.3</b> Objective</a></li>
 <li class="chapter" data-level="9.4" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#complete-itp-example"><i class="fa fa-check"></i><b>9.4</b> Complete ITP Example</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>10</b> Conclusion</a></li>
@@ -524,7 +531,7 @@ It can be seen, that both estimators produce portfolios on the same efficient fr
 </div>
 <div id="index-tracking-portfolio-itp" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> Index-Tracking Portfolio (ITP)<a href="challenges.html#index-tracking-portfolio-itp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor’s 500 Index (S&amp;P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost <span class="citation">(<a href="#ref-Desm2016" role="doc-biblioref">Desmond Pace and Grima 2016</a>)</span>. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reweight daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark’s assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&amp;P 500 might consist of the one hundred highest-weighted assets in the S&amp;P 500. The ITP can be modeled in two ways analysed in <span class="citation">(<a href="#ref-IuGa2019" role="doc-biblioref">Iuliia Gavriushina 2019</a>)</span>.</p>
+<p>Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor’s 500 Index (S&amp;P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost <span class="citation">(<a href="#ref-Desm2016" role="doc-biblioref">Desmond Pace and Grima 2016</a>)</span>. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reblanance daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark’s assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&amp;P 500 might consist of the one hundred highest-weighted assets in the S&amp;P 500. The ITP can be modeled in two ways analysed in <span class="citation">(<a href="#ref-IuGa2019" role="doc-biblioref">Iuliia Gavriushina 2019</a>)</span>.</p>
 <div id="itp-with-tev-objective-itp-tev" class="section level3 hasAnchor" number="5.2.1">
 <h3><span class="header-section-number">5.2.1</span> ITP with TEV objective (ITP-TEV)<a href="challenges.html#itp-with-tev-objective-itp-tev" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The classic and widely used model tries to reduce the tracking error variance (TEV) with the following formula:
@@ -577,8 +584,8 @@ d = Cov(r_{bm}, R)
 \]</span></p>
 <p>It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only. Despite the fact that this model is often used, it has a big disadvantage in that it cannot detect constant deviations in the returns. For this reason, the following model exists, which focuses on the mean square tracking error of returns (MSTE).</p>
 </div>
-<div id="itp-with-mste-objective-itp-mste" class="section level3 hasAnchor" number="5.2.2">
-<h3><span class="header-section-number">5.2.2</span> ITP with MSTE objective (ITP-MSTE)<a href="challenges.html#itp-with-mste-objective-itp-mste" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="ITPMSTE" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> ITP with MSTE objective (ITP-MSTE)<a href="challenges.html#ITPMSTE" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A good explanation of the ITP with MSTE objective can be found in <span class="citation">(<a href="#ref-AhBa2017" role="doc-biblioref">Badary 2017</a>)</span>. The objective is to minimize the mean square tracking error (MSTE) of daily portfolio returns <span class="math inline">\(r_{t, p}\)</span> and daily benchmark returns <span class="math inline">\(r_{t, bm}\)</span> on <span class="math inline">\(T\)</span> historical days:</p>
 <p><span class="math display">\[
   \frac{1}{T} \sum^T_{t=1}(r_{t, p}-r_{t, bm})^2
@@ -618,63 +625,62 @@ and
 </div>
 <div id="example-itp" class="section level3 hasAnchor" number="5.2.3">
 <h3><span class="header-section-number">5.2.3</span> Example ITP<a href="challenges.html#example-itp" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This example shows the results of tracking the S&amp;P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:</p>
+<p>This example shows the results of tracking the S&amp;P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. Because the returns are calculated from adjusted closing prices, the index needs to represent dividends, stock splits and rights offerings too. This can be achieved by taking the S&amp;P 500 Total Return Index (SP500TR in short). The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb10-1"><a href="challenges.html#cb10-1" aria-hidden="true" tabindex="-1"></a>pool_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb10-2"><a href="challenges.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2019-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
 <span id="cb10-3"><a href="challenges.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_3_assets&quot;</span></span>
 <span id="cb10-4"><a href="challenges.html#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb10-5"><a href="challenges.html#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-6"><a href="challenges.html#cb10-6" aria-hidden="true" tabindex="-1"></a>bm_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
-<span id="cb10-7"><a href="challenges.html#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="st">&quot;%5EGSPC&quot;</span>, <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2019-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
-<span id="cb10-8"><a href="challenges.html#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_sp500&quot;</span></span>
-<span id="cb10-9"><a href="challenges.html#cb10-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">setNames</span>(., <span class="st">&quot;S&amp;P 500&quot;</span>)</span>
+<span id="cb10-7"><a href="challenges.html#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="st">&quot;^SP500TR&quot;</span>, <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2019-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
+<span id="cb10-8"><a href="challenges.html#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_sp500tr&quot;</span></span>
+<span id="cb10-9"><a href="challenges.html#cb10-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">setNames</span>(., <span class="st">&quot;SP500TR&quot;</span>)</span>
 <span id="cb10-10"><a href="challenges.html#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="challenges.html#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="challenges.html#cb10-12" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb10-13"><a href="challenges.html#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> <span class="fu">cov</span>(pool_returns),</span>
-<span id="cb10-14"><a href="challenges.html#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">dvec =</span> <span class="fu">cov</span>(pool_returns, bm_returns),</span>
-<span id="cb10-15"><a href="challenges.html#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
-<span id="cb10-16"><a href="challenges.html#cb10-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(pool_returns)), <span class="co"># sum up to 1</span></span>
-<span id="cb10-17"><a href="challenges.html#cb10-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">diag</span>(<span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">ncol</span>(pool_returns), <span class="at">ncol=</span><span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
-<span id="cb10-18"><a href="challenges.html#cb10-18" aria-hidden="true" tabindex="-1"></a>    )),</span>
-<span id="cb10-19"><a href="challenges.html#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">bvec =</span> <span class="fu">c</span>(</span>
-<span id="cb10-20"><a href="challenges.html#cb10-20" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
-<span id="cb10-21"><a href="challenges.html#cb10-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
-<span id="cb10-22"><a href="challenges.html#cb10-22" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb10-23"><a href="challenges.html#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">meq =</span> <span class="dv">1</span></span>
-<span id="cb10-24"><a href="challenges.html#cb10-24" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-25"><a href="challenges.html#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-26"><a href="challenges.html#cb10-26" aria-hidden="true" tabindex="-1"></a>qp <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(<span class="at">Dmat =</span> mat<span class="sc">$</span>Dmat, <span class="at">dvec =</span> mat<span class="sc">$</span>dvec, <span class="at">Amat =</span> mat<span class="sc">$</span>Amat, <span class="at">bvec =</span> mat<span class="sc">$</span>bvec, <span class="at">meq =</span> mat<span class="sc">$</span>meq)</span>
-<span id="cb10-27"><a href="challenges.html#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-28"><a href="challenges.html#cb10-28" aria-hidden="true" tabindex="-1"></a>composition_TEV <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;type&quot;</span><span class="ot">=</span><span class="st">&quot;ITP-TEV&quot;</span>, <span class="fu">t</span>(<span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(pool_returns))))</span>
-<span id="cb10-29"><a href="challenges.html#cb10-29" aria-hidden="true" tabindex="-1"></a>port_returns_TEV <span class="ot">&lt;-</span> <span class="fu">xts</span>(pool_returns <span class="sc">%*%</span> qp<span class="sc">$</span>solution, <span class="at">order.by=</span><span class="fu">index</span>(pool_returns)) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-30"><a href="challenges.html#cb10-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(., <span class="st">&quot;ITP-TEV&quot;</span>)</span>
+<span id="cb10-11"><a href="challenges.html#cb10-11" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb10-12"><a href="challenges.html#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> <span class="fu">cov</span>(pool_returns),</span>
+<span id="cb10-13"><a href="challenges.html#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">dvec =</span> <span class="fu">cov</span>(pool_returns, bm_returns),</span>
+<span id="cb10-14"><a href="challenges.html#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
+<span id="cb10-15"><a href="challenges.html#cb10-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(pool_returns)), <span class="co"># sum up to 1</span></span>
+<span id="cb10-16"><a href="challenges.html#cb10-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">diag</span>(<span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">ncol</span>(pool_returns), <span class="at">ncol=</span><span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb10-17"><a href="challenges.html#cb10-17" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb10-18"><a href="challenges.html#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">bvec =</span> <span class="fu">c</span>(</span>
+<span id="cb10-19"><a href="challenges.html#cb10-19" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
+<span id="cb10-20"><a href="challenges.html#cb10-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb10-21"><a href="challenges.html#cb10-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb10-22"><a href="challenges.html#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">meq =</span> <span class="dv">1</span></span>
+<span id="cb10-23"><a href="challenges.html#cb10-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-24"><a href="challenges.html#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="challenges.html#cb10-25" aria-hidden="true" tabindex="-1"></a>qp <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(<span class="at">Dmat =</span> mat<span class="sc">$</span>Dmat, <span class="at">dvec =</span> mat<span class="sc">$</span>dvec, <span class="at">Amat =</span> mat<span class="sc">$</span>Amat, <span class="at">bvec =</span> mat<span class="sc">$</span>bvec, <span class="at">meq =</span> mat<span class="sc">$</span>meq)</span>
+<span id="cb10-26"><a href="challenges.html#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="challenges.html#cb10-27" aria-hidden="true" tabindex="-1"></a>composition_TEV <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;type&quot;</span><span class="ot">=</span><span class="st">&quot;ITP-TEV&quot;</span>, <span class="fu">t</span>(<span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(pool_returns))))</span>
+<span id="cb10-28"><a href="challenges.html#cb10-28" aria-hidden="true" tabindex="-1"></a>port_returns_TEV <span class="ot">&lt;-</span> <span class="fu">xts</span>(pool_returns <span class="sc">%*%</span> qp<span class="sc">$</span>solution, <span class="at">order.by=</span><span class="fu">index</span>(pool_returns)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-29"><a href="challenges.html#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(., <span class="st">&quot;ITP-TEV&quot;</span>)</span>
+<span id="cb10-30"><a href="challenges.html#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-31"><a href="challenges.html#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-32"><a href="challenges.html#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-33"><a href="challenges.html#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-34"><a href="challenges.html#cb10-34" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb10-35"><a href="challenges.html#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> <span class="fu">t</span>(pool_returns) <span class="sc">%*%</span> pool_returns,</span>
-<span id="cb10-36"><a href="challenges.html#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">dvec =</span> <span class="fu">t</span>(pool_returns) <span class="sc">%*%</span> bm_returns,</span>
-<span id="cb10-37"><a href="challenges.html#cb10-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
-<span id="cb10-38"><a href="challenges.html#cb10-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(pool_returns)), <span class="co"># sum up to 1</span></span>
-<span id="cb10-39"><a href="challenges.html#cb10-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">diag</span>(<span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">ncol</span>(pool_returns), <span class="at">ncol=</span><span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
-<span id="cb10-40"><a href="challenges.html#cb10-40" aria-hidden="true" tabindex="-1"></a>    )),</span>
-<span id="cb10-41"><a href="challenges.html#cb10-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">bvec =</span> <span class="fu">c</span>(</span>
-<span id="cb10-42"><a href="challenges.html#cb10-42" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
-<span id="cb10-43"><a href="challenges.html#cb10-43" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
-<span id="cb10-44"><a href="challenges.html#cb10-44" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb10-45"><a href="challenges.html#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">meq =</span> <span class="dv">1</span></span>
-<span id="cb10-46"><a href="challenges.html#cb10-46" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-47"><a href="challenges.html#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-48"><a href="challenges.html#cb10-48" aria-hidden="true" tabindex="-1"></a>qp <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(<span class="at">Dmat =</span> mat<span class="sc">$</span>Dmat, <span class="at">dvec =</span> mat<span class="sc">$</span>dvec, <span class="at">Amat =</span> mat<span class="sc">$</span>Amat, <span class="at">bvec =</span> mat<span class="sc">$</span>bvec, <span class="at">meq =</span> mat<span class="sc">$</span>meq)</span>
-<span id="cb10-49"><a href="challenges.html#cb10-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-50"><a href="challenges.html#cb10-50" aria-hidden="true" tabindex="-1"></a>composition_MSTE <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;type&quot;</span><span class="ot">=</span><span class="st">&quot;ITP-MSTE&quot;</span>, <span class="fu">t</span>(<span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(pool_returns))))</span>
-<span id="cb10-51"><a href="challenges.html#cb10-51" aria-hidden="true" tabindex="-1"></a>port_returns_MSTE <span class="ot">&lt;-</span> <span class="fu">xts</span>(pool_returns <span class="sc">%*%</span> qp<span class="sc">$</span>solution, <span class="at">order.by=</span><span class="fu">index</span>(pool_returns)) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-52"><a href="challenges.html#cb10-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(., <span class="st">&quot;ITP-MSTE&quot;</span>)</span>
+<span id="cb10-33"><a href="challenges.html#cb10-33" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb10-34"><a href="challenges.html#cb10-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> <span class="fu">t</span>(pool_returns) <span class="sc">%*%</span> pool_returns,</span>
+<span id="cb10-35"><a href="challenges.html#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">dvec =</span> <span class="fu">t</span>(pool_returns) <span class="sc">%*%</span> bm_returns,</span>
+<span id="cb10-36"><a href="challenges.html#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
+<span id="cb10-37"><a href="challenges.html#cb10-37" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(pool_returns)), <span class="co"># sum up to 1</span></span>
+<span id="cb10-38"><a href="challenges.html#cb10-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">diag</span>(<span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">ncol</span>(pool_returns), <span class="at">ncol=</span><span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb10-39"><a href="challenges.html#cb10-39" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb10-40"><a href="challenges.html#cb10-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">bvec =</span> <span class="fu">c</span>(</span>
+<span id="cb10-41"><a href="challenges.html#cb10-41" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
+<span id="cb10-42"><a href="challenges.html#cb10-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb10-43"><a href="challenges.html#cb10-43" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb10-44"><a href="challenges.html#cb10-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">meq =</span> <span class="dv">1</span></span>
+<span id="cb10-45"><a href="challenges.html#cb10-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-46"><a href="challenges.html#cb10-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-47"><a href="challenges.html#cb10-47" aria-hidden="true" tabindex="-1"></a>qp <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(<span class="at">Dmat =</span> mat<span class="sc">$</span>Dmat, <span class="at">dvec =</span> mat<span class="sc">$</span>dvec, <span class="at">Amat =</span> mat<span class="sc">$</span>Amat, <span class="at">bvec =</span> mat<span class="sc">$</span>bvec, <span class="at">meq =</span> mat<span class="sc">$</span>meq)</span>
+<span id="cb10-48"><a href="challenges.html#cb10-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-49"><a href="challenges.html#cb10-49" aria-hidden="true" tabindex="-1"></a>composition_MSTE <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;type&quot;</span><span class="ot">=</span><span class="st">&quot;ITP-MSTE&quot;</span>, <span class="fu">t</span>(<span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(pool_returns))))</span>
+<span id="cb10-50"><a href="challenges.html#cb10-50" aria-hidden="true" tabindex="-1"></a>port_returns_MSTE <span class="ot">&lt;-</span> <span class="fu">xts</span>(pool_returns <span class="sc">%*%</span> qp<span class="sc">$</span>solution, <span class="at">order.by=</span><span class="fu">index</span>(pool_returns)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-51"><a href="challenges.html#cb10-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(., <span class="st">&quot;ITP-MSTE&quot;</span>)</span>
+<span id="cb10-52"><a href="challenges.html#cb10-52" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-53"><a href="challenges.html#cb10-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-54"><a href="challenges.html#cb10-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-55"><a href="challenges.html#cb10-55" aria-hidden="true" tabindex="-1"></a><span class="fu">plotly_line_chart_xts</span>(<span class="fu">ret_to_cumret</span>(<span class="fu">cbind.xts</span>(port_returns_TEV, port_returns_MSTE, bm_returns))) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-56"><a href="challenges.html#cb10-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
+<span id="cb10-54"><a href="challenges.html#cb10-54" aria-hidden="true" tabindex="-1"></a><span class="fu">plotly_line_chart_xts</span>(<span class="fu">ret_to_cumret</span>(<span class="fu">cbind.xts</span>(port_returns_TEV, port_returns_MSTE, bm_returns))) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-55"><a href="challenges.html#cb10-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/ITP_ex-1.png" width="672" />
 The ITP-TEV and ITP-MSTE had almost the same results whith the compositions below:</p>
 <pre><code>      type      AAPL       IBM      GOOG
