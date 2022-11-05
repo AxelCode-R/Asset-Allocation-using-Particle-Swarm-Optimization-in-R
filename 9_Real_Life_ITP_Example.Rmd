@@ -440,7 +440,7 @@ plotly_line_chart_xts(ret_to_cumret(perf_all))
 
 ```
 
-```{r}
+```{r, echo=F}
 bm_returns_raw <- buffer(
   get_yf(tickers = "^SP500TR", from = from, to = to)$returns,
   "AS_sp500tr_long"
@@ -456,33 +456,142 @@ MSTE_infos_0tc <- MSTE_infos
 MSTE_nav_0tc <- MSTE_nav
 perf_all <- cbind.xts(
   setNames(QP_perf, "QP_MSTE_cont"),
-  setNames(MSTE_perf, "PSO_MSTE_disc"), 
-  setNames(pri_to_ret(MSTE_nav), "PSO_MSTE_disc_TR")
+  setNames(MSTE_perf_0tc, "PSO_MSTE_disc_0tc"), 
+  setNames(pri_to_ret(MSTE_nav_0tc), "PSO_MSTE_disc_TR_0tc")
 )
 perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", max(index(perf_all))),])
-
 p_0tc <- plotly_line_chart_xts(ret_to_cumret(perf_all))
-  
-  
   
 load("analyses/ITP_long_MSTE_v12_10tc.rdata")
 MSTE_perf_10tc <- MSTE_perf
 MSTE_infos_10tc <- MSTE_infos
 MSTE_nav_10tc <- MSTE_nav
+perf_all <- cbind.xts(
+  setNames(QP_perf, "QP_MSTE_cont"),
+  setNames(MSTE_perf_10tc, "PSO_MSTE_disc_10tc"), 
+  setNames(pri_to_ret(MSTE_nav_10tc), "PSO_MSTE_disc_TR_10tc")
+)
+perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", max(index(perf_all))),])
+p_10tc <- plotly_line_chart_xts(ret_to_cumret(perf_all))
+  
 load("analyses/ITP_long_MSTE_v12_20tc.rdata")
 MSTE_perf_20tc <- MSTE_perf
 MSTE_infos_20tc <- MSTE_infos
 MSTE_nav_20tc <- MSTE_nav
+perf_all <- cbind.xts(
+  setNames(QP_perf, "QP_MSTE_cont"),
+  setNames(MSTE_perf_20tc, "PSO_MSTE_disc_20tc"), 
+  setNames(pri_to_ret(MSTE_nav_20tc), "PSO_MSTE_disc_TR_20tc")
+)
+perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", max(index(perf_all))),])
+p_20tc <- plotly_line_chart_xts(ret_to_cumret(perf_all))
+
 load("analyses/ITP_long_MSTE_v12_30tc.rdata")
 MSTE_perf_30tc <- MSTE_perf
 MSTE_infos_30tc <- MSTE_infos
 MSTE_nav_30tc <- MSTE_nav
+perf_all <- cbind.xts(
+  setNames(QP_perf, "QP_MSTE_cont"),
+  setNames(MSTE_perf_30tc, "PSO_MSTE_disc_30tc"), 
+  setNames(pri_to_ret(MSTE_nav_30tc), "PSO_MSTE_disc_TR_30tc")
+)
+perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", max(index(perf_all))),])
+p_30tc <- plotly_line_chart_xts(ret_to_cumret(perf_all))
 
-
-
-
+subplot(p_0tc, p_10tc, p_20tc, p_30tc, nrows=4)
 ```
 
+```{r}
+p_0tc %>% html_save()
+```
+```{r}
+MSTE_infos_0tc %>% 
+  group_by(type) %>% 
+  summarise(
+    fit=mean(fittness),
+    const_break = mean(const_break),
+    rebalance_constraint = mean(rebalance_constraint),
+    transaction_cost_constraint = mean(transaction_cost_constraint),
+    sum_wgt = mean(sum_wgt),
+    n_assets = mean(n_assets),
+    transaction_costs = mean(transaction_costs)
+  ) %>% 
+  mutate(
+    calc_type = "mean"
+  ) %>% 
+  select(calc_type, everything()) %>% 
+  select(-c("type")) %>% 
+  html_save()
+```
+
+```{r}
+p_10tc %>% html_save()
+```
+```{r}
+MSTE_infos_10tc %>% 
+  group_by(type) %>% 
+  summarise(
+    fit=mean(fittness),
+    const_break = mean(const_break),
+    rebalance_constraint = mean(rebalance_constraint),
+    transaction_cost_constraint = mean(transaction_cost_constraint),
+    sum_wgt = mean(sum_wgt),
+    n_assets = mean(n_assets),
+    transaction_costs = mean(transaction_costs)
+  ) %>% 
+  mutate(
+    calc_type = "mean"
+  ) %>% 
+  select(calc_type, everything()) %>% 
+  select(-c("type")) %>% 
+  html_save()
+```
+
+```{r}
+p_20tc %>% html_save()
+```
+```{r}
+MSTE_infos_20tc %>% 
+  group_by(type) %>% 
+  summarise(
+    fit=mean(fittness),
+    const_break = mean(const_break),
+    rebalance_constraint = mean(rebalance_constraint),
+    transaction_cost_constraint = mean(transaction_cost_constraint),
+    sum_wgt = mean(sum_wgt),
+    n_assets = mean(n_assets),
+    transaction_costs = mean(transaction_costs)
+  ) %>% 
+  mutate(
+    calc_type = "mean"
+  ) %>% 
+  select(calc_type, everything()) %>% 
+  select(-c("type")) %>% 
+  html_save()
+```
+
+```{r}
+p_30tc %>% html_save()
+```
+```{r}
+MSTE_infos_30tc %>% 
+  group_by(type) %>% 
+  summarise(
+    fit=mean(fittness),
+    const_break = mean(const_break),
+    rebalance_constraint = mean(rebalance_constraint),
+    transaction_cost_constraint = mean(transaction_cost_constraint),
+    sum_wgt = mean(sum_wgt),
+    n_assets = mean(n_assets),
+    transaction_costs = mean(transaction_costs)
+  ) %>% 
+  mutate(
+    calc_type = "mean"
+  ) %>% 
+  select(calc_type, everything()) %>% 
+  select(-c("type")) %>% 
+  html_save()
+```
 
 
 
