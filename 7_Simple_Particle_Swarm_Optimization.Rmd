@@ -474,7 +474,7 @@ plot_ly(
 The corresponding portfolios for each $\lambda$ are connected with a grey line to visualize the error of the PSO. It turns out that it is possible to solve MVP's with a PSO approach. It is noticable that some PSO runs were not able to reach the global minimum and thus show a deviation from the `solve.QP()` approach, which can often be fixed by repeated runs. 
 
 ## Example: ITP-MSTE
-The same ITP-MSTE solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the S&P 500 between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$ and decreases to zero, the upper bound is $0.05$, and a starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
+The same ITP-MSTE solved with `solve.QP()` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$ and decreases to zero, the upper bound is $0.05$, and a starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP()` approach for seed 0 in the table below:
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
  
@@ -503,9 +503,10 @@ pool_returns_raw <-
 
 
 bm_returns <- buffer(
-  get_yf(tickers = "%5EGSPC", from = from, to = to)$returns, 
-  "AS_sp500"
-) %>% setNames(., "S&P 500")
+  get_yf(tickers = "^SP500TR", from = from, to = to)$returns, 
+  "AS_sp500tr"
+) %>% setNames(., "SP500TR")
+
 
 
 
@@ -671,7 +672,7 @@ $$
 $$
 
 ## Example: Discrete ITP-MSTE
-This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the S&P 500 with its top 100 assets derived from the example with discarding in \@ref(exampleitpsolveqp) and tries to construct a portfolio with the constraints long only, $0.99 \leq \textstyle\sum w_i \leq 1$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the `solve.QP()` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP()` and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the SP500TR with its top 100 assets derived from the example with discarding in \@ref(exampleitpsolveqp) and tries to construct a portfolio with the constraints long only, $0.99 \leq \textstyle\sum w_i \leq 1$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
 ```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
@@ -705,9 +706,10 @@ pool_data$prices <- pool_data$prices[, assets_pool_100]
 
 
 bm_returns <- buffer(
-  get_yf(tickers = "%5EGSPC", from = from, to = to)$returns, 
-  "AS_sp500"
-) %>% setNames(., "S&P 500")
+  get_yf(tickers = "^SP500TR", from = from, to = to)$returns, 
+  "AS_sp500tr"
+) %>% setNames(., "SP500TR")
+
 
 
 pool_returns <- pool_data$returns

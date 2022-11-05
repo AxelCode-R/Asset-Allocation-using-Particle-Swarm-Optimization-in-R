@@ -10,7 +10,7 @@ The standard PSO analyzed in the previous chapter is capable of solving a wide r
 
 
 ## Testproblem: Discrete ITP-MSTE
-All variants are tested on a discrete ITP-MSTE to replicate the S&P 500 with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the S&P 500 at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSOs start with an equally weighted portfolio that satisfies the condition $\textstyle\sum w_i = 1$. 
+All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSOs start with an equally weighted portfolio that satisfies the condition $\textstyle\sum w_i = 1$. 
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
@@ -45,9 +45,9 @@ pool_data$prices <- pool_data$prices[, assets_pool_50]
 
 
 bm_returns <- buffer(
-  get_yf(tickers = "%5EGSPC", from = from, to = to)$returns, 
-  "AS_sp500"
-) %>% setNames(., "S&P 500")
+  get_yf(tickers = "^SP500TR", from = from, to = to)$returns, 
+  "AS_sp500tr"
+) %>% setNames(., "SP500TR")
 
 
 pool_returns <- pool_data$returns

@@ -15,7 +15,7 @@ The previous chapters have analyzed the capability's of a PSO and the quality of
 
 
 ## Transaction Costs
-The costs to buy or sell assets needs to be considered, because it can have a huge impact after several years of investment. There are many different costs that can occur dependent on the concepts of the broker, liquidity of assets and types of assets. For more information have a look at [@AkGa2022] or [@NySe2022]. To keep it simple, we focus on the situation of a private investor using a online broker that has a fixed fee per transaction for US equity's contained in the S&P 500. Each transaction consists of one or multiple shares of one asset and a transaction can ether be a sell or a buy transaction. The fixed transaction fee is set on 1 USD like done by the online broker Trade Republic. The PSO can consider the transaction costs by increasing the objective value, but it is difficult to make the intensity of the transaction cost value compareable to the objective value. The objective value $v^o$ of the ITP with MSTE approach as in \@ref(ITPMSTE) is defined as:
+The costs to buy or sell assets needs to be considered, because it can have a huge impact after several years of investment. There are many different costs that can occur dependent on the concepts of the broker, liquidity of assets and types of assets. For more information have a look at [@AkGa2022] or [@NySe2022]. To keep it simple, we focus on the situation of a private investor using a online broker that has a fixed fee per transaction for US equity's contained in the SP500TR. Each transaction consists of one or multiple shares of one asset and a transaction can ether be a sell or a buy transaction. The fixed transaction fee is set on 1 USD like done by the online broker Trade Republic. The PSO can consider the transaction costs by increasing the objective value, but it is difficult to make the intensity of the transaction cost value compareable to the objective value. The objective value $v^o$ of the ITP with MSTE approach as in \@ref(ITPMSTE) is defined as:
 $$
  v^o = \left\Vert r_{p}-r_{bm} \right\Vert_2^2 = \sum_{t=1}^T (r_{t,p}-r_{t,bm})^2
 $$
@@ -58,11 +58,16 @@ $$
 $$
 
 
-## Analyse Objectives
-asd
+## Objective
+The objective is to simulate a tracking portfolio that tracks the S&P 500 with a pool of 100 assets, contained in the SP500TR, over multiple reblanacing dates ranging from 2016-05-01 till 2022-10-27 with one month intervalls. The pool of assets is created for each rebalancing date by using the solve.QP() approach with steadily discarding of assets like in \@ref(exampleitpsolveqp) with an maximal change of 10 assets on each rebalancing date, to reduce forced rebalancing. All considered assets have no missing values in the test and training period. Additionaly serves the solution of the solve.QP() approach as benchmark and the continuous solution is used as one particle position for the first rebalancing date. The tracking portfolio is solved by using the self-adaptive velocity PSO from the last chapter, which produces stable results. The tracking portfolio has the following constraints: discrete amount of shares, long only, maximal weight of 10%, $0.96 \leq \sum w_i \leq 0.995$, rebalancing less than 30% weight, considered transaction costs with $k=10$, net asset value of 20000 USD, training period length of four months and test period length of one month. 
+
+Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraint breaks and rebalancing constraint is satisfied and afterwards it runs additional three times to increase the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from \@ref(portfolioreturns) until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool they are sold and reduce the net asset value because of the transaction costs. The same happens by buying assets. A rough visualisation of the process can be found in the following diagramm:
+
+![Backtest Process](img/Chapter9_PSO_Process.jpg)
 
 ## Complete ITP Example
-```{r}
+The following charts visualize the test period of the whole backtests. The `QP` line is continuous and represents the optimal solution using the ITP MSTE approach. The discretized solution using the PSO is named `PSO` and the `PSO_TE` considers all transaction costs. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity $k$ of each backtest:
+```{r, echo=F, include=F}
 set.seed(0)
 
 train_months <- 4
@@ -153,8 +158,8 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
       dvec = t(returns) %*% bm_returns,
       const = t(bm_returns) %*% bm_returns,
       Amat = t(rbind(
-        -rep(1, ncol(returns)), # sum w <= 1
-        rep(1, ncol(returns)), # sum w >= 0.99
+        -rep(1, ncol(returns)), # sum w <= 0.995
+        rep(1, ncol(returns)), # sum w >= 0.96
         diag(1, 
              nrow=ncol(returns), 
              ncol=ncol(returns)), # long only
@@ -163,8 +168,8 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
              ncol=ncol(returns)) # smaller than 
       )),
       bvec = c(
-        -0.995, # sum w <= 1
-        0.96, # sum w >= 0.99
+        -0.995, # sum w <= 0.995
+        0.96, # sum w >= 0.96
         rep(0, ncol(returns)), # long only
         rep(-0.1, ncol(returns)) # smaller than 
       ),
@@ -254,7 +259,7 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
 
 }
 
-#save(QP_perf, QP_infos, QP_tickers, QP_solutions, file="analyses/ITP_long_QP_v8.rdata")
+#save(QP_perf, QP_infos, QP_tickers, QP_solutions, file="analyses/ITP_long_QP_v12.rdata")
 
 
 # for(i in 2:length(QP_tickers)){
@@ -356,7 +361,7 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
             new_shares = as.vector(shares), 
             nav = as.numeric(last(MSTE_nav))
           )
-          return(fitness + 100*constraints + 100*rebalance_constraint + 10*tc_constraint)
+          return(fitness + 100*constraints + 100*rebalance_constraint + 0*tc_constraint)
         },
         lower = 0,
         upper = 0.1,
@@ -369,12 +374,12 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
       res_pso_SAvel_MSTE$perf <- calc_portfolio_returns(pool_data$returns[test_frame, colnames(returns)], res_pso_SAvel_MSTE$solution)
       res_pso_SAvel_MSTE$fitness <- 2*calc_fit(res_pso_SAvel_MSTE$solution)
       res_pso_SAvel_MSTE$const_break <- calc_const(res_pso_SAvel_MSTE$solution)
-      res_pso_SAvel_MSTE$rebalance_constraint <- rebalance_const(
+      res_pso_SAvel_MSTE$rebalance_constraint <- 100*rebalance_const(
             old_wgt = as.vector(portfolio_wgt_temp),
             new_wgt = res_pso_SAvel_MSTE$solution,
             first_date = (i == (train_months+1))
           )
-      res_pso_SAvel_MSTE$transaction_cost_constraint <- transaction_cost_constraint(
+      res_pso_SAvel_MSTE$transaction_cost_constraint <- 0*transaction_cost_constraint(
             old_shares = as.vector(portfolio_shares_temp), 
             new_shares = round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices), 
             nav = as.numeric(last(MSTE_nav))
@@ -416,144 +421,7 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
   
 }
 
-save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v11.rdata")
-
-
-
-
-
-# CRT_perf <- NULL
-# CRT_infos <- NULL
-# CRT_nav <- xts(nav, order.by = rebalance_dates[train_months+1])
-# portfolio_shares <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
-# portfolio_wgts <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
-# 
-# for(i in (train_months+1):(length(rebalance_dates)-1)){
-#   save_nav <- CRT_nav[nrow(CRT_nav),]
-#   print(i)
-#   date <- rebalance_dates[i]
-#   date_from <- rebalance_dates[i-train_months]
-#   
-#   train_frame <- paste0(date_from, "/", date)
-#   test_frame <- paste0(date+1, "/", rebalance_dates[i+test_months])
-#   
-#   ticker_in_spx <- QP_tickers[[i]] #spx_composition %>% filter(Date <= date) %>% filter(Date == max(Date)) %>% pull(Ticker)
-#   
-#   returns <- pool_data$returns[train_frame, colnames(pool_data$returns) %in% ticker_in_spx] %>% 
-#     .[,colSums(is.na(.))==0]
-#   
-#   prices <- pool_data$prices[date, colnames(returns)]
-#   
-#   bm_returns <- bm_returns_raw[train_frame,]
-#   
-#   mat <- list(
-#     #Dmat = t(returns) %*% returns,
-#     #dvec = t(returns) %*% bm_returns,
-#     Amat = t(rbind(
-#       -rep(1, ncol(returns)), # sum w <= 1
-#       rep(1, ncol(returns)), # sum w >= 0.99
-#       diag(1, 
-#            nrow=ncol(returns), 
-#            ncol=ncol(returns)) # long only
-#     )),
-#     bvec = c(
-#       -0.995, # sum w <= 1
-#       0.96, # sum w >= 0.99
-#       rep(0, ncol(returns)) # long only
-#     ),
-#     meq = 0
-#   )
-#   
-#   
-#   
-#   
-#   # sell transaction costs because not in S&P anymore
-#   CRT_nav[nrow(CRT_nav),] <- last(CRT_nav) - 1 * sum(portfolio_shares[!names(portfolio_shares) %in% colnames(returns)]!=0)
-#   
-#    
-#   portfolio_shares_temp <- setNames(portfolio_shares[colnames(returns)], colnames(returns))
-#   portfolio_shares_temp[is.na(portfolio_shares_temp)] <- 0
-#   portfolio_wgt_temp <- portfolio_shares_temp * prices / as.numeric(last(CRT_nav))
-#   
-#   
-#   for(k in 1:20){
-#     if( k == 1 || res_pso_SAvel_CRT$const_break > 0){
-#       bm_returns_cumret <- ret_to_cumret(bm_returns)[-1,]
-#       res_pso_SAvel_CRT <- pso_self_adaptive_velocity(
-#         par = if(k==1){if(i==(train_months+1)){QP_solutions[[i]]}else{portfolio_wgt_temp}}else{res_pso_SAvel_CRT$solution},
-#         fn = function(x){
-#           shares <- round(x*as.numeric(last(CRT_nav))/prices)
-#           x <- as.vector(shares*prices/as.numeric(last(CRT_nav)))
-#           fitness <- sqrt(sum((ret_to_cumret(xts(returns %*% x, order.by=index(returns))) - bm_returns_cumret)^2 * 0.994^((nrow(returns)-1):0)))
-#           constraints <- calc_const(x)
-#           rebalance_constraint <- rebalance_const(
-#             old_wgt = as.vector(portfolio_wgt_temp),
-#             new_wgt = x,
-#             old_shares = as.vector(portfolio_shares_temp),
-#             new_shares = shares,
-#             nav = as.numeric(last(CRT_nav)),
-#             first_date = (i==(train_months+1)),
-#             expo = 1
-#           )
-#           return(fitness+100*constraints+rebalance_constraint)
-#         },
-#         lower = 0,
-#         upper = 0.1,
-#         control = list(
-#           s = 100, # swarm size
-#           maxiter = 100 # iterations
-#         )
-#       )
-#       res_pso_SAvel_CRT$solution <- as.vector(round(res_pso_SAvel_CRT$solution*as.numeric(last(CRT_nav))/prices)*prices/as.numeric(last(CRT_nav)))
-#       res_pso_SAvel_CRT$perf <- calc_portfolio_returns(pool_data$returns[test_frame, colnames(returns)], res_pso_SAvel_CRT$solution)
-#       res_pso_SAvel_CRT$fitness <- sqrt(sum((ret_to_cumret(xts(returns %*% res_pso_SAvel_CRT$solution, order.by=index(returns))) - bm_returns_cumret)^2 * 0.994^((nrow(returns)-1):0)))
-#       res_pso_SAvel_CRT$const_break <- calc_const(res_pso_SAvel_CRT$solution)
-#       res_pso_SAvel_CRT$rebalance_constraint <- rebalance_const(
-#             old_wgt = as.vector(portfolio_wgt_temp),
-#             new_wgt = res_pso_SAvel_CRT$solution,
-#             old_shares = as.vector(portfolio_shares_temp),
-#             new_shares = round(res_pso_SAvel_CRT$solution*as.numeric(last(CRT_nav))/prices),
-#             nav = as.numeric(last(CRT_nav)),
-#             expo = 1
-#       )
-#   
-#     }
-#   }
-#   
-#   # buy and sell transation costs
-#   CRT_nav[nrow(CRT_nav),] <- last(CRT_nav) - 1 * sum( (portfolio_shares_temp-round(res_pso_SAvel_CRT$solution*as.numeric(last(CRT_nav))/prices))!=0)
-#   
-#   
-#   portfolio_shares <- setNames(as.vector(round(res_pso_SAvel_CRT$solution*as.numeric(last(CRT_nav))/prices)), colnames(prices))
-#   portfolio_wgt <- setNames(as.vector(res_pso_SAvel_CRT$solution), colnames(prices))
-#   
-#   
-#   CRT_perf <- rbind.xts(
-#     CRT_perf,
-#     setNames(res_pso_SAvel_CRT$perf, "SAvel_CRT")
-#   )
-#   
-#   CRT_infos <- bind_rows(
-#     CRT_infos,
-#     data.frame(
-#       "type" = "SAvel_CRT",
-#       "fittness" = res_pso_SAvel_CRT$fitness,
-#       "const_break" = res_pso_SAvel_CRT$const_break,
-#       "rebalance_constraint" = res_pso_SAvel_CRT$rebalance_constraint,
-#       "MSTE_returns" = sum((returns %*% res_pso_SAvel_CRT$solution - bm_returns)^2),
-#       "sum_wgt" = sum(portfolio_wgt),
-#       "min_wgt" = min(portfolio_wgt),
-#       "n_assets" = sum(portfolio_wgt!=0),
-#       "rebalance_wgt" = sum(abs(portfolio_wgt_temp-portfolio_wgt))/2,
-#       "transaction_costs" = as.numeric(save_nav) - as.numeric(CRT_nav[nrow(CRT_nav),])
-#     )
-#   )
-#   
-#   CRT_nav <- rbind.xts(CRT_nav, ret_to_cumret(res_pso_SAvel_CRT$perf)[-1,]/100 * as.numeric(last(CRT_nav)))
-#   
-# }
-
-#save(CRT_perf, CRT_infos, CRT_nav, file="analyses/ITP_long_CRT_v5.rdata")
+#save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v12_30tc.rdata")
 
 
 
@@ -572,6 +440,48 @@ plotly_line_chart_xts(ret_to_cumret(perf_all))
 
 ```
 
+```{r}
+bm_returns_raw <- buffer(
+  get_yf(tickers = "^SP500TR", from = from, to = to)$returns,
+  "AS_sp500tr_long"
+) %>% setNames(., "SP500TR")
+
+load("analyses/ITP_long_QP_v12.rdata")
+# QP_perf, QP_infos, QP_tickers, QP_solutions
+
+
+load("analyses/ITP_long_MSTE_v12_0tc.rdata")
+MSTE_perf_0tc <- MSTE_perf
+MSTE_infos_0tc <- MSTE_infos
+MSTE_nav_0tc <- MSTE_nav
+perf_all <- cbind.xts(
+  setNames(QP_perf, "QP_MSTE_cont"),
+  setNames(MSTE_perf, "PSO_MSTE_disc"), 
+  setNames(pri_to_ret(MSTE_nav), "PSO_MSTE_disc_TR")
+)
+perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", max(index(perf_all))),])
+
+p_0tc <- plotly_line_chart_xts(ret_to_cumret(perf_all))
+  
+  
+  
+load("analyses/ITP_long_MSTE_v12_10tc.rdata")
+MSTE_perf_10tc <- MSTE_perf
+MSTE_infos_10tc <- MSTE_infos
+MSTE_nav_10tc <- MSTE_nav
+load("analyses/ITP_long_MSTE_v12_20tc.rdata")
+MSTE_perf_20tc <- MSTE_perf
+MSTE_infos_20tc <- MSTE_infos
+MSTE_nav_20tc <- MSTE_nav
+load("analyses/ITP_long_MSTE_v12_30tc.rdata")
+MSTE_perf_30tc <- MSTE_perf
+MSTE_infos_30tc <- MSTE_infos
+MSTE_nav_30tc <- MSTE_nav
+
+
+
+
+```
 
 
 

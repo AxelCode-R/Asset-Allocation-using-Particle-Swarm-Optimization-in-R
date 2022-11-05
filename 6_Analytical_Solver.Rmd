@@ -174,7 +174,7 @@ It can be seen, that each asset added results in a minimum variance portfolio wi
 
 
 ## Example: Solving ITP-MSTE with `solve.QP()` {#exampleitpsolveqp}
-This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the S&P 500 from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded, and the remaining assets serve as the new asset pool for the next replication until only five assets remain. First, the required data can be downloaded from the `R/` directory using existing functions. The function `get_spx_composition()` uses web scraping to read the components of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and converts them into monthly compositions of the S&P 500. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the S&P 500:
+This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the SP500TR from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded, and the remaining assets serve as the new asset pool for the next replication until only five assets remain. First, the required data can be downloaded from the `R/` directory using existing functions. The function `get_spx_composition()` uses web scraping to read the components of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and converts them into monthly compositions of the SP500TR. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the SP500TR:
 
 ```{r qp_itp1, class.source="code_fold_it_collapsed"}
 from <- "2018-01-01"
@@ -202,9 +202,9 @@ pool_returns_raw <-
 
 
 bm_returns <- buffer(
-  get_yf(tickers = "%5EGSPC", from = from, to = to)$returns, 
-  "AS_sp500"
-) %>% setNames(., "S&P 500")
+  get_yf(tickers = "^SP500TR", from = from, to = to)$returns, 
+  "AS_sp500tr"
+) %>% setNames(., "SP500TR")
 
 ```
 The required data is now available and the function for the ITP-MSTE can be created. It requires `pool_returns` with variable number of columns and the single-column matrix `bm_returns`.
@@ -278,7 +278,7 @@ plot_ly(data=res, x=~N, y=~sd, mode="lines", type = 'scatter') %>%
 ```
 
 
-It can be seen that the standard deviation stagnates at about $N=200$. This leads to the conclusion that a sparse replication with two hundred assets is sufficient in this particular case to track the historical performance of the S&P 500 over this period.
+It can be seen that the standard deviation stagnates at about $N=200$. This leads to the conclusion that a sparse replication with two hundred assets is sufficient in this particular case to track the historical performance of the SP500TR over this period.
 
 
 
