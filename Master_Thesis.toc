@@ -65,9 +65,9 @@
 \contentsline {subsection}{\numberline {8.5.2}Analyse Implementation}{52}{subsection.8.5.2}%
 \contentsline {subsection}{\numberline {8.5.3}Test PSO with Self-Adaptive Velocity}{53}{subsection.8.5.3}%
 \contentsline {section}{\numberline {8.6}PSO R-Package}{54}{section.8.6}%
-\contentsline {chapter}{\numberline {9}Real Life ITP Example}{55}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Transaction Costs}{55}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Rebalancing Constraint}{57}{section.9.2}%
-\contentsline {section}{\numberline {9.3}Objective}{57}{section.9.3}%
-\contentsline {section}{\numberline {9.4}Complete ITP Example}{58}{section.9.4}%
-\contentsline {chapter}{\numberline {10}Conclusion}{65}{chapter.10}%
+\contentsline {chapter}{\numberline {9}Real Life ITP Example}{56}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Transaction Costs}{56}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Rebalancing Constraint}{58}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Objective}{58}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Complete ITP Example}{60}{section.9.4}%
+\contentsline {chapter}{\numberline {10}Conclusion}{64}{chapter.10}%

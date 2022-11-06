@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-11-05}
+\date{2022-11-06}
 
 \begin{document}
 \maketitle
@@ -1500,11 +1500,12 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 \hypertarget{pso-r-package}{%
 \section{PSO R-Package}\label{pso-r-package}}
 
-Analyse:
-Unterschied zu meiner implementation:
-PSO-pkg hat eine bessere veolcity initialisierung aber kann volle länge haben und ich habe 1/10.
-
+In this section, the existing package \texttt{pso} from R is used to compare the results with the standard PSO. The PSO from the existing package is called \texttt{PSO-pkg} and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the \texttt{PSO-pkg} differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:\\
 \includegraphics{Master_Thesis_files/figure-latex/variants_pkg-1.png}
+The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
+\includegraphics{Master_Thesis_files/figure-latex/variants9-1.png}
 
 \hypertarget{real-life-itp-example}{%
 \chapter{Real Life ITP Example}\label{real-life-itp-example}}
@@ -1514,7 +1515,7 @@ In the previous chapters, the capabilities of a PSO and the quality of its resul
 \hypertarget{transaction-costs}{%
 \section{Transaction Costs}\label{transaction-costs}}
 
-The cost of buying or selling assets must be considered as it can have a significant impact after several years of investment. There are many different costs that can be incurred depending on the concepts of the broker, the liquidity of the assets and the type of assets. For more information, see \citep{AkGa2022} or \citep{NySe2022}. For simplicity, we focus on the situation of a retail investor using an online broker that charges a fixed fee per transaction for the U.S. stocks included in the SP500TR. Each transaction consists of one or more shares of an asset, and a transaction can be either a sale or a purchase. The fixed transaction fee is set at 1 USD, as is done by the online broker Trade Republic. The PSO can account for the transaction cost by increasing the objective value, but it is difficult to make the intensity of the transaction cost value comparable to the objective value. The objective value \(v^o\) of the ITP with MSTE approach as in \ref{ITPMSTE} is defined as:
+The cost of buying or selling assets must be considered as it can have a significant impact after several years of investment. There are many different costs that can be incurred depending on the concepts of the broker, the liquidity of the assets and the type of assets. For more information, see \citep{AkGa2022} or \citep{NySe2022}. For simplicity, we focus on the situation of a retail investor using an online broker that charges a fixed fee per transaction for the U.S. stocks included in the SP500TR. Each transaction consists of one or more shares of an asset, and a transaction can be either a sale or a purchase. The fixed transaction fee is set at 1 USD, as is done by the online broker Trade Republic. The PSO can account for the transaction cost by increasing the objective value, but it is difficult to make the intensity of the transaction cost value comparable to the objective value. The objective value \(v^o\) of the ITP with MSTE approach, as in \ref{ITPMSTE}, is defined as:
 \[
  v^o = \left\Vert r_{p}-r_{bm} \right\Vert_2^2 = \sum_{t=1}^T (r_{t,p}-r_{t,bm})^2
 \]
@@ -1541,7 +1542,7 @@ The idea is to use the \(v^{tc}\) value and increase the objective value \(v^o\)
 \]
 A suitable value for \(k\) could be calculated by dividing the number of training days by the number of days in the holding period increased by a factor of \(2.5\). This can be roughly interpreted as weighting the transaction cost error as the \(2.5\)-day error in the test period. For example, a 4-month training period with 96 working days and a holding period of 1 month with 24 working days yields the following value:
 \[
-  k = \frac{96}{24} \cdot 5 = 10
+  k = \frac{96}{24} \cdot 2.5 = 10
 \]
 When the holding period is shortened, the intensity coefficient increases, which is a suitable behavior. Nevertheless, it should be analyzed and fine-tuned more.
 
@@ -1552,8 +1553,7 @@ The rebalancing constraint restricts the changes in weights by considering the p
 \[
   w^{rb} := \frac{\left\Vert w^{prev}-w^{reba} \right\Vert_1 - |\sum w^{prev} - \sum w^{reba}|}{2}+|\sum w^{prev} - \sum w^{reba}|
 \]
-and with a rebalancing constraint of \(30%
-\) (\(0.3\)), the rebalanced portfolio is feasible if:
+and with a rebalancing constraint of, say, 30\%, the rebalanced portfolio is feasible if:
 \[
   w^{rb} \leq 0.3
 \]
@@ -1561,154 +1561,51 @@ and with a rebalancing constraint of \(30%
 \hypertarget{objective}{%
 \section{Objective}\label{objective}}
 
-The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP() approach, continuously discarding assets as in \ref{exampleleitpsolveqp}, with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the test and training period. In addition, the solve.QP() approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which gives stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10\%, \(0.96 \leq \sum w_i \leq 0.995\), rebalancing under 30\% weight, considering transaction cost with \(k=10\), net asset value of 20000 USD, length of training period of four months and testing period of one month.
+The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP() approach, continuously discarding assets as in \ref{exampleitpsolveqp}, with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the training period. In addition, the solve.QP() approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which gives stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10\%, \(0.96 \leq \sum w_i \leq 0.995\), rebalancing under 30\% weight, considering transaction cost with diffrent values for \(k\), net asset value of 20000 USD, length of training period of four months and testing period of one month.
 
-Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraint breaks and rebalancing constraint is satisfied and afterwards it runs additional three times to increase the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from \ref{portfolioreturns} until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool they are sold and reduce the net asset value because of the transaction costs. The same happens by buying assets. A rough visualization of the process can be found in the following diagram:
+Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraints are satisfied. Then it is run four more times to improve the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from \ref{portfolioreturns} until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool, they are sold and reduce the net asset value due to transaction costs. The same is done by buying or selling any remaining assets. A rough illustration of the process can be found in the following figure:
 
 \begin{figure}
 \centering
-\includegraphics{img/Chapter9_PSO_Process.jpg}
+\includegraphics{img/Chapter9_PSO_Process2.jpg}
 \caption{Backtest Process}
 \end{figure}
 
 \hypertarget{complete-itp-example}{%
 \section{Complete ITP Example}\label{complete-itp-example}}
 
-The following charts visualize the test period of the whole backtests. The \texttt{QP} line is continuous and represents the optimal solution using the ITP MSTE approach. The discretized solution using the PSO is named \texttt{PSO} and the \texttt{PSO\_TE} considers all transaction costs. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity \(k\) of each backtest:
+The following charts visualize the test period of the whole backtests. The \texttt{QP\_MSTE\_cont} line represents the performance of the continuous solution using the ITP MSTE approach solved with solve.QP() and stays the same for all backtests. The discretized solution using the PSO is named \texttt{PSO\_MSTE\_disc} and the \texttt{PSO\_MSTE\_disc\_TE} considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity \(k \in \{0, 10, 20, 30\}\) of each backtest which can be seen in the legends by \texttt{0tc}, \texttt{10tc}, \texttt{20tc} and \texttt{30tc}.
 
-\includegraphics{Master_Thesis_files/figure-latex/9_2-1.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{p\_0tc }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
+Backtest for \(k=0\):
 
 \includegraphics{Master_Thesis_files/figure-latex/9_3-1.png}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{MSTE\_infos\_0tc }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{group\_by}\NormalTok{(type) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{summarise}\NormalTok{(}
-    \AttributeTok{fit=}\FunctionTok{mean}\NormalTok{(fittness),}
-    \AttributeTok{const\_break =} \FunctionTok{mean}\NormalTok{(const\_break),}
-    \AttributeTok{rebalance\_constraint =} \FunctionTok{mean}\NormalTok{(rebalance\_constraint),}
-    \AttributeTok{transaction\_cost\_constraint =} \FunctionTok{mean}\NormalTok{(transaction\_cost\_constraint),}
-    \AttributeTok{sum\_wgt =} \FunctionTok{mean}\NormalTok{(sum\_wgt),}
-    \AttributeTok{n\_assets =} \FunctionTok{mean}\NormalTok{(n\_assets),}
-    \AttributeTok{transaction\_costs =} \FunctionTok{mean}\NormalTok{(transaction\_costs)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}
-    \AttributeTok{calc\_type =} \StringTok{"mean"}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{select}\NormalTok{(calc\_type, }\FunctionTok{everything}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(}\StringTok{"type"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{reactable}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
+and the statistics of the discretized PSO with considered transaction costs are:
 
 \includegraphics{Master_Thesis_files/figure-latex/9_4-1.png}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{p\_10tc }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
+Backtest for \(k=10\):\\
 \includegraphics{Master_Thesis_files/figure-latex/9_5-1.png}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{MSTE\_infos\_10tc }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{group\_by}\NormalTok{(type) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{summarise}\NormalTok{(}
-    \AttributeTok{fit=}\FunctionTok{mean}\NormalTok{(fittness),}
-    \AttributeTok{const\_break =} \FunctionTok{mean}\NormalTok{(const\_break),}
-    \AttributeTok{rebalance\_constraint =} \FunctionTok{mean}\NormalTok{(rebalance\_constraint),}
-    \AttributeTok{transaction\_cost\_constraint =} \FunctionTok{mean}\NormalTok{(transaction\_cost\_constraint),}
-    \AttributeTok{sum\_wgt =} \FunctionTok{mean}\NormalTok{(sum\_wgt),}
-    \AttributeTok{n\_assets =} \FunctionTok{mean}\NormalTok{(n\_assets),}
-    \AttributeTok{transaction\_costs =} \FunctionTok{mean}\NormalTok{(transaction\_costs)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}
-    \AttributeTok{calc\_type =} \StringTok{"mean"}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{select}\NormalTok{(calc\_type, }\FunctionTok{everything}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(}\StringTok{"type"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{reactable}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
+and the statistics of the discretized PSO with considered transaction costs are:\\
 \includegraphics{Master_Thesis_files/figure-latex/9_6-1.png}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{p\_20tc }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
+Backtest for \(k=20\):\\
 \includegraphics{Master_Thesis_files/figure-latex/9_7-1.png}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{MSTE\_infos\_20tc }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{group\_by}\NormalTok{(type) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{summarise}\NormalTok{(}
-    \AttributeTok{fit=}\FunctionTok{mean}\NormalTok{(fittness),}
-    \AttributeTok{const\_break =} \FunctionTok{mean}\NormalTok{(const\_break),}
-    \AttributeTok{rebalance\_constraint =} \FunctionTok{mean}\NormalTok{(rebalance\_constraint),}
-    \AttributeTok{transaction\_cost\_constraint =} \FunctionTok{mean}\NormalTok{(transaction\_cost\_constraint),}
-    \AttributeTok{sum\_wgt =} \FunctionTok{mean}\NormalTok{(sum\_wgt),}
-    \AttributeTok{n\_assets =} \FunctionTok{mean}\NormalTok{(n\_assets),}
-    \AttributeTok{transaction\_costs =} \FunctionTok{mean}\NormalTok{(transaction\_costs)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}
-    \AttributeTok{calc\_type =} \StringTok{"mean"}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{select}\NormalTok{(calc\_type, }\FunctionTok{everything}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(}\StringTok{"type"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{reactable}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
+and the statistics of the discretized PSO with considered transaction costs are:\\
 \includegraphics{Master_Thesis_files/figure-latex/9_8-1.png}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{p\_30tc }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
+Backtest for \(k=20\):\\
 \includegraphics{Master_Thesis_files/figure-latex/9_9-1.png}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{MSTE\_infos\_30tc }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{group\_by}\NormalTok{(type) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{summarise}\NormalTok{(}
-    \AttributeTok{fit=}\FunctionTok{mean}\NormalTok{(fittness),}
-    \AttributeTok{const\_break =} \FunctionTok{mean}\NormalTok{(const\_break),}
-    \AttributeTok{rebalance\_constraint =} \FunctionTok{mean}\NormalTok{(rebalance\_constraint),}
-    \AttributeTok{transaction\_cost\_constraint =} \FunctionTok{mean}\NormalTok{(transaction\_cost\_constraint),}
-    \AttributeTok{sum\_wgt =} \FunctionTok{mean}\NormalTok{(sum\_wgt),}
-    \AttributeTok{n\_assets =} \FunctionTok{mean}\NormalTok{(n\_assets),}
-    \AttributeTok{transaction\_costs =} \FunctionTok{mean}\NormalTok{(transaction\_costs)}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{mutate}\NormalTok{(}
-    \AttributeTok{calc\_type =} \StringTok{"mean"}
-\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{select}\NormalTok{(calc\_type, }\FunctionTok{everything}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(}\StringTok{"type"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{reactable}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
-  \FunctionTok{html\_save}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
-
+and the statistics of the discretized PSO with considered transaction costs are:\\
 \includegraphics{Master_Thesis_files/figure-latex/9_10-1.png}
+
+It can be seen that increasing \(k\) tends to reduce the average transaction cost in USD. Since each backtest depends on different previous portfolios, further backtests are needed to confirm this result. The absolute loss of \texttt{nav} between the results of the PSO without and with transaction costs for each \(k\) can be found in the chart below:\\
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
+
+Another interesting result is that the \texttt{solve.QP()} approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the follwing chart, comparing only the \texttt{solve.QP()} approach and the SP500TR:
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
 
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}

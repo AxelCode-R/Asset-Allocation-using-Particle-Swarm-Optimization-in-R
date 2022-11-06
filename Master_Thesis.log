@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.25)  5 NOV 2022 21:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.10.25)  6 NOV 2022 17:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1298,99 +1298,119 @@ Package pdftex.def Info: Master_Thesis_files/figure-latex/variants8-1.png  used 
 <Master_Thesis_files/figure-latex/variants_pkg-1.png, id=1069, 2409.0pt x 1204.5pt>
 File: Master_Thesis_files/figure-latex/variants_pkg-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/variants_pkg-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/variants_pkg-1.png  used on input line 1507.
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants_pkg-1.png  used on input line 1504.
 (pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
-[54 <./Master_Thesis_files/figure-latex/variants7-1.png> <./Master_Thesis_files/figure-latex/variants8-1.png> <./Master_Thesis_files/figure-latex/variants_pkg-1.png>]
+
+Underfull \hbox (badness 10000) in paragraph at lines 1503--1507
+[]
+ []
+
+[54 <./Master_Thesis_files/figure-latex/variants7-1.png> <./Master_Thesis_files/figure-latex/variants8-1.png>]
+<Master_Thesis_files/figure-latex/variants9-1.png, id=1079, 4015.0pt x 646.415pt>
+File: Master_Thesis_files/figure-latex/variants9-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/variants9-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/variants9-1.png  used on input line 1508.
+(pdftex.def)             Requested size: 344.97696pt x 55.54128pt.
+[55 <./Master_Thesis_files/figure-latex/variants_pkg-1.png> <./Master_Thesis_files/figure-latex/variants9-1.png>]
 Chapter 9.
-[55
+[56
 
-] [56]
+] [57]
+<img/Chapter9_PSO_Process2.jpg, id=1109, 724.7075pt x 1135.24126pt>
+File: img/Chapter9_PSO_Process2.jpg Graphic file (type jpg)
+<use img/Chapter9_PSO_Process2.jpg>
+Package pdftex.def Info: img/Chapter9_PSO_Process2.jpg  used on input line 1570.
+(pdftex.def)             Requested size: 345.00266pt x 540.44044pt.
 
-LaTeX Warning: Reference `exampleleitpsolveqp' on page 57 undefined on input line 1564.
+LaTeX Warning: Float too large for page by 14.38487pt on input line 1572.
 
-<img/Chapter9_PSO_Process.jpg, id=1101, 1103.12125pt x 723.70375pt>
-File: img/Chapter9_PSO_Process.jpg Graphic file (type jpg)
-<use img/Chapter9_PSO_Process.jpg>
-Package pdftex.def Info: img/Chapter9_PSO_Process.jpg  used on input line 1570.
-(pdftex.def)             Requested size: 344.99387pt x 226.33354pt.
-[57]
-<Master_Thesis_files/figure-latex/9_2-1.pdf, id=1108, 614.295pt x 794.97pt>
-File: Master_Thesis_files/figure-latex/9_2-1.pdf Graphic file (type pdf)
-<use Master_Thesis_files/figure-latex/9_2-1.pdf>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/9_2-1.pdf  used on input line 1579.
-(pdftex.def)             Requested size: 345.0058pt x 446.4781pt.
-[58 <./img/Chapter9_PSO_Process.jpg>]
-<Master_Thesis_files/figure-latex/9_3-1.png, id=1116, 2409.0pt x 1204.5pt>
+[58] [59 <./img/Chapter9_PSO_Process2.jpg>]
+<Master_Thesis_files/figure-latex/9_3-1.png, id=1123, 2810.5pt x 1606.0pt>
 File: Master_Thesis_files/figure-latex/9_3-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/9_3-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/9_3-1.png  used on input line 1587.
-(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
-[59 <./Master_Thesis_files/figure-latex/9_2-1.pdf>]
-<Master_Thesis_files/figure-latex/9_4-1.png, id=1132, 2409.0pt x 887.315pt>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_3-1.png  used on input line 1581.
+(pdftex.def)             Requested size: 344.9647pt x 197.12268pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1581--1583
+[][]
+ []
+
+<Master_Thesis_files/figure-latex/9_4-1.png, id=1124, 3613.5pt x 995.72pt>
 File: Master_Thesis_files/figure-latex/9_4-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/9_4-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/9_4-1.png  used on input line 1612.
-(pdftex.def)             Requested size: 344.97696pt x 127.0665pt.
-[60 <./Master_Thesis_files/figure-latex/9_3-1.png>]
-<Master_Thesis_files/figure-latex/9_5-1.png, id=1140, 2409.0pt x 1204.5pt>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_4-1.png  used on input line 1584.
+(pdftex.def)             Requested size: 344.99533pt x 95.06537pt.
+<Master_Thesis_files/figure-latex/9_5-1.png, id=1125, 2810.5pt x 1606.0pt>
 File: Master_Thesis_files/figure-latex/9_5-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/9_5-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/9_5-1.png  used on input line 1620.
-(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
-[61 <./Master_Thesis_files/figure-latex/9_4-1.png> <./Master_Thesis_files/figure-latex/9_5-1.png>]
-<Master_Thesis_files/figure-latex/9_6-1.png, id=1148, 2409.0pt x 887.315pt>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_5-1.png  used on input line 1587.
+(pdftex.def)             Requested size: 344.9647pt x 197.12268pt.
+[60 <./Master_Thesis_files/figure-latex/9_3-1.png> <./Master_Thesis_files/figure-latex/9_4-1.png>]
+<Master_Thesis_files/figure-latex/9_6-1.png, id=1134, 3613.5pt x 995.72pt>
 File: Master_Thesis_files/figure-latex/9_6-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/9_6-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/9_6-1.png  used on input line 1645.
-(pdftex.def)             Requested size: 344.97696pt x 127.0665pt.
-<Master_Thesis_files/figure-latex/9_7-1.png, id=1149, 2409.0pt x 1204.5pt>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_6-1.png  used on input line 1590.
+(pdftex.def)             Requested size: 344.99533pt x 95.06537pt.
+<Master_Thesis_files/figure-latex/9_7-1.png, id=1135, 2810.5pt x 1606.0pt>
 File: Master_Thesis_files/figure-latex/9_7-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/9_7-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/9_7-1.png  used on input line 1653.
-(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
-[62 <./Master_Thesis_files/figure-latex/9_6-1.png> <./Master_Thesis_files/figure-latex/9_7-1.png>]
-<Master_Thesis_files/figure-latex/9_8-1.png, id=1157, 2409.0pt x 887.315pt>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_7-1.png  used on input line 1593.
+(pdftex.def)             Requested size: 344.9647pt x 197.12268pt.
+<Master_Thesis_files/figure-latex/9_8-1.png, id=1136, 3613.5pt x 995.72pt>
 File: Master_Thesis_files/figure-latex/9_8-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/9_8-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/9_8-1.png  used on input line 1678.
-(pdftex.def)             Requested size: 344.97696pt x 127.0665pt.
-<Master_Thesis_files/figure-latex/9_9-1.png, id=1158, 2409.0pt x 1204.5pt>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_8-1.png  used on input line 1596.
+(pdftex.def)             Requested size: 344.99533pt x 95.06537pt.
+[61 <./Master_Thesis_files/figure-latex/9_5-1.png> <./Master_Thesis_files/figure-latex/9_6-1.png> <./Master_Thesis_files/figure-latex/9_7-1.png>]
+<Master_Thesis_files/figure-latex/9_9-1.png, id=1145, 2810.5pt x 1606.0pt>
 File: Master_Thesis_files/figure-latex/9_9-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/9_9-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/9_9-1.png  used on input line 1686.
-(pdftex.def)             Requested size: 344.97696pt x 172.48848pt.
-[63 <./Master_Thesis_files/figure-latex/9_8-1.png> <./Master_Thesis_files/figure-latex/9_9-1.png>]
-<Master_Thesis_files/figure-latex/9_10-1.png, id=1166, 2409.0pt x 887.315pt>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_9-1.png  used on input line 1599.
+(pdftex.def)             Requested size: 344.9647pt x 197.12268pt.
+<Master_Thesis_files/figure-latex/9_10-1.png, id=1146, 3613.5pt x 995.72pt>
 File: Master_Thesis_files/figure-latex/9_10-1.png Graphic file (type png)
 <use Master_Thesis_files/figure-latex/9_10-1.png>
-Package pdftex.def Info: Master_Thesis_files/figure-latex/9_10-1.png  used on input line 1711.
-(pdftex.def)             Requested size: 344.97696pt x 127.0665pt.
-[64 <./Master_Thesis_files/figure-latex/9_10-1.png>]
+Package pdftex.def Info: Master_Thesis_files/figure-latex/9_10-1.png  used on input line 1602.
+(pdftex.def)             Requested size: 344.99533pt x 95.06537pt.
+<Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png, id=1147, 2810.5pt x 1606.0pt>
+File: Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png  used on input line 1605.
+(pdftex.def)             Requested size: 344.9647pt x 197.12268pt.
+[62 <./Master_Thesis_files/figure-latex/9_8-1.png> <./Master_Thesis_files/figure-latex/9_9-1.png> <./Master_Thesis_files/figure-latex/9_10-1.png>]
+<Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png, id=1156, 2810.5pt x 1606.0pt>
+File: Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png Graphic file (type png)
+<use Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png>
+Package pdftex.def Info: Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png  used on input line 1608.
+(pdftex.def)             Requested size: 344.9647pt x 197.12268pt.
+
+Underfull \hbox (badness 2237) in paragraph at lines 1607--1609
+\T1/lmr/m/n/10 (+20) of 100 as-sets had a slightly higher per-for-mance than the SP500TR,
+ []
+
+[63 <./Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png> <./Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png>]
 Chapter 10.
-(./Master_Thesis.bbl [65
+(./Master_Thesis.bbl [64
 
-] [66
+] [65
 
-]) [67] (./Master_Thesis.aux)
-
-LaTeX Warning: There were undefined references.
-
+]) [66] (./Master_Thesis.aux)
 Package rerunfilecheck Info: File `Master_Thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 82B0C3A9E34BD1105F864A0F064DA89A;7698.
  ) 
 Here is how much of TeX's memory you used:
- 17723 strings out of 476938
- 322384 string characters out of 5823387
+ 17735 strings out of 476938
+ 323145 string characters out of 5823387
  674808 words of memory out of 5000000
- 38034 multiletter control sequences out of 15000+600000
+ 38045 multiletter control sequences out of 15000+600000
  554311 words of font info for 186 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  72i,17n,77p,2278b,614s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}<c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmro10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb><c:/Users/Axel/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Master_Thesis.pdf (68 pages, 10025069 bytes).
+Output written on Master_Thesis.pdf (67 pages, 10636786 bytes).
 PDF statistics:
- 1348 PDF objects out of 1440 (max. 8388607)
- 1014 compressed objects within 11 object streams
- 245 named destinations out of 1000 (max. 500000)
- 48433 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 1339 PDF objects out of 1440 (max. 8388607)
+ 1003 compressed objects within 11 object streams
+ 244 named destinations out of 1000 (max. 500000)
+ 48443 words of extra memory for PDF output out of 51595 (max. 10000000)
 

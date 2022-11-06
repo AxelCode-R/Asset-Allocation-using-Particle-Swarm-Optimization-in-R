@@ -616,11 +616,7 @@ reactable(
 
 
 ## PSO R-Package
-
-Analyse:
-Unterschied zu meiner implementation:
-PSO-pkg hat eine bessere veolcity initialisierung aber kann volle länge haben und ich habe 1/10.
-
+In this section, the existing package `pso` from R is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:  
 ```{r variants_pkg, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
@@ -695,4 +691,25 @@ plot_ly() %>%
   html_save()
   
 
+```
+The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
+```{r variants9, echo=F}
+reactable(
+  df_res[df_res$iter==max(df_res$iter),],
+  columns = list(
+    iter = colDef(width=60),
+    type = colDef(width=90),
+    time_mean = colDef(format = colFormat(digits=2), width=90),
+    const_break_mean = colDef(format = colFormat(digits=4), width=150),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
+    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+  ),
+  compact = T,
+  rownames = F
+) %>% 
+  html_save(., vwidth = 1000)
 ```
