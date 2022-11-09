@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-06" />
+<meta name="date" content="2022-11-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -197,10 +197,11 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>3.6</b> R-Functions</a>
 <ul>
-<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.1</b> <code>pri_to_ret()</code></a></li>
-<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.2</b> <code>ret_to_cumret()</code></a></li>
-<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_geomeanret()</code></a></li>
-<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.4</b> <code>calc_portfolio_returns()</code></a></li>
+<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#covfun"><i class="fa fa-check"></i><b>3.6.1</b> <code>cov_()</code></a></li>
+<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.2</b> <code>pri_to_ret()</code></a></li>
+<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_cumret()</code></a></li>
+<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.4</b> <code>ret_to_geomeanret()</code></a></li>
+<li class="chapter" data-level="3.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.5</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Investing</a></li>
@@ -223,7 +224,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>6.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP-Solver from quadprog</a></li>
-<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP Problem with <code>solve.QP()</code></a></li>
 <li class="chapter" data-level="6.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>6.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>7</b> Particle Swarm Optimization (PSO)</a>
@@ -339,7 +340,7 @@ and with a rebalancing constraint of, say, 30%, the rebalanced portfolio is feas
 <p>The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP() approach, continuously discarding assets as in <a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp">6.4</a>, with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the training period. In addition, the solve.QP() approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which gives stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10%, <span class="math inline">\(0.96 \leq \sum w_i \leq 0.995\)</span>, rebalancing under 30% weight, considering transaction cost with diffrent values for <span class="math inline">\(k\)</span>, net asset value of 20000 USD, length of training period of four months and testing period of one month.</p>
 <p>Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraints are satisfied. Then it is run four more times to improve the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from <a href="mathfundations.html#portfolioreturns">3.5.5</a> until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool, they are sold and reduce the net asset value due to transaction costs. The same is done by buying or selling any remaining assets. A rough illustration of the process can be found in the following figure:</p>
 <div class="figure">
-<img src="img/Chapter9_PSO_Process2.jpg" alt="" />
+<img src="img/Chapter9_PSO_Process4.jpg" alt="" />
 <p class="caption">Backtest Process</p>
 </div>
 </div>

@@ -22,10 +22,11 @@
 \contentsline {subsection}{\numberline {3.5.4}Portfolio Variance}{13}{subsection.3.5.4}%
 \contentsline {subsection}{\numberline {3.5.5}Portfolio Returns}{13}{subsection.3.5.5}%
 \contentsline {section}{\numberline {3.6}R-Functions}{14}{section.3.6}%
-\contentsline {subsection}{\numberline {3.6.1}\texttt {pri\_to\_ret()}}{14}{subsection.3.6.1}%
-\contentsline {subsection}{\numberline {3.6.2}\texttt {ret\_to\_cumret()}}{14}{subsection.3.6.2}%
-\contentsline {subsection}{\numberline {3.6.3}\texttt {ret\_to\_geomeanret()}}{15}{subsection.3.6.3}%
-\contentsline {subsection}{\numberline {3.6.4}\texttt {calc\_portfolio\_returns()}}{15}{subsection.3.6.4}%
+\contentsline {subsection}{\numberline {3.6.1}\texttt {cov\_()}}{14}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}\texttt {pri\_to\_ret()}}{14}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.3}\texttt {ret\_to\_cumret()}}{15}{subsection.3.6.3}%
+\contentsline {subsection}{\numberline {3.6.4}\texttt {ret\_to\_geomeanret()}}{15}{subsection.3.6.4}%
+\contentsline {subsection}{\numberline {3.6.5}\texttt {calc\_portfolio\_returns()}}{15}{subsection.3.6.5}%
 \contentsline {chapter}{\numberline {4}Activ vs Passiv Investing}{17}{chapter.4}%
 \contentsline {chapter}{\numberline {5}Challenges of Passiv Investing}{18}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Mean-Variance Portfolio (MVP)}{18}{section.5.1}%
@@ -39,7 +40,7 @@
 \contentsline {chapter}{\numberline {6}Analytic Solver for Quadratic Programming Problems}{26}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Quadratic Programming (QP)}{26}{section.6.1}%
 \contentsline {section}{\numberline {6.2}QP-Solver from quadprog}{27}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Example: Solving MVP with \texttt {solve.QP()}}{27}{section.6.3}%
+\contentsline {section}{\numberline {6.3}Example: Solving MVP Problem with \texttt {solve.QP()}}{27}{section.6.3}%
 \contentsline {section}{\numberline {6.4}Example: Solving ITP-MSTE with \texttt {solve.QP()}}{30}{section.6.4}%
 \contentsline {chapter}{\numberline {7}Particle Swarm Optimization (PSO)}{34}{chapter.7}%
 \contentsline {section}{\numberline {7.1}The Algorithm}{34}{section.7.1}%

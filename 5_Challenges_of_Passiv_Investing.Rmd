@@ -20,7 +20,7 @@ The risk aversion parameter $\lambda$ defines the tradeoff between risk and retu
 
 
 ### MVP: Example
-All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP's for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.  
+All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.  
 ```{r MVP_ex1, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
@@ -105,10 +105,10 @@ p %>%
   html_save()
 
 ```
-It can be observed that the minimum variance portfolio was achieved with a diversified composition of the three assets. With gradually decreasing $\lambda$, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.
+It can be observed that the portfolio with the lowest variance was obtained with a diversified composition of the three assets. With gradually decreasing $\lambda$, the minimization problem starts to ignore the variance, which leads to a portfolio investing more in the riskiest asset with the highest return.
 
 ### MVP: Compare Estimators
-The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns $\mu$ and was also used in the estimation of $\textstyle\sum$. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of $\lambda$ using the arithmetic mean versus the geometric mean to estimate $\mu$. The weights of the MVP's using the geometric mean are used to calculate $\mu$ and $\sigma$ as a function of the arithmetic mean to make both efficient frontiers comparable:
+The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns $\mu$ and was also used in the estimation of the covariance $\textstyle\sum$. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of $\lambda$ using the arithmetic mean versus the geometric mean to estimate $\mu$. The weights of the MVP's using the geometric mean are used to calculate $\mu$ and $\sigma$ as a function of the arithmetic mean to make both efficient frontiers comparable:
 ```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 
 cov_ <- function(mat, mean_vec=NULL){
@@ -288,7 +288,7 @@ This results in the final formulation of the ITP:
   (\#eq:ITP)
 \end{align*}
 
-The above problem can be estimated using the usual unbiased estimates and historical data $R$ and $r_{bm}$. The minimization problem of the ITP in the general structure required by many optimizers is:
+The above problem can be estimated using the formulas and functions created in chapter \@ref(mathfundations) and historical data $R$ and $r_{bm}$. The minimization problem of the ITP in the general structure required by many optimizers is:
 $$
   \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w -d^T \times w
 $$
@@ -407,7 +407,7 @@ port_returns_MSTE <- xts(pool_returns %*% qp$solution, order.by=index(pool_retur
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns_TEV, port_returns_MSTE, bm_returns))) %>% 
   html_save()
 ```
-The ITP-TEV and ITP-MSTE had almost the same results whith the compositions below:
+The ITP-TEV and the ITP-MSTE had almost the same results, which can be seen in the compositions below:
 ```{r ITP_ex2, echo=F}
 data.frame(rbind(composition_TEV, composition_MSTE), row.names = NULL)
 ```

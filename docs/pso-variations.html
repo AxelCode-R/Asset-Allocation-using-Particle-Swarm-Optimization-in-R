@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-06" />
+<meta name="date" content="2022-11-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -197,10 +197,11 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>3.6</b> R-Functions</a>
 <ul>
-<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.1</b> <code>pri_to_ret()</code></a></li>
-<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.2</b> <code>ret_to_cumret()</code></a></li>
-<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_geomeanret()</code></a></li>
-<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.4</b> <code>calc_portfolio_returns()</code></a></li>
+<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#covfun"><i class="fa fa-check"></i><b>3.6.1</b> <code>cov_()</code></a></li>
+<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.2</b> <code>pri_to_ret()</code></a></li>
+<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_cumret()</code></a></li>
+<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.4</b> <code>ret_to_geomeanret()</code></a></li>
+<li class="chapter" data-level="3.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.5</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Investing</a></li>
@@ -223,7 +224,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>6.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP-Solver from quadprog</a></li>
-<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP Problem with <code>solve.QP()</code></a></li>
 <li class="chapter" data-level="6.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>6.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>7</b> Particle Swarm Optimization (PSO)</a>
@@ -294,7 +295,7 @@ div.csl-indent {
 <p>The standard PSO analyzed in the previous chapter is capable of solving a wide range of problems, but often gets stuck in local minima. In this chapter, different variants of the standard PSO are analyzed using a problem from the financial domain. The first variant is the PSO with function stretching, which is designed to allow the PSO to escape from local minima if they are discovered. The second variant is the local PSO, which is designed to reduce the probability of getting stuck in local minima by limiting the spread of information in the swarm. The third variant, the PSO with feasibility preservation, tries to optimize within the feasibility space and therefore provide only feasible solutions. The last variant is the PSO with self-adaptive velocity, which tries to adjust the control parameters according to certain rules and randomness.</p>
 <div id="testproblem-discrete-itp-mste" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Testproblem: Discrete ITP-MSTE<a href="pso-variations.html#testproblem-discrete-itp-mste" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&amp;P 500 derived from the example with discarding in <a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp">6.4</a>. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights <span class="math inline">\(w\)</span> should satisfy <span class="math inline">\(0.99 \leq \textstyle\sum w_i \leq 1\)</span>. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSOs start with an equally weighted portfolio that satisfies the condition <span class="math inline">\(\textstyle\sum w_i = 1\)</span>.</p>
+<p>All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&amp;P 500 derived from the example with discarding in section <a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp">6.4</a>. The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights <span class="math inline">\(w\)</span> should satisfy <span class="math inline">\(0.99 \leq \textstyle\sum w_i \leq 1\)</span>. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSO’s start with an equally weighted portfolio that satisfies the condition <span class="math inline">\(\textstyle\sum w_i = 1\)</span>.</p>
 <p>The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb33-1"><a href="pso-variations.html#cb33-1" aria-hidden="true" tabindex="-1"></a>nav <span class="ot">&lt;-</span> <span class="dv">20000</span></span>
 <span id="cb33-2"><a href="pso-variations.html#cb33-2" aria-hidden="true" tabindex="-1"></a> </span>
@@ -448,7 +449,7 @@ translated to the objective function:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="pso-variations.html#cb34-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="cf">function</span>(pos){</span>
 <span id="cb34-2"><a href="pso-variations.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cos</span>(pos) <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">10</span> <span class="sc">*</span> pos</span>
 <span id="cb34-3"><a href="pso-variations.html#cb34-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>and the domain of definition is chosen as <span class="math inline">\(x \in [-20, 20]\)</span>. Suppose the PSO gets stuck in the local minimum at <span class="math inline">\(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\)</span>. The original function <code>fn</code> and the transformed function <code>fn_stretched</code>, which matches <span class="math inline">\(H(x)\)</span> in <a href="pso-variations.html#eq:fnstretchH">(8.2)</a>, are shown in the following graph:</p>
+<p>and the domain of definition is chosen as <span class="math inline">\(x \in [-20, 20]\)</span>. Suppose the PSO gets stuck in the local minimum at <span class="math inline">\(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\)</span>. The original function <code>fn</code> and the transformed function <code>fn_stretched</code>, which matches <span class="math inline">\(H(x)\)</span> in equation <a href="pso-variations.html#eq:fnstretchH">(8.2)</a>, are shown in the following graph:</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb35-1"><a href="pso-variations.html#cb35-1" aria-hidden="true" tabindex="-1"></a>fn1 <span class="ot">&lt;-</span> <span class="cf">function</span>(pos, pos_best, pos_best_fit){</span>
 <span id="cb35-2"><a href="pso-variations.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">fn</span>(pos)</span>
 <span id="cb35-3"><a href="pso-variations.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  G <span class="ot">&lt;-</span> res <span class="sc">+</span> <span class="dv">5000</span> <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>((pos <span class="sc">-</span> pos_best)<span class="sc">^</span><span class="dv">2</span>))<span class="sc">/</span><span class="fu">length</span>(pos) <span class="sc">*</span> (<span class="fu">sign</span>(res <span class="sc">-</span> pos_best_fit) <span class="sc">+</span> <span class="dv">1</span>)</span>
@@ -541,8 +542,9 @@ It can be seen that the fitness is stretched upward around the local minima <spa
 </div>
 <div id="local-pso" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> Local PSO<a href="pso-variations.html#local-pso" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A local PSO is a more general case of the global PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle <span class="math inline">\(x_i\)</span> has a neighborhood <span class="math inline">\(N(x_i, \bar{k})\)</span>, and the global best particle in its neighborhood is called the local best particle of <span class="math inline">\(x_i\)</span>. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with <span class="math inline">\(k\)</span> neighbors for particles <span class="math inline">\(x_i\)</span> given in <span class="citation">(<a href="#ref-Enge2013" role="doc-biblioref">Engelbrecht 2013</a>)</span> would be:</p>
-<p><span class="math display">\[
+<p>A local PSO is a more general case of the global PSO, which is called the standard PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle <span class="math inline">\(x_i\)</span> has a neighborhood <span class="math inline">\(N(x_i, \bar{k})\)</span>, and the global best particle in its neighborhood is called the local best particle of <span class="math inline">\(x_i\)</span>. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with <span class="math inline">\(k\)</span> neighbors for particles <span class="math inline">\(x_i\)</span> given in <span class="citation">(<a href="#ref-Enge2013" role="doc-biblioref">Engelbrecht 2013</a>)</span> would be:
+
+<span class="math display">\[
   N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
 \]</span>
 with
@@ -707,7 +709,7 @@ It can be seen that the randomness of the motion increases compared to the unifo
 </div>
 <div id="test-pso-with-self-adaptive-velocity" class="section level3 hasAnchor" number="8.5.3">
 <h3><span class="header-section-number">8.5.3</span> Test PSO with Self-Adaptive Velocity<a href="pso-variations.html#test-pso-with-self-adaptive-velocity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The PSO with self-adaptive speed is called <code>PSO-SAvel</code> and is evaluated for the test problem with the constants used in the implementation section:</p>
+<p>The PSO with self-adaptive velocity is called <code>PSO-SAvel</code> and is evaluated for the test problem with the constants used in the implementation section:</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb38-1"><a href="pso-variations.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb38-2"><a href="pso-variations.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># R/PSO_functions.R : pso_self_adaptive_velocity()</span></span>
 <span id="cb38-3"><a href="pso-variations.html#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -761,8 +763,9 @@ It can be seen that the randomness of the motion increases compared to the unifo
 <span id="cb38-51"><a href="pso-variations.html#cb38-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">20</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">-</span><span class="fl">0.001</span>,  <span class="fu">max</span>(df_res[df_res<span class="sc">$</span>iter<span class="sc">&gt;</span><span class="dv">20</span>,]<span class="sc">$</span>best_fit_q3)<span class="sc">+</span><span class="fl">0.001</span>), <span class="at">title=</span><span class="st">&quot;best fitness&quot;</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb38-52"><a href="pso-variations.html#cb38-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/variants7-1.png" width="672" /></p>
-<p>The aggregate statistics of the last iterations of all 100 runs can be found in the table below:</p>
-<p><img src="Master_Thesis_files/figure-html/variants8-1.png" width="672" /></p>
+<p>The aggregate statistics of the last iterations of all 100 runs can be found in the table below:<br />
+<img src="Master_Thesis_files/figure-html/variants8-1.png" width="672" /></p>
+<p>The results look very promising, and with fewer hyperparameters to fine-tune, this may be one of the best variants for general use of a PSO.</p>
 </div>
 </div>
 <div id="pso-r-package" class="section level2 hasAnchor" number="8.6">
@@ -841,8 +844,9 @@ It can be seen that the randomness of the motion increases compared to the unifo
 <span id="cb39-71"><a href="pso-variations.html#cb39-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/variants_pkg-1.png" width="672" />
 The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
-The aggregate statistics of the last iterations of all 100 runs can be found in the table below:</p>
-<p><img src="Master_Thesis_files/figure-html/variants9-1.png" width="672" /></p>
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
+<img src="Master_Thesis_files/figure-html/variants9-1.png" width="672" /></p>
 
 </div>
 </div>

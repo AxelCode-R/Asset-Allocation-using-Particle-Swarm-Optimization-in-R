@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-06" />
+<meta name="date" content="2022-11-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -197,10 +197,11 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>3.6</b> R-Functions</a>
 <ul>
-<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.1</b> <code>pri_to_ret()</code></a></li>
-<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.2</b> <code>ret_to_cumret()</code></a></li>
-<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_geomeanret()</code></a></li>
-<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.4</b> <code>calc_portfolio_returns()</code></a></li>
+<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#covfun"><i class="fa fa-check"></i><b>3.6.1</b> <code>cov_()</code></a></li>
+<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.2</b> <code>pri_to_ret()</code></a></li>
+<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_cumret()</code></a></li>
+<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.4</b> <code>ret_to_geomeanret()</code></a></li>
+<li class="chapter" data-level="3.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.5</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Investing</a></li>
@@ -223,7 +224,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>6.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP-Solver from quadprog</a></li>
-<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP Problem with <code>solve.QP()</code></a></li>
 <li class="chapter" data-level="6.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>6.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>7</b> Particle Swarm Optimization (PSO)</a>
@@ -382,6 +383,7 @@ a \
 <ul>
 <li>Perfect market without taxes or transaction costs</li>
 <li>Assets are infinitely divisible</li>
+<li>Short sales are disallowed</li>
 <li>Expected returns, variances and covariances contain all information</li>
 <li>Investors are risk-averse, they will only accept greater risk if they
 are compensated with a higher expected return</li>
@@ -422,7 +424,7 @@ w =
 =
 \mu
 \end{align*}\]</span>
-and <span class="math inline">\(\mu_i\)</span> can be estimated in R using historical data and the formula for the geometric mean of returns (also called compound returns). The function to calculate the geometric mean of returns from an xts object can be found in <a href="mathfundations.html#geomeanret">3.6.3</a>.</p>
+and <span class="math inline">\(\mu_i\)</span> can be estimated in R using historical data and the formula for the geometric mean of returns (also called compound returns). The function to calculate the geometric mean of returns from an xts object can be found in <a href="mathfundations.html#geomeanret">3.6.4</a>.</p>
 </div>
 <div id="expected-portfolio-returns" class="section level3 hasAnchor" number="3.5.2">
 <h3><span class="header-section-number">3.5.2</span> Expected Portfolio Returns<a href="mathfundations.html#expected-portfolio-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -472,7 +474,7 @@ E[\pmb{R}] \times w \\
 \end{bmatrix}\\
   &amp;=\textstyle\sum
 \end{align*}\]</span>
-and can be estimated in R with the basis function <code>cov()</code> and historical data.</p>
+and can be estimated in R using the basis function <code>cov()</code> and historical data. The function <code>cov_()</code> in <a href="mathfundations.html#covfun">3.6.1</a> can be used to calculate the covariance using the geometric mean to estimate the expected returns.</p>
 </div>
 <div id="portvar" class="section level3 hasAnchor" number="3.5.4">
 <h3><span class="header-section-number">3.5.4</span> Portfolio Variance<a href="mathfundations.html#portvar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -493,7 +495,8 @@ and can be estimated in R with the basis function <code>cov()</code> and histori
 </div>
 <div id="portfolioreturns" class="section level3 hasAnchor" number="3.5.5">
 <h3><span class="header-section-number">3.5.5</span> Portfolio Returns<a href="mathfundations.html#portfolioreturns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Suppose there are <span class="math inline">\(N\)</span> assets that form a portfolio with weights <span class="math inline">\(w_{t_0}\)</span> at time step <span class="math inline">\(t_0\)</span>, and the portfolio is to go through several time steps until <span class="math inline">\(t_T\)</span> without rebalancing. What are the portfolio returns at each time step <span class="math inline">\(t_i\)</span>? Clearly, assets with higher performance at the current time step will have a higher weight at the next time step. This can be done by adjusting the weights after each time step as a function of returns. Suppose we have a complete portfolio <span class="math inline">\(\textstyle\sum w_{t_0} = 1\)</span> with a return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span> and we want to calculate the portfolio returns <span class="math inline">\(R_{t_1}^P\)</span>. This can be done with the following two steps:<br />
+<p>Suppose there are <span class="math inline">\(N\)</span> assets that form a portfolio with weights <span class="math inline">\(w_{t_0}\)</span> at time step <span class="math inline">\(t_0\)</span>, and the portfolio is to go through several time steps until <span class="math inline">\(t_T\)</span> without rebalancing. What are the portfolio returns at each time step <span class="math inline">\(t_i\)</span>? Clearly, assets with higher performance at the current time step will have a higher weight at the next time step. This can be done by adjusting the weights after each time step as a function of returns. Suppose we have a complete portfolio <span class="math inline">\(\textstyle\sum w_{t_0} = 1\)</span> with a return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span> and we want to calculate the portfolio returns <span class="math inline">\(R_{t_1}^P\)</span>. This can be done with the following two steps:
+
 <span class="math display">\[\begin{align*}
   Z_{t_1} &amp;= (1+R_{t_1}) \cdot t(w_{t_0})\\
   R_{t_1}^P &amp;= \sum_{n = 1}^N Z_{t_1} - 1
@@ -513,18 +516,22 @@ The requirement that the portfolio is full can be achieved by adding an addition
 <h2><span class="header-section-number">3.6</span> R-Functions<a href="mathfundations.html#r-functions-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>|||in progress|||<br />
 </p>
-<div id="pritoret" class="section level3 hasAnchor" number="3.6.1">
-<h3><span class="header-section-number">3.6.1</span> <code>pri_to_ret()</code><a href="mathfundations.html#pritoret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="covfun" class="section level3 hasAnchor" number="3.6.1">
+<h3><span class="header-section-number">3.6.1</span> <code>cov_()</code><a href="mathfundations.html#covfun" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This function extends the base R function <code>cov()</code> by allowing the user to pass an expected value vector. This is used to calculate the covariance with expected returns based on the geometric mean instead of the arithmetic mean.</p>
+</div>
+<div id="pritoret" class="section level3 hasAnchor" number="3.6.2">
+<h3><span class="header-section-number">3.6.2</span> <code>pri_to_ret()</code><a href="mathfundations.html#pritoret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>|||in progress|||<br />
 ((prices to returns))</p>
 </div>
-<div id="ret_to_cumret" class="section level3 hasAnchor" number="3.6.2">
-<h3><span class="header-section-number">3.6.2</span> <code>ret_to_cumret()</code><a href="mathfundations.html#ret_to_cumret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="ret_to_cumret" class="section level3 hasAnchor" number="3.6.3">
+<h3><span class="header-section-number">3.6.3</span> <code>ret_to_cumret()</code><a href="mathfundations.html#ret_to_cumret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>|||in progress|||<br />
 ((returns to cumulated returns normalized to 100))</p>
 </div>
-<div id="geomeanret" class="section level3 hasAnchor" number="3.6.3">
-<h3><span class="header-section-number">3.6.3</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="geomeanret" class="section level3 hasAnchor" number="3.6.4">
+<h3><span class="header-section-number">3.6.4</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The geometric mean of returns is a better estimator than the arithmetic mean of returns because it captures the exact mean price changes over a period of time. The variance estimated from the daily returns is a daily variance, so the returns must have the same time base. This can be done by calculating the geometric mean of the returns from multiple daily returns. Assuming there is an asset with returns <span class="math inline">\(r_1 = 0.01\)</span>, <span class="math inline">\(r_2=-0.03\)</span>, and <span class="math inline">\(r_3=0.02\)</span>, it follows that the geometric mean return <span class="math inline">\(r^{geom}\)</span> can be calculated as:
 <span class="math display">\[
   r^{geom} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = -0.0002353887
@@ -542,8 +549,8 @@ and as R code:</p>
 <span id="cb1-2"><a href="mathfundations.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>((<span class="dv">1</span><span class="sc">+</span>xts_ret), prod)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">nrow</span>(xts_ret))<span class="sc">-</span><span class="dv">1</span></span>
 <span id="cb1-3"><a href="mathfundations.html#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="calc_portfolio_returns" class="section level3 hasAnchor" number="3.6.4">
-<h3><span class="header-section-number">3.6.4</span> <code>calc_portfolio_returns()</code><a href="mathfundations.html#calc_portfolio_returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="calc_portfolio_returns" class="section level3 hasAnchor" number="3.6.5">
+<h3><span class="header-section-number">3.6.5</span> <code>calc_portfolio_returns()</code><a href="mathfundations.html#calc_portfolio_returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This is the implementation of a vectorial calculation of portfolio returns over multiple periods with a weighting vector <code>weights</code> at <span class="math inline">\(t_0\)</span> and no re-balancing:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="mathfundations.html#cb2-1" aria-hidden="true" tabindex="-1"></a>calc_portfolio_returns <span class="ot">&lt;-</span> </span>
 <span id="cb2-2"><a href="mathfundations.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(xts_returns, weights, <span class="at">name=</span><span class="st">&quot;portfolio&quot;</span>){</span>

@@ -114,6 +114,7 @@ This thesis focuses on problems derived from Markowitz's portfolio theory [@Mark
 \vspace{-0.4cm}
 + Perfect market without taxes or transaction costs
 + Assets are infinitely divisible
++ Short sales are disallowed
 + Expected returns, variances and covariances contain all information
 + Investors are risk-averse, they will only accept greater risk if they
 are compensated with a higher expected return
@@ -203,7 +204,7 @@ The general formula of the covariance matrix $\textstyle\sum$ of a random vector
  \end{bmatrix}\\
   &=\textstyle\sum
 \end{align*}
-and can be estimated in R with the basis function `cov()` and historical data.
+and can be estimated in R using the basis function `cov()` and historical data. The function `cov_()` in \@ref(covfun) can be used to calculate the covariance using the geometric mean to estimate the expected returns.
 
 ### Portfolio Variance {#portvar}
 Let $\pmb{R}$ be a random vector with $N$ normally distributed elements and $w$ a weight vector. Assuming that the covariance matrix $\sum$ of $\pmb{R}$ is known, the variance of the linear combination of $\pmb{R}$ can be calculated as follows:
@@ -226,7 +227,8 @@ The same is true for an estimate of $Var(\pmb{R} \times w)$ by using the estimat
 
 
 ### Portfolio Returns {#portfolioreturns}
-Suppose there are $N$ assets that form a portfolio with weights $w_{t_0}$ at time step $t_0$, and the portfolio is to go through several time steps until $t_T$ without rebalancing. What are the portfolio returns at each time step $t_i$? Clearly, assets with higher performance at the current time step will have a higher weight at the next time step. This can be done by adjusting the weights after each time step as a function of returns. Suppose we have a complete portfolio $\textstyle\sum w_{t_0} = 1$ with a return matrix $R \in \mathbb{R}^{T \times N}$ and we want to calculate the portfolio returns $R_{t_1}^P$. This can be done with the following two steps:  
+Suppose there are $N$ assets that form a portfolio with weights $w_{t_0}$ at time step $t_0$, and the portfolio is to go through several time steps until $t_T$ without rebalancing. What are the portfolio returns at each time step $t_i$? Clearly, assets with higher performance at the current time step will have a higher weight at the next time step. This can be done by adjusting the weights after each time step as a function of returns. Suppose we have a complete portfolio $\textstyle\sum w_{t_0} = 1$ with a return matrix $R \in \mathbb{R}^{T \times N}$ and we want to calculate the portfolio returns $R_{t_1}^P$. This can be done with the following two steps:
+\vspace{-0.1cm}
 \begin{align*}
   Z_{t_1} &= (1+R_{t_1}) \cdot t(w_{t_0})\\
   R_{t_1}^P &= \sum_{n = 1}^N Z_{t_1} - 1
@@ -243,6 +245,9 @@ The requirement that the portfolio is full can be achieved by adding an addition
 
 ## R-Functions
 |||in progress||| \
+
+### `cov_()` {#covfun}
+This function extends the base R function `cov()` by allowing the user to pass an expected value vector. This is used to calculate the covariance with expected returns based on the geometric mean instead of the arithmetic mean. 
 
 ### `pri_to_ret()` {#pritoret}
 |||in progress||| \

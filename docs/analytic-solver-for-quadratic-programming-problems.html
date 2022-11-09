@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-06" />
+<meta name="date" content="2022-11-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -197,10 +197,11 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>3.6</b> R-Functions</a>
 <ul>
-<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.1</b> <code>pri_to_ret()</code></a></li>
-<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.2</b> <code>ret_to_cumret()</code></a></li>
-<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_geomeanret()</code></a></li>
-<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.4</b> <code>calc_portfolio_returns()</code></a></li>
+<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#covfun"><i class="fa fa-check"></i><b>3.6.1</b> <code>cov_()</code></a></li>
+<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.2</b> <code>pri_to_ret()</code></a></li>
+<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_cumret()</code></a></li>
+<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.4</b> <code>ret_to_geomeanret()</code></a></li>
+<li class="chapter" data-level="3.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.5</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Investing</a></li>
@@ -223,7 +224,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>6.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP-Solver from quadprog</a></li>
-<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP Problem with <code>solve.QP()</code></a></li>
 <li class="chapter" data-level="6.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>6.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>7</b> Particle Swarm Optimization (PSO)</a>
@@ -321,7 +322,7 @@ and is valid under the linear constraints:
 </ul>
 </div>
 <div id="exampleanalyticalmvp" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Example: Solving MVP with <code>solve.QP()</code><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">6.3</span> Example: Solving MVP Problem with <code>solve.QP()</code><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This section provides insights into the effects of diversification and the use of <code>solve.QP()</code> by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier <span class="math inline">\(i \in \{1, 2, \cdots, 10\}\)</span> consists of <span class="math inline">\(N_i = i\)</span> assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb12-1"><a href="analytic-solver-for-quadratic-programming-problems.html#cb12-1" aria-hidden="true" tabindex="-1"></a>returns_raw <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb12-2"><a href="analytic-solver-for-quadratic-programming-problems.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(</span>
@@ -336,7 +337,7 @@ and is valid under the linear constraints:
 <span id="cb12-11"><a href="analytic-solver-for-quadratic-programming-problems.html#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co"># re-arrange: low var first</span></span>
 <span id="cb12-12"><a href="analytic-solver-for-quadratic-programming-problems.html#cb12-12" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">sapply</span>(returns_raw, var)</span>
 <span id="cb12-13"><a href="analytic-solver-for-quadratic-programming-problems.html#cb12-13" aria-hidden="true" tabindex="-1"></a>returns_raw <span class="ot">&lt;-</span> returns_raw[, <span class="fu">order</span>(vars, <span class="at">decreasing =</span> F)]</span></code></pre></div>
-<p>The next step is to create a function <code>mvp()</code> that has the arguments <code>return</code> and <code>lambda</code>. It computes the expected returns <code>mu</code> and the estimated positive definite covariance <code>cov</code>. It then solves an MVP with constraints <span class="math inline">\(\textstyle\sum w_i = 1\)</span> and <span class="math inline">\(w_i \geq 0\)</span>, which yields the key features <code>mu</code>, <code>var</code> and <code>composition</code> of the portfolio.</p>
+<p>The next step is to create a function <code>mvp()</code> that has the arguments <code>return</code> and <code>lambda</code>. It computes the expected returns <code>mu</code> and the estimated positive definite covariance <code>cov</code>. It then solves an MVP problem with constraints <span class="math inline">\(\textstyle\sum w_i = 1\)</span> and <span class="math inline">\(w_i \geq 0\)</span>, which yields the key features <code>mu</code>, <code>var</code> and <code>composition</code> of the portfolio.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb13-1"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-1" aria-hidden="true" tabindex="-1"></a>mvp <span class="ot">&lt;-</span> <span class="cf">function</span>(returns, lambda){</span>
 <span id="cb13-2"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  tc <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
 <span id="cb13-3"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-3" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> <span class="fu">ret_to_geomeanret</span>(returns)</span>

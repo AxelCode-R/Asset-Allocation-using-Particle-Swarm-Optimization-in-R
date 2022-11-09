@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-06" />
+<meta name="date" content="2022-11-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -197,10 +197,11 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3.6" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>3.6</b> R-Functions</a>
 <ul>
-<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.1</b> <code>pri_to_ret()</code></a></li>
-<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.2</b> <code>ret_to_cumret()</code></a></li>
-<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_geomeanret()</code></a></li>
-<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.4</b> <code>calc_portfolio_returns()</code></a></li>
+<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#covfun"><i class="fa fa-check"></i><b>3.6.1</b> <code>cov_()</code></a></li>
+<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.2</b> <code>pri_to_ret()</code></a></li>
+<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_cumret()</code></a></li>
+<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.4</b> <code>ret_to_geomeanret()</code></a></li>
+<li class="chapter" data-level="3.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.5</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Investing</a></li>
@@ -223,7 +224,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>6.1</b> Quadratic Programming (QP)</a></li>
 <li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP-Solver from quadprog</a></li>
-<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP Problem with <code>solve.QP()</code></a></li>
 <li class="chapter" data-level="6.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>6.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>7</b> Particle Swarm Optimization (PSO)</a>
@@ -306,7 +307,7 @@ div.csl-indent {
 </div>
 <div id="mvp-example" class="section level3 hasAnchor" number="5.1.2">
 <h3><span class="header-section-number">5.1.2</span> MVP: Example<a href="challenges.html#mvp-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>All possible MVP’s together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP’s for each <span class="math inline">\(\lambda\)</span>. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.</p>
+<p>All possible MVP’s together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP for each <span class="math inline">\(\lambda\)</span>. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb3-1"><a href="challenges.html#cb3-1" aria-hidden="true" tabindex="-1"></a>returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb3-2"><a href="challenges.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>), <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, <span class="at">to =</span> <span class="st">&quot;2019-12-31&quot;</span>)<span class="sc">$</span>returns, </span>
 <span id="cb3-3"><a href="challenges.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CPI_3_assets&quot;</span></span>
@@ -385,11 +386,11 @@ GOOG 0.0001799097 0.0001158735 0.0002728911</code></pre>
 <span id="cb8-8"><a href="challenges.html#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">config</span>(<span class="at">mathjax =</span> <span class="st">&#39;cdn&#39;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-9"><a href="challenges.html#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/MVP_ex6-1.png" width="672" />
-It can be observed that the minimum variance portfolio was achieved with a diversified composition of the three assets. With gradually decreasing <span class="math inline">\(\lambda\)</span>, the portfolio starts to ignore the variance and invest more in the most risky and highest return asset.</p>
+It can be observed that the portfolio with the lowest variance was obtained with a diversified composition of the three assets. With gradually decreasing <span class="math inline">\(\lambda\)</span>, the minimization problem starts to ignore the variance, which leads to a portfolio investing more in the riskiest asset with the highest return.</p>
 </div>
 <div id="mvp-compare-estimators" class="section level3 hasAnchor" number="5.1.3">
 <h3><span class="header-section-number">5.1.3</span> MVP: Compare Estimators<a href="challenges.html#mvp-compare-estimators" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns <span class="math inline">\(\mu\)</span> and was also used in the estimation of <span class="math inline">\(\textstyle\sum\)</span>. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP’s as a function of <span class="math inline">\(\lambda\)</span> using the arithmetic mean versus the geometric mean to estimate <span class="math inline">\(\mu\)</span>. The weights of the MVP’s using the geometric mean are used to calculate <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> as a function of the arithmetic mean to make both efficient frontiers comparable:</p>
+<p>The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns <span class="math inline">\(\mu\)</span> and was also used in the estimation of the covariance <span class="math inline">\(\textstyle\sum\)</span>. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP’s as a function of <span class="math inline">\(\lambda\)</span> using the arithmetic mean versus the geometric mean to estimate <span class="math inline">\(\mu\)</span>. The weights of the MVP’s using the geometric mean are used to calculate <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> as a function of the arithmetic mean to make both efficient frontiers comparable:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb9-1"><a href="challenges.html#cb9-1" aria-hidden="true" tabindex="-1"></a>cov_ <span class="ot">&lt;-</span> <span class="cf">function</span>(mat, <span class="at">mean_vec=</span><span class="cn">NULL</span>){</span>
 <span id="cb9-2"><a href="challenges.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(mean_vec)){</span>
 <span id="cb9-3"><a href="challenges.html#cb9-3" aria-hidden="true" tabindex="-1"></a>    mat_mean <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data=</span><span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">nrow</span>(mat)) <span class="sc">%*%</span> <span class="fu">apply</span>(mat, <span class="dv">2</span>, mean)</span>
@@ -563,7 +564,7 @@ And the last term can be solved in the same way as in <span class="citation">(<a
   &amp; = w^T \times Cov(\pmb{R}) \times w - 2 \cdot Cov(\pmb{R}_{bm}, \pmb{R})^T \times w + \sigma_{bm}^2
   \tag{5.2}
 \end{align*}\]</span></p>
-<p>The above problem can be estimated using the usual unbiased estimates and historical data <span class="math inline">\(R\)</span> and <span class="math inline">\(r_{bm}\)</span>. The minimization problem of the ITP in the general structure required by many optimizers is:
+<p>The above problem can be estimated using the formulas and functions created in chapter <a href="mathfundations.html#mathfundations">3</a> and historical data <span class="math inline">\(R\)</span> and <span class="math inline">\(r_{bm}\)</span>. The minimization problem of the ITP in the general structure required by many optimizers is:
 <span class="math display">\[
   \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w -d^T \times w
 \]</span></p>
@@ -675,7 +676,7 @@ and
 <span id="cb10-54"><a href="challenges.html#cb10-54" aria-hidden="true" tabindex="-1"></a><span class="fu">plotly_line_chart_xts</span>(<span class="fu">ret_to_cumret</span>(<span class="fu">cbind.xts</span>(port_returns_TEV, port_returns_MSTE, bm_returns))) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-55"><a href="challenges.html#cb10-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/ITP_ex-1.png" width="672" />
-The ITP-TEV and ITP-MSTE had almost the same results whith the compositions below:</p>
+The ITP-TEV and the ITP-MSTE had almost the same results, which can be seen in the compositions below:</p>
 <pre><code>      type      AAPL       IBM      GOOG
 1  ITP-TEV 0.2594763 0.4164918 0.3240319
 2 ITP-MSTE 0.2588587 0.4170364 0.3241049</code></pre>

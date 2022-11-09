@@ -10,7 +10,7 @@ The standard PSO analyzed in the previous chapter is capable of solving a wide r
 
 
 ## Testproblem: Discrete ITP-MSTE
-All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSOs start with an equally weighted portfolio that satisfies the condition $\textstyle\sum w_i = 1$. 
+All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in section \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSO's start with an equally weighted portfolio that satisfies the condition $\textstyle\sum w_i = 1$. 
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
@@ -134,20 +134,21 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 ```{r variants2, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
+  defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=60),
+    iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=150),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
-    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+    const_break_mean = colDef(format = colFormat(digits=4), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
+    best_fit_median = colDef(format = colFormat(digits=4), width=125)
   ),
   compact = T,
   rownames = F
 ) %>% 
-  html_save(., vwidth = 1000)
+  html_save(., vwidth = 880)
 ```
 
 
@@ -191,7 +192,7 @@ fn <- function(pos){
   cos(pos) + 1/10 * pos
 }
 ```
-and the domain of definition is chosen as $x \in [-20, 20]$. Suppose the PSO gets stuck in the local minimum at $\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04$. The original function `fn` and the transformed function `fn_stretched`, which matches $H(x)$ in \@ref(eq:fnstretchH), are shown in the following graph:  
+and the domain of definition is chosen as $x \in [-20, 20]$. Suppose the PSO gets stuck in the local minimum at $\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04$. The original function `fn` and the transformed function `fn_stretched`, which matches $H(x)$ in equation \@ref(eq:fnstretchH), are shown in the following graph:  
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 fn1 <- function(pos, pos_best, pos_best_fit){
   res <- fn(pos)
@@ -294,28 +295,29 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 ```{r variants4, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
+  defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=60),
+    iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=150),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
-    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+    const_break_mean = colDef(format = colFormat(digits=4), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
+    best_fit_median = colDef(format = colFormat(digits=4), width=125)
   ),
   compact = T,
   rownames = F
 ) %>% 
-  html_save(., vwidth = 1000)
+  html_save(., vwidth = 880)
 ```
 
 
 
 
 ## Local PSO
-A local PSO is a more general case of the global PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$, and the global best particle in its neighborhood is called the local best particle of $x_i$. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ given in [@Enge2013] would be:
-
+A local PSO is a more general case of the global PSO, which is called the standard PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$, and the global best particle in its neighborhood is called the local best particle of $x_i$. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ given in [@Enge2013] would be:
+\vspace{-0.1cm}
 $$
   N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
 $$
@@ -403,20 +405,21 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 ```{r variants6, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
+  defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=60),
+    iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=150),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
-    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+    const_break_mean = colDef(format = colFormat(digits=4), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
+    best_fit_median = colDef(format = colFormat(digits=4), width=125)
   ),
   compact = T,
   rownames = F
 ) %>% 
-  html_save(., vwidth = 1000)
+  html_save(., vwidth = 880)
 ```
 
 It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
@@ -531,7 +534,7 @@ Even more difficult to interpret is the adjusting of the control parameters. The
 
 
 ### Test PSO with Self-Adaptive Velocity
-The PSO with self-adaptive speed is called `PSO-SAvel` and is evaluated for the test problem with the constants used in the implementation section:
+The PSO with self-adaptive velocity is called `PSO-SAvel` and is evaluated for the test problem with the constants used in the implementation section:
 
 ```{r variants7, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
@@ -590,28 +593,29 @@ plot_ly() %>%
 
 ```
 
-The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
-
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:  
+\vspace{-0.1cm}
 ```{r variants8, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
+  defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=60),
+    iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=150),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
-    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+    const_break_mean = colDef(format = colFormat(digits=4), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
+    best_fit_median = colDef(format = colFormat(digits=4), width=125)
   ),
   compact = T,
   rownames = F
 ) %>% 
-  html_save(., vwidth = 1000)
+  html_save(., vwidth = 880)
 ```
 
-
+The results look very promising, and with fewer hyperparameters to fine-tune, this may be one of the best variants for general use of a PSO.
 
 
 
@@ -694,22 +698,23 @@ plot_ly() %>%
 ```
 The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
-
+\vspace{-0.1cm}
 ```{r variants9, echo=F}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
+  defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=60),
+    iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=150),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=130),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=130),
-    best_fit_median = colDef(format = colFormat(digits=4), width=130)
+    const_break_mean = colDef(format = colFormat(digits=4), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
+    best_fit_median = colDef(format = colFormat(digits=4), width=125)
   ),
   compact = T,
   rownames = F
 ) %>% 
-  html_save(., vwidth = 1000)
+  html_save(., vwidth = 880)
 ```

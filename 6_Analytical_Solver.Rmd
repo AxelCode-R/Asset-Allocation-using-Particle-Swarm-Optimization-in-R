@@ -34,7 +34,7 @@ The return of `solve.QP()` is a list and contains, among others, the following a
 + `solution`: Vector containing the solution $x$ of the quadratic programming problem (e.g. portfolio weights)
 + `value`: Scalar, the value of the quadratic function at the solution
 
-## Example: Solving MVP with `solve.QP()` {#exampleanalyticalmvp}
+## Example: Solving MVP Problem with `solve.QP()` {#exampleanalyticalmvp}
 This section provides insights into the effects of diversification and the use of `solve.QP()` by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
 ```{r qp_mvp1, class.source="code_fold_it_collapsed"}
 returns_raw <- buffer(
@@ -52,7 +52,7 @@ vars <- sapply(returns_raw, var)
 returns_raw <- returns_raw[, order(vars, decreasing = F)]
 ```
 
-The next step is to create a function `mvp()` that has the arguments `return` and `lambda`. It computes the expected returns `mu` and the estimated positive definite covariance `cov`. It then solves an MVP with constraints $\textstyle\sum w_i = 1$ and $w_i \geq 0$, which yields the key features `mu`, `var` and `composition` of the portfolio. 
+The next step is to create a function `mvp()` that has the arguments `return` and `lambda`. It computes the expected returns `mu` and the estimated positive definite covariance `cov`. It then solves an MVP problem with constraints $\textstyle\sum w_i = 1$ and $w_i \geq 0$, which yields the key features `mu`, `var` and `composition` of the portfolio. 
 
 ```{r qp_mvp2, class.source="code_fold_it_collapsed"}
 mvp <- function(returns, lambda){
