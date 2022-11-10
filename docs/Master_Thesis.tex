@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-11-09}
+\date{2022-11-10}
 
 \begin{document}
 \maketitle
@@ -1401,7 +1401,61 @@ It can be seen that it is superior to the standard PSO in this case. Especially 
 \hypertarget{preserving-feasibility}{%
 \section{Preserving Feasibility}\label{preserving-feasibility}}
 
-SCI2002Constrained.pdf
+Other variants of the PSO often return solutions that are not feasible, which results in the need to run them multiple times. To grantee that any solution is feasible, one of the creators of the PSO, Russel Eberhardt, studied a variant that preserves the feasibility of the solutions in \citep{XiEb2002}. To be precise it is not classified as a own variant, it is rather a different constraint handling method instead of the often used penalty method. Nonetheless it has to change the core of the PSO implementation which is why it is assumed to be classified as a own variant in this thesis. The difference compared to the standard PSO are that the initialization of particles is repeated until all positions are feasible with a constraint break of zero. Afterwards only feasible solutions are stored as global or personal best positions, which results in a guaranteed feasible final solution. The first step is already the hardest to achieve in practice. To bring this in perspective, the following code tries to find one feasable position within one million random generated positions:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{0}\NormalTok{)}
+\NormalTok{fn\_const }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(}\FunctionTok{round}\NormalTok{(x}\SpecialCharTok{*}\NormalTok{nav}\SpecialCharTok{/}\NormalTok{prices)}\SpecialCharTok{*}\NormalTok{prices}\SpecialCharTok{/}\NormalTok{nav)}
+\NormalTok{  constraints }\OtherTok{\textless{}{-}} \FunctionTok{calc\_const}\NormalTok{(x)}
+  \FunctionTok{return}\NormalTok{(constraints)}
+\NormalTok{\}}
+
+\NormalTok{time }\OtherTok{\textless{}{-}} \FunctionTok{system.time}\NormalTok{(\{}
+\NormalTok{  X }\OtherTok{\textless{}{-}} \FunctionTok{mrunif}\NormalTok{(}
+    \AttributeTok{nr =} \FunctionTok{ncol}\NormalTok{(pool\_data}\SpecialCharTok{$}\NormalTok{returns), }\AttributeTok{nc=}\DecValTok{10}\SpecialCharTok{\^{}}\DecValTok{6}\NormalTok{, }\AttributeTok{lower=}\DecValTok{0}\NormalTok{, }\AttributeTok{upper=}\FloatTok{0.1}
+\NormalTok{  )}
+\NormalTok{  X\_const }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(X, }\DecValTok{2}\NormalTok{, fn\_const)}
+\NormalTok{\})}
+
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Feasable positions: "}\NormalTok{, }\FunctionTok{sum}\NormalTok{(X\_const}\SpecialCharTok{==}\DecValTok{0}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "Feasable positions: 0"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Elapsed time: "}\NormalTok{, time[}\DecValTok{3}\NormalTok{]))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] "Elapsed time: 237.08"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rm}\NormalTok{(X, X\_const)}
+\end{Highlighting}
+\end{Shaded}
+
+It can be seen that after one million random generated positions there wasn't even one feasible position. Because of this, the first step was changed to start with only one feasible position obtained from one of the final solutions from the standard PSO at random. To have a comprising to the standard PSO it was rerun with the same starting positions.
+
+\hypertarget{test-preserving-feasibility-pso}{%
+\subsection{Test Preserving Feasibility PSO}\label{test-preserving-feasibility-pso}}
+
+This section compares the PSO with preserving feasibility and the standard PSO. Both PSO's are using the same feasible solutions as starting positions:
+\includegraphics{Master_Thesis_files/figure-latex/variants6_next-1.png}
+
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
+\includegraphics{Master_Thesis_files/figure-latex/variants6_next2-1.png}
+
+It can be seen that the results are marginal differences, which indicates that PSO with preserving feasibility has no practical uses in finance related problems like the ITP-MSTE.
 
 \hypertarget{self-adaptive-velocity}{%
 \section{Self-Adaptive Velocity}\label{self-adaptive-velocity}}
@@ -1489,7 +1543,7 @@ The process of this PSO variant is too different from the standard PSO, so all c
 \subsection{Analyse Implementation}\label{analyse-implementation}}
 
 The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration \(i\) with 100 maximum iterations are distributed as follows:\\
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
 It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in explorability and exploitability, indicated by probabilities outside \([0, 1]\).
 
 Even more difficult to interpret is the adjusting of the control parameters. The value \(W_d^i\) is a weighting of the distances to the worst fitness, resulting in a higher weighting of the particles with good fitness. Later, the control parameters are adjusted using the Cauchy distribution with a weighted value of the previous control parameters as the center, giving higher weights to the control parameters that produced better fitness. This results in random control parameters distributed around the best previous control parameters. The resulting behavior can be described with a small quote, ``If exploration is beneficial, more exploration is done. If not, more is exploited.''
@@ -1520,7 +1574,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 \hypertarget{real-life-itp-example}{%
 \chapter{Real Life ITP Example}\label{real-life-itp-example}}
 
-In the previous chapters, the capabilities of a PSO and the quality of its results were analyzed based on the solution of a problem at a single point in time. In practice, the stability of future outcomes at multiple points in time is of greater interest. Therefore, the next sections provide additional conditions needed to simulate real portfolios over multiple rebalancing time points, first by adding transaction costs to the problem. For the first rebalancing time point, a problem is defined that simulates a portfolio manager who has a certain amount of cash and attempts to construct a portfolio from it, as described in the last section. After the first iteration, the portfolio manager must sell old assets and buy new ones. This, of course, incurs additional transaction costs and effort, so most portfolio managers consider a maximum rebalancing constraint that attempts to limit the amount of assets sold and purchased. The simulation of multiple rebalancing dates is called a backtest, which attempts to simulate the performance of a portfolio as a function of the previous portfolio and the historical data of each rebalancing date. Later, a full backtest of an ITP is evaluated and analyzed in a real-world environment.
+In the previous chapters, the capabilities of a PSO and the quality of its results were analyzed based on the solution of a problem at a single point in time. In practice, the stability of future outcomes at multiple points in time is of greater interest. Therefore, the next sections provide additional constraints needed to simulate real portfolios over multiple rebalancing time points, first by adding transaction costs to the problem. For the first rebalancing time point, a problem is defined that simulates a portfolio manager who has a certain amount of cash and attempts to construct a portfolio from it, as described in the last section. After the first iteration, the portfolio manager must sell old assets and buy new ones. This, of course, incurs additional transaction costs and effort, so most portfolio managers consider a maximum rebalancing constraint that attempts to limit the amount of assets sold and purchased. The simulation of multiple rebalancing dates is called a backtest, which attempts to simulate the performance of a portfolio as a function of the previous portfolio and the historical data of each rebalancing date. Later, a full backtest of an ITP is evaluated and analyzed in a real-world environment.
 
 \hypertarget{transaction-costs}{%
 \section{Transaction Costs}\label{transaction-costs}}
@@ -1529,7 +1583,7 @@ The cost of buying or selling assets must be considered as it can have a signifi
 \[
  v^o = \left\Vert r_{p}-r_{bm} \right\Vert_2^2 = \sum_{t=1}^T (r_{t,p}-r_{t,bm})^2
 \]
-The objective value \(v^o\) is the squared tracking error or, more precisely, the squared difference of the portfolio returns \(r_p\) and the benchmark returns \(r_{bm}\). To create a comparable value \(v^{tc}\) for transaction costs, we attempt to interpret the absolute loss due to transactions as the absolute error of return \(r_{tc}\) incurred in \(t_0\) (before the first data point in \(t_1\)). This absolute error \(r_{tc}\) can be calculated by counting the required transactions divided by the net asset value \(nav\). The required transactions can be calculated by comparing the stock vector of the previous portfolio \(s^{prev}\) and the stock vector of the rebalanced portfolio \(s^{reba}\). This results in the following formula for the absolute error return \(r_{tc}\):
+The objective value \(v^o\) is the squared tracking error or, more precisely, the squared difference of the portfolio returns \(r_p\) and the benchmark returns \(r_{bm}\). To create a comparable value \(v^{tc}\) for transaction costs, we attempt to interpret the absolute loss due to transactions as the absolute error of return \(r_{tc}\) incurred in \(t_0\) (before the first data point in \(t_1\)). This absolute error \(r_{tc}\) can be calculated by counting the required transactions divided by the net asset value \(nav\). The required transactions can be calculated by comparing the shares vector of the previous portfolio \(s^{prev}\) and the shares vector of the rebalanced portfolio \(s^{reba}\). This results in the following formula for the absolute error return \(r_{tc}\):
 \[
  r_{tc} = \frac{1 \cdot \sum_{n=1}^N g(s^{prev}_n-s^{reba}_n) }{nav}
 \]
@@ -1571,7 +1625,7 @@ and with a rebalancing constraint of, say, 30\%, the rebalanced portfolio is fea
 \hypertarget{objective}{%
 \section{Objective}\label{objective}}
 
-The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP() approach, continuously discarding assets as in \ref{exampleitpsolveqp}, with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the training period. In addition, the solve.QP() approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which gives stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10\%, \(0.96 \leq \sum w_i \leq 0.995\), rebalancing under 30\% weight, considering transaction cost with diffrent values for \(k\), net asset value of 20000 USD, length of training period of four months and testing period of one month.
+The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP() approach, continuously discarding assets as in section \ref{exampleitpsolveqp}, with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the training period. In addition, the solve.QP() approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which gives stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10\%, \(0.96 \leq \sum w_i \leq 0.995\), rebalancing under 30\% weight, considering transaction cost with diffrent values for \(k\), net asset value of 20000 USD, length of training period of four months and testing period of one month.
 
 Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraints are satisfied. Then it is run four more times to improve the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from \ref{portfolioreturns} until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool, they are sold and reduce the net asset value due to transaction costs. The same is done by buying or selling any remaining assets. A rough illustration of the process can be found in the following figure:
 
@@ -1612,10 +1666,10 @@ and the statistics of the discretized PSO with considered transaction costs are:
 \includegraphics{Master_Thesis_files/figure-latex/9_10-1.png}
 
 It can be seen that increasing \(k\) tends to reduce the average transaction cost in USD. Since each backtest depends on different previous portfolios, further backtests are needed to confirm this result. The absolute loss of \texttt{nav} between the results of the PSO without and with transaction costs for each \(k\) can be found in the chart below:\\
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
 
 Another interesting result is that the \texttt{solve.QP()} approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the follwing chart, comparing only the \texttt{solve.QP()} approach and the SP500TR:
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-14-1.png}
 
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}

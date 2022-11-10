@@ -81,6 +81,7 @@ calc_const <- function(x){
 
 set.seed(0)
 
+SPSO_feasable_solutions <- NULL
 df_SPSO <- NULL
 for(i in 1:100){
   res_SPSO_time <- system.time({
@@ -90,7 +91,7 @@ for(i in 1:100){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness+10*constraints)
+        return(fitness+100*constraints)
       },
       lower = 0,
       upper = 0.1,
@@ -105,6 +106,7 @@ for(i in 1:100){
       )
     )
   })
+  res_SPSO$solution <- as.vector(round(res_SPSO$solution*nav/prices)*prices/nav)
   
   df_SPSO <- rbind(df_SPSO, 
     data.frame(
@@ -114,6 +116,11 @@ for(i in 1:100){
       )))
     )
   )
+  
+  if(calc_const(as.vector(round(res_SPSO$solution*nav/prices)*prices/nav)) == 0){
+    SPSO_feasable_solutions <- cbind(SPSO_feasable_solutions, as.vector(round(res_SPSO$solution*nav/prices)*prices/nav))
+  }
+  
 }
 
 df_res <- df_SPSO %>% 
@@ -139,11 +146,11 @@ reactable(
     iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
-    best_fit_median = colDef(format = colFormat(digits=4), width=125)
+    const_break_mean = colDef(format = colFormat(digits=6), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
+    best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
   rownames = F
@@ -241,7 +248,7 @@ for(i in 1:100){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness+10*constraints)
+        return(fitness+100*constraints)
       },
       lower = 0,
       upper = 0.1,
@@ -257,6 +264,7 @@ for(i in 1:100){
       )
     )
   })
+  res_pso_fns$solution <- as.vector(round(res_pso_fns$solution*nav/prices)*prices/nav)
   
   df <- rbind(df, 
     data.frame(
@@ -300,11 +308,11 @@ reactable(
     iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
-    best_fit_median = colDef(format = colFormat(digits=4), width=125)
+    const_break_mean = colDef(format = colFormat(digits=6), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
+    best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
   rownames = F
@@ -351,7 +359,7 @@ for(i in 1:100){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness+10*constraints)
+        return(fitness+100*constraints)
       },
       lower = 0,
       upper = 0.1,
@@ -360,13 +368,14 @@ for(i in 1:100){
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
         maxiter = 400, # iterations
-        w0 = 1, # starting inertia weight
-        wN = 0.4, # ending inertia weight
+        w0 = 1.2, # starting inertia weight
+        wN = 0, # ending inertia weight
         save_fit = T,
         k=10
       )
     )
   })
+  res_pso_local$solution <- as.vector(round(res_pso_local$solution*nav/prices)*prices/nav)
   
   df <- rbind(df, 
     data.frame(
@@ -410,11 +419,11 @@ reactable(
     iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
-    best_fit_median = colDef(format = colFormat(digits=4), width=125)
+    const_break_mean = colDef(format = colFormat(digits=6), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
+    best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
   rownames = F
@@ -425,7 +434,164 @@ reactable(
 It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
 
 ## Preserving Feasibility
-SCI2002Constrained.pdf
+Other variants of the PSO often return solutions that are not feasible, which results in the need to run them multiple times. To grantee that any solution is feasible, one of the creators of the PSO, Russel Eberhardt, studied a variant that preserves the feasibility of the solutions in [@XiEb2002]. To be precise it is not classified as a own variant, it is rather a different constraint handling method instead of the often used penalty method. Nonetheless it has to change the core of the PSO implementation which is why it is assumed to be classified as a own variant in this thesis. The difference compared to the standard PSO are that the initialization of particles is repeated until all positions are feasible with a constraint break of zero. Afterwards only feasible solutions are stored as global or personal best positions, which results in a guaranteed feasible final solution. The first step is already the hardest to achieve in practice. To bring this in perspective, the following code tries to find one feasable position within one million random generated positions:
+```{r}
+set.seed(0)
+fn_const = function(x){
+  x <- as.vector(round(x*nav/prices)*prices/nav)
+  constraints <- calc_const(x)
+  return(constraints)
+}
+
+time <- system.time({
+  X <- mrunif(
+    nr = ncol(pool_data$returns), nc=10^6, lower=0, upper=0.1
+  )
+  X_const <- apply(X, 2, fn_const)
+})
+
+print(paste0("Feasable positions: ", sum(X_const==0)))
+print(paste0("Elapsed time: ", time[3]))
+rm(X, X_const)
+```
+It can be seen that after one million random generated positions there wasn't even one feasible position. Because of this, the first step was changed to start with only one feasible position obtained from one of the final solutions from the standard PSO at random. To have a comprising to the standard PSO it was rerun with the same starting positions.
+
+### Test Preserving Feasibility PSO
+This section compares the PSO with preserving feasibility and the standard PSO. Both PSO's are using the same feasible solutions as starting positions:
+```{r variants6_next, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+set.seed(0)
+# R/PSO_functions.R : pso_preserving_feasibility()
+
+sel_sol <- round(runif(100,1,ncol(SPSO_feasable_solutions)))
+
+
+df <- NULL
+for(i in 1:100){
+
+  res_pso_preFe_time <- system.time({
+    res_pso_preFe <- pso_preserving_feasibility(
+      par = SPSO_feasable_solutions[,sel_sol[i]],
+      fn_fit = function(x){
+        x <- as.vector(round(x*nav/prices)*prices/nav)
+        constraints <- calc_const(x)
+        fitness <- calc_fit(x)
+        return(fitness + 100*constraints)
+      },
+      fn_const = function(x){
+        x <- as.vector(round(x*nav/prices)*prices/nav)
+        constraints <- calc_const(x)
+        return(100*constraints)
+      },
+      lower = 0,
+      upper = 0.1,
+      control = list(
+        s = 50, # swarm size
+        c.p = 0.5, # inherit best
+        c.g = 0.5, # global best
+        maxiter = 200, # iterations
+        w0 = 1.2, # starting inertia weight
+        wN = 0, # ending inertia weight
+        save_fit = T,
+        k=10
+      )
+    )
+  })
+  res_pso_preFe$solution <- as.vector(round(res_pso_preFe$solution*nav/prices)*prices/nav)
+  
+  df <- rbind(df, 
+    data.frame(
+      "run" = i,
+      suppressWarnings(data.frame(
+        "type" = "PSO-preFe", "time"=res_pso_preFe_time[3], "const_break"=calc_const(res_pso_preFe$solution), res_pso_preFe$fit_data %>% select(iter, "mean_fit"=mean, "best_fit" = best)
+      ))
+    )
+  )
+}
+
+
+
+df_SPSO2 <- NULL
+for(i in 1:100){
+  res_SPSO_time <- system.time({
+    res_SPSO <- pso(
+      par = SPSO_feasable_solutions[,sel_sol[i]],
+      fn = function(x){
+        x <- as.vector(round(x*nav/prices)*prices/nav)
+        fitness <- calc_fit(x)
+        constraints <- calc_const(x)
+        return(fitness+100*constraints)
+      },
+      lower = 0,
+      upper = 0.1,
+      control = list(
+        s = 50, # swarm size
+        c.p = 0.5, # inherit best
+        c.g = 0.5, # global best
+        maxiter = 200, # iterations
+        w0 = 1.2, # starting inertia weight
+        wN = 0, # ending inertia weight
+        save_fit = T # save more information
+      )
+    )
+  })
+  res_SPSO$solution <- as.vector(round(res_SPSO$solution*nav/prices)*prices/nav)
+  
+  df_SPSO2 <- rbind(df_SPSO2, 
+    data.frame(
+      "run" = i,
+      suppressWarnings(rbind(data.frame(
+        "type" = "PSO", "time"=res_SPSO_time[3], "const_break"=calc_const(res_SPSO$solution), res_SPSO$fit_data %>% select(iter, "mean_fit"=mean, "best_fit"=best)
+      )))
+    )
+  )
+  
+}
+
+
+df_res <- rbind(df_SPSO2, df) %>% 
+  #mutate(best_fit = best_fit +1) %>% 
+  group_by(iter, type) %>% 
+  summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
+  ungroup()
+
+df_res$iter <- df_res$iter+400
+
+plot_ly() %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_median, name = "PSO-preFe", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q1, name = "PSO-preFe_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
+  add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q3, name = "PSO-preFe_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>7,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>7,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  html_save()
+  
+
+```
+
+The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
+```{r variants6_next2, echo=F}
+reactable(
+  df_res[df_res$iter==max(df_res$iter),],
+  defaultColDef = colDef(align = "left"),
+  columns = list(
+    iter = colDef(width=50),
+    type = colDef(width=90),
+    time_mean = colDef(format = colFormat(digits=2), width=90),
+    const_break_mean = colDef(format = colFormat(digits=6), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
+    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+  ),
+  compact = T,
+  rownames = F
+) %>% 
+  html_save(., vwidth = 880)
+```
+
+It can be seen that the results are marginal differences, which indicates that PSO with preserving feasibility has no practical uses in finance related problems like the ITP-MSTE.
 
 
 
@@ -549,7 +715,7 @@ for(i in 1:100){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness+10*constraints)
+        return(fitness+100*constraints)
       },
       lower = 0,
       upper = 0.1,
@@ -560,6 +726,7 @@ for(i in 1:100){
       )
     )
   })
+  res_pso_SAvel$solution <- as.vector(round(res_pso_SAvel$solution*nav/prices)*prices/nav)
   
   df <- rbind(df, 
     data.frame(
@@ -603,11 +770,11 @@ reactable(
     iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
-    best_fit_median = colDef(format = colFormat(digits=4), width=125)
+    const_break_mean = colDef(format = colFormat(digits=6), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
+    best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
   rownames = F
@@ -633,7 +800,7 @@ for(i in 1:100){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness+10*constraints)
+        return(fitness+100*constraints)
       },
       lower = 0,
       upper = 0.1,
@@ -653,7 +820,7 @@ for(i in 1:100){
       )
     ))
   })
-  
+  res_pso_pkg$par <- as.vector(round(res_pso_pkg$par*nav/prices)*prices/nav)
   
   df_raw <- data.frame("iter"=res_pso_pkg$stats$it, "best_fit"=lapply(res_pso_pkg$stats$f, min) %>% unlist() %>% as.vector())
   min_fit <- df_raw[1,]$best_fit
@@ -707,11 +874,11 @@ reactable(
     iter = colDef(width=50),
     type = colDef(width=90),
     time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=4), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=4), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=4), width=110),
-    best_fit_median = colDef(format = colFormat(digits=4), width=125)
+    const_break_mean = colDef(format = colFormat(digits=6), width=145),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
+    best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
   rownames = F
