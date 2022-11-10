@@ -132,7 +132,7 @@ plot_ly() %>%
   add_trace(data = df_res, x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>3,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>3,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q3)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
   html_save()
 ```
 
@@ -292,7 +292,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_median, name = "PSO-fnS", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q1, name = "PSO-fnS_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q3, name = "PSO-fnS_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>3,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>3,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q3)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
   html_save()
   
 
@@ -403,7 +403,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_median, name = "PSO-local", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q1, name = "PSO-local_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q3, name = "PSO-local_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>7,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>7,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q3)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
   html_save()
   
 
@@ -434,7 +434,7 @@ reactable(
 It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
 
 ## Preserving Feasibility
-Other variants of the PSO often return solutions that are not feasible, which results in the need to run them multiple times. To grantee that any solution is feasible, one of the creators of the PSO, Russel Eberhardt, studied a variant that preserves the feasibility of the solutions in [@XiEb2002]. To be precise it is not classified as a own variant, it is rather a different constraint handling method instead of the often used penalty method. Nonetheless it has to change the core of the PSO implementation which is why it is assumed to be classified as a own variant in this thesis. The difference compared to the standard PSO are that the initialization of particles is repeated until all positions are feasible with a constraint break of zero. Afterwards only feasible solutions are stored as global or personal best positions, which results in a guaranteed feasible final solution. The first step is already the hardest to achieve in practice. To bring this in perspective, the following code tries to find one feasable position within one million random generated positions:
+Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in [@XiEb2002] explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the following code tries to find a feasible position among a million randomly generated positions:
 ```{r}
 set.seed(0)
 fn_const = function(x){
@@ -454,10 +454,10 @@ print(paste0("Feasable positions: ", sum(X_const==0)))
 print(paste0("Elapsed time: ", time[3]))
 rm(X, X_const)
 ```
-It can be seen that after one million random generated positions there wasn't even one feasible position. Because of this, the first step was changed to start with only one feasible position obtained from one of the final solutions from the standard PSO at random. To have a comprising to the standard PSO it was rerun with the same starting positions.
+It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step was modified to start with only one feasible position, which was randomly determined from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
 
 ### Test Preserving Feasibility PSO
-This section compares the PSO with preserving feasibility and the standard PSO. Both PSO's are using the same feasible solutions as starting positions:
+In this section, we compare the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
 ```{r variants6_next, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 # R/PSO_functions.R : pso_preserving_feasibility()
@@ -563,7 +563,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_median, name = "PSO-preFe", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q1, name = "PSO-preFe_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q3, name = "PSO-preFe_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>7,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>7,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q3)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
   html_save()
   
 
@@ -591,9 +591,7 @@ reactable(
   html_save(., vwidth = 880)
 ```
 
-It can be seen that the results are marginal differences, which indicates that PSO with preserving feasibility has no practical uses in finance related problems like the ITP-MSTE.
-
-
+The results differed only slightly, suggesting that PSO has no practical use in maintaining feasibility for finance-related problems such as ITP-MSTE.
 
 ## Self-Adaptive Velocity
 A self-adaptive velocity PSO approach that attempts to reduce hyperparameters was analyzed in [@FaYa2014]. The self-adaptive velocity is enabled by multiple velocity update schemes that are used randomly. In addition, all hyperparameters are self-adaptive in the way that each particle has its own coefficients $c_g$, $c_p$, and $w$, which change after each iteration depending on the distance to maximum fitness, among other factors. The resulting PSO has no real hyperparameters to adjust, which allows it to be used as a general-purpose PSO. 
@@ -754,7 +752,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_median, name = "PSO-SAvel", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q1, name = "PSO-SAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q3, name = "PSO-SAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>20,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>20,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q3)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
   html_save()
   
 
@@ -858,7 +856,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_median, name = "PSO-pkg", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q1, name = "PSO-pkg_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q3, name = "PSO-pkg_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>20,]$best_fit_q3)-0.001,  max(df_res[df_res$iter>20,]$best_fit_q3)+0.001), title="best fitness")) %>% 
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q3)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
   html_save()
   
 

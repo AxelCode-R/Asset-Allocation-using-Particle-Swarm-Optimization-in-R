@@ -1,4 +1,13 @@
-# Activ vs Passiv Investing
+# Activ vs Passiv Portfolio Managment
+An active portfolio manager seeks to achieve positive alpha, i.e., excess return relative to the market, by using his knowledge, experience, and in-depth analysis of individual assets. Therefore, the manager assumes that the market is not efficient and tries to select mispriced assets to achieve excess returns. The passive portfolio manager, on the other hand, assumes that the market is efficient, meaning that prices reflect all available information, and attempts to replicate the average market return by constructing a diversified portfolio. He knows that stock movements follow a "random walk" and are therefore unpredictable for any individual stock. The passive manager achieves his goal with a quantitative strategy and assumes that the results are stable over time. 
+
+The question arises which of the two portfolio management types is preferable?
+
+The scientist and professor Kenneth French 
+
+
+
+
 |||in progress||| \
 The fundation of Asset Management 
 
@@ -9,3 +18,10 @@ passiv vs activ studie
 
 gut gut
 file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel%20was%20beantwortet%20werden%20soll/Quellen%20nur%20wichtige/Rasmussen2003_Book_QuantitativePortfolioOptimisat.pdf
+
+
+
+
+An_Index_Fund_Fundamentalist.pdf
+
+A Comparison of Active and Passive Portfolio Management.pdf

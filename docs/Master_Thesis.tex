@@ -1401,7 +1401,7 @@ It can be seen that it is superior to the standard PSO in this case. Especially 
 \hypertarget{preserving-feasibility}{%
 \section{Preserving Feasibility}\label{preserving-feasibility}}
 
-Other variants of the PSO often return solutions that are not feasible, which results in the need to run them multiple times. To grantee that any solution is feasible, one of the creators of the PSO, Russel Eberhardt, studied a variant that preserves the feasibility of the solutions in \citep{XiEb2002}. To be precise it is not classified as a own variant, it is rather a different constraint handling method instead of the often used penalty method. Nonetheless it has to change the core of the PSO implementation which is why it is assumed to be classified as a own variant in this thesis. The difference compared to the standard PSO are that the initialization of particles is repeated until all positions are feasible with a constraint break of zero. Afterwards only feasible solutions are stored as global or personal best positions, which results in a guaranteed feasible final solution. The first step is already the hardest to achieve in practice. To bring this in perspective, the following code tries to find one feasable position within one million random generated positions:
+Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in \citep{XiEb2002} explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the following code tries to find a feasible position among a million randomly generated positions:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1443,19 +1443,19 @@ Other variants of the PSO often return solutions that are not feasible, which re
 \end{Highlighting}
 \end{Shaded}
 
-It can be seen that after one million random generated positions there wasn't even one feasible position. Because of this, the first step was changed to start with only one feasible position obtained from one of the final solutions from the standard PSO at random. To have a comprising to the standard PSO it was rerun with the same starting positions.
+It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step was modified to start with only one feasible position, which was randomly determined from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
 
 \hypertarget{test-preserving-feasibility-pso}{%
 \subsection{Test Preserving Feasibility PSO}\label{test-preserving-feasibility-pso}}
 
-This section compares the PSO with preserving feasibility and the standard PSO. Both PSO's are using the same feasible solutions as starting positions:
+In this section, we compare the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
 \includegraphics{Master_Thesis_files/figure-latex/variants6_next-1.png}
 
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/variants6_next2-1.png}
 
-It can be seen that the results are marginal differences, which indicates that PSO with preserving feasibility has no practical uses in finance related problems like the ITP-MSTE.
+The results differed only slightly, suggesting that PSO has no practical use in maintaining feasibility for finance-related problems such as ITP-MSTE.
 
 \hypertarget{self-adaptive-velocity}{%
 \section{Self-Adaptive Velocity}\label{self-adaptive-velocity}}
