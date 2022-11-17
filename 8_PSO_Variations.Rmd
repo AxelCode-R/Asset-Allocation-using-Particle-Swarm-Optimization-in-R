@@ -86,7 +86,7 @@ df_SPSO <- NULL
 for(i in 1:100){
   res_SPSO_time <- system.time({
     res_SPSO <- pso(
-      par = rep(1/ncol(pool_data$returns), ncol(pool_data$returns)),
+      par = rep(0, ncol(pool_data$returns)),
       fn = function(x){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
@@ -243,7 +243,7 @@ df <- NULL
 for(i in 1:100){
   res_pso_fns_time <- system.time({
     res_pso_fns <- pso_fn_stretching(
-      par = rep(1/ncol(pool_data$returns), ncol(pool_data$returns)),
+      par = rep(0, ncol(pool_data$returns)),
       fn = function(x){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
@@ -354,7 +354,7 @@ for(i in 1:100){
 
   res_pso_local_time <- system.time({
     res_pso_local <- pso_local(
-      par = rep(1/ncol(pool_data$returns), ncol(pool_data$returns)),
+      par = rep(0, ncol(pool_data$returns)),
       fn = function(x){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)
@@ -708,7 +708,7 @@ df <- NULL
 for(i in 1:100){
   res_pso_SAvel_time <- system.time({
     res_pso_SAvel <- pso_self_adaptive_velocity(
-      par = rep(1/ncol(pool_data$returns), ncol(pool_data$returns)),
+      par = rep(0, ncol(pool_data$returns)),
       fn = function(x){
         x <- as.vector(round(x*nav/prices)*prices/nav)
         fitness <- calc_fit(x)

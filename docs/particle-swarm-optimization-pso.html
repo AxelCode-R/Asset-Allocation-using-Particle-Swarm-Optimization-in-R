@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-10" />
+<meta name="date" content="2022-11-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -204,7 +204,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.5</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Investing</a></li>
+<li class="chapter" data-level="4" data-path="activ-vs-passiv-portfolio-managment.html"><a href="activ-vs-passiv-portfolio-managment.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Portfolio Managment</a></li>
 <li class="chapter" data-level="5" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>5</b> Challenges of Passiv Investing</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>5.1</b> Mean-Variance Portfolio (MVP)</a>
@@ -359,8 +359,8 @@ div.csl-indent {
 <span id="cb24-3"><a href="particle-swarm-optimization-pso.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># move particles</span></span>
 <span id="cb24-4"><a href="particle-swarm-optimization-pso.html#cb24-4" aria-hidden="true" tabindex="-1"></a>  V <span class="ot">&lt;-</span> </span>
 <span id="cb24-5"><a href="particle-swarm-optimization-pso.html#cb24-5" aria-hidden="true" tabindex="-1"></a>    (control<span class="sc">$</span>w0<span class="sc">-</span>(control<span class="sc">$</span>w0<span class="sc">-</span>control<span class="sc">$</span>wN)<span class="sc">*</span>i<span class="sc">/</span>control<span class="sc">$</span>maxiter) <span class="sc">*</span> V <span class="sc">+</span> </span>
-<span id="cb24-6"><a href="particle-swarm-optimization-pso.html#cb24-6" aria-hidden="true" tabindex="-1"></a>    control<span class="sc">$</span>c.p <span class="sc">*</span> <span class="fu">runif</span>(<span class="fu">length</span>(par)) <span class="sc">*</span> (P<span class="sc">-</span>X) <span class="sc">+</span> </span>
-<span id="cb24-7"><a href="particle-swarm-optimization-pso.html#cb24-7" aria-hidden="true" tabindex="-1"></a>    control<span class="sc">$</span>c.g <span class="sc">*</span> <span class="fu">runif</span>(<span class="fu">length</span>(par)) <span class="sc">*</span> (p_g<span class="sc">-</span>X)</span>
+<span id="cb24-6"><a href="particle-swarm-optimization-pso.html#cb24-6" aria-hidden="true" tabindex="-1"></a>      control<span class="sc">$</span>c.p <span class="sc">*</span> <span class="fu">t</span>(<span class="fu">runif</span>(<span class="fu">ncol</span>(X)) <span class="sc">*</span> <span class="fu">t</span>(P<span class="sc">-</span>X)) <span class="sc">+</span></span>
+<span id="cb24-7"><a href="particle-swarm-optimization-pso.html#cb24-7" aria-hidden="true" tabindex="-1"></a>      control<span class="sc">$</span>c.g <span class="sc">*</span> <span class="fu">t</span>(<span class="fu">runif</span>(<span class="fu">ncol</span>(X)) <span class="sc">*</span> <span class="fu">t</span>(p_g<span class="sc">-</span>X))</span>
 <span id="cb24-8"><a href="particle-swarm-optimization-pso.html#cb24-8" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> X <span class="sc">+</span> V</span>
 <span id="cb24-9"><a href="particle-swarm-optimization-pso.html#cb24-9" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb24-10"><a href="particle-swarm-optimization-pso.html#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set velocity to zeros if not in valid space</span></span>
@@ -384,7 +384,7 @@ div.csl-indent {
 <span id="cb24-28"><a href="particle-swarm-optimization-pso.html#cb24-28" aria-hidden="true" tabindex="-1"></a>    p_g_fit <span class="ot">&lt;-</span> <span class="fu">min</span>(P_fit)</span>
 <span id="cb24-29"><a href="particle-swarm-optimization-pso.html#cb24-29" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb24-30"><a href="particle-swarm-optimization-pso.html#cb24-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>The best fitness after <span class="math inline">\(100\)</span> iterations is 0.0000095 and the best possible solution is <span class="math inline">\(0\)</span>.</p>
+<p>The best fitness after <span class="math inline">\(100\)</span> iterations is 0.0000613 and the best possible solution is <span class="math inline">\(0\)</span>.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb25-1"><a href="particle-swarm-optimization-pso.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load default PSO</span></span>
 <span id="cb25-2"><a href="particle-swarm-optimization-pso.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/PSO_functions.R&quot;</span>)</span></code></pre></div>
 </div>

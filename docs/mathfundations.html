@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-10" />
+<meta name="date" content="2022-11-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="open-data-sources.html"/>
-<link rel="next" href="activ-vs-passiv-investing.html"/>
+<link rel="next" href="activ-vs-passiv-portfolio-managment.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -204,7 +204,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.5</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Investing</a></li>
+<li class="chapter" data-level="4" data-path="activ-vs-passiv-portfolio-managment.html"><a href="activ-vs-passiv-portfolio-managment.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Portfolio Managment</a></li>
 <li class="chapter" data-level="5" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>5</b> Challenges of Passiv Investing</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>5.1</b> Mean-Variance Portfolio (MVP)</a>
@@ -502,14 +502,14 @@ and can be estimated in R using the basis function <code>cov()</code> and histor
 
 <span class="math display">\[\begin{align*}
   Z_{t_1} &amp;= (1+R_{t_1}) \cdot t(w_{t_0})\\
-  R_{t_1}^P &amp;= \sum_{n = 1}^N Z_{t_1} - 1
+  R_{t_1}^P &amp;= \sum_{n = 1}^N Z_{t_1, n} - 1
 \end{align*}\]</span>
-And since the portfolio was full in <span class="math inline">\(t_0\)</span>, the adjusted weights in <span class="math inline">\(t_1\)</span> are <span class="math inline">\(w_{t_1} = Z_{t_1}/\sum_{n = 1}^N Z_{t_1}\)</span> (element-wise division). These new weights can be used in the next time step to replace the weights <span class="math inline">\(w_{t_0}\)</span> in the above formula. The recursive formula for holding a portfolio with weights <span class="math inline">\(\textstyle\sum w_{t_0} = 1\)</span> in <span class="math inline">\(t_0\)</span> and return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span>, has portfolio return <span class="math inline">\(R_{t_i}^P = \textstyle\sum_{n = 1}^N Z_{t_i} - 1\)</span> in <span class="math inline">\(t_i\)</span> with <span class="math inline">\(i=1, 2, \cdots, T\)</span> for:<br />
+And since the portfolio was full in <span class="math inline">\(t_0\)</span>, the adjusted weights in <span class="math inline">\(t_1\)</span> are <span class="math inline">\(w_{t_1} = Z_{t_1}/\sum_{n = 1}^N Z_{t_1, n}\)</span> (element-wise division). These new weights can be used in the next time step to replace the weights <span class="math inline">\(w_{t_0}\)</span> in the above formula. The recursive formula for holding a portfolio with weights <span class="math inline">\(\textstyle\sum w_{t_0} = 1\)</span> in <span class="math inline">\(t_0\)</span> and return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span>, has portfolio return <span class="math inline">\(R_{t_i}^P = \textstyle\sum_{n = 1}^N Z_{t_i, n} - 1\)</span> in <span class="math inline">\(t_i\)</span> with <span class="math inline">\(i=1, 2, \cdots, T\)</span> for:<br />
 <span class="math display">\[
   Z_{t_i} =
   \begin{cases}
   (1+R_{t_i})\cdot t(w_{t_0}) &amp;\text{ if }i=1\\
-  (1+R_{t_i})\cdot \frac{Z_{t_{i-1}}}{\sum_{n = 1}^N Z_{t_{i-1}}} &amp;\text{ if }i&gt;1
+  (1+R_{t_i})\cdot \frac{Z_{t_{i-1}}}{\sum_{n = 1}^N Z_{t_{i-1, n}}} &amp;\text{ if }i&gt;1
   \end{cases}
 \]</span>
 The requirement that the portfolio is full can be achieved by adding an additional weight to <span class="math inline">\(w_{t_0}\)</span>, which includes the residual <span class="math inline">\(1-\textstyle\sum w_{t_0}\)</span> and an additional zero return vector to <span class="math inline">\(R\)</span>. This calculation of portfolio returns is implemented in the function <code>calc_portfolio_returns()</code> below.</p>
@@ -593,7 +593,7 @@ Zivot, Eric. 2021. <em>Introduction to Computational Finance and Financial Econo
         </div>
       </div>
 <a href="open-data-sources.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="activ-vs-passiv-investing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="activ-vs-passiv-portfolio-managment.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

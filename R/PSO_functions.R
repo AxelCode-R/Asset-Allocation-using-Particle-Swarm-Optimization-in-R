@@ -54,8 +54,8 @@ pso_default <- function(
     # move particles
     V <-
       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
-      control$c.p * runif(length(par)) * (P-X) +
-      control$c.g * runif(length(par)) * (p_g-X)
+      control$c.p * t(runif(ncol(X)) * t(P-X)) +
+      control$c.g * t(runif(ncol(X)) * t(p_g-X))
     X <- X + V
 
     # set velocity to zeros if not in valid space
@@ -154,8 +154,8 @@ pso_fn_stretching <- function(
     # move particles
     V <-
       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
-      control$c.p * runif(length(par)) * (P-X) +
-      control$c.g * runif(length(par)) * (p_g-X)
+      control$c.p * t(runif(ncol(X)) * t(P-X)) +
+      control$c.g * t(runif(ncol(X)) * t(p_g-X))
     X <- X + V
 
     # set velocity to zeros if not in valid space
@@ -425,8 +425,8 @@ pso_local <- function(
     # move particles
     V <-
       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
-      control$c.p * runif(length(par)) * (P-X) +
-      control$c.g * runif(length(par)) * (P_g-X)
+      control$c.p * t(runif(ncol(X)) * t(P-X)) +
+      control$c.g * t(runif(ncol(X)) * t(p_g-X))
     X <- X + V
 
     # set velocity to zeros if not in valid space
@@ -680,8 +680,8 @@ pso_preserving_feasibility <- function(
     # move particles
     V <-
       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
-      control$c.p * runif(length(par)) * (P-X) +
-      control$c.g * runif(length(par)) * (p_g-X)
+      control$c.p * t(runif(ncol(X)) * t(P-X)) +
+      control$c.g * t(runif(ncol(X)) * t(p_g-X))
     X <- X + V
 
     # set velocity to zeros if not in valid space
@@ -805,8 +805,8 @@ pso_local_prevFeas <- function(
     # move particles
     V <-
       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
-      control$c.p * runif(length(par)) * (P-X) +
-      control$c.g * runif(length(par)) * (P_g-X)
+      control$c.p * t(runif(ncol(X)) * t(P-X)) +
+      control$c.g * t(runif(ncol(X)) * t(p_g-X))
     X <- X + V
 
     # set velocity to zeros if not in valid space

@@ -3,9 +3,7 @@ An active portfolio manager seeks to achieve positive alpha, i.e., excess return
 
 The question arises which of the two portfolio management types is preferable?
 
-The scientists Fama and French analysed the gain of return of active and passiv portfolio management by utilizing factor models which resulted in a wide range of now commonly used models to analyse the origin of returns.
-
-[@FaFr2010]
+The scientists Fama and French analysed the returns of active and passive portfolio management by utilizing factor models which resulted in a wide range of now commonly used models to analyse the origin of returns. There theory is that passive investors get passive returns that have a alpha of zero before costs. This implicitly says that active investors combined have a alpha of zero before costs too. This means that if some active investors have a positive alpha, other active investors have made a negative alpha. In fact Fama and French analyzed this behavior more deeply in [@FaFr2010] which indicated that value weighted professionally managed investment funds that primarily invest in the U.S. stock market have a slightly positive alpha in expense of active investors outside the professionally managed investment funds.
 
 
 

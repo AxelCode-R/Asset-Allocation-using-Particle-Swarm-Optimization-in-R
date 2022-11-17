@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-10" />
+<meta name="date" content="2022-11-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -204,7 +204,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.5</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="activ-vs-passiv-investing.html"><a href="activ-vs-passiv-investing.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Investing</a></li>
+<li class="chapter" data-level="4" data-path="activ-vs-passiv-portfolio-managment.html"><a href="activ-vs-passiv-portfolio-managment.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Portfolio Managment</a></li>
 <li class="chapter" data-level="5" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>5</b> Challenges of Passiv Investing</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>5.1</b> Mean-Variance Portfolio (MVP)</a>
@@ -371,7 +371,7 @@ div.csl-indent {
 <span id="cb33-69"><a href="pso-variations.html#cb33-69" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
 <span id="cb33-70"><a href="pso-variations.html#cb33-70" aria-hidden="true" tabindex="-1"></a>  res_SPSO_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb33-71"><a href="pso-variations.html#cb33-71" aria-hidden="true" tabindex="-1"></a>    res_SPSO <span class="ot">&lt;-</span> <span class="fu">pso</span>(</span>
-<span id="cb33-72"><a href="pso-variations.html#cb33-72" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns), <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
+<span id="cb33-72"><a href="pso-variations.html#cb33-72" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
 <span id="cb33-73"><a href="pso-variations.html#cb33-73" aria-hidden="true" tabindex="-1"></a>      <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
 <span id="cb33-74"><a href="pso-variations.html#cb33-74" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
 <span id="cb33-75"><a href="pso-variations.html#cb33-75" aria-hidden="true" tabindex="-1"></a>        fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>
@@ -495,7 +495,7 @@ It can be seen that the fitness is stretched upward around the local minima <spa
 <span id="cb36-5"><a href="pso-variations.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
 <span id="cb36-6"><a href="pso-variations.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  res_pso_fns_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb36-7"><a href="pso-variations.html#cb36-7" aria-hidden="true" tabindex="-1"></a>    res_pso_fns <span class="ot">&lt;-</span> <span class="fu">pso_fn_stretching</span>(</span>
-<span id="cb36-8"><a href="pso-variations.html#cb36-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns), <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
+<span id="cb36-8"><a href="pso-variations.html#cb36-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
 <span id="cb36-9"><a href="pso-variations.html#cb36-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
 <span id="cb36-10"><a href="pso-variations.html#cb36-10" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
 <span id="cb36-11"><a href="pso-variations.html#cb36-11" aria-hidden="true" tabindex="-1"></a>        fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>
@@ -580,7 +580,7 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 <span id="cb37-6"><a href="pso-variations.html#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-7"><a href="pso-variations.html#cb37-7" aria-hidden="true" tabindex="-1"></a>  res_pso_local_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb37-8"><a href="pso-variations.html#cb37-8" aria-hidden="true" tabindex="-1"></a>    res_pso_local <span class="ot">&lt;-</span> <span class="fu">pso_local</span>(</span>
-<span id="cb37-9"><a href="pso-variations.html#cb37-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns), <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
+<span id="cb37-9"><a href="pso-variations.html#cb37-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
 <span id="cb37-10"><a href="pso-variations.html#cb37-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
 <span id="cb37-11"><a href="pso-variations.html#cb37-11" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
 <span id="cb37-12"><a href="pso-variations.html#cb37-12" aria-hidden="true" tabindex="-1"></a>        fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>
@@ -639,7 +639,7 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 </div>
 <div id="preserving-feasibility" class="section level2 hasAnchor" number="8.4">
 <h2><span class="header-section-number">8.4</span> Preserving Feasibility<a href="pso-variations.html#preserving-feasibility" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Other variants of the PSO often return solutions that are not feasible, which results in the need to run them multiple times. To grantee that any solution is feasible, one of the creators of the PSO, Russel Eberhardt, studied a variant that preserves the feasibility of the solutions in <span class="citation">(<a href="#ref-XiEb2002" role="doc-biblioref">Hu and Eberhardt 2002</a>)</span>. To be precise it is not classified as a own variant, it is rather a different constraint handling method instead of the often used penalty method. Nonetheless it has to change the core of the PSO implementation which is why it is assumed to be classified as a own variant in this thesis. The difference compared to the standard PSO are that the initialization of particles is repeated until all positions are feasible with a constraint break of zero. Afterwards only feasible solutions are stored as global or personal best positions, which results in a guaranteed feasible final solution. The first step is already the hardest to achieve in practice. To bring this in perspective, the following code tries to find one feasable position within one million random generated positions:</p>
+<p>Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in <span class="citation">(<a href="#ref-XiEb2002" role="doc-biblioref">Hu and Eberhardt 2002</a>)</span> explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the following code tries to find a feasible position among a million randomly generated positions:</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="pso-variations.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb38-2"><a href="pso-variations.html#cb38-2" aria-hidden="true" tabindex="-1"></a>fn_const <span class="ot">=</span> <span class="cf">function</span>(x){</span>
 <span id="cb38-3"><a href="pso-variations.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
@@ -657,12 +657,12 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 <span id="cb38-15"><a href="pso-variations.html#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Feasable positions: &quot;</span>, <span class="fu">sum</span>(X_const<span class="sc">==</span><span class="dv">0</span>)))</span></code></pre></div>
 <pre><code>[1] &quot;Feasable positions: 0&quot;</code></pre>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="pso-variations.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Elapsed time: &quot;</span>, time[<span class="dv">3</span>]))</span></code></pre></div>
-<pre><code>[1] &quot;Elapsed time: 244.3&quot;</code></pre>
+<pre><code>[1] &quot;Elapsed time: 228.79&quot;</code></pre>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="pso-variations.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(X, X_const)</span></code></pre></div>
-<p>It can be seen that after one million random generated positions there wasn’t even one feasible position. Because of this, the first step was changed to start with only one feasible position obtained from one of the final solutions from the standard PSO at random. To have a comprising to the standard PSO it was rerun with the same starting positions.</p>
+<p>It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step was modified to start with only one feasible position, which was randomly determined from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.</p>
 <div id="test-preserving-feasibility-pso" class="section level3 hasAnchor" number="8.4.1">
 <h3><span class="header-section-number">8.4.1</span> Test Preserving Feasibility PSO<a href="pso-variations.html#test-preserving-feasibility-pso" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This section compares the PSO with preserving feasibility and the standard PSO. Both PSO’s are using the same feasible solutions as starting positions:</p>
+<p>In this section, we compare the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:</p>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb43-1"><a href="pso-variations.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb43-2"><a href="pso-variations.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># R/PSO_functions.R : pso_preserving_feasibility()</span></span>
 <span id="cb43-3"><a href="pso-variations.html#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -772,7 +772,7 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 <p><img src="Master_Thesis_files/figure-html/variants6_next-1.png" width="672" /></p>
 <p>The aggregate statistics of the last iterations of all 100 runs can be found in the table below:</p>
 <p><img src="Master_Thesis_files/figure-html/variants6_next2-1.png" width="672" /></p>
-<p>It can be seen that the results are marginal differences, which indicates that PSO with preserving feasibility has no practical uses in finance related problems like the ITP-MSTE.</p>
+<p>The results differed only slightly, suggesting that PSO has no practical use in maintaining feasibility for finance-related problems such as ITP-MSTE.</p>
 </div>
 </div>
 <div id="self-adaptive-velocity" class="section level2 hasAnchor" number="8.5">
@@ -863,7 +863,7 @@ It can be seen that the randomness of the motion increases compared to the unifo
 <span id="cb44-5"><a href="pso-variations.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
 <span id="cb44-6"><a href="pso-variations.html#cb44-6" aria-hidden="true" tabindex="-1"></a>  res_pso_SAvel_time <span class="ot">&lt;-</span> <span class="fu">system.time</span>({</span>
 <span id="cb44-7"><a href="pso-variations.html#cb44-7" aria-hidden="true" tabindex="-1"></a>    res_pso_SAvel <span class="ot">&lt;-</span> <span class="fu">pso_self_adaptive_velocity</span>(</span>
-<span id="cb44-8"><a href="pso-variations.html#cb44-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns), <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
+<span id="cb44-8"><a href="pso-variations.html#cb44-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_data<span class="sc">$</span>returns)),</span>
 <span id="cb44-9"><a href="pso-variations.html#cb44-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">fn =</span> <span class="cf">function</span>(x){</span>
 <span id="cb44-10"><a href="pso-variations.html#cb44-10" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
 <span id="cb44-11"><a href="pso-variations.html#cb44-11" aria-hidden="true" tabindex="-1"></a>        fitness <span class="ot">&lt;-</span> <span class="fu">calc_fit</span>(x)</span>
@@ -1003,7 +1003,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 Engelbrecht, AP. 2013. <span>“Particle Swarm Optimization: Global Best or Local Best?”</span>
 </div>
 <div id="ref-XiEb2002" class="csl-entry">
-Hu, Xiaohui, and Russell Eberhardt. 2002. <span>“Solving Constrained Nonlinear Optimization Problems with Particle Swarm Optimization.”</span>
+Hu, Xiaohui, and Russell Eberhardt. 2002. <span>“Luck Versus Skill in the Cross-Section of Mutual Fund Returns.”</span>
 </div>
 <div id="ref-PaVr2002" class="csl-entry">
 Konstantinos Parsopoulos, Michael N. Vrahatis. 2002. <span>“Recent Approaches to Global Optimization Problems Through Particle Swarm Optimization.”</span>

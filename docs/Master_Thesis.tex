@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-11-10}
+\date{2022-11-17}
 
 \begin{document}
 \maketitle
@@ -465,14 +465,14 @@ Suppose there are \(N\) assets that form a portfolio with weights \(w_{t_0}\) at
 \vspace{-0.1cm}
 \begin{align*}
   Z_{t_1} &= (1+R_{t_1}) \cdot t(w_{t_0})\\
-  R_{t_1}^P &= \sum_{n = 1}^N Z_{t_1} - 1
+  R_{t_1}^P &= \sum_{n = 1}^N Z_{t_1, n} - 1
 \end{align*}
-And since the portfolio was full in \(t_0\), the adjusted weights in \(t_1\) are \(w_{t_1} = Z_{t_1}/\sum_{n = 1}^N Z_{t_1}\) (element-wise division). These new weights can be used in the next time step to replace the weights \(w_{t_0}\) in the above formula. The recursive formula for holding a portfolio with weights \(\textstyle\sum w_{t_0} = 1\) in \(t_0\) and return matrix \(R \in \mathbb{R}^{T \times N}\), has portfolio return \(R_{t_i}^P = \textstyle\sum_{n = 1}^N Z_{t_i} - 1\) in \(t_i\) with \(i=1, 2, \cdots, T\) for:\\
+And since the portfolio was full in \(t_0\), the adjusted weights in \(t_1\) are \(w_{t_1} = Z_{t_1}/\sum_{n = 1}^N Z_{t_1, n}\) (element-wise division). These new weights can be used in the next time step to replace the weights \(w_{t_0}\) in the above formula. The recursive formula for holding a portfolio with weights \(\textstyle\sum w_{t_0} = 1\) in \(t_0\) and return matrix \(R \in \mathbb{R}^{T \times N}\), has portfolio return \(R_{t_i}^P = \textstyle\sum_{n = 1}^N Z_{t_i, n} - 1\) in \(t_i\) with \(i=1, 2, \cdots, T\) for:\\
 \[
   Z_{t_i} =
   \begin{cases}
   (1+R_{t_i})\cdot t(w_{t_0}) &\text{ if }i=1\\
-  (1+R_{t_i})\cdot \frac{Z_{t_{i-1}}}{\sum_{n = 1}^N Z_{t_{i-1}}} &\text{ if }i>1
+  (1+R_{t_i})\cdot \frac{Z_{t_{i-1}}}{\sum_{n = 1}^N Z_{t_{i-1, n}}} &\text{ if }i>1
   \end{cases}
 \]
 The requirement that the portfolio is full can be achieved by adding an additional weight to \(w_{t_0}\), which includes the residual \(1-\textstyle\sum w_{t_0}\) and an additional zero return vector to \(R\). This calculation of portfolio returns is implemented in the function \texttt{calc\_portfolio\_returns()} below.
@@ -550,8 +550,14 @@ This is the implementation of a vectorial calculation of portfolio returns over 
 
 This function has the same results as the \texttt{Return.portfolio()} function from the \texttt{PortfolioAnalytics} package.
 
-\hypertarget{activ-vs-passiv-investing}{%
-\chapter{Activ vs Passiv Investing}\label{activ-vs-passiv-investing}}
+\hypertarget{activ-vs-passiv-portfolio-managment}{%
+\chapter{Activ vs Passiv Portfolio Managment}\label{activ-vs-passiv-portfolio-managment}}
+
+An active portfolio manager seeks to achieve positive alpha, i.e., excess return relative to the market, by using his knowledge, experience, and in-depth analysis of individual assets. Therefore, the manager assumes that the market is not efficient and tries to select mispriced assets to achieve excess returns. The passive portfolio manager, on the other hand, assumes that the market is efficient, meaning that prices reflect all available information, and attempts to replicate the average market return by constructing a diversified portfolio. He knows that stock movements follow a ``random walk'' and are therefore unpredictable for any individual stock. The passive manager achieves his goal with a quantitative strategy and assumes that the results are stable over time.
+
+The question arises which of the two portfolio management types is preferable?
+
+The scientists Fama and French analysed the returns of active and passive portfolio management by utilizing factor models which resulted in a wide range of now commonly used models to analyse the origin of returns. There theory is that passive investors get passive returns that have a alpha of zero before costs. This implicitly says that active investors combined have a alpha of zero before costs too. This means that if some active investors have a positive alpha, other active investors have made a negative alpha. In fact Fama and French analyzed this behavior more deeply in \citep{FaFr2010} which indicated that value weighted professionally managed investment funds that primarily invest in the U.S. stock market have a slightly positive alpha in expense of active investors outside the professionally managed investment funds.
 
 \textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
 The fundation of Asset Management
@@ -561,6 +567,10 @@ passiv vs activ studie
 
 gut gut
 \url{file:///C:/Users/Axel/Desktop/Master-Thesis-All/Ziel\%20was\%20beantwortet\%20werden\%20soll/Quellen\%20nur\%20wichtige/Rasmussen2003_Book_QuantitativePortfolioOptimisat.pdf}
+
+An\_Index\_Fund\_Fundamentalist.pdf
+
+A Comparison of Active and Passive Portfolio Management.pdf
 
 \hypertarget{challenges}{%
 \chapter{Challenges of Passiv Investing}\label{challenges}}
@@ -736,8 +746,8 @@ The ITP-TEV and the ITP-MSTE had almost the same results, which can be seen in t
 
 \begin{verbatim}
       type      AAPL       IBM      GOOG
-1  ITP-TEV 0.2594763 0.4164918 0.3240319
-2 ITP-MSTE 0.2588587 0.4170364 0.3241049
+1  ITP-TEV 0.2588844 0.4163274 0.3247882
+2 ITP-MSTE 0.2586717 0.4165150 0.3248133
 \end{verbatim}
 
 \hypertarget{analytic-solver-for-quadratic-programming-problems}{%
@@ -1109,8 +1119,8 @@ The required data structure is available and the optimization can start with the
   \CommentTok{\# move particles}
 \NormalTok{  V }\OtherTok{\textless{}{-}} 
 \NormalTok{    (control}\SpecialCharTok{$}\NormalTok{w0}\SpecialCharTok{{-}}\NormalTok{(control}\SpecialCharTok{$}\NormalTok{w0}\SpecialCharTok{{-}}\NormalTok{control}\SpecialCharTok{$}\NormalTok{wN)}\SpecialCharTok{*}\NormalTok{i}\SpecialCharTok{/}\NormalTok{control}\SpecialCharTok{$}\NormalTok{maxiter) }\SpecialCharTok{*}\NormalTok{ V }\SpecialCharTok{+} 
-\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c.p }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\FunctionTok{length}\NormalTok{(par)) }\SpecialCharTok{*}\NormalTok{ (P}\SpecialCharTok{{-}}\NormalTok{X) }\SpecialCharTok{+} 
-\NormalTok{    control}\SpecialCharTok{$}\NormalTok{c.g }\SpecialCharTok{*} \FunctionTok{runif}\NormalTok{(}\FunctionTok{length}\NormalTok{(par)) }\SpecialCharTok{*}\NormalTok{ (p\_g}\SpecialCharTok{{-}}\NormalTok{X)}
+\NormalTok{      control}\SpecialCharTok{$}\NormalTok{c.p }\SpecialCharTok{*} \FunctionTok{t}\NormalTok{(}\FunctionTok{runif}\NormalTok{(}\FunctionTok{ncol}\NormalTok{(X)) }\SpecialCharTok{*} \FunctionTok{t}\NormalTok{(P}\SpecialCharTok{{-}}\NormalTok{X)) }\SpecialCharTok{+}
+\NormalTok{      control}\SpecialCharTok{$}\NormalTok{c.g }\SpecialCharTok{*} \FunctionTok{t}\NormalTok{(}\FunctionTok{runif}\NormalTok{(}\FunctionTok{ncol}\NormalTok{(X)) }\SpecialCharTok{*} \FunctionTok{t}\NormalTok{(p\_g}\SpecialCharTok{{-}}\NormalTok{X))}
 \NormalTok{  X }\OtherTok{\textless{}{-}}\NormalTok{ X }\SpecialCharTok{+}\NormalTok{ V}
   
   \CommentTok{\# set velocity to zeros if not in valid space}
@@ -1137,7 +1147,7 @@ The required data structure is available and the optimization can start with the
 \end{Highlighting}
 \end{Shaded}
 
-The best fitness after \(100\) iterations is 0.0000038 and the best possible solution is \(0\).
+The best fitness after \(100\) iterations is 0.0000001 and the best possible solution is \(0\).
 
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
@@ -1434,7 +1444,7 @@ Other variants of PSO often provide solutions that are infeasible, resulting in 
 \end{Shaded}
 
 \begin{verbatim}
-[1] "Elapsed time: 237.08"
+[1] "Elapsed time: 237.21"
 \end{verbatim}
 
 \begin{Shaded}

@@ -231,14 +231,14 @@ Suppose there are $N$ assets that form a portfolio with weights $w_{t_0}$ at tim
 \vspace{-0.1cm}
 \begin{align*}
   Z_{t_1} &= (1+R_{t_1}) \cdot t(w_{t_0})\\
-  R_{t_1}^P &= \sum_{n = 1}^N Z_{t_1} - 1
+  R_{t_1}^P &= \sum_{n = 1}^N Z_{t_1, n} - 1
 \end{align*}
-And since the portfolio was full in $t_0$, the adjusted weights in $t_1$ are $w_{t_1} = Z_{t_1}/\sum_{n = 1}^N Z_{t_1}$ (element-wise division). These new weights can be used in the next time step to replace the weights $w_{t_0}$ in the above formula. The recursive formula for holding a portfolio with weights $\textstyle\sum w_{t_0} = 1$ in $t_0$ and return matrix $R \in \mathbb{R}^{T \times N}$, has portfolio return $R_{t_i}^P = \textstyle\sum_{n = 1}^N Z_{t_i} - 1$ in $t_i$ with $i=1, 2, \cdots, T$ for:  
+And since the portfolio was full in $t_0$, the adjusted weights in $t_1$ are $w_{t_1} = Z_{t_1}/\sum_{n = 1}^N Z_{t_1, n}$ (element-wise division). These new weights can be used in the next time step to replace the weights $w_{t_0}$ in the above formula. The recursive formula for holding a portfolio with weights $\textstyle\sum w_{t_0} = 1$ in $t_0$ and return matrix $R \in \mathbb{R}^{T \times N}$, has portfolio return $R_{t_i}^P = \textstyle\sum_{n = 1}^N Z_{t_i, n} - 1$ in $t_i$ with $i=1, 2, \cdots, T$ for:  
 $$
   Z_{t_i} =
   \begin{cases}
   (1+R_{t_i})\cdot t(w_{t_0}) &\text{ if }i=1\\
-  (1+R_{t_i})\cdot \frac{Z_{t_{i-1}}}{\sum_{n = 1}^N Z_{t_{i-1}}} &\text{ if }i>1
+  (1+R_{t_i})\cdot \frac{Z_{t_{i-1}}}{\sum_{n = 1}^N Z_{t_{i-1, n}}} &\text{ if }i>1
   \end{cases}
 $$
 The requirement that the portfolio is full can be achieved by adding an additional weight to $w_{t_0}$, which includes the residual $1-\textstyle\sum w_{t_0}$ and an additional zero return vector to $R$. This calculation of portfolio returns is implemented in the function `calc_portfolio_returns()` below.

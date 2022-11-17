@@ -86,8 +86,8 @@ for(i in 1:control$maxiter){
   # move particles
   V <- 
     (control$w0-(control$w0-control$wN)*i/control$maxiter) * V + 
-    control$c.p * runif(length(par)) * (P-X) + 
-    control$c.g * runif(length(par)) * (p_g-X)
+      control$c.p * t(runif(ncol(X)) * t(P-X)) +
+      control$c.g * t(runif(ncol(X)) * t(p_g-X))
   X <- X + V
   
   # set velocity to zeros if not in valid space
@@ -156,7 +156,7 @@ The function `f` has many local minima and a global minima at $(1,1)$ with the v
 
 ```{r gif_animate, echo=F}
 grid <- expand.grid(seq(-10, 10, length.out = 100), seq(-10, 10, length.out = 100), stringsAsFactors = F)
-grid$z <- apply(grid, 1, fn)
+grid$z <- apply(grid, 1, f)
 
 
 background <- ggplot() +
