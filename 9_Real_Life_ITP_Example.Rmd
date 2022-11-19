@@ -278,6 +278,305 @@ transaction_cost_constraint <- function(old_shares, new_shares, nav){
    return(tc_return^2)
 }
 
+
+
+
+set.seed(0)
+MSTE_perf <- NULL
+MSTE_infos <- NULL
+MSTE_nav <- xts(nav, order.by = rebalance_dates[train_months+1])
+portfolio_shares <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
+portfolio_wgts <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
+res_pso_SAvel_MSTE <- list()
+res_pso_SAvel_MSTE$const_break <- 1
+res_pso_SAvel_MSTE$rebalance_constraint <- 1
+for(i in (train_months+1):(length(rebalance_dates)-1)){
+  save_nav <- MSTE_nav[nrow(MSTE_nav),]
+  print(i)
+  date <- rebalance_dates[i]
+  date_from <- rebalance_dates[i-train_months]
+
+  train_frame <- paste0(date_from, "/", date)
+  test_frame <- paste0(date+1, "/", rebalance_dates[i+test_months])
+
+  ticker_in_spx <- QP_tickers[[i]]#spx_composition %>% filter(Date <= date) %>% filter(Date == max(Date)) %>% pull(Ticker)
+
+  returns <- pool_data$returns[train_frame, colnames(pool_data$returns) %in% ticker_in_spx] %>%
+    .[,colSums(is.na(.))==0]
+
+  prices <- pool_data$prices[date, colnames(returns)]
+
+  bm_returns <- bm_returns_raw[train_frame,]
+
+
+  mat <- list(
+    Dmat = t(returns) %*% (returns),
+    dvec = t(returns) %*% (bm_returns),
+    const = t(bm_returns) %*% bm_returns,
+    Amat = t(rbind(
+      -rep(1, ncol(returns)), # sum w <= 1
+      rep(1, ncol(returns)), # sum w >= 0.99
+      diag(1,
+           nrow=ncol(returns),
+           ncol=ncol(returns)) # long only
+    )),
+    bvec = c(
+      -0.995, # sum w <= 1
+      0.96, # sum w >= 0.99
+      rep(0, ncol(returns)) # long only
+    ),
+    meq = 0
+  )
+
+  # sell transaction costs because not in S&P anymore
+  MSTE_nav[nrow(MSTE_nav),] <- last(MSTE_nav) - 1 * sum(portfolio_shares[!names(portfolio_shares) %in% colnames(returns)]!=0)
+
+
+  portfolio_shares_temp <- setNames(portfolio_shares[colnames(returns)], colnames(returns))
+  portfolio_shares_temp[is.na(portfolio_shares_temp)] <- 0
+  portfolio_wgt_temp <- portfolio_shares_temp * prices / as.numeric(last(MSTE_nav))
+
+  restart <<- 4
+  for(k in 1:100){
+    if(res_pso_SAvel_MSTE$const_break == 0 && res_pso_SAvel_MSTE$rebalance_constraint < 0.1){
+      restart <<- restart - 1
+    }else{
+      restart <<- 3
+    }
+    if( k == 1 || res_pso_SAvel_MSTE$const_break != 0 || res_pso_SAvel_MSTE$rebalance_constraint > 0.1 || restart > 0){
+      res_pso_SAvel_MSTE <- pso_self_adaptive_velocity(
+        par = if(k==1){if(i==(train_months+1)){QP_solutions[[i]]}else{portfolio_wgt_temp}}else{res_pso_SAvel_MSTE$solution}, # QP_solutions[[date]]
+        fn = function(x){
+          shares <- round(x*as.numeric(last(MSTE_nav))/prices)
+          x <- as.vector(shares*prices/as.numeric(last(MSTE_nav)))
+          fitness <- 2*calc_fit(x)
+          constraints <- calc_const(x)
+          rebalance_constraint <- rebalance_const(
+            old_wgt = as.vector(portfolio_wgt_temp),
+            new_wgt = x,
+            first_date = (i == (train_months+1))
+          )
+          tc_constraint <- transaction_cost_constraint(
+            old_shares = as.vector(portfolio_shares_temp),
+            new_shares = as.vector(shares),
+            nav = as.numeric(last(MSTE_nav))
+          )
+          return(fitness + 100*constraints + 100*rebalance_constraint + 0*tc_constraint)
+        },
+        lower = 0,
+        upper = 0.1,
+        control = list(
+          s = 100, # swarm size
+          maxiter = 100 # iterations
+        )
+      )
+      res_pso_SAvel_MSTE$solution <- as.vector(round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices)*prices/as.numeric(last(MSTE_nav)))
+      res_pso_SAvel_MSTE$perf <- calc_portfolio_returns(pool_data$returns[test_frame, colnames(returns)], res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$fitness <- 2*calc_fit(res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$const_break <- calc_const(res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$rebalance_constraint <- 100*rebalance_const(
+            old_wgt = as.vector(portfolio_wgt_temp),
+            new_wgt = res_pso_SAvel_MSTE$solution,
+            first_date = (i == (train_months+1))
+          )
+      res_pso_SAvel_MSTE$transaction_cost_constraint <- 0*transaction_cost_constraint(
+            old_shares = as.vector(portfolio_shares_temp),
+            new_shares = round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices),
+            nav = as.numeric(last(MSTE_nav))
+      )
+    }
+  }
+
+
+  # buy and sell transation costs
+  MSTE_nav[nrow(MSTE_nav),] <- last(MSTE_nav) - 1 * sum( (portfolio_shares_temp-round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices))!=0)
+
+
+  portfolio_shares <- setNames(as.vector(round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices)), colnames(prices))
+  portfolio_wgt <- setNames(as.vector(res_pso_SAvel_MSTE$solution), colnames(prices))
+
+
+  MSTE_perf <- rbind.xts(
+    MSTE_perf,
+    setNames(res_pso_SAvel_MSTE$perf, "PSO_MSTE")
+  )
+
+  MSTE_infos <- bind_rows(
+    MSTE_infos,
+    data.frame(
+      "type" = "PSO_MSTE",
+      "fittness" = res_pso_SAvel_MSTE$fitness,
+      "const_break" = res_pso_SAvel_MSTE$const_break,
+      "rebalance_constraint" = res_pso_SAvel_MSTE$rebalance_constraint,
+      "transaction_cost_constraint" = res_pso_SAvel_MSTE$transaction_cost_constraint,
+      "MSTE_returns" = sum((returns %*% res_pso_SAvel_MSTE$solution - bm_returns)^2),
+      "sum_wgt" = sum(portfolio_wgt),
+      "min_wgt" = min(portfolio_wgt),
+      "n_assets" = sum(portfolio_wgt!=0),
+      "transaction_costs" = as.numeric(save_nav) - as.numeric(MSTE_nav[nrow(MSTE_nav),])
+    )
+  )
+
+  MSTE_nav <- rbind.xts(MSTE_nav, ret_to_cumret(res_pso_SAvel_MSTE$perf)[-1,]/100 * as.numeric(last(MSTE_nav)))
+
+}
+
+save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v12_0tc_v3.rdata")
+
+
+
+
+
+
+
+set.seed(0)
+MSTE_perf <- NULL
+MSTE_infos <- NULL
+MSTE_nav <- xts(nav, order.by = rebalance_dates[train_months+1])
+portfolio_shares <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
+portfolio_wgts <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
+res_pso_SAvel_MSTE <- list()
+res_pso_SAvel_MSTE$const_break <- 1
+res_pso_SAvel_MSTE$rebalance_constraint <- 1
+for(i in (train_months+1):(length(rebalance_dates)-1)){
+  save_nav <- MSTE_nav[nrow(MSTE_nav),]
+  print(i)
+  date <- rebalance_dates[i]
+  date_from <- rebalance_dates[i-train_months]
+
+  train_frame <- paste0(date_from, "/", date)
+  test_frame <- paste0(date+1, "/", rebalance_dates[i+test_months])
+
+  ticker_in_spx <- QP_tickers[[i]]#spx_composition %>% filter(Date <= date) %>% filter(Date == max(Date)) %>% pull(Ticker)
+
+  returns <- pool_data$returns[train_frame, colnames(pool_data$returns) %in% ticker_in_spx] %>%
+    .[,colSums(is.na(.))==0]
+
+  prices <- pool_data$prices[date, colnames(returns)]
+
+  bm_returns <- bm_returns_raw[train_frame,]
+
+
+  mat <- list(
+    Dmat = t(returns) %*% (returns),
+    dvec = t(returns) %*% (bm_returns),
+    const = t(bm_returns) %*% bm_returns,
+    Amat = t(rbind(
+      -rep(1, ncol(returns)), # sum w <= 1
+      rep(1, ncol(returns)), # sum w >= 0.99
+      diag(1,
+           nrow=ncol(returns),
+           ncol=ncol(returns)) # long only
+    )),
+    bvec = c(
+      -0.995, # sum w <= 1
+      0.96, # sum w >= 0.99
+      rep(0, ncol(returns)) # long only
+    ),
+    meq = 0
+  )
+
+  # sell transaction costs because not in S&P anymore
+  MSTE_nav[nrow(MSTE_nav),] <- last(MSTE_nav) - 1 * sum(portfolio_shares[!names(portfolio_shares) %in% colnames(returns)]!=0)
+
+
+  portfolio_shares_temp <- setNames(portfolio_shares[colnames(returns)], colnames(returns))
+  portfolio_shares_temp[is.na(portfolio_shares_temp)] <- 0
+  portfolio_wgt_temp <- portfolio_shares_temp * prices / as.numeric(last(MSTE_nav))
+
+  restart <<- 4
+  for(k in 1:100){
+    if(res_pso_SAvel_MSTE$const_break == 0 && res_pso_SAvel_MSTE$rebalance_constraint < 0.1){
+      restart <<- restart - 1
+    }else{
+      restart <<- 3
+    }
+    if( k == 1 || res_pso_SAvel_MSTE$const_break != 0 || res_pso_SAvel_MSTE$rebalance_constraint > 0.1 || restart > 0){
+      res_pso_SAvel_MSTE <- pso_self_adaptive_velocity(
+        par = if(k==1){if(i==(train_months+1)){QP_solutions[[i]]}else{portfolio_wgt_temp}}else{res_pso_SAvel_MSTE$solution}, # QP_solutions[[date]]
+        fn = function(x){
+          shares <- round(x*as.numeric(last(MSTE_nav))/prices)
+          x <- as.vector(shares*prices/as.numeric(last(MSTE_nav)))
+          fitness <- 2*calc_fit(x)
+          constraints <- calc_const(x)
+          rebalance_constraint <- rebalance_const(
+            old_wgt = as.vector(portfolio_wgt_temp),
+            new_wgt = x,
+            first_date = (i == (train_months+1))
+          )
+          tc_constraint <- transaction_cost_constraint(
+            old_shares = as.vector(portfolio_shares_temp),
+            new_shares = as.vector(shares),
+            nav = as.numeric(last(MSTE_nav))
+          )
+          return(fitness + 100*constraints + 100*rebalance_constraint + 10*tc_constraint)
+        },
+        lower = 0,
+        upper = 0.1,
+        control = list(
+          s = 100, # swarm size
+          maxiter = 100 # iterations
+        )
+      )
+      res_pso_SAvel_MSTE$solution <- as.vector(round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices)*prices/as.numeric(last(MSTE_nav)))
+      res_pso_SAvel_MSTE$perf <- calc_portfolio_returns(pool_data$returns[test_frame, colnames(returns)], res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$fitness <- 2*calc_fit(res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$const_break <- calc_const(res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$rebalance_constraint <- 100*rebalance_const(
+            old_wgt = as.vector(portfolio_wgt_temp),
+            new_wgt = res_pso_SAvel_MSTE$solution,
+            first_date = (i == (train_months+1))
+          )
+      res_pso_SAvel_MSTE$transaction_cost_constraint <- 10*transaction_cost_constraint(
+            old_shares = as.vector(portfolio_shares_temp),
+            new_shares = round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices),
+            nav = as.numeric(last(MSTE_nav))
+      )
+    }
+  }
+
+
+  # buy and sell transation costs
+  MSTE_nav[nrow(MSTE_nav),] <- last(MSTE_nav) - 1 * sum( (portfolio_shares_temp-round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices))!=0)
+
+
+  portfolio_shares <- setNames(as.vector(round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices)), colnames(prices))
+  portfolio_wgt <- setNames(as.vector(res_pso_SAvel_MSTE$solution), colnames(prices))
+
+
+  MSTE_perf <- rbind.xts(
+    MSTE_perf,
+    setNames(res_pso_SAvel_MSTE$perf, "PSO_MSTE")
+  )
+
+  MSTE_infos <- bind_rows(
+    MSTE_infos,
+    data.frame(
+      "type" = "PSO_MSTE",
+      "fittness" = res_pso_SAvel_MSTE$fitness,
+      "const_break" = res_pso_SAvel_MSTE$const_break,
+      "rebalance_constraint" = res_pso_SAvel_MSTE$rebalance_constraint,
+      "transaction_cost_constraint" = res_pso_SAvel_MSTE$transaction_cost_constraint,
+      "MSTE_returns" = sum((returns %*% res_pso_SAvel_MSTE$solution - bm_returns)^2),
+      "sum_wgt" = sum(portfolio_wgt),
+      "min_wgt" = min(portfolio_wgt),
+      "n_assets" = sum(portfolio_wgt!=0),
+      "transaction_costs" = as.numeric(save_nav) - as.numeric(MSTE_nav[nrow(MSTE_nav),])
+    )
+  )
+
+  MSTE_nav <- rbind.xts(MSTE_nav, ret_to_cumret(res_pso_SAvel_MSTE$perf)[-1,]/100 * as.numeric(last(MSTE_nav)))
+
+}
+
+save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v12_10tc_v3.rdata")
+
+
+
+
+
+
+
 set.seed(0)
 MSTE_perf <- NULL
 MSTE_infos <- NULL
@@ -418,18 +717,164 @@ for(i in (train_months+1):(length(rebalance_dates)-1)){
 
 }
 
-#save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v12_20tc_v2.rdata")
+save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v12_20tc_v3.rdata")
 
 
 
-perf_all <- cbind.xts(
-  QP_perf,
-  MSTE_perf,
-  setNames(pri_to_ret(MSTE_nav), "PSO_MSTE_TR")#,
-  #CRT_perf,
-  #setNames(pri_to_ret(CRT_nav), "CRT_TR")
-)
-perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", max(index(perf_all))),])
+
+
+
+set.seed(0)
+MSTE_perf <- NULL
+MSTE_infos <- NULL
+MSTE_nav <- xts(nav, order.by = rebalance_dates[train_months+1])
+portfolio_shares <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
+portfolio_wgts <- setNames(rep(0, ncol(pool_data$returns)), colnames(pool_data$returns))
+res_pso_SAvel_MSTE <- list()
+res_pso_SAvel_MSTE$const_break <- 1
+res_pso_SAvel_MSTE$rebalance_constraint <- 1
+for(i in (train_months+1):(length(rebalance_dates)-1)){
+  save_nav <- MSTE_nav[nrow(MSTE_nav),]
+  print(i)
+  date <- rebalance_dates[i]
+  date_from <- rebalance_dates[i-train_months]
+
+  train_frame <- paste0(date_from, "/", date)
+  test_frame <- paste0(date+1, "/", rebalance_dates[i+test_months])
+
+  ticker_in_spx <- QP_tickers[[i]]#spx_composition %>% filter(Date <= date) %>% filter(Date == max(Date)) %>% pull(Ticker)
+
+  returns <- pool_data$returns[train_frame, colnames(pool_data$returns) %in% ticker_in_spx] %>%
+    .[,colSums(is.na(.))==0]
+
+  prices <- pool_data$prices[date, colnames(returns)]
+
+  bm_returns <- bm_returns_raw[train_frame,]
+
+
+  mat <- list(
+    Dmat = t(returns) %*% (returns),
+    dvec = t(returns) %*% (bm_returns),
+    const = t(bm_returns) %*% bm_returns,
+    Amat = t(rbind(
+      -rep(1, ncol(returns)), # sum w <= 1
+      rep(1, ncol(returns)), # sum w >= 0.99
+      diag(1,
+           nrow=ncol(returns),
+           ncol=ncol(returns)) # long only
+    )),
+    bvec = c(
+      -0.995, # sum w <= 1
+      0.96, # sum w >= 0.99
+      rep(0, ncol(returns)) # long only
+    ),
+    meq = 0
+  )
+
+  # sell transaction costs because not in S&P anymore
+  MSTE_nav[nrow(MSTE_nav),] <- last(MSTE_nav) - 1 * sum(portfolio_shares[!names(portfolio_shares) %in% colnames(returns)]!=0)
+
+
+  portfolio_shares_temp <- setNames(portfolio_shares[colnames(returns)], colnames(returns))
+  portfolio_shares_temp[is.na(portfolio_shares_temp)] <- 0
+  portfolio_wgt_temp <- portfolio_shares_temp * prices / as.numeric(last(MSTE_nav))
+
+  restart <<- 4
+  for(k in 1:100){
+    if(res_pso_SAvel_MSTE$const_break == 0 && res_pso_SAvel_MSTE$rebalance_constraint < 0.1){
+      restart <<- restart - 1
+    }else{
+      restart <<- 3
+    }
+    if( k == 1 || res_pso_SAvel_MSTE$const_break != 0 || res_pso_SAvel_MSTE$rebalance_constraint > 0.1 || restart > 0){
+      res_pso_SAvel_MSTE <- pso_self_adaptive_velocity(
+        par = if(k==1){if(i==(train_months+1)){QP_solutions[[i]]}else{portfolio_wgt_temp}}else{res_pso_SAvel_MSTE$solution}, # QP_solutions[[date]]
+        fn = function(x){
+          shares <- round(x*as.numeric(last(MSTE_nav))/prices)
+          x <- as.vector(shares*prices/as.numeric(last(MSTE_nav)))
+          fitness <- 2*calc_fit(x)
+          constraints <- calc_const(x)
+          rebalance_constraint <- rebalance_const(
+            old_wgt = as.vector(portfolio_wgt_temp),
+            new_wgt = x,
+            first_date = (i == (train_months+1))
+          )
+          tc_constraint <- transaction_cost_constraint(
+            old_shares = as.vector(portfolio_shares_temp),
+            new_shares = as.vector(shares),
+            nav = as.numeric(last(MSTE_nav))
+          )
+          return(fitness + 100*constraints + 100*rebalance_constraint + 30*tc_constraint)
+        },
+        lower = 0,
+        upper = 0.1,
+        control = list(
+          s = 100, # swarm size
+          maxiter = 100 # iterations
+        )
+      )
+      res_pso_SAvel_MSTE$solution <- as.vector(round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices)*prices/as.numeric(last(MSTE_nav)))
+      res_pso_SAvel_MSTE$perf <- calc_portfolio_returns(pool_data$returns[test_frame, colnames(returns)], res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$fitness <- 2*calc_fit(res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$const_break <- calc_const(res_pso_SAvel_MSTE$solution)
+      res_pso_SAvel_MSTE$rebalance_constraint <- 100*rebalance_const(
+            old_wgt = as.vector(portfolio_wgt_temp),
+            new_wgt = res_pso_SAvel_MSTE$solution,
+            first_date = (i == (train_months+1))
+          )
+      res_pso_SAvel_MSTE$transaction_cost_constraint <- 30*transaction_cost_constraint(
+            old_shares = as.vector(portfolio_shares_temp),
+            new_shares = round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices),
+            nav = as.numeric(last(MSTE_nav))
+      )
+    }
+  }
+
+
+  # buy and sell transation costs
+  MSTE_nav[nrow(MSTE_nav),] <- last(MSTE_nav) - 1 * sum( (portfolio_shares_temp-round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices))!=0)
+
+
+  portfolio_shares <- setNames(as.vector(round(res_pso_SAvel_MSTE$solution*as.numeric(last(MSTE_nav))/prices)), colnames(prices))
+  portfolio_wgt <- setNames(as.vector(res_pso_SAvel_MSTE$solution), colnames(prices))
+
+
+  MSTE_perf <- rbind.xts(
+    MSTE_perf,
+    setNames(res_pso_SAvel_MSTE$perf, "PSO_MSTE")
+  )
+
+  MSTE_infos <- bind_rows(
+    MSTE_infos,
+    data.frame(
+      "type" = "PSO_MSTE",
+      "fittness" = res_pso_SAvel_MSTE$fitness,
+      "const_break" = res_pso_SAvel_MSTE$const_break,
+      "rebalance_constraint" = res_pso_SAvel_MSTE$rebalance_constraint,
+      "transaction_cost_constraint" = res_pso_SAvel_MSTE$transaction_cost_constraint,
+      "MSTE_returns" = sum((returns %*% res_pso_SAvel_MSTE$solution - bm_returns)^2),
+      "sum_wgt" = sum(portfolio_wgt),
+      "min_wgt" = min(portfolio_wgt),
+      "n_assets" = sum(portfolio_wgt!=0),
+      "transaction_costs" = as.numeric(save_nav) - as.numeric(MSTE_nav[nrow(MSTE_nav),])
+    )
+  )
+
+  MSTE_nav <- rbind.xts(MSTE_nav, ret_to_cumret(res_pso_SAvel_MSTE$perf)[-1,]/100 * as.numeric(last(MSTE_nav)))
+
+}
+
+save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v12_30tc_v3.rdata")
+
+
+# perf_all <- cbind.xts(
+#   QP_perf,
+#   MSTE_perf,
+#   setNames(pri_to_ret(MSTE_nav), "PSO_MSTE_TR")#,
+#   #CRT_perf,
+#   #setNames(pri_to_ret(CRT_nav), "CRT_TR")
+# )
+# perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", max(index(perf_all))),])
 
 
 #save.image("analyses/ITP_praxis_v11.rdata")
@@ -447,7 +892,7 @@ load("analyses/ITP_long_QP_v12.rdata")
 # QP_perf, QP_infos, QP_tickers, QP_solutions
 
 
-load("analyses/ITP_long_MSTE_v12_0tc.rdata")
+load("analyses/ITP_long_MSTE_v12_0tc_v3.rdata")
 MSTE_perf_0tc <- MSTE_perf
 MSTE_infos_0tc <- MSTE_infos
 MSTE_nav_0tc <- MSTE_nav
@@ -460,7 +905,7 @@ perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", 
 p_0tc <- plotly_line_chart_xts(ret_to_cumret(perf_all))
 p_0tc_diff <- setNames( (ret_to_cumret(perf_all$PSO_MSTE_disc_TR_0tc) - ret_to_cumret(perf_all$PSO_MSTE_disc_0tc)) / 100, "PSO_MSTE_disc_0tc_diff")
 
-load("analyses/ITP_long_MSTE_v12_10tc.rdata")
+load("analyses/ITP_long_MSTE_v12_10tc_v3.rdata")
 MSTE_perf_10tc <- MSTE_perf
 MSTE_infos_10tc <- MSTE_infos
 MSTE_nav_10tc <- MSTE_nav
@@ -473,7 +918,7 @@ perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", 
 p_10tc <- plotly_line_chart_xts(ret_to_cumret(perf_all))
 p_10tc_diff <- setNames( (ret_to_cumret(perf_all$PSO_MSTE_disc_TR_10tc) - ret_to_cumret(perf_all$PSO_MSTE_disc_10tc)) / 100, "PSO_MSTE_disc_10tc_diff")
 
-load("analyses/ITP_long_MSTE_v12_20tc.rdata")
+load("analyses/ITP_long_MSTE_v12_20tc_v3.rdata")
 MSTE_perf_20tc <- MSTE_perf
 MSTE_infos_20tc <- MSTE_infos
 MSTE_nav_20tc <- MSTE_nav
@@ -486,7 +931,7 @@ perf_all <- cbind.xts(perf_all, bm_returns_raw[paste0(min(index(perf_all)),"/", 
 p_20tc <- plotly_line_chart_xts(ret_to_cumret(perf_all))
 p_20tc_diff <- setNames( (ret_to_cumret(perf_all$PSO_MSTE_disc_TR_20tc) - ret_to_cumret(perf_all$PSO_MSTE_disc_20tc)) / 100, "PSO_MSTE_disc_20tc_diff")
 
-load("analyses/ITP_long_MSTE_v12_30tc.rdata")
+load("analyses/ITP_long_MSTE_v12_30tc_v3.rdata")
 MSTE_perf_30tc <- MSTE_perf
 MSTE_infos_30tc <- MSTE_infos
 MSTE_nav_30tc <- MSTE_nav

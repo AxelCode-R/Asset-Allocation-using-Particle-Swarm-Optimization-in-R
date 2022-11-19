@@ -407,8 +407,6 @@ pso_local <- function(
   )/10
   P <- X
   P_fit <- X_fit
-  p_g <- P[, which.min(P_fit)]
-  p_g_fit <- min(P_fit)
 
   neighbors <- sapply(1:control$s, function(x){ (-1+(x-round(control$k/2)-1):(x+round(control$k/2)-2)) %% control$s + 1 })
 
@@ -426,7 +424,7 @@ pso_local <- function(
     V <-
       (control$w0-(control$w0-control$wN)*i/control$maxiter) * V +
       control$c.p * t(runif(ncol(X)) * t(P-X)) +
-      control$c.g * t(runif(ncol(X)) * t(p_g-X))
+      control$c.g * t(runif(ncol(X)) * t(P_g-X))
     X <- X + V
 
     # set velocity to zeros if not in valid space
