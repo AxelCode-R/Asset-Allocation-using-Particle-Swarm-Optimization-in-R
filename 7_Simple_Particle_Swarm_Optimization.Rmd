@@ -10,18 +10,23 @@ The PSO was developed by J. Kennedy as a global optimization method based on swa
 
 ## The Algorithm
 Each particle $d$ with position $x_d$ moves in the search space $\mathbb{R}^N$ and has its own velocity $v_d$ and remembers its previous best position $P_d$. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
-\begin{align*}
+$$
+\begin{aligned}
   v_d^{i+1} &= wv_d^{i} + c_p r_1^{i(d)} (P_d^i - x_d^i) + c_g r_2^{i(d)} (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
-\end{align*}
+\end{aligned}
+$$
 
 Where $r_1^{i(d)}$ and $r_2^{i(d)}$ are uniformly distributed random numbers in $[0, 1]$. The cognitive parameter $c_p$ acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter $c_g$, which is a weighting of the direction to the global best position. The inertial weight $w$ is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for $d = 1, 2, \cdots, D$ particles can be given in the following matrix notation:
-\begin{align*}
-  V^{i+1} &= w \cdot V^{i} + c_p \cdot \vec{r}_1^{\,i} \cdot (P^i-X^i) + c_g \cdot \vec{r}_2^{\,i} \cdot (p_g^i - X^i) \\
+$$
+\begin{aligned}
+  V^{i+1} &= w \cdot V^{i} + c_p \cdot (\vec{r}_1^{\,i} \cdot (P^i-X^i)^T)^T + c_g \cdot (\vec{r}_2^{\,i} \cdot (p_g^i - X^i)^T)^T \\
   X^{i+1} &= X^i + V^{i+1}
-\end{align*}
+\end{aligned}
+$$
 
-With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$ and $c_g$ are stile scalars. The random numbers $r_1$ and $r_2$ are replaced by the vectors $\vec{r}_1$ and $\vec{r}_2$, in which each element is a uniformly distributed random number generated in $[0, 1]$.
+With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$ and $c_g$ are stile scalars. The random numbers $r_1$ and $r_2$ are replaced by the vectors $\vec{r}_1$ and $\vec{r}_2$, in which each element is a uniformly distributed random number generated in $[0, 1]$. The first transpose is needed to multiply each random number element-wise with each column and the second transpose transforms it back to the format of $V$ and $X$.
+
 
 ## `pso()` Function
 In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which returns a scalar that needs to be minimized. The objective function mainly needs a vector `pos` that describes the position of one particle (e.g. weights). The other main parameter for the PSO function is `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The vector can contain only `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
@@ -79,7 +84,8 @@ p_g <- P[, which.min(P_fit)]
 p_g_fit <- min(P_fit)
 ```
 
-The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space, they are pushed back to the edge and the velocities are set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.
+The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space of a axis, they are pushed back to the edge and the velocities on this axis is set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.
+
 ```{r pso5}
 trace_data <- NULL
 for(i in 1:control$maxiter){

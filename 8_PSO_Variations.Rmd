@@ -452,7 +452,7 @@ time <- system.time({
 })
 
 print(paste0("Feasable positions: ", sum(X_const==0)))
-print(paste0("Elapsed time: ", time[3]))
+print(paste0("Elapsed time: ", time[3], " seconds"))
 rm(X, X_const)
 ```
 It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step was modified to start with only one feasible position, which was randomly determined from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
@@ -592,7 +592,7 @@ reactable(
   html_save(., vwidth = 880)
 ```
 
-The results differed only slightly, suggesting that PSO has no practical use in maintaining feasibility for finance-related problems such as ITP-MSTE.
+The results indicate that the PSO with feasibility preservation is not able to solve finance-related problems that have a very small feasible space. It is more efficient to repeat the PSO with the previous best position until the solution is feasible.
 
 ## Self-Adaptive Velocity
 A self-adaptive velocity PSO approach that attempts to reduce hyperparameters was analyzed in [@FaYa2014]. The self-adaptive velocity is enabled by multiple velocity update schemes that are used randomly. In addition, all hyperparameters are self-adaptive in the way that each particle has its own coefficients $c_g$, $c_p$, and $w$, which change after each iteration depending on the distance to maximum fitness, among other factors. The resulting PSO has no real hyperparameters to adjust, which allows it to be used as a general-purpose PSO. 

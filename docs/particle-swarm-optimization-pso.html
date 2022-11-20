@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-19" />
+<meta name="date" content="2022-11-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -299,16 +299,20 @@ div.csl-indent {
 <div id="the-algorithm" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> The Algorithm<a href="particle-swarm-optimization-pso.html#the-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Each particle <span class="math inline">\(d\)</span> with position <span class="math inline">\(x_d\)</span> moves in the search space <span class="math inline">\(\mathbb{R}^N\)</span> and has its own velocity <span class="math inline">\(v_d\)</span> and remembers its previous best position <span class="math inline">\(P_d\)</span>. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position <span class="math inline">\(p_g\)</span> of all particles. A position change from <span class="math inline">\(i\)</span> to <span class="math inline">\(i+1\)</span> can be calculated by the following two equations <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span>:
-<span class="math display">\[\begin{align*}
+<span class="math display">\[
+\begin{aligned}
   v_d^{i+1} &amp;= wv_d^{i} + c_p r_1^{i(d)} (P_d^i - x_d^i) + c_g r_2^{i(d)} (p_g^i - x_d^i) \\
   x_d^{i+1} &amp;= x_d^i + v_d^{i+1}
-\end{align*}\]</span></p>
+\end{aligned}
+\]</span></p>
 <p>Where <span class="math inline">\(r_1^{i(d)}\)</span> and <span class="math inline">\(r_2^{i(d)}\)</span> are uniformly distributed random numbers in <span class="math inline">\([0, 1]\)</span>. The cognitive parameter <span class="math inline">\(c_p\)</span> acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter <span class="math inline">\(c_g\)</span>, which is a weighting of the direction to the global best position. The inertial weight <span class="math inline">\(w\)</span> is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span> showed that these parameters can be set to <span class="math inline">\(c_p=c_g=0.5\)</span> and <span class="math inline">\(w\)</span> should decrease from <span class="math inline">\(1.2\)</span> to <span class="math inline">\(0\)</span>. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for <span class="math inline">\(d = 1, 2, \cdots, D\)</span> particles can be given in the following matrix notation:
-<span class="math display">\[\begin{align*}
-  V^{i+1} &amp;= w \cdot V^{i} + c_p \cdot \vec{r}_1^{\,i} \cdot (P^i-X^i) + c_g \cdot \vec{r}_2^{\,i} \cdot (p_g^i - X^i) \\
+<span class="math display">\[
+\begin{aligned}
+  V^{i+1} &amp;= w \cdot V^{i} + c_p \cdot (\vec{r}_1^{\,i} \cdot (P^i-X^i)^T)^T + c_g \cdot (\vec{r}_2^{\,i} \cdot (p_g^i - X^i)^T)^T \\
   X^{i+1} &amp;= X^i + V^{i+1}
-\end{align*}\]</span></p>
-<p>With current positions <span class="math inline">\(X \in \mathbb{R}^{N \times D}\)</span>, current velocities <span class="math inline">\(V \in \mathbb{R}^{N \times D}\)</span>, previous best positions <span class="math inline">\(P \in \mathbb{R}^{N \times D}\)</span>, and global best position <span class="math inline">\(p_g \in \mathbb{R}^{N}\)</span>. The parameters <span class="math inline">\(w\)</span>, <span class="math inline">\(c_p\)</span> and <span class="math inline">\(c_g\)</span> are stile scalars. The random numbers <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> are replaced by the vectors <span class="math inline">\(\vec{r}_1\)</span> and <span class="math inline">\(\vec{r}_2\)</span>, in which each element is a uniformly distributed random number generated in <span class="math inline">\([0, 1]\)</span>.</p>
+\end{aligned}
+\]</span></p>
+<p>With current positions <span class="math inline">\(X \in \mathbb{R}^{N \times D}\)</span>, current velocities <span class="math inline">\(V \in \mathbb{R}^{N \times D}\)</span>, previous best positions <span class="math inline">\(P \in \mathbb{R}^{N \times D}\)</span>, and global best position <span class="math inline">\(p_g \in \mathbb{R}^{N}\)</span>. The parameters <span class="math inline">\(w\)</span>, <span class="math inline">\(c_p\)</span> and <span class="math inline">\(c_g\)</span> are stile scalars. The random numbers <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> are replaced by the vectors <span class="math inline">\(\vec{r}_1\)</span> and <span class="math inline">\(\vec{r}_2\)</span>, in which each element is a uniformly distributed random number generated in <span class="math inline">\([0, 1]\)</span>. The first transpose is needed to multiply each random number element-wise with each column and the second transpose transforms it back to the format of <span class="math inline">\(V\)</span> and <span class="math inline">\(X\)</span>.</p>
 </div>
 <div id="pso-function" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> <code>pso()</code> Function<a href="particle-swarm-optimization-pso.html#pso-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -353,7 +357,7 @@ div.csl-indent {
 <span id="cb23-2"><a href="particle-swarm-optimization-pso.html#cb23-2" aria-hidden="true" tabindex="-1"></a>P_fit <span class="ot">&lt;-</span> X_fit</span>
 <span id="cb23-3"><a href="particle-swarm-optimization-pso.html#cb23-3" aria-hidden="true" tabindex="-1"></a>p_g <span class="ot">&lt;-</span> P[, <span class="fu">which.min</span>(P_fit)]</span>
 <span id="cb23-4"><a href="particle-swarm-optimization-pso.html#cb23-4" aria-hidden="true" tabindex="-1"></a>p_g_fit <span class="ot">&lt;-</span> <span class="fu">min</span>(P_fit)</span></code></pre></div>
-<p>The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space, they are pushed back to the edge and the velocities are set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.</p>
+<p>The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space of a axis, they are pushed back to the edge and the velocities on this axis is set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="particle-swarm-optimization-pso.html#cb24-1" aria-hidden="true" tabindex="-1"></a>trace_data <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
 <span id="cb24-2"><a href="particle-swarm-optimization-pso.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>control<span class="sc">$</span>maxiter){</span>
 <span id="cb24-3"><a href="particle-swarm-optimization-pso.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># move particles</span></span>

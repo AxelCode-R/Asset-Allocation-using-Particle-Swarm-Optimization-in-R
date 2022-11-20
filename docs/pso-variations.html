@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-19" />
+<meta name="date" content="2022-11-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -640,8 +640,8 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 </div>
 <div id="preserving-feasibility" class="section level2 hasAnchor" number="8.4">
 <h2><span class="header-section-number">8.4</span> Preserving Feasibility<a href="pso-variations.html#preserving-feasibility" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in <span class="citation">(<a href="#ref-XiEb2002" role="doc-biblioref">Hu and Eberhardt 2002</a>)</span> explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the following code tries to find a feasible position among a million randomly generated positions:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="pso-variations.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
+<p>Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in <span class="citation">(<a href="#ref-XiEb2002" role="doc-biblioref">Hu and Eberhardt 2002</a>)</span> explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate, the result of trying to find a feasible position among a million randomly generated positions is as follows:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb38-1"><a href="pso-variations.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
 <span id="cb38-2"><a href="pso-variations.html#cb38-2" aria-hidden="true" tabindex="-1"></a>fn_const <span class="ot">=</span> <span class="cf">function</span>(x){</span>
 <span id="cb38-3"><a href="pso-variations.html#cb38-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">round</span>(x<span class="sc">*</span>nav<span class="sc">/</span>prices)<span class="sc">*</span>prices<span class="sc">/</span>nav)</span>
 <span id="cb38-4"><a href="pso-variations.html#cb38-4" aria-hidden="true" tabindex="-1"></a>  constraints <span class="ot">&lt;-</span> <span class="fu">calc_const</span>(x)</span>
@@ -657,9 +657,9 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 <span id="cb38-14"><a href="pso-variations.html#cb38-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-15"><a href="pso-variations.html#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Feasable positions: &quot;</span>, <span class="fu">sum</span>(X_const<span class="sc">==</span><span class="dv">0</span>)))</span></code></pre></div>
 <pre><code>[1] &quot;Feasable positions: 0&quot;</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="pso-variations.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Elapsed time: &quot;</span>, time[<span class="dv">3</span>]))</span></code></pre></div>
-<pre><code>[1] &quot;Elapsed time: 228.79&quot;</code></pre>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="pso-variations.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(X, X_const)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb40-1"><a href="pso-variations.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Elapsed time: &quot;</span>, time[<span class="dv">3</span>], <span class="st">&quot; seconds&quot;</span>))</span></code></pre></div>
+<pre><code>[1] &quot;Elapsed time: 230.05 seconds&quot;</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb42-1"><a href="pso-variations.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(X, X_const)</span></code></pre></div>
 <p>It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step was modified to start with only one feasible position, which was randomly determined from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.</p>
 <div id="test-preserving-feasibility-pso" class="section level3 hasAnchor" number="8.4.1">
 <h3><span class="header-section-number">8.4.1</span> Test Preserving Feasibility PSO<a href="pso-variations.html#test-preserving-feasibility-pso" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -773,7 +773,7 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 <p><img src="Master_Thesis_files/figure-html/variants6_next-1.png" width="672" /></p>
 <p>The aggregate statistics of the last iterations of all 100 runs can be found in the table below:</p>
 <p><img src="Master_Thesis_files/figure-html/variants6_next2-1.png" width="672" /></p>
-<p>The results differed only slightly, suggesting that PSO has no practical use in maintaining feasibility for finance-related problems such as ITP-MSTE.</p>
+<p>The results indicate that the PSO with feasibility preservation is not able to solve finance-related problems that have a very small feasible space. It is more efficient to repeat the PSO with the previous best position until the solution is feasible.</p>
 </div>
 </div>
 <div id="self-adaptive-velocity" class="section level2 hasAnchor" number="8.5">

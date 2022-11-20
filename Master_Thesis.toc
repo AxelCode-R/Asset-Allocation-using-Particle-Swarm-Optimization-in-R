@@ -64,12 +64,12 @@
 \contentsline {subsection}{\numberline {8.4.1}Test Preserving Feasibility PSO}{52}{subsection.8.4.1}%
 \contentsline {section}{\numberline {8.5}Self-Adaptive Velocity}{53}{section.8.5}%
 \contentsline {subsection}{\numberline {8.5.1}Implementation}{53}{subsection.8.5.1}%
-\contentsline {subsection}{\numberline {8.5.2}Analyse Implementation}{55}{subsection.8.5.2}%
-\contentsline {subsection}{\numberline {8.5.3}Test PSO with Self-Adaptive Velocity}{56}{subsection.8.5.3}%
-\contentsline {section}{\numberline {8.6}PSO R-Package}{57}{section.8.6}%
-\contentsline {chapter}{\numberline {9}Real Life ITP Example}{59}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Transaction Costs}{59}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Rebalancing Constraint}{61}{section.9.2}%
-\contentsline {section}{\numberline {9.3}Objective}{61}{section.9.3}%
-\contentsline {section}{\numberline {9.4}Complete ITP Example}{63}{section.9.4}%
-\contentsline {chapter}{\numberline {10}Conclusion}{67}{chapter.10}%
+\contentsline {subsection}{\numberline {8.5.2}Analyse Implementation}{54}{subsection.8.5.2}%
+\contentsline {subsection}{\numberline {8.5.3}Test PSO with Self-Adaptive Velocity}{55}{subsection.8.5.3}%
+\contentsline {section}{\numberline {8.6}PSO R-Package}{56}{section.8.6}%
+\contentsline {chapter}{\numberline {9}Real Life ITP Example}{58}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Transaction Costs}{58}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Rebalancing Constraint}{60}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Objective}{60}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Complete ITP Example}{62}{section.9.4}%
+\contentsline {chapter}{\numberline {10}Conclusion}{66}{chapter.10}%
