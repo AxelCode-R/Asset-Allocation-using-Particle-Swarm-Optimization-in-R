@@ -516,21 +516,18 @@ The requirement that the portfolio is full can be achieved by adding an addition
 </div>
 <div id="r-functions-2" class="section level2 hasAnchor" number="3.6">
 <h2><span class="header-section-number">3.6</span> R-Functions<a href="mathfundations.html#r-functions-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>|||in progress|||<br />
-</p>
+<p>The following functions serve the purpose to encapsulate mathematical calculations and to make the calculations reusable. All functions are located in the corresponding GitHub repository inside the <code>R/</code> folder.</p>
 <div id="covfun" class="section level3 hasAnchor" number="3.6.1">
 <h3><span class="header-section-number">3.6.1</span> <code>cov_()</code><a href="mathfundations.html#covfun" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This function extends the base R function <code>cov()</code> by allowing the user to pass an expected value vector. This is used to calculate the covariance with expected returns based on the geometric mean instead of the arithmetic mean.</p>
 </div>
 <div id="pritoret" class="section level3 hasAnchor" number="3.6.2">
 <h3><span class="header-section-number">3.6.2</span> <code>pri_to_ret()</code><a href="mathfundations.html#pritoret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>|||in progress|||<br />
-((prices to returns))</p>
+<p>This function calculates the simple returns of a given xts object and replaces missing values with the previous value of this column.</p>
 </div>
 <div id="ret_to_cumret" class="section level3 hasAnchor" number="3.6.3">
 <h3><span class="header-section-number">3.6.3</span> <code>ret_to_cumret()</code><a href="mathfundations.html#ret_to_cumret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>|||in progress|||<br />
-((returns to cumulated returns normalized to 100))</p>
+<p>This function is used to calculate cumulative returns normalized to 100 from a given xts object containing returns. This function is often used before plotting time series.</p>
 </div>
 <div id="geomeanret" class="section level3 hasAnchor" number="3.6.4">
 <h3><span class="header-section-number">3.6.4</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>

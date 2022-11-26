@@ -244,18 +244,16 @@ $$
 The requirement that the portfolio is full can be achieved by adding an additional weight to $w_{t_0}$, which includes the residual $1-\textstyle\sum w_{t_0}$ and an additional zero return vector to $R$. This calculation of portfolio returns is implemented in the function `calc_portfolio_returns()` below.
 
 ## R-Functions
-|||in progress||| \
+The following functions serve the purpose to encapsulate mathematical calculations and to make the calculations reusable. All functions are located in the corresponding GitHub repository inside the `R/` folder.
 
 ### `cov_()` {#covfun}
 This function extends the base R function `cov()` by allowing the user to pass an expected value vector. This is used to calculate the covariance with expected returns based on the geometric mean instead of the arithmetic mean. 
 
 ### `pri_to_ret()` {#pritoret}
-|||in progress||| \
-((prices to returns))
+This function calculates the simple returns of a given xts object and replaces missing values with the previous value of this column.
 
 ### `ret_to_cumret()`
-|||in progress||| \
-((returns to cumulated returns normalized to 100))
+This function is used to calculate cumulative returns normalized to 100 from a given xts object containing returns. This function is often used before plotting time series.
 
 ### `ret_to_geomeanret()` {#geomeanret}
 The geometric mean of returns is a better estimator than the arithmetic mean of returns because it captures the exact mean price changes over a period of time. The variance estimated from the daily returns is a daily variance, so the returns must have the same time base. This can be done by calculating the geometric mean of the returns from multiple daily returns. Assuming there is an asset with returns $r_1 = 0.01$, $r_2=-0.03$, and $r_3=0.02$, it follows that the geometric mean return $r^{geom}$ can be calculated as:

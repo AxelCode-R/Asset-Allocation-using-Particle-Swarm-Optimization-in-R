@@ -480,7 +480,7 @@ The requirement that the portfolio is full can be achieved by adding an addition
 \hypertarget{r-functions-2}{%
 \section{R-Functions}\label{r-functions-2}}
 
-\textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
+The following functions serve the purpose to encapsulate mathematical calculations and to make the calculations reusable. All functions are located in the corresponding GitHub repository inside the \texttt{R/} folder.
 
 \hypertarget{covfun}{%
 \subsection{\texorpdfstring{\texttt{cov\_()}}{cov\_()}}\label{covfun}}
@@ -490,14 +490,12 @@ This function extends the base R function \texttt{cov()} by allowing the user to
 \hypertarget{pritoret}{%
 \subsection{\texorpdfstring{\texttt{pri\_to\_ret()}}{pri\_to\_ret()}}\label{pritoret}}
 
-\textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
-((prices to returns))
+This function calculates the simple returns of a given xts object and replaces missing values with the previous value of this column.
 
 \hypertarget{ret_to_cumret}{%
 \subsection{\texorpdfstring{\texttt{ret\_to\_cumret()}}{ret\_to\_cumret()}}\label{ret_to_cumret}}
 
-\textbar\textbar\textbar in progress\textbar\textbar\textbar{}\\
-((returns to cumulated returns normalized to 100))
+This function is used to calculate cumulative returns normalized to 100 from a given xts object containing returns. This function is often used before plotting time series.
 
 \hypertarget{geomeanret}{%
 \subsection{\texorpdfstring{\texttt{ret\_to\_geomeanret()}}{ret\_to\_geomeanret()}}\label{geomeanret}}
