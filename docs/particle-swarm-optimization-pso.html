@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 Particle Swarm Optimization (PSO) | Asset Allocation using Particle Swarm Optimization in R</title>
   <meta name="description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
-  <meta name="generator" content="bookdown 0.28.1 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 Particle Swarm Optimization (PSO) | Asset Allocation using Particle Swarm Optimization in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-20" />
+<meta name="date" content="2022-11-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -295,7 +295,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="particle-swarm-optimization-pso" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Particle Swarm Optimization (PSO)<a href="particle-swarm-optimization-pso.html#particle-swarm-optimization-pso" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy <span class="citation">(<a href="#ref-KeEb1995" role="doc-biblioref">James Kennedy 1995</a>)</span>. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span>. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are the low computational costs, since only basic mathematical operators are used,the extensibility and the simplicity.</p>
+<p>The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy <span class="citation">(<a href="#ref-KeEb1995" role="doc-biblioref">James Kennedy 1995</a>)</span>. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span>. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are the low computational costs, since only basic mathematical operators are used, the extensibility and the simplicity.</p>
 <div id="the-algorithm" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> The Algorithm<a href="particle-swarm-optimization-pso.html#the-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Each particle <span class="math inline">\(d\)</span> with position <span class="math inline">\(x_d\)</span> moves in the search space <span class="math inline">\(\mathbb{R}^N\)</span> and has its own velocity <span class="math inline">\(v_d\)</span> and remembers its previous best position <span class="math inline">\(P_d\)</span>. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position <span class="math inline">\(p_g\)</span> of all particles. A position change from <span class="math inline">\(i\)</span> to <span class="math inline">\(i+1\)</span> can be calculated by the following two equations <span class="citation">(<a href="#ref-PaVr2002" role="doc-biblioref">Konstantinos Parsopoulos 2002</a>)</span>:

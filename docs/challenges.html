@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Challenges of Passiv Investing | Asset Allocation using Particle Swarm Optimization in R</title>
   <meta name="description" content="This GitBook is an example of a GitBook for teaching. It can be adapted for specific courses. The output format for this example is bookdown::gitbook." />
-  <meta name="generator" content="bookdown 0.28.1 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Challenges of Passiv Investing | Asset Allocation using Particle Swarm Optimization in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-11-20" />
+<meta name="date" content="2022-11-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -528,7 +528,7 @@ It can be seen, that both estimators produce portfolios on the same efficient fr
 </div>
 <div id="index-tracking-portfolio-itp" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> Index-Tracking Portfolio (ITP)<a href="challenges.html#index-tracking-portfolio-itp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor’s 500 Index (S&amp;P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost <span class="citation">(<a href="#ref-Desm2016" role="doc-biblioref">Desmond Pace and Grima 2016</a>)</span>. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reblanance daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark’s assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&amp;P 500 might consist of the one hundred highest-weighted assets in the S&amp;P 500. The ITP can be modeled in two ways analysed in <span class="citation">(<a href="#ref-IuGa2019" role="doc-biblioref">Iuliia Gavriushina 2019</a>)</span>.</p>
+<p>Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor’s 500 Index (S&amp;P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost <span class="citation">(<a href="#ref-Desm2016" role="doc-biblioref">Desmond Pace and Grima 2016b</a>)</span>. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reblanance daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark’s assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&amp;P 500 might consist of the one hundred highest-weighted assets in the S&amp;P 500. The ITP can be modeled in two ways analysed in <span class="citation">(<a href="#ref-IuGa2019" role="doc-biblioref">Iuliia Gavriushina 2019</a>)</span>.</p>
 <div id="itp-with-tev-objective-itp-tev" class="section level3 hasAnchor" number="5.2.1">
 <h3><span class="header-section-number">5.2.1</span> ITP with TEV objective (ITP-TEV)<a href="challenges.html#itp-with-tev-objective-itp-tev" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The classic and widely used model tries to reduce the tracking error variance (TEV) with the following formula:
@@ -693,7 +693,7 @@ The ITP-TEV and the ITP-MSTE had almost the same results, which can be seen in t
 Badary, Ahmad. 2017. <span>“How to Build a Basic Particle Swarm Optimiser from Scratch in r.”</span> 2017. <a href="https://ahmedbadary.github.io/work_files/research/conv_opt/hw/iftp">https://ahmedbadary.github.io/work_files/research/conv_opt/hw/iftp</a>.
 </div>
 <div id="ref-Desm2016" class="csl-entry">
-Desmond Pace, Jana Hili, and Simon Grima. 2016. <span>“Active Versus Passive Investing: An Empirical Study on the US and European Mutual Funds and ETFs.”</span>
+Desmond Pace, Jana Hili, and Simon Grima. 2016b. <span>“Active Versus Passive Investing: An Empirical Study on the US and European Mutual Funds and ETFs.”</span>
 </div>
 <div id="ref-IuGa2019" class="csl-entry">
 Iuliia Gavriushina, Oliver Sampson. 2019. <span>“Widened Learning of Index Tracking Portfolios.”</span>
