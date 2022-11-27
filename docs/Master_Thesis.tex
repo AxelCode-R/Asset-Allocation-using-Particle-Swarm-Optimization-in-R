@@ -167,8 +167,6 @@
   results
 \end{enumerate}
 
-\tableofcontents
-
 \hypertarget{software-information-and-usage}{%
 \chapter{Software information and usage}\label{software-information-and-usage}}
 
@@ -1711,10 +1709,17 @@ It can be seen that increasing \(k\) tends to reduce the average transaction cos
 Another interesting result is that the \texttt{solve.QP()} approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the follwing chart, comparing only the \texttt{solve.QP()} approach and the SP500TR:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-15-1.png}
 
+\hypertarget{future-research}{%
+\chapter{Future Research}\label{future-research}}
+
+Some PSO variants were analyzed and showed promising results in solving the index tracking problem. The best of them were the local and the self-adaptive velocity variants, both of which increase the ability to find good solutions by increasing the diversity in the swarm. This often prevents premature convergence in local minimum situations. The additional advantage of the self-adaptive velocity variant is the reduction in hyperparameters, making it capable of solving a wide range of problems without additional fine-tuning effort. The implementation is identical to the source and works well, but it would be interesting to analyze whether it can be improved by combining it with the local variant.
+
+The last chapter analyzed backtests of a practical index tracking problem for retail investors, which yielded promising results but require further evaluation to verify their stability due to path-dependent portfolios.
+
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
 
-asd
+It has been shown that the PSO is capable of solving practical financial problems that are hardly solvable with analytical approaches without any limitations or losses in practicability. The advantage of the PSO is that problems can be formulated in any complexity and still be applied. This was shown especially in the last chapter, where a discrete index tracking problem was formulated, which is not analytically solvable. Exactly in such situations heuristics like the PSO are the last possibility to have the chance to formulate and solve the whole problem without restrictions. Nevertheless, an analytical approach should always be preferred if possible, since the PSO is not always able to find the best solution. If the discretization is the only obstacle for the analytical approach to be practical, the PSO chapter has shown that a continuous solution using the PSO can find a qualitative solution, taking into account the constraints. The chapter on PSO variants gave an insight into the many ways in which the standard PSO can be modified to improve behavior. It was shown that there are variants that increase diversification and reduce hyperparameters. In the chapter Active vs Passive Portfolio Management it has been analyzed how relevant it is to generate portfolios more and more automatically in order to save costs and to be more attractive in competition with other professional managed funds. This has an increasing relevance in the future, which is why it may be that PSO will be used more and more within portfolio management.
 
   \bibliography{book.bib,packages.bib}
 
