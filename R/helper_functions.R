@@ -54,7 +54,7 @@ buffer <- function(expr, rdata_file, force = FALSE){
 
 
 html_save <- function(html_chart, zoom = 4, vheight = 300, vwidth = 600, delay = 2, force = F, expand = NULL, ...){
-  if(!force && !knitr::is_html_output() && !knitr::is_latex_output() ){
+  if((!force || knitr::is_html_output()) && !knitr::is_latex_output() ){
     html_chart
   }else{
     if(!dir.exists("docs/")){

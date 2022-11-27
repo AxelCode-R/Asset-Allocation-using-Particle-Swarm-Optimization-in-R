@@ -13,6 +13,8 @@ plotly_line_chart_xts <- function(data_xts, line_width=2){
         type = 'scatter',
         line = list(width=line_width))
   }
-  p %>% layout(legend = list(orientation = 'h', xanchor = "center", x = 0.5))
+  p %>%
+    layout(legend = list(orientation = 'h', xanchor = "center", x = 0.5)) %>%
+    config(displayModeBar = FALSE)
 }
 

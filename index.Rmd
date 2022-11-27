@@ -4,7 +4,7 @@ author: "Axel Roth"
 date: "`r Sys.Date()`"
 documentclass: book
 classoption: oneside
-github-repo: AxelCode-R/Master-Thesis
+github-repo: https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R
 link-citations: yes
 bibliography:
 - book.bib
@@ -13,8 +13,7 @@ site: bookdown::bookdown_site
 biblio-style: apalike
 editor_options:
   chunk_output_type: console
-description: This GitBook is an example of a GitBook for teaching. It can be adapted
-  for specific courses. The output format for this example is bookdown::gitbook.
+description: This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart.
 ---
 ```{r, include=FALSE, eval=FALSE}
 # Sys.setenv(R_GSCMD="C:\\Program Files (x86)\\gs\\gs9.55.0\\bin\\gswin32.exe")

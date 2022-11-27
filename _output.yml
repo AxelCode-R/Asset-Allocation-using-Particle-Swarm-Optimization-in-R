@@ -8,8 +8,8 @@ bookdown::gitbook:
       before: |
         <li><a href="./">Master Thesis Axel Roth</a></li>
       after: |
-        <li><a href="https://github.com/AxelCode-R/Master-Thesis" target="blank">GitHub Repository</a></li>
-    edit: https://github.com/AxelCode-R/Master-Thesis/edit/master/%s
+        <li><a href="https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R" target="blank">GitHub Repository</a></li>
+    edit: https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R/edit/master/%s
     download: ["pdf"]
 bookdown::pdf_book:
   includes:

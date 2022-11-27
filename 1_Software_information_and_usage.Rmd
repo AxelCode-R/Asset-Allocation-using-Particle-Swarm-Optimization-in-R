@@ -1,10 +1,21 @@
 # Software information and usage
-The whole thesis is made within the amazing IDE of R-Studio by using R-Markodwn extended with the package bookdown. Thi
+All of the work was done in the amazing IDE of R-Studio using R-Markdown extended with the bookdown package. R-Markdown allows the user to write documents with encapsulated chunks of code alongside the text they are writing, and create plots to display in the output. Each codechunk can be cached to avoid time-consuming repetition, and it can be disabled to regenerate the entire work, including all the code and plots it contains. Primarily, it is helpful for the user to ensure the stability of older code, and secondarily, it is helpful for the reader who has access to the R-Markdown files, as they can trace back any analysis or plot that is displayed. R-Markdown can produce different formats such as HTML or PDF output, both of which are used for this work. The HTML output is deposited in the corresponding GitHub repository at [@GitHub]. The recommended output format of R-Markdown is an HTML file, which has all the capabilities of a web page with HTML, CSS, and Javascript. For this reason, some javascript code has been added to the HTML version, allowing the reader to unfold important code blocks alongside the text. The bookdown package is used as a template that contains the necessary styles and formatting to write books with an HTML or PDF output including table of contents, references and more. Together with the immense capabilities of the R programming language, this is one of the best ways to write reproducible and good-looking works.
 
 ## R-Version and Packages
+The used packages and versions can be found in the table below:
+```{r, echo=F}
+sessionInfo()
+```
+
 
 ## Reproducibility
-github und code im bookdown
+Everything in this thesis can be reproduced via the public GitHub repository at [@GitHub]. All code sections that use random number generators start with seed 0 to ensure the credibility of the analyses and diagrams shown.
 
 ## R-functions
-zb plotly_save
+The following functions were created to simplify working with R-Markdown.
+
+### `html_save()`
+Converts HTML plots to images to display them in the PDF output. This allows the author to use the desired plot packages without having to worry about the different output formats.
+
+### javascript files
+These files are located in the `www/` folder and are used for the HTML version to make chunks expandable.
