@@ -26,4 +26,3 @@ global_buffer_force <- F
 
 3. results
 
-\tableofcontents
