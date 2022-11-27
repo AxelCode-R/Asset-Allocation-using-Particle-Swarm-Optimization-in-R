@@ -1,6 +1,5 @@
 # Software information and usage
-|||in progress|||
-wie ich das buch schreibe, R markodwn bookdown und so und welche versionen ich nutze
+The whole thesis is made within the amazing IDE of R-Studio by using R-Markodwn extended with the package bookdown. Thi
 
 ## R-Version and Packages
 
