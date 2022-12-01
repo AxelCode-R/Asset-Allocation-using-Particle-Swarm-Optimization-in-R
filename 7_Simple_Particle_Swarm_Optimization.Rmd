@@ -220,6 +220,10 @@ if(!knitr::is_latex_output()){
 \end{center}
 ```
 
+## Animation 2-Dimensional App
+To gain an even better understanding of the behavior of a PSO, a WebApp was written that allows the user to minimize arbitrary two-dimensional functions with constraints. Three variants of the PSO were implemented, which will be analyzed in detail in the later chapters of this thesis. The app can also be used to study the effect of hyperparameters on the behavior of the PSO in more detail. Within the app it is possible to plot each step of the iterations and this even with all direction vectors per iteration. The app is hosted at [@PSOApp] and the code for it is also freely available at [@GitPSO]. The hosted app may be used for educational purposes and using, copying, modifying, and sharing the code is permitted without restriction.
+
+
 ## Simple Constraint Handling
 The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure. This can be used to create a generic constraint handling function for these particular QP's. Both problems must satisfy the following equation:
 $$

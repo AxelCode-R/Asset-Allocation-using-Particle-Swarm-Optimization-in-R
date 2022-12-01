@@ -3,8 +3,22 @@ An active portfolio manager seeks to achieve positive alpha, i.e., excess return
 
 The question is which of the two types of portfolio management is preferable.
 
+## Results of the Literature
 Researchers Fama and French studied the returns of active and passive portfolio management by designing factor models that led to a wide range of models commonly used today to analyze the causes of returns. Their theory states that passive investors earn passive returns that have an alpha of zero before costs. This implies that active investors also collectively have an alpha of zero before costs. This means that if some active investors have a positive alpha, other active investors have achieved a negative alpha. Indeed, Fama and French analyzed this behavior in more detail in [@FaFr2010], finding that value-weighted professionally managed mutual funds that invest primarily in the U.S. equity market have a slightly positive alpha before costs at the expense of active investors outside of professionally managed mutual funds.
 
 Fama and French attempted to distinguish between luck and chance using regression models. Their results suggest that some active managers in the top percentiles have sufficient skill to cover costs over the long run. Nonetheless, aggregate actively managed funds in the top percentiles have estimated alpha after costs close to zero, which is also true for large, efficiently managed passive funds.
 
-Similar results were obtained in [@PaHi2016], which analyzed European and U.S. active and passive funds. The results show that none of them is superior by cost. They suggest comparing actively and passively managed funds on a case-by-case basis by considering all expenses. When the tax advantages of passively managed funds are taken into account, they may have a slight advantage for investors with a long investment horizon.
+Similar results were obtained in [@PaHi2016], which analyzed European and U.S. active and passive funds. The results show that none of them is superior by cost. They suggest comparing active and passive managed funds on a case-by-case basis by considering all expenses. When the tax advantages of passively managed funds are taken into account, they may have a slight advantage for investors with a long investment horizon.
+
+A different viewpoint was taken in [@RaSh2004], analyzing the value of active portfolio management. The results show that some actively managed funds generate large positive excess returns. These funds often had a small number of assets, which could be due to the fact that portfolio managers had more capacity to analyze each asset in detail. This suggests that experienced portfolio managers can indeed generate stable excess returns over time. But in contrast, these same funds charge increased fees that negate the benefits to clients.
+
+letzte quelle
+Net performance of active
+and passive equity UCITS   trv...pdf
+
+## Aggregation of the Literature
+In summary, it can be said that both strategies have their justification. On the one hand, it was shown that there are actively managed funds that can constantly generate positive alpha and share this in part with the investor. But this refers only to a small part of the actively managed funds. Passively managed funds cannot be expected to generate excess returns, but on average they often meet their benchmark tracking target. Since actively managed funds often incur higher costs, they must constantly beat the market, which carries an implicit risk. In particular, it was shown that many of the active funds with positive performance only managed to do so within a certain period of time before underperforming again. From these results, one could conclude that a passively managed fund carries less risk for the investor over the long term. Especially if external factors such as tax relief also apply. As passive management has steadily gained popularity in recent years, it is also more future-oriented to develop and improve these strategies. 
+
+
+
+
