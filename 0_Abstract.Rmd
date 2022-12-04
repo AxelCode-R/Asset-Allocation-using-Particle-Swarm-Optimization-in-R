@@ -17,12 +17,8 @@ global_buffer_force <- F
 
 
 # Abstract {-}
-|||in progress||| \
-(zusammenfassung: Vor dem TOC)
+Asset allocation aims to construct applicable portfolios that follow a particular investment strategy, such as index tracking or optimal risk return. These investment strategies are formulated as equivalent constrained optimization problems whose solutions represent an optimal portfolio depending on the strategy. In practice, these problems are often difficult to solve without restrictions because the solution must be discrete or the constraints are too complex for common solvers. If one excludes constraints, the need for metaheuristics such as particle swarm optimization (PSO) arises because they have the ability to find optimal solutions to arbitrarily complex problems. In this thesis, common asset allocation problems are first explained and continuously solved to generate benchmark problems. After introducing the PSO, it is tested using the benchmark problems. Then, the PSO and its variants are used to solve unrestricted optimization problems. Finally, the most promising variant of the PSO is used to solve a discrete index tracking problem with consideration of transaction costs and a rebalancing constraint. The backtests indicate that the PSO can yield time-stable results for such problems.
 
-1. motivation
+# Introduction
 
-2. structure
-
-3. results
 

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Analytic Solver for Quadratic Programming Problems | Asset Allocation using Particle Swarm Optimization in R</title>
+  <title>Chapter 7 Analytic Solver for Quadratic Programming Problems | Asset Allocation using Particle Swarm Optimization in R</title>
   <meta name="description" content="This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart." />
   <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Analytic Solver for Quadratic Programming Problems | Asset Allocation using Particle Swarm Optimization in R" />
+  <meta property="og:title" content="Chapter 7 Analytic Solver for Quadratic Programming Problems | Asset Allocation using Particle Swarm Optimization in R" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart." />
   <meta name="github-repo" content="https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Analytic Solver for Quadratic Programming Problems | Asset Allocation using Particle Swarm Optimization in R" />
+  <meta name="twitter:title" content="Chapter 7 Analytic Solver for Quadratic Programming Problems | Asset Allocation using Particle Swarm Optimization in R" />
   
   <meta name="twitter:description" content="This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-12-01" />
+<meta name="date" content="2022-12-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -169,127 +169,128 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="chapter" data-level="" data-path="abstract.html"><a href="abstract.html"><i class="fa fa-check"></i>Abstract</a></li>
-<li class="chapter" data-level="1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html"><i class="fa fa-check"></i><b>1</b> Software information and usage</a>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html"><i class="fa fa-check"></i><b>2</b> Software information and usage</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-version-and-packages"><i class="fa fa-check"></i><b>1.1</b> R-Version and Packages</a></li>
-<li class="chapter" data-level="1.2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#reproducibility"><i class="fa fa-check"></i><b>1.2</b> Reproducibility</a></li>
-<li class="chapter" data-level="1.3" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-functions"><i class="fa fa-check"></i><b>1.3</b> R-functions</a>
+<li class="chapter" data-level="2.1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-version-and-packages"><i class="fa fa-check"></i><b>2.1</b> R-Version and Packages</a></li>
+<li class="chapter" data-level="2.2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#reproducibility"><i class="fa fa-check"></i><b>2.2</b> Reproducibility</a></li>
+<li class="chapter" data-level="2.3" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-functions"><i class="fa fa-check"></i><b>2.3</b> R-functions</a>
 <ul>
-<li class="chapter" data-level="1.3.1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#html_save"><i class="fa fa-check"></i><b>1.3.1</b> <code>html_save()</code></a></li>
-<li class="chapter" data-level="1.3.2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#javascript-files"><i class="fa fa-check"></i><b>1.3.2</b> javascript files</a></li>
+<li class="chapter" data-level="2.3.1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#html_save"><i class="fa fa-check"></i><b>2.3.1</b> <code>html_save()</code></a></li>
+<li class="chapter" data-level="2.3.2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#javascript-files"><i class="fa fa-check"></i><b>2.3.2</b> javascript files</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="open-data-sources.html"><a href="open-data-sources.html"><i class="fa fa-check"></i><b>2</b> Open Data Sources</a>
+<li class="chapter" data-level="3" data-path="open-data-sources.html"><a href="open-data-sources.html"><i class="fa fa-check"></i><b>3</b> Open Data Sources</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="open-data-sources.html"><a href="open-data-sources.html#r-functions-1"><i class="fa fa-check"></i><b>2.1</b> R-Functions</a>
+<li class="chapter" data-level="3.1" data-path="open-data-sources.html"><a href="open-data-sources.html#r-functions-1"><i class="fa fa-check"></i><b>3.1</b> R-Functions</a>
 <ul>
-<li class="chapter" data-level="2.1.1" data-path="open-data-sources.html"><a href="open-data-sources.html#get_yf"><i class="fa fa-check"></i><b>2.1.1</b> <code>get_yf()</code></a></li>
-<li class="chapter" data-level="2.1.2" data-path="open-data-sources.html"><a href="open-data-sources.html#buffer"><i class="fa fa-check"></i><b>2.1.2</b> <code>buffer()</code></a></li>
+<li class="chapter" data-level="3.1.1" data-path="open-data-sources.html"><a href="open-data-sources.html#get_yf"><i class="fa fa-check"></i><b>3.1.1</b> <code>get_yf()</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="open-data-sources.html"><a href="open-data-sources.html#buffer"><i class="fa fa-check"></i><b>3.1.2</b> <code>buffer()</code></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="mathfundations.html"><a href="mathfundations.html"><i class="fa fa-check"></i><b>3</b> Mathematical Fundations</a>
+<li class="chapter" data-level="4" data-path="mathfundations.html"><a href="mathfundations.html"><i class="fa fa-check"></i><b>4</b> Mathematical Fundations</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="mathfundations.html"><a href="mathfundations.html#basic-operators"><i class="fa fa-check"></i><b>3.1</b> Basic Operators</a></li>
-<li class="chapter" data-level="3.2" data-path="mathfundations.html"><a href="mathfundations.html#formula-conventions"><i class="fa fa-check"></i><b>3.2</b> Formula Conventions</a></li>
-<li class="chapter" data-level="3.3" data-path="mathfundations.html"><a href="mathfundations.html#return-calculation"><i class="fa fa-check"></i><b>3.3</b> Return Calculation</a>
+<li class="chapter" data-level="4.1" data-path="mathfundations.html"><a href="mathfundations.html#basic-operators"><i class="fa fa-check"></i><b>4.1</b> Basic Operators</a></li>
+<li class="chapter" data-level="4.2" data-path="mathfundations.html"><a href="mathfundations.html#formula-conventions"><i class="fa fa-check"></i><b>4.2</b> Formula Conventions</a></li>
+<li class="chapter" data-level="4.3" data-path="mathfundations.html"><a href="mathfundations.html#return-calculation"><i class="fa fa-check"></i><b>4.3</b> Return Calculation</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="mathfundations.html"><a href="mathfundations.html#simple-returns"><i class="fa fa-check"></i><b>3.3.1</b> Simple Returns</a></li>
+<li class="chapter" data-level="4.3.1" data-path="mathfundations.html"><a href="mathfundations.html#simple-returns"><i class="fa fa-check"></i><b>4.3.1</b> Simple Returns</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="mathfundations.html"><a href="mathfundations.html#markowitz-modern-portfolio-theory-mpt"><i class="fa fa-check"></i><b>3.4</b> Markowitz Modern Portfolio Theory (MPT)</a>
+<li class="chapter" data-level="4.4" data-path="mathfundations.html"><a href="mathfundations.html#markowitz-modern-portfolio-theory-mpt"><i class="fa fa-check"></i><b>4.4</b> Markowitz Modern Portfolio Theory (MPT)</a>
 <ul>
-<li class="chapter" data-level="3.4.1" data-path="mathfundations.html"><a href="mathfundations.html#assumptions-of-markowitz-portfolio-theory"><i class="fa fa-check"></i><b>3.4.1</b> Assumptions of Markowitz Portfolio Theory</a></li>
+<li class="chapter" data-level="4.4.1" data-path="mathfundations.html"><a href="mathfundations.html#assumptions-of-markowitz-portfolio-theory"><i class="fa fa-check"></i><b>4.4.1</b> Assumptions of Markowitz Portfolio Theory</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="mathfundations.html"><a href="mathfundations.html#portfolio-math"><i class="fa fa-check"></i><b>3.5</b> Portfolio Math</a>
+<li class="chapter" data-level="4.5" data-path="mathfundations.html"><a href="mathfundations.html#portfolio-math"><i class="fa fa-check"></i><b>4.5</b> Portfolio Math</a>
 <ul>
-<li class="chapter" data-level="3.5.1" data-path="mathfundations.html"><a href="mathfundations.html#expected-returns"><i class="fa fa-check"></i><b>3.5.1</b> Expected Returns</a></li>
-<li class="chapter" data-level="3.5.2" data-path="mathfundations.html"><a href="mathfundations.html#expected-portfolio-returns"><i class="fa fa-check"></i><b>3.5.2</b> Expected Portfolio Returns</a></li>
-<li class="chapter" data-level="3.5.3" data-path="mathfundations.html"><a href="mathfundations.html#covariance"><i class="fa fa-check"></i><b>3.5.3</b> Covariance</a></li>
-<li class="chapter" data-level="3.5.4" data-path="mathfundations.html"><a href="mathfundations.html#portvar"><i class="fa fa-check"></i><b>3.5.4</b> Portfolio Variance</a></li>
-<li class="chapter" data-level="3.5.5" data-path="mathfundations.html"><a href="mathfundations.html#portfolioreturns"><i class="fa fa-check"></i><b>3.5.5</b> Portfolio Returns</a></li>
+<li class="chapter" data-level="4.5.1" data-path="mathfundations.html"><a href="mathfundations.html#expected-returns"><i class="fa fa-check"></i><b>4.5.1</b> Expected Returns</a></li>
+<li class="chapter" data-level="4.5.2" data-path="mathfundations.html"><a href="mathfundations.html#expected-portfolio-returns"><i class="fa fa-check"></i><b>4.5.2</b> Expected Portfolio Returns</a></li>
+<li class="chapter" data-level="4.5.3" data-path="mathfundations.html"><a href="mathfundations.html#covariance"><i class="fa fa-check"></i><b>4.5.3</b> Covariance</a></li>
+<li class="chapter" data-level="4.5.4" data-path="mathfundations.html"><a href="mathfundations.html#portvar"><i class="fa fa-check"></i><b>4.5.4</b> Portfolio Variance</a></li>
+<li class="chapter" data-level="4.5.5" data-path="mathfundations.html"><a href="mathfundations.html#portfolioreturns"><i class="fa fa-check"></i><b>4.5.5</b> Portfolio Returns</a></li>
 </ul></li>
-<li class="chapter" data-level="3.6" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>3.6</b> R-Functions</a>
+<li class="chapter" data-level="4.6" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>4.6</b> R-Functions</a>
 <ul>
-<li class="chapter" data-level="3.6.1" data-path="mathfundations.html"><a href="mathfundations.html#covfun"><i class="fa fa-check"></i><b>3.6.1</b> <code>cov_()</code></a></li>
-<li class="chapter" data-level="3.6.2" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>3.6.2</b> <code>pri_to_ret()</code></a></li>
-<li class="chapter" data-level="3.6.3" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>3.6.3</b> <code>ret_to_cumret()</code></a></li>
-<li class="chapter" data-level="3.6.4" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>3.6.4</b> <code>ret_to_geomeanret()</code></a></li>
-<li class="chapter" data-level="3.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>3.6.5</b> <code>calc_portfolio_returns()</code></a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="activ-vs-passiv-portfolio-managment.html"><a href="activ-vs-passiv-portfolio-managment.html"><i class="fa fa-check"></i><b>4</b> Activ vs Passiv Portfolio Managment</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="activ-vs-passiv-portfolio-managment.html"><a href="activ-vs-passiv-portfolio-managment.html#results-of-the-literature"><i class="fa fa-check"></i><b>4.1</b> Results of the Literature</a></li>
-<li class="chapter" data-level="4.2" data-path="activ-vs-passiv-portfolio-managment.html"><a href="activ-vs-passiv-portfolio-managment.html#aggregation-of-the-literature"><i class="fa fa-check"></i><b>4.2</b> Aggregation of the Literature</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>5</b> Challenges of Passiv Investing</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>5.1</b> Mean-Variance Portfolio (MVP)</a>
-<ul>
-<li class="chapter" data-level="5.1.1" data-path="challenges.html"><a href="challenges.html#mvp-problem"><i class="fa fa-check"></i><b>5.1.1</b> MVP: Problem</a></li>
-<li class="chapter" data-level="5.1.2" data-path="challenges.html"><a href="challenges.html#mvp-example"><i class="fa fa-check"></i><b>5.1.2</b> MVP: Example</a></li>
-<li class="chapter" data-level="5.1.3" data-path="challenges.html"><a href="challenges.html#mvp-compare-estimators"><i class="fa fa-check"></i><b>5.1.3</b> MVP: Compare Estimators</a></li>
-</ul></li>
-<li class="chapter" data-level="5.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>5.2</b> Index-Tracking Portfolio (ITP)</a>
-<ul>
-<li class="chapter" data-level="5.2.1" data-path="challenges.html"><a href="challenges.html#itp-with-tev-objective-itp-tev"><i class="fa fa-check"></i><b>5.2.1</b> ITP with TEV objective (ITP-TEV)</a></li>
-<li class="chapter" data-level="5.2.2" data-path="challenges.html"><a href="challenges.html#ITPMSTE"><i class="fa fa-check"></i><b>5.2.2</b> ITP with MSTE objective (ITP-MSTE)</a></li>
-<li class="chapter" data-level="5.2.3" data-path="challenges.html"><a href="challenges.html#example-itp"><i class="fa fa-check"></i><b>5.2.3</b> Example ITP</a></li>
+<li class="chapter" data-level="4.6.1" data-path="mathfundations.html"><a href="mathfundations.html#covfun"><i class="fa fa-check"></i><b>4.6.1</b> <code>cov_()</code></a></li>
+<li class="chapter" data-level="4.6.2" data-path="mathfundations.html"><a href="mathfundations.html#pritoret"><i class="fa fa-check"></i><b>4.6.2</b> <code>pri_to_ret()</code></a></li>
+<li class="chapter" data-level="4.6.3" data-path="mathfundations.html"><a href="mathfundations.html#ret_to_cumret"><i class="fa fa-check"></i><b>4.6.3</b> <code>ret_to_cumret()</code></a></li>
+<li class="chapter" data-level="4.6.4" data-path="mathfundations.html"><a href="mathfundations.html#geomeanret"><i class="fa fa-check"></i><b>4.6.4</b> <code>ret_to_geomeanret()</code></a></li>
+<li class="chapter" data-level="4.6.5" data-path="mathfundations.html"><a href="mathfundations.html#calc_portfolio_returns"><i class="fa fa-check"></i><b>4.6.5</b> <code>calc_portfolio_returns()</code></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html"><i class="fa fa-check"></i><b>6</b> Analytic Solver for Quadratic Programming Problems</a>
+<li class="chapter" data-level="5" data-path="activ-vs-passiv-portfolio-managment.html"><a href="activ-vs-passiv-portfolio-managment.html"><i class="fa fa-check"></i><b>5</b> Activ vs Passiv Portfolio Managment</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>6.1</b> Quadratic Programming (QP)</a></li>
-<li class="chapter" data-level="6.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>6.2</b> QP-Solver from quadprog</a></li>
-<li class="chapter" data-level="6.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>6.3</b> Example: Solving MVP Problem with <code>solve.QP()</code></a></li>
-<li class="chapter" data-level="6.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>6.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="5.1" data-path="activ-vs-passiv-portfolio-managment.html"><a href="activ-vs-passiv-portfolio-managment.html#results-of-the-literature"><i class="fa fa-check"></i><b>5.1</b> Results of the Literature</a></li>
+<li class="chapter" data-level="5.2" data-path="activ-vs-passiv-portfolio-managment.html"><a href="activ-vs-passiv-portfolio-managment.html#aggregation-of-the-literature"><i class="fa fa-check"></i><b>5.2</b> Aggregation of the Literature</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>7</b> Particle Swarm Optimization (PSO)</a>
+<li class="chapter" data-level="6" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>6</b> Challenges of Passiv Investing</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#the-algorithm"><i class="fa fa-check"></i><b>7.1</b> The Algorithm</a></li>
-<li class="chapter" data-level="7.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pso-function"><i class="fa fa-check"></i><b>7.2</b> <code>pso()</code> Function</a></li>
-<li class="chapter" data-level="7.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>7.3</b> Animation 2-Dimensional</a></li>
-<li class="chapter" data-level="7.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional-app"><i class="fa fa-check"></i><b>7.4</b> Animation 2-Dimensional App</a></li>
-<li class="chapter" data-level="7.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#simple-constraint-handling"><i class="fa fa-check"></i><b>7.5</b> Simple Constraint Handling</a></li>
-<li class="chapter" data-level="7.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-mvp"><i class="fa fa-check"></i><b>7.6</b> Example MVP</a></li>
-<li class="chapter" data-level="7.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-mste"><i class="fa fa-check"></i><b>7.7</b> Example: ITP-MSTE</a></li>
-<li class="chapter" data-level="7.8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems"><i class="fa fa-check"></i><b>7.8</b> Pros and Cons for Continuous Problems</a></li>
-<li class="chapter" data-level="7.9" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#discrete-problems"><i class="fa fa-check"></i><b>7.9</b> Discrete Problems</a></li>
-<li class="chapter" data-level="7.10" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-discrete-itp-mste"><i class="fa fa-check"></i><b>7.10</b> Example: Discrete ITP-MSTE</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="pso-variations.html"><a href="pso-variations.html"><i class="fa fa-check"></i><b>8</b> PSO Variations</a>
+<li class="chapter" data-level="6.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>6.1</b> Mean-Variance Portfolio (MVP)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="pso-variations.html"><a href="pso-variations.html#testproblem-discrete-itp-mste"><i class="fa fa-check"></i><b>8.1</b> Testproblem: Discrete ITP-MSTE</a></li>
-<li class="chapter" data-level="8.2" data-path="pso-variations.html"><a href="pso-variations.html#function-stretching"><i class="fa fa-check"></i><b>8.2</b> Function Stretching</a>
+<li class="chapter" data-level="6.1.1" data-path="challenges.html"><a href="challenges.html#mvp-problem"><i class="fa fa-check"></i><b>6.1.1</b> MVP: Problem</a></li>
+<li class="chapter" data-level="6.1.2" data-path="challenges.html"><a href="challenges.html#mvp-example"><i class="fa fa-check"></i><b>6.1.2</b> MVP: Example</a></li>
+<li class="chapter" data-level="6.1.3" data-path="challenges.html"><a href="challenges.html#mvp-compare-estimators"><i class="fa fa-check"></i><b>6.1.3</b> MVP: Compare Estimators</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>6.2</b> Index-Tracking Portfolio (ITP)</a>
 <ul>
-<li class="chapter" data-level="8.2.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation"><i class="fa fa-check"></i><b>8.2.1</b> Implementation</a></li>
-<li class="chapter" data-level="8.2.2" data-path="pso-variations.html"><a href="pso-variations.html#test-pso-with-function-stretching"><i class="fa fa-check"></i><b>8.2.2</b> Test PSO with Function Stretching</a></li>
+<li class="chapter" data-level="6.2.1" data-path="challenges.html"><a href="challenges.html#itp-with-tev-objective-itp-tev"><i class="fa fa-check"></i><b>6.2.1</b> ITP with TEV objective (ITP-TEV)</a></li>
+<li class="chapter" data-level="6.2.2" data-path="challenges.html"><a href="challenges.html#ITPMSTE"><i class="fa fa-check"></i><b>6.2.2</b> ITP with MSTE objective (ITP-MSTE)</a></li>
+<li class="chapter" data-level="6.2.3" data-path="challenges.html"><a href="challenges.html#example-itp"><i class="fa fa-check"></i><b>6.2.3</b> Example ITP</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="pso-variations.html"><a href="pso-variations.html#local-pso"><i class="fa fa-check"></i><b>8.3</b> Local PSO</a>
+</ul></li>
+<li class="chapter" data-level="7" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html"><i class="fa fa-check"></i><b>7</b> Analytic Solver for Quadratic Programming Problems</a>
 <ul>
-<li class="chapter" data-level="8.3.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation-1"><i class="fa fa-check"></i><b>8.3.1</b> Implementation</a></li>
-<li class="chapter" data-level="8.3.2" data-path="pso-variations.html"><a href="pso-variations.html#test-local-pso"><i class="fa fa-check"></i><b>8.3.2</b> Test Local PSO</a></li>
+<li class="chapter" data-level="7.1" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
+<li class="chapter" data-level="7.2" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP-Solver from quadprog</a></li>
+<li class="chapter" data-level="7.3" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP Problem with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="7.4" data-path="analytic-solver-for-quadratic-programming-problems.html"><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
 </ul></li>
-<li class="chapter" data-level="8.4" data-path="pso-variations.html"><a href="pso-variations.html#preserving-feasibility"><i class="fa fa-check"></i><b>8.4</b> Preserving Feasibility</a>
+<li class="chapter" data-level="8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization (PSO)</a>
 <ul>
-<li class="chapter" data-level="8.4.1" data-path="pso-variations.html"><a href="pso-variations.html#test-preserving-feasibility-pso"><i class="fa fa-check"></i><b>8.4.1</b> Test Preserving Feasibility PSO</a></li>
+<li class="chapter" data-level="8.1" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#the-algorithm"><i class="fa fa-check"></i><b>8.1</b> The Algorithm</a></li>
+<li class="chapter" data-level="8.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pso-function"><i class="fa fa-check"></i><b>8.2</b> <code>pso()</code> Function</a></li>
+<li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
+<li class="chapter" data-level="8.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional-app"><i class="fa fa-check"></i><b>8.4</b> Animation 2-Dimensional App</a></li>
+<li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#simple-constraint-handling"><i class="fa fa-check"></i><b>8.5</b> Simple Constraint Handling</a></li>
+<li class="chapter" data-level="8.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-mvp"><i class="fa fa-check"></i><b>8.6</b> Example MVP</a></li>
+<li class="chapter" data-level="8.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-mste"><i class="fa fa-check"></i><b>8.7</b> Example: ITP-MSTE</a></li>
+<li class="chapter" data-level="8.8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems"><i class="fa fa-check"></i><b>8.8</b> Pros and Cons for Continuous Problems</a></li>
+<li class="chapter" data-level="8.9" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#discrete-problems"><i class="fa fa-check"></i><b>8.9</b> Discrete Problems</a></li>
+<li class="chapter" data-level="8.10" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-discrete-itp-mste"><i class="fa fa-check"></i><b>8.10</b> Example: Discrete ITP-MSTE</a></li>
 </ul></li>
-<li class="chapter" data-level="8.5" data-path="pso-variations.html"><a href="pso-variations.html#self-adaptive-velocity"><i class="fa fa-check"></i><b>8.5</b> Self-Adaptive Velocity</a>
+<li class="chapter" data-level="9" data-path="pso-variations.html"><a href="pso-variations.html"><i class="fa fa-check"></i><b>9</b> PSO Variations</a>
 <ul>
-<li class="chapter" data-level="8.5.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation-2"><i class="fa fa-check"></i><b>8.5.1</b> Implementation</a></li>
-<li class="chapter" data-level="8.5.2" data-path="pso-variations.html"><a href="pso-variations.html#analyse-implementation"><i class="fa fa-check"></i><b>8.5.2</b> Analyse Implementation</a></li>
-<li class="chapter" data-level="8.5.3" data-path="pso-variations.html"><a href="pso-variations.html#test-pso-with-self-adaptive-velocity"><i class="fa fa-check"></i><b>8.5.3</b> Test PSO with Self-Adaptive Velocity</a></li>
-</ul></li>
-<li class="chapter" data-level="8.6" data-path="pso-variations.html"><a href="pso-variations.html#pso-r-package"><i class="fa fa-check"></i><b>8.6</b> PSO R-Package</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html"><i class="fa fa-check"></i><b>9</b> Real Life ITP Example</a>
+<li class="chapter" data-level="9.1" data-path="pso-variations.html"><a href="pso-variations.html#testproblem-discrete-itp-mste"><i class="fa fa-check"></i><b>9.1</b> Testproblem: Discrete ITP-MSTE</a></li>
+<li class="chapter" data-level="9.2" data-path="pso-variations.html"><a href="pso-variations.html#function-stretching"><i class="fa fa-check"></i><b>9.2</b> Function Stretching</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#transaction-costs"><i class="fa fa-check"></i><b>9.1</b> Transaction Costs</a></li>
-<li class="chapter" data-level="9.2" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#rebalancing-constraint"><i class="fa fa-check"></i><b>9.2</b> Rebalancing Constraint</a></li>
-<li class="chapter" data-level="9.3" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#objective"><i class="fa fa-check"></i><b>9.3</b> Objective</a></li>
-<li class="chapter" data-level="9.4" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#complete-itp-example"><i class="fa fa-check"></i><b>9.4</b> Complete ITP Example</a></li>
+<li class="chapter" data-level="9.2.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation"><i class="fa fa-check"></i><b>9.2.1</b> Implementation</a></li>
+<li class="chapter" data-level="9.2.2" data-path="pso-variations.html"><a href="pso-variations.html#test-pso-with-function-stretching"><i class="fa fa-check"></i><b>9.2.2</b> Test PSO with Function Stretching</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="future-research.html"><a href="future-research.html"><i class="fa fa-check"></i><b>10</b> Future Research</a></li>
-<li class="chapter" data-level="11" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>11</b> Conclusion</a></li>
+<li class="chapter" data-level="9.3" data-path="pso-variations.html"><a href="pso-variations.html#local-pso"><i class="fa fa-check"></i><b>9.3</b> Local PSO</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation-1"><i class="fa fa-check"></i><b>9.3.1</b> Implementation</a></li>
+<li class="chapter" data-level="9.3.2" data-path="pso-variations.html"><a href="pso-variations.html#test-local-pso"><i class="fa fa-check"></i><b>9.3.2</b> Test Local PSO</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="pso-variations.html"><a href="pso-variations.html#preserving-feasibility"><i class="fa fa-check"></i><b>9.4</b> Preserving Feasibility</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="pso-variations.html"><a href="pso-variations.html#test-preserving-feasibility-pso"><i class="fa fa-check"></i><b>9.4.1</b> Test Preserving Feasibility PSO</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="pso-variations.html"><a href="pso-variations.html#self-adaptive-velocity"><i class="fa fa-check"></i><b>9.5</b> Self-Adaptive Velocity</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="pso-variations.html"><a href="pso-variations.html#implementation-2"><i class="fa fa-check"></i><b>9.5.1</b> Implementation</a></li>
+<li class="chapter" data-level="9.5.2" data-path="pso-variations.html"><a href="pso-variations.html#analyse-implementation"><i class="fa fa-check"></i><b>9.5.2</b> Analyse Implementation</a></li>
+<li class="chapter" data-level="9.5.3" data-path="pso-variations.html"><a href="pso-variations.html#test-pso-with-self-adaptive-velocity"><i class="fa fa-check"></i><b>9.5.3</b> Test PSO with Self-Adaptive Velocity</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="pso-variations.html"><a href="pso-variations.html#pso-r-package"><i class="fa fa-check"></i><b>9.6</b> PSO R-Package</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html"><i class="fa fa-check"></i><b>10</b> Real Life ITP Example</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#transaction-costs"><i class="fa fa-check"></i><b>10.1</b> Transaction Costs</a></li>
+<li class="chapter" data-level="10.2" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#rebalancing-constraint"><i class="fa fa-check"></i><b>10.2</b> Rebalancing Constraint</a></li>
+<li class="chapter" data-level="10.3" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#objective"><i class="fa fa-check"></i><b>10.3</b> Objective</a></li>
+<li class="chapter" data-level="10.4" data-path="real-life-itp-example.html"><a href="real-life-itp-example.html#complete-itp-example"><i class="fa fa-check"></i><b>10.4</b> Complete ITP Example</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="future-research.html"><a href="future-research.html"><i class="fa fa-check"></i><b>11</b> Future Research</a></li>
+<li class="chapter" data-level="12" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>12</b> Conclusion</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R" target="blank">GitHub Repository</a></li>
@@ -311,11 +312,11 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="analytic-solver-for-quadratic-programming-problems" class="section level1 hasAnchor" number="6">
-<h1><span class="header-section-number">Chapter 6</span> Analytic Solver for Quadratic Programming Problems<a href="analytic-solver-for-quadratic-programming-problems.html#analytic-solver-for-quadratic-programming-problems" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="analytic-solver-for-quadratic-programming-problems" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Analytic Solver for Quadratic Programming Problems<a href="analytic-solver-for-quadratic-programming-problems.html#analytic-solver-for-quadratic-programming-problems" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The advantages and disadvantages of analytical solvers for quadratic programming problems are discussed in this chapter. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver solves quadratic problems; only the applications and analysis are discussed. The main reason for dealing with analytic solvers for quadratic programming problems is to use them as a benchmark for PSO.</p>
-<div id="quadratic-programming-qp" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> Quadratic Programming (QP)<a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="quadratic-programming-qp" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Quadratic Programming (QP)<a href="analytic-solver-for-quadratic-programming-problems.html#quadratic-programming-qp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A quadratic program is a minimization problem of a function that returns a scalar value and consists of a quadratic term and a linear term that depend on the variable of interest. In addition, the problem may be constrained by several linear inequalities that bound the solution. The general formulation used is to find <span class="math inline">\(x\)</span> that minimizes the following problem:
 <span class="math display">\[
   \min\limits_{x} \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x
@@ -326,8 +327,8 @@ and is valid under the linear constraints:
 \]</span></p>
 <p>Some other sources notate the problem with different signs or coefficients, all of which are interchangeable with the above problem. In addition, the above problem has the same notation used in the R package <code>quadprog</code>, which reduces the substitution overhead. All modern programming languages have many solvers for quadratic problems. They differ mainly in the computation time for certain problems and the requirements. Some commercial QP solvers additionally accept more complex constraints, such as absolute (e.g., <span class="math inline">\(|A^T \times x| \geq a_0\)</span>) or mixed-integer (e.g., <span class="math inline">\(x \in \mathbb{N}\)</span>). Especially the mixed-integer constraint problems lead to a huge increase in memory requirements.</p>
 </div>
-<div id="qp-solver-from-quadprog" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> QP-Solver from quadprog<a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="qp-solver-from-quadprog" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> QP-Solver from quadprog<a href="analytic-solver-for-quadratic-programming-problems.html#qp-solver-from-quadprog" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The most common free QP-Solver used in R comes from the package <a href="https://cran.r-project.org/web/packages/quadprog/quadprog.pdf">quadprog</a>, which consists of a single function called <code>solve.QP()</code>. Its implementation routine is the dual method of Goldfarb and Idnani published in <span class="citation">(<a href="#ref-GoId1982" role="doc-biblioref">Goldfarb and Idnani 1982</a>)</span> and <span class="citation">(<a href="#ref-GoId1983" role="doc-biblioref">Goldfarb and Idnani 1983</a>)</span>. It uses the above QP with the condition that <span class="math inline">\(D\)</span> must be a symmetric positive definite matrix. This means that <span class="math inline">\(D\in \mathbb{R}^{N \times N}\)</span> and <span class="math inline">\(x^T D x &gt; 0 \ \forall \ x \in \mathbb{R}^N \setminus \{\vec{0}\}\)</span>, which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix <span class="math inline">\(\sum\)</span>, but it is possible to find the nearest positive definite matrix of <span class="math inline">\(\textstyle\sum\)</span> using the function <code>nearPD()</code> from the <a href="https://cran.r-project.org/web/packages/Matrix/Matrix.pdf">matrix</a> R package. The error encountered often does not exceed a percentage change in elements over <span class="math inline">\(10^{-15} \%\)</span>, which is negligible for the context of this work. The function <code>solve.QP()</code> for an <span class="math inline">\(N\)</span> dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:</p>
 <ul>
 <li><code>Dmat</code>: Symmetric positive definite matrix <span class="math inline">\(D \in \mathbb{R}^{N \times N}\)</span> of the quadratic term</li>
@@ -342,8 +343,8 @@ and is valid under the linear constraints:
 <li><code>value</code>: Scalar, the value of the quadratic function at the solution</li>
 </ul>
 </div>
-<div id="exampleanalyticalmvp" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Example: Solving MVP Problem with <code>solve.QP()</code><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="exampleanalyticalmvp" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Example: Solving MVP Problem with <code>solve.QP()</code><a href="analytic-solver-for-quadratic-programming-problems.html#exampleanalyticalmvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This section provides insights into the effects of diversification and the use of <code>solve.QP()</code> by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier <span class="math inline">\(i \in \{1, 2, \cdots, 10\}\)</span> consists of <span class="math inline">\(N_i = i\)</span> assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb13-1"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-1" aria-hidden="true" tabindex="-1"></a>returns_raw <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
 <span id="cb13-2"><a href="analytic-solver-for-quadratic-programming-problems.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(</span>
@@ -464,8 +465,8 @@ and is valid under the linear constraints:
 <p><img src="Master_Thesis_files/figure-html/qp_mvp4-1.png" width="672" /></p>
 <p>It can be seen, that each asset added results in a minimum variance portfolio with smaller or equal standard deviation. Nevertheless, we started with the asset that has the smallest standard deviation of 0.012459. This is the effect of diversification mentioned by Markowitz.</p>
 </div>
-<div id="exampleitpsolveqp" class="section level2 hasAnchor" number="6.4">
-<h2><span class="header-section-number">6.4</span> Example: Solving ITP-MSTE with <code>solve.QP()</code><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="exampleitpsolveqp" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Example: Solving ITP-MSTE with <code>solve.QP()</code><a href="analytic-solver-for-quadratic-programming-problems.html#exampleitpsolveqp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the SP500TR from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded, and the remaining assets serve as the new asset pool for the next replication until only five assets remain. First, the required data can be downloaded from the <code>R/</code> directory using existing functions. The function <code>get_spx_composition()</code> uses web scraping to read the components of <a href="https://en.wikipedia.org/wiki/List_of_S%26P_500_companies">wikipedia</a> and converts them into monthly compositions of the SP500TR. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the SP500TR:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb17-1"><a href="analytic-solver-for-quadratic-programming-problems.html#cb17-1" aria-hidden="true" tabindex="-1"></a>from <span class="ot">&lt;-</span> <span class="st">&quot;2018-01-01&quot;</span></span>
 <span id="cb17-2"><a href="analytic-solver-for-quadratic-programming-problems.html#cb17-2" aria-hidden="true" tabindex="-1"></a>to <span class="ot">&lt;-</span> <span class="st">&quot;2019-12-31&quot;</span></span>
