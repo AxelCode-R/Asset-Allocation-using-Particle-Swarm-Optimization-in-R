@@ -37,13 +37,3 @@ description: This GitBook is the Master Thesis of Axel Roth, which was created f
 # cat(paste0("<style> \n",paste0(readr::read_lines("my_style.css"), collapse = " \n")," </style>"))
 # cat(paste0("<script type='text/javascript'> \n",paste0(readr::read_lines("script.js"), collapse = " \n")," </script>"))
 ```
-
-
-# Preface {-}
-\renewcommand{\chaptermark}[1]{\markboth{\uppercase{#1}}{\uppercase{#1}}}
-\chaptermark{Preface}
-
-|||in progress||| \
-(soll vor dem TOC kommen denke ich)
-
-\renewcommand{\chaptermark}[1]{\markboth{\uppercase{\thechapter. \ #1}}{}}
