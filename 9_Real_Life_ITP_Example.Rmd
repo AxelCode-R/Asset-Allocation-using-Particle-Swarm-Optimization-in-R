@@ -5,7 +5,7 @@ output:
 editor_options:
   chunk_output_type: console
 ---
-# Real Life ITP Example
+# Real Life ITP Example {#reallife}
 In the previous chapters, the capabilities of a PSO and the quality of its results were analyzed based on the solution of a problem at a single point in time. In practice, the stability of future outcomes at multiple points in time is of greater interest. Therefore, the next sections provide additional constraints needed to simulate real portfolios over multiple rebalancing time points, first by adding transaction costs to the problem. For the first rebalancing time point, a problem is defined that simulates a portfolio manager who has a certain amount of cash and attempts to construct a portfolio from it, as described in the last section. After the first iteration, the portfolio manager must sell old assets and buy new ones. This, of course, incurs additional transaction costs and effort, so most portfolio managers consider a maximum rebalancing constraint that attempts to limit the amount of assets sold and purchased. The simulation of multiple rebalancing dates is called a backtest, which attempts to simulate the performance of a portfolio as a function of the previous portfolio and the historical data of each rebalancing date. Later, a full backtest of an ITP is evaluated and analyzed in a real-world environment.
 
 

@@ -100,7 +100,7 @@ In mathematics, random variables are written in capital letters, which also appl
 Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using [adjusted closing prices](https://www.investopedia.com/terms/a/adjusted closingprice.asp), which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.
 
 ### Simple Returns
-The default time frame for all raw data in this thesis is one working day and only simple rates of return are used. Assuming that there is an asset with price $p_{t_i}$ on working day $t_i$ and price $p_{t_{i+1}}$ on the following working day $t_{i+1}$, the simple rate of return for $t_{i+1}$ can be calculated as follows:
+The default time frame for all raw data in this thesis is a working day, prices are always measured in the evening, and only simple returns are used. Assuming that there is an asset with price $p_{t_i}$ on working day $t_i$ and price $p_{t_{i+1}}$ on the following working day $t_{i+1}$, the simple rate of return for $t_{i+1}$ can be calculated as follows:
 $$
   r_{i+1} = \frac{p_{t_{i+1}}}{p_{t_i}}-1
 $$
@@ -111,7 +111,7 @@ In 1952, Harry Markowitz published his first seminal paper, which had a signific
 ### Assumptions of Markowitz Portfolio Theory
 This thesis focuses on problems derived from Markowitz's portfolio theory [@Mark1959], without closed form solutions, which are studied in [@Mari2005] by excluding short selling. The following list contains these types of Markowitz assumptions according to [@Mari2005]: 
 
-\vspace{-0.4cm}
+\vspace{-0.2cm}
 + Perfect market without taxes or transaction costs
 + Assets are infinitely divisible
 + Short sales are disallowed
@@ -204,7 +204,7 @@ The general formula of the covariance matrix $\textstyle\sum$ of a random vector
  \end{bmatrix}\\
   &=\textstyle\sum
 \end{align*}
-and can be estimated in R using the basis function `cov()` and historical data. The function `cov_()` in \@ref(covfun) can be used to calculate the covariance using the geometric mean to estimate the expected returns.
+and can be estimated in R using the basis function `cov()` and historical data. The function `cov_()` explained in \@ref(covfun) can be used to calculate the covariance using the geometric mean to estimate the expected returns.
 
 ### Portfolio Variance {#portvar}
 Let $\pmb{R}$ be a random vector with $N$ normally distributed elements and $w$ a weight vector. Assuming that the covariance matrix $\sum$ of $\pmb{R}$ is known, the variance of the linear combination of $\pmb{R}$ can be calculated as follows:
@@ -260,7 +260,7 @@ The geometric mean of returns is a better estimator than the arithmetic mean of 
 $$
   r^{geom} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = -0.0002353887
 $$
-And the advantage is that it is a daily average return that gives exactly the same result as the real return, that is:
+And the advantage is that it is a daily average return that gives exactly the same result as the real returns, that is:
 $$
   (1+r^{geom})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
 $$
