@@ -274,21 +274,21 @@ $$
 And the last term can be solved in the same way as in [@Eric2021]:
 \begin{align*}
   Cov(\pmb{R} \times w, \pmb{R}_{bm}) &= Cov(\pmb{R}_{bm}, \pmb{R} \times w) \\
-  &= E[(\pmb{R}_{bm}-\mu_{bm})(\pmb{R} \times w-\mu_{\pmb{R}} \times w)] \\
-  &= E[(\pmb{R}_{bm}-\mu_{bm})(\pmb{R}-\mu_{\pmb{R}}) \times w] \\
-  &= E[(\pmb{R}_{bm}-\mu_{bm})(\pmb{R}-\mu_{\pmb{R}})] \times w \\
-  &= Cov(\pmb{R},\pmb{R}_{bm}) \times w
+  &= E[(\pmb{R}_{bm}-\mu_{bm}) \cdot (\pmb{R} \times w-\mu_{\pmb{R}} \times w)] \\
+  &= E[(\pmb{R}_{bm}-\mu_{bm}) \cdot (\pmb{R}-\mu_{\pmb{R}}) \times w] \\
+  &= E[(\pmb{R}_{bm}-\mu_{bm}) \cdot (\pmb{R}-\mu_{\pmb{R}})] \times w \\
+  &= Cov(\pmb{R}_{bm}, \pmb{R}) \times w
 \end{align*}
 
 This results in the final formulation of the ITP:
 \begin{align*}
   Var(\pmb{R}_{p}-\pmb{R}_{bm}) & = Var(\pmb{R} \times w - \pmb{R}_{bm}) \\
   & = Var(\pmb{R} \times w) - 2 \cdot Cov(\pmb{R} \times w,\pmb{R}_{bm}) + Var(\pmb{R}_{bm})  \\
-  & = w^T \times Cov(\pmb{R}) \times w - 2 \cdot Cov(\pmb{R}_{bm}, \pmb{R})^T \times w + \sigma_{bm}^2
+  & = w^T \times Cov(\pmb{R}) \times w - 2 \cdot Cov(\pmb{R}_{bm}, \pmb{R}) \times w + \sigma_{bm}^2
   (\#eq:ITP)
 \end{align*}
 
-The above problem can be estimated using the formulas and functions created in chapter \@ref(mathfundations) and historical data $R$ and $r_{bm}$. The minimization problem of the ITP in the general structure required by many optimizers is:
+The above problem can be estimated using the formulas and functions created in chapter \@ref(mathfundations) and historical returns $R$ and $r_{bm}$. The minimization problem of the ITP in the general structure required by many optimizers is:
 $$
   \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w -d^T \times w
 $$
@@ -299,7 +299,7 @@ $$
 $$
 and
 $$
-d = Cov(r_{bm}, R)
+d = Cov(r_{bm}, R)^T
 $$
 
 It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only. Despite the fact that this model is often used, it has a big disadvantage in that it cannot detect constant deviations in the returns. For this reason, the following model exists, which focuses on the mean square tracking error of returns (MSTE).

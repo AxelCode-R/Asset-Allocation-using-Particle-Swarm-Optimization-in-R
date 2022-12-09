@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-12-05" />
+<meta name="date" content="2022-12-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -334,7 +334,7 @@ div.csl-indent {
 </div>
 <div id="pso-function" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> <code>pso()</code> Function<a href="particle-swarm-optimization-pso.html#pso-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package <code>pso</code>. The key component of the problem is a objective function called <code>fn()</code>, which returns a scalar that needs to be minimized. The objective function mainly needs a vector <code>pos</code> that describes the position of one particle (e.g. weights). The other main parameter for the PSO function is <code>par</code>, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The vector can contain only <code>NA</code>’s, resulting in completely random starting positions. The last two arguments are <code>lower</code> and <code>upper</code> bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called <code>control</code>. The resulting structure is:</p>
+<p>In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package <code>pso</code>. The key component of the problem is a objective function called <code>fn()</code>, which needs a vector that describes the position of one particle (e.g. weights) and returns a scalar that needs to be minimized. The other main parameter for the PSO function is <code>par</code>, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The vector can contain only <code>NA</code>’s, resulting in completely random starting positions. The last two arguments are <code>lower</code> and <code>upper</code> bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called <code>control</code>. The resulting structure is:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="particle-swarm-optimization-pso.html#cb21-1" aria-hidden="true" tabindex="-1"></a>pso <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
 <span id="cb21-2"><a href="particle-swarm-optimization-pso.html#cb21-2" aria-hidden="true" tabindex="-1"></a>    par, </span>
 <span id="cb21-3"><a href="particle-swarm-optimization-pso.html#cb21-3" aria-hidden="true" tabindex="-1"></a>    fn, </span>
@@ -358,24 +358,25 @@ div.csl-indent {
 <span id="cb22-11"><a href="particle-swarm-optimization-pso.html#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">wN =</span> <span class="dv">0</span>, <span class="co"># ending inertia weight</span></span>
 <span id="cb22-12"><a href="particle-swarm-optimization-pso.html#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_traces =</span> F <span class="co"># save more information</span></span>
 <span id="cb22-13"><a href="particle-swarm-optimization-pso.html#cb22-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>Now it is time to initialize the random positions <code>X</code>, their fitness <code>X_fit</code> and their random velocities <code>V</code> with the function <code>mrunif()</code> which produces a matrix of uniformly distributed random numbers between <code>lower</code> and <code>upper</code>:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="particle-swarm-optimization-pso.html#cb23-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">mrunif</span>(</span>
-<span id="cb23-2"><a href="particle-swarm-optimization-pso.html#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">nr =</span> <span class="fu">length</span>(par), <span class="at">nc=</span>control<span class="sc">$</span>s, <span class="at">lower=</span>lower, <span class="at">upper=</span>upper</span>
-<span id="cb23-3"><a href="particle-swarm-optimization-pso.html#cb23-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-4"><a href="particle-swarm-optimization-pso.html#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">all</span>(<span class="sc">!</span><span class="fu">is.na</span>(par))){</span>
-<span id="cb23-5"><a href="particle-swarm-optimization-pso.html#cb23-5" aria-hidden="true" tabindex="-1"></a>  X[, <span class="dv">1</span>] <span class="ot">&lt;-</span> par</span>
-<span id="cb23-6"><a href="particle-swarm-optimization-pso.html#cb23-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb23-7"><a href="particle-swarm-optimization-pso.html#cb23-7" aria-hidden="true" tabindex="-1"></a>X_fit <span class="ot">&lt;-</span> <span class="fu">apply</span>(X, <span class="dv">2</span>, fn)</span>
-<span id="cb23-8"><a href="particle-swarm-optimization-pso.html#cb23-8" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">mrunif</span>(</span>
-<span id="cb23-9"><a href="particle-swarm-optimization-pso.html#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">nr =</span> <span class="fu">length</span>(par), <span class="at">nc=</span>control<span class="sc">$</span>s, </span>
-<span id="cb23-10"><a href="particle-swarm-optimization-pso.html#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower=</span><span class="sc">-</span>(upper<span class="sc">-</span>lower), <span class="at">upper=</span>(upper<span class="sc">-</span>lower)</span>
-<span id="cb23-11"><a href="particle-swarm-optimization-pso.html#cb23-11" aria-hidden="true" tabindex="-1"></a>)<span class="sc">/</span><span class="dv">10</span></span></code></pre></div>
+<p>Now it is time to initialize the random positions <code>X</code>, their fitness <code>X_fit</code> and their random velocities <code>V</code> with the created function <code>mrunif()</code> which produces a matrix of uniformly distributed random numbers between <code>lower</code> and <code>upper</code>:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="particle-swarm-optimization-pso.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
+<span id="cb23-2"><a href="particle-swarm-optimization-pso.html#cb23-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">mrunif</span>(</span>
+<span id="cb23-3"><a href="particle-swarm-optimization-pso.html#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">nr =</span> <span class="fu">length</span>(par), <span class="at">nc=</span>control<span class="sc">$</span>s, <span class="at">lower=</span>lower, <span class="at">upper=</span>upper</span>
+<span id="cb23-4"><a href="particle-swarm-optimization-pso.html#cb23-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-5"><a href="particle-swarm-optimization-pso.html#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">all</span>(<span class="sc">!</span><span class="fu">is.na</span>(par))){</span>
+<span id="cb23-6"><a href="particle-swarm-optimization-pso.html#cb23-6" aria-hidden="true" tabindex="-1"></a>  X[, <span class="dv">1</span>] <span class="ot">&lt;-</span> par</span>
+<span id="cb23-7"><a href="particle-swarm-optimization-pso.html#cb23-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-8"><a href="particle-swarm-optimization-pso.html#cb23-8" aria-hidden="true" tabindex="-1"></a>X_fit <span class="ot">&lt;-</span> <span class="fu">apply</span>(X, <span class="dv">2</span>, fn)</span>
+<span id="cb23-9"><a href="particle-swarm-optimization-pso.html#cb23-9" aria-hidden="true" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">mrunif</span>(</span>
+<span id="cb23-10"><a href="particle-swarm-optimization-pso.html#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">nr =</span> <span class="fu">length</span>(par), <span class="at">nc=</span>control<span class="sc">$</span>s, </span>
+<span id="cb23-11"><a href="particle-swarm-optimization-pso.html#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower=</span><span class="sc">-</span>(upper<span class="sc">-</span>lower), <span class="at">upper=</span>(upper<span class="sc">-</span>lower)</span>
+<span id="cb23-12"><a href="particle-swarm-optimization-pso.html#cb23-12" aria-hidden="true" tabindex="-1"></a>)<span class="sc">/</span><span class="dv">10</span></span></code></pre></div>
 <p>The velocities are compressed by a factor of 10 to start with a maximum movement of one tenth of the space in each axis. The personal best positions <code>P</code> are the same as <code>X</code> and the global best position is the position with the smallest fitness:</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="particle-swarm-optimization-pso.html#cb24-1" aria-hidden="true" tabindex="-1"></a>P <span class="ot">&lt;-</span> X</span>
 <span id="cb24-2"><a href="particle-swarm-optimization-pso.html#cb24-2" aria-hidden="true" tabindex="-1"></a>P_fit <span class="ot">&lt;-</span> X_fit</span>
 <span id="cb24-3"><a href="particle-swarm-optimization-pso.html#cb24-3" aria-hidden="true" tabindex="-1"></a>p_g <span class="ot">&lt;-</span> P[, <span class="fu">which.min</span>(P_fit)]</span>
 <span id="cb24-4"><a href="particle-swarm-optimization-pso.html#cb24-4" aria-hidden="true" tabindex="-1"></a>p_g_fit <span class="ot">&lt;-</span> <span class="fu">min</span>(P_fit)</span></code></pre></div>
-<p>The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space of a axis, they are pushed back to the edge and the velocities on this axis is set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.</p>
+<p>The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space of an axis, they are pushed back to the edge and the velocity on this axis is set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="particle-swarm-optimization-pso.html#cb25-1" aria-hidden="true" tabindex="-1"></a>trace_data <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
 <span id="cb25-2"><a href="particle-swarm-optimization-pso.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>control<span class="sc">$</span>maxiter){</span>
 <span id="cb25-3"><a href="particle-swarm-optimization-pso.html#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># move particles</span></span>
@@ -396,7 +397,7 @@ div.csl-indent {
 <span id="cb25-18"><a href="particle-swarm-optimization-pso.html#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># evaluate objective function</span></span>
 <span id="cb25-19"><a href="particle-swarm-optimization-pso.html#cb25-19" aria-hidden="true" tabindex="-1"></a>  X_fit <span class="ot">&lt;-</span> <span class="fu">apply</span>(X, <span class="dv">2</span>, fn)</span>
 <span id="cb25-20"><a href="particle-swarm-optimization-pso.html#cb25-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb25-21"><a href="particle-swarm-optimization-pso.html#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># save new previews best</span></span>
+<span id="cb25-21"><a href="particle-swarm-optimization-pso.html#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># save new personal best</span></span>
 <span id="cb25-22"><a href="particle-swarm-optimization-pso.html#cb25-22" aria-hidden="true" tabindex="-1"></a>  P[, P_fit <span class="sc">&gt;</span> X_fit] <span class="ot">&lt;-</span> X[, P_fit <span class="sc">&gt;</span> X_fit]</span>
 <span id="cb25-23"><a href="particle-swarm-optimization-pso.html#cb25-23" aria-hidden="true" tabindex="-1"></a>  P_fit[P_fit <span class="sc">&gt;</span> X_fit] <span class="ot">&lt;-</span> X_fit[P_fit <span class="sc">&gt;</span> X_fit]</span>
 <span id="cb25-24"><a href="particle-swarm-optimization-pso.html#cb25-24" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -406,7 +407,7 @@ div.csl-indent {
 <span id="cb25-28"><a href="particle-swarm-optimization-pso.html#cb25-28" aria-hidden="true" tabindex="-1"></a>    p_g_fit <span class="ot">&lt;-</span> <span class="fu">min</span>(P_fit)</span>
 <span id="cb25-29"><a href="particle-swarm-optimization-pso.html#cb25-29" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb25-30"><a href="particle-swarm-optimization-pso.html#cb25-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<p>The best fitness after <span class="math inline">\(100\)</span> iterations is 0.0000613 and the best possible solution is <span class="math inline">\(0\)</span>.</p>
+<p>The global minimum is located at <span class="math inline">\([0, 0]\)</span> which has a fitness of <span class="math inline">\(0\)</span> and the best position found from the PSO after <span class="math inline">\(100\)</span> iterations is located at [-0.000045601254, -0.000015746655] and has a fitness of 0.0000613.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb26-1"><a href="particle-swarm-optimization-pso.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load default PSO</span></span>
 <span id="cb26-2"><a href="particle-swarm-optimization-pso.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/PSO_functions.R&quot;</span>)</span></code></pre></div>
 </div>
@@ -442,21 +443,21 @@ f(x, y) = -20\cdot e^{-0.2 \cdot \sqrt{0.5 \cdot ((x-1)^2 + (y-1)^2)}} \ - e^{0.
 </div>
 <div id="animation-2-dimensional-app" class="section level2 hasAnchor" number="8.4">
 <h2><span class="header-section-number">8.4</span> Animation 2-Dimensional App<a href="particle-swarm-optimization-pso.html#animation-2-dimensional-app" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>To gain an even better understanding of the behavior of a PSO, a WebApp was written that allows the user to minimize arbitrary two-dimensional functions with constraints. Three variants of the PSO were implemented, which will be analyzed in detail in the later chapters of this thesis. The app can also be used to study the effect of hyperparameters on the behavior of the PSO in more detail. Within the app it is possible to plot each step of the iterations and this even with all direction vectors per iteration. The app is hosted at <span class="citation">(<a href="#ref-PSOApp" role="doc-biblioref">Roth 2022c</a>)</span> and the code for it is also freely available at <span class="citation">(<a href="#ref-GitPSO" role="doc-biblioref">Roth 2022b</a>)</span>. The hosted app may be used for educational purposes and using, copying, modifying, and sharing the code is permitted without restriction.</p>
+<p>To gain an even better understanding of the behavior of a PSO, a WebApp was developed that allows the user to minimize arbitrary two-dimensional functions with constraints. Three variants of the PSO were implemented, which will be analyzed in detail in the later chapters of this thesis. The app can also be used to study the effect of hyperparameters on the behavior of the PSO in more detail. Within the app it is possible to display each step of the iterations and this even with all the direction vectors that generate the resulting motion of each particle. The app is hosted at <span class="citation">(<a href="#ref-PSOApp" role="doc-biblioref">Roth 2022c</a>)</span> and the code for it is also freely available at <span class="citation">(<a href="#ref-GitPSO" role="doc-biblioref">Roth 2022b</a>)</span>. The hosted app may be used for educational purposes and using, copying, modifying, and sharing the code is permitted without restriction.</p>
 </div>
 <div id="simple-constraint-handling" class="section level2 hasAnchor" number="8.5">
 <h2><span class="header-section-number">8.5</span> Simple Constraint Handling<a href="particle-swarm-optimization-pso.html#simple-constraint-handling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure. This can be used to create a generic constraint handling function for these particular QP’s. Both problems must satisfy the following equation:
+<p>The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure of constraints. This can be used to create a generic constraint handling function for these particular QP’s. Both problems must satisfy the following equation:
 <span class="math display">\[
   A^T \times x  \geq b_0
 \]</span>
-To calculate a value for the intensity of constraint breaks, the above inequality gets subtracted by <span class="math inline">\(b_0\)</span> and defines:
+To calculate a value for the intensity of constraint breaks, the above inequality is subtracted by <span class="math inline">\(b_0\)</span> and the left-hand side is defined as follows:
 <span class="math display">\[
   c := A^T \times x - b_0
 \]</span>
 All negative elements in the vector <span class="math inline">\(c\)</span> represent constraint breaks that are squared and summed to extract a value that describes the intensity of constraint breaks like follows:
 <span class="math display">\[
-  c_{break} = \sum p(c_i) \cdot c_i^2
+  c_{break} = \sum p(c_i)^2
 \]</span>
 with
 <span class="math display">\[

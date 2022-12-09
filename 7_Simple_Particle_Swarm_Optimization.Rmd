@@ -29,7 +29,7 @@ With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \i
 
 
 ## `pso()` Function
-In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which returns a scalar that needs to be minimized. The objective function mainly needs a vector `pos` that describes the position of one particle (e.g. weights). The other main parameter for the PSO function is `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The vector can contain only `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
+In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which needs a vector that describes the position of one particle (e.g. weights) and returns a scalar that needs to be minimized. The other main parameter for the PSO function is `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The vector can contain only `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
 ```{r pso1, eval=F}
 pso <- function(
     par, 
@@ -60,9 +60,10 @@ control = list(
 )
 ```
 
-Now it is time to initialize the random positions `X`, their fitness `X_fit` and their random velocities `V` with the function `mrunif()` which produces a matrix of uniformly distributed random numbers between `lower` and `upper`:
+Now it is time to initialize the random positions `X`, their fitness `X_fit` and their random velocities `V` with the created function `mrunif()` which produces a matrix of uniformly distributed random numbers between `lower` and `upper`:
 
 ```{r pso3}
+set.seed(0)
 X <- mrunif(
   nr = length(par), nc=control$s, lower=lower, upper=upper
 )
@@ -84,7 +85,7 @@ p_g <- P[, which.min(P_fit)]
 p_g_fit <- min(P_fit)
 ```
 
-The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space of a axis, they are pushed back to the edge and the velocities on this axis is set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.
+The required data structure is available and the optimization can start with the calculation of the new velocities and the transformation of the old positions. When particles have left the valid space of an axis, they are pushed back to the edge and the velocity on this axis is set to zero. Then the fitness is calculated and the personal best and global best positions are saved if they have improved.
 
 ```{r pso5}
 trace_data <- NULL
@@ -107,7 +108,7 @@ for(i in 1:control$maxiter){
   # evaluate objective function
   X_fit <- apply(X, 2, fn)
   
-  # save new previews best
+  # save new personal best
   P[, P_fit > X_fit] <- X[, P_fit > X_fit]
   P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
   
@@ -118,7 +119,8 @@ for(i in 1:control$maxiter){
   }
 }
 ```
-The best fitness after $100$ iterations is `r p_g_fit` and the best possible solution is $0$.
+
+The global minimum is located at $[0, 0]$ which has a fitness of $0$ and the best position found from the PSO after $100$ iterations is located at `r paste0("[",paste0(round(p_g, 12), collapse=", "), "]")` and has a fitness of `r round(p_g_fit, 12)`. 
 
 ```{r pso6, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 # load default PSO
@@ -221,21 +223,21 @@ if(!knitr::is_latex_output()){
 ```
 
 ## Animation 2-Dimensional App
-To gain an even better understanding of the behavior of a PSO, a WebApp was written that allows the user to minimize arbitrary two-dimensional functions with constraints. Three variants of the PSO were implemented, which will be analyzed in detail in the later chapters of this thesis. The app can also be used to study the effect of hyperparameters on the behavior of the PSO in more detail. Within the app it is possible to plot each step of the iterations and this even with all direction vectors per iteration. The app is hosted at [@PSOApp] and the code for it is also freely available at [@GitPSO]. The hosted app may be used for educational purposes and using, copying, modifying, and sharing the code is permitted without restriction.
+To gain an even better understanding of the behavior of a PSO, a WebApp was developed that allows the user to minimize arbitrary two-dimensional functions with constraints. Three variants of the PSO were implemented, which will be analyzed in detail in the later chapters of this thesis. The app can also be used to study the effect of hyperparameters on the behavior of the PSO in more detail. Within the app it is possible to display each step of the iterations and this even with all the direction vectors that generate the resulting motion of each particle. The app is hosted at [@PSOApp] and the code for it is also freely available at [@GitPSO]. The hosted app may be used for educational purposes and using, copying, modifying, and sharing the code is permitted without restriction.
 
 
 ## Simple Constraint Handling
-The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure. This can be used to create a generic constraint handling function for these particular QP's. Both problems must satisfy the following equation:
+The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure of constraints. This can be used to create a generic constraint handling function for these particular QP's. Both problems must satisfy the following equation:
 $$
   A^T \times x  \geq b_0
 $$
-To calculate a value for the intensity of constraint breaks, the above inequality gets subtracted by $b_0$ and defines:
+To calculate a value for the intensity of constraint breaks, the above inequality is subtracted by $b_0$ and the left-hand side is defined as follows:
 $$
   c := A^T \times x - b_0
 $$
 All negative elements in the vector $c$ represent constraint breaks that are squared and summed to extract a value that describes the intensity of constraint breaks like follows:
 $$
-  c_{break} = \sum p(c_i) \cdot c_i^2
+  c_{break} = \sum p(c_i)^2
 $$
 with
 $$
