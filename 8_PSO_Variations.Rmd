@@ -323,7 +323,7 @@ reactable(
   html_save(., vwidth = 880)
 ```
 
-It can be seen that the function stretching did not bring any advantages in this particular problem. Perhaps it is due to the unfavorable values for $\gamma_1$, $\gamma_2$ and $\mu$, which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones.
+It can be seen that the function stretching did not bring any advantages in this particular problem. Perhaps it is due to the unfavorable values for $\gamma_1$, $\gamma_2$ and $\mu$, which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
 
 
 
@@ -439,7 +439,7 @@ reactable(
 It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
 
 ## Preserving Feasibility
-Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in [@XiEb2002] explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate, the result of trying to find a feasible position among a million randomly generated positions is as follows:
+Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in [@XiEb2002] explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the result of trying to find a feasible position among a million randomly generated positions is as follows:
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 fn_const = function(x){
@@ -459,10 +459,10 @@ print(paste0("Feasable positions: ", sum(X_const==0)))
 print(paste0("Elapsed time: ", time[3], " seconds"))
 rm(X, X_const)
 ```
-It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step was modified to start with only one feasible position, which was randomly determined from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
+It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step has been modified to start with only one feasible position, randomly selected from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
 
 ### Test Preserving Feasibility PSO
-In this section, we compare the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
+This section compares the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
 ```{r variants6_next, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 # R/PSO_functions.R : pso_preserving_feasibility()
@@ -599,7 +599,7 @@ reactable(
 The results indicate that the PSO with feasibility preservation is not able to solve finance-related problems that have a very small feasible space. It is more efficient to repeat the PSO with the previous best position until the solution is feasible.
 
 ## Self-Adaptive Velocity
-A self-adaptive velocity PSO approach that attempts to reduce hyperparameters was analyzed in [@FaYa2014]. The self-adaptive velocity is enabled by multiple velocity update schemes that are used randomly. In addition, all hyperparameters are self-adaptive in the way that each particle has its own coefficients $c_g$, $c_p$, and $w$, which change after each iteration depending on the distance to maximum fitness, among other factors. The resulting PSO has no real hyperparameters to adjust, which allows it to be used as a general-purpose PSO. 
+A PSO approach with self-adaptive velocity that attempts to reduce hyperparameters was analyzed in [@FaYa2014]. The self-adaptive velocity is enabled by multiple velocity update schemes that are used randomly. Moreover, all hyperparameters are self-adaptive, since each particle has its own coefficients $c_g$, $c_p$, and $w$, which change after each iteration depending on the fitness and other factors. The resulting PSO has no real hyperparameters that need to be tuned, and thus can be used as a general-purpose PSO. 
 
 
 ### Implementation
@@ -627,9 +627,9 @@ with
 \end{align*}
 and $\text{Cauchy}(\mu, \sigma)$ is a random number generated from the Cauchy distribution obtained with `rcauchy()` in R. The position update is the same as for the standard PSO. When a particle $d$ has left the feasible search space in its coordinate $z$, it is moved back with the following switch-case for $r = \text{Unif}(0,1)$:
 $$
-  x_{d,z} = 
+  x_{z,d} = 
   \begin{cases}
-    \text{generate uniform in feasable space}, & \text{if}\ \ r > 0.7\\
+    \text{generate uniform in the defined space}, & \text{if}\ \ r > 0.7\\
     \text{push back to boundary}, & \text{otherwise}\ \ \\
   \end{cases}
 $$
@@ -670,7 +670,7 @@ c_{g,d}^{i+1} &=
 Update the personal best $P$ and global best $p_g$ positions as in the standard PSO.
 
 6) Repeat  
-Steps 2 to 5 are repeated until the maximum iteration number $i_{max}$ is reached.
+Steps 2 to 5 are repeated until the maximum iteration $i_{max}$ is reached.
 
 ### Analyse Implementation
 The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration $i$ with 100 maximum iterations are distributed as follows:  

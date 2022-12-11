@@ -23,7 +23,7 @@
 <meta name="author" content="Axel Roth" />
 
 
-<meta name="date" content="2022-12-09" />
+<meta name="date" content="2022-12-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1046,7 +1046,7 @@ By following the name conventions of <code>solve.QP()</code>, a list named <code
 <span id="cb33-149"><a href="particle-swarm-optimization-pso.html#cb33-149" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
 <span id="cb33-150"><a href="particle-swarm-optimization-pso.html#cb33-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
 <p><img src="Master_Thesis_files/figure-html/pso9-1.png" width="672" /></p>
-<p>It can be seen that the rounded <code>solve.QP()</code> solution still has a good fitness but the constraints are not satisfied. The PSO has no constraint breaks and still reached a fitness close to the rounded <code>solve.QP()</code>. The PSO with <code>solve.QP()</code> solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the <code>solve.QP()</code> and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for problems in practice.</p>
+<p>It can be seen that the rounded <code>solve.QP()</code> solution still has a good fitness but the constraints are not satisfied. The PSO has no constraint breaks and better fitness than the rounded <code>solve.QP()</code>. The PSO with <code>solve.QP()</code> solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the <code>solve.QP()</code> and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for such problems in practice.</p>
 
 </div>
 </div>

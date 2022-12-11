@@ -129,7 +129,7 @@
 
 \title{Asset Allocation using Particle Swarm Optimization in R}
 \author{Axel Roth}
-\date{2022-12-09}
+\date{2022-12-11}
 
 \begin{document}
 \maketitle
@@ -1353,7 +1353,7 @@ A continuous solution for a portfolio is not sufficient for practical purposes, 
 This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the SP500TR with its top 100 assets derived from the example with discarding in section \ref{exampleitpsolveqp} and tries to construct a portfolio with the constraints long only, \(0.99 \leq \textstyle\sum w_i \leq 1\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
 \includegraphics{Master_Thesis_files/figure-latex/pso9-1.png}
 
-It can be seen that the rounded \texttt{solve.QP()} solution still has a good fitness but the constraints are not satisfied. The PSO has no constraint breaks and still reached a fitness close to the rounded \texttt{solve.QP()}. The PSO with \texttt{solve.QP()} solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the \texttt{solve.QP()} and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for problems in practice.
+It can be seen that the rounded \texttt{solve.QP()} solution still has a good fitness but the constraints are not satisfied. The PSO has no constraint breaks and better fitness than the rounded \texttt{solve.QP()}. The PSO with \texttt{solve.QP()} solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the \texttt{solve.QP()} and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for such problems in practice.
 
 \hypertarget{psovariants}{%
 \chapter{PSO Variations}\label{psovariants}}
@@ -1376,7 +1376,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 \hypertarget{function-stretching}{%
 \section{Function Stretching}\label{function-stretching}}
 
-PSO often gets stuck in local minima, i.e., if the current best global position is a local minima with a larger environment around it, with only higher fitness, it is hard for the PSO to escape and find the global minima. Function stretching tries to make the PSO escape from such local minima by transforming the fitness function in a way described in \citep{PaVr2002}. It states that after finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function so that the discovered local minimum is transformed into a maximum, but any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum \(\bar{x}\) are:
+PSO often becomes stuck in local minima, that is, if the current best global position is a local minimum with a larger environment around it, with only higher fitness. In such situations, it is difficult for the PSO to escape to find the global minimum. Function stretching attempts to allow the PSO to escape from such local minima by transforming the fitness function in the manner described in \citep{PaVr2002}. After finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function such that the discovered local minimum is transformed into a maximum, but any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum \(\bar{x}\) are:
 \begin{equation} 
 G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
 \label{eq:fnstretchG}
@@ -1421,13 +1421,15 @@ translated to the objective function:
 
 and the domain of definition is chosen as \(x \in [-20, 20]\). Suppose the PSO gets stuck in the local minimum at \(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\). The original function \texttt{fn} and the transformed function \texttt{fn\_stretched}, which matches \(H(x)\) in equation \eqref{eq:fnstretchH}, are shown in the following graph:\\
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
-It can be seen that the fitness is stretched upward around the local minima \(\bar{x}\), making it much easier for the PSO to move down the hill and fall into new minima with lower fitness. All the lower fitness regions remain unchanged, as can be seen in the zoomed version of the bottom diagram from above:
+
+It can be seen that the fitness is stretched upward around the local minima \(\bar{x}\), making it much easier for the PSO to go down the hill and fall into new minima with lower fitness. It can be observed that on the right hand side there was only higher fitness before and after the transformation a local minimum has emerged which has a large area where only higher fitness values are located. In the worst case this can lead to a new local minimum from which it is even more difficult to escape. All regions with lower fitness remain unchanged, as can be seen in the zoomed version of the bottom diagram from above:
+
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
 
 \hypertarget{implementation}{%
 \subsection{Implementation}\label{implementation}}
 
-Since it is not possible to know if the PSO is stuck in a local minima, a stagnation value was added that increases by one if the global best particle does not change. After ten iterations with no change, a local minima is assumed and the transformation of the objective function takes place. After that, all personal best fitness values must be re-evaluated to work with the evaluated space and the stagnation value is set to zero. To prevent transformation just at the end of all iterations, the current iteration must be less than the maximum iteration minus twenty to allow transformation to occur.
+Since it is not possible to know if the PSO is stuck in a local minima, a stagnation value was added that increases by one if the global best particle does not change. After ten iterations with no change, a local minimum is assumed and the transformation of the objective function takes place. After that, all personal best fitness values must be re-evaluated to work with the evaluated space and the stagnation value is set to zero. To prevent transformation just at the end of all iterations, the current iteration must be less than the maximum iteration minus twenty to allow transformation to occur.
 
 \hypertarget{test-pso-with-function-stretching}{%
 \subsection{Test PSO with Function Stretching}\label{test-pso-with-function-stretching}}
@@ -1439,6 +1441,8 @@ The PSO with function stretching is called \texttt{PSO-fnS} and is evaluated on 
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 \includegraphics{Master_Thesis_files/figure-latex/variants4-1.png}
+
+It can be seen that the function stretching did not bring any advantages in this particular problem. Perhaps it is due to the unfavorable values for \(\gamma_1\), \(\gamma_2\) and \(\mu\), which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
 
 \hypertarget{local-pso}{%
 \section{Local PSO}\label{local-pso}}
@@ -1478,7 +1482,7 @@ It can be seen that it is superior to the standard PSO in this case. Especially 
 \hypertarget{preserving-feasibility}{%
 \section{Preserving Feasibility}\label{preserving-feasibility}}
 
-Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in \citep{XiEb2002} explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate, the result of trying to find a feasible position among a million randomly generated positions is as follows:
+Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in \citep{XiEb2002} explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the result of trying to find a feasible position among a million randomly generated positions is as follows:
 
 \begin{verbatim}
 [1] "Feasable positions: 0"
@@ -1488,12 +1492,12 @@ Other variants of PSO often provide solutions that are infeasible, resulting in 
 [1] "Elapsed time: 297.01 seconds"
 \end{verbatim}
 
-It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step was modified to start with only one feasible position, which was randomly determined from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
+It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step has been modified to start with only one feasible position, randomly selected from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
 
 \hypertarget{test-preserving-feasibility-pso}{%
 \subsection{Test Preserving Feasibility PSO}\label{test-preserving-feasibility-pso}}
 
-In this section, we compare the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
+This section compares the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
 \includegraphics{Master_Thesis_files/figure-latex/variants6_next-1.png}
 
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
@@ -1505,7 +1509,7 @@ The results indicate that the PSO with feasibility preservation is not able to s
 \hypertarget{self-adaptive-velocity}{%
 \section{Self-Adaptive Velocity}\label{self-adaptive-velocity}}
 
-A self-adaptive velocity PSO approach that attempts to reduce hyperparameters was analyzed in \citep{FaYa2014}. The self-adaptive velocity is enabled by multiple velocity update schemes that are used randomly. In addition, all hyperparameters are self-adaptive in the way that each particle has its own coefficients \(c_g\), \(c_p\), and \(w\), which change after each iteration depending on the distance to maximum fitness, among other factors. The resulting PSO has no real hyperparameters to adjust, which allows it to be used as a general-purpose PSO.
+A PSO approach with self-adaptive velocity that attempts to reduce hyperparameters was analyzed in \citep{FaYa2014}. The self-adaptive velocity is enabled by multiple velocity update schemes that are used randomly. Moreover, all hyperparameters are self-adaptive, since each particle has its own coefficients \(c_g\), \(c_p\), and \(w\), which change after each iteration depending on the fitness and other factors. The resulting PSO has no real hyperparameters that need to be tuned, and thus can be used as a general-purpose PSO.
 
 \hypertarget{implementation-2}{%
 \subsection{Implementation}\label{implementation-2}}
@@ -1537,9 +1541,9 @@ The process of this PSO variant is too different from the standard PSO, so all c
   \end{align*}
   and \(\text{Cauchy}(\mu, \sigma)\) is a random number generated from the Cauchy distribution obtained with \texttt{rcauchy()} in R. The position update is the same as for the standard PSO. When a particle \(d\) has left the feasible search space in its coordinate \(z\), it is moved back with the following switch-case for \(r = \text{Unif}(0,1)\):
   \[
-    x_{d,z} = 
+    x_{z,d} = 
     \begin{cases}
-   \text{generate uniform in feasable space}, & \text{if}\ \ r > 0.7\\
+   \text{generate uniform in the defined space}, & \text{if}\ \ r > 0.7\\
    \text{push back to boundary}, & \text{otherwise}\ \ \\
     \end{cases}
   \]
@@ -1581,7 +1585,7 @@ The process of this PSO variant is too different from the standard PSO, so all c
   Update the personal best \(P\) and global best \(p_g\) positions as in the standard PSO.
 \item
   Repeat\\
-  Steps 2 to 5 are repeated until the maximum iteration number \(i_{max}\) is reached.
+  Steps 2 to 5 are repeated until the maximum iteration \(i_{max}\) is reached.
 \end{enumerate}
 
 \hypertarget{analyse-implementation}{%
@@ -1619,12 +1623,12 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 \hypertarget{reallife}{%
 \chapter{Real Life ITP Example}\label{reallife}}
 
-In the previous chapters, the capabilities of a PSO and the quality of its results were analyzed based on the solution of a problem at a single point in time. In practice, the stability of future outcomes at multiple points in time is of greater interest. Therefore, the next sections provide additional constraints needed to simulate real portfolios over multiple rebalancing time points, first by adding transaction costs to the problem. For the first rebalancing time point, a problem is defined that simulates a portfolio manager who has a certain amount of cash and attempts to construct a portfolio from it, as described in the last section. After the first iteration, the portfolio manager must sell old assets and buy new ones. This, of course, incurs additional transaction costs and effort, so most portfolio managers consider a maximum rebalancing constraint that attempts to limit the amount of assets sold and purchased. The simulation of multiple rebalancing dates is called a backtest, which attempts to simulate the performance of a portfolio as a function of the previous portfolio and the historical data of each rebalancing date. Later, a full backtest of an ITP is evaluated and analyzed in a real-world environment.
+In the previous chapters, the capabilities of the PSO and the quality of its results were analyzed based on the solution of a problem at a single point in time. In practice, the stability of future outcomes at multiple points in time is of greater interest. Therefore, the next sections provide additional constraints needed to simulate real portfolios over multiple rebalancing time points, first by adding transaction costs to the problem. For the first rebalancing time point, a problem is defined that simulates a portfolio manager who has a certain amount of cash and attempts to construct a portfolio from it, as described in the last section. After the first iteration, the portfolio manager must sell old assets and buy new ones. This, of course, incurs additional transaction costs and effort, so most portfolio managers consider a maximum rebalancing constraint that attempts to limit the amount of assets sold and purchased. The simulation of multiple rebalancing dates is called a backtest, which attempts to simulate the performance of a portfolio as a function of the previous portfolio and historical data for each rebalancing date. Later, a full backtest of an ITP-MSTE is evaluated and analyzed in a real-world environment.
 
 \hypertarget{transaction-costs}{%
 \section{Transaction Costs}\label{transaction-costs}}
 
-The cost of buying or selling assets must be considered as it can have a significant impact after several years of investment. There are many different costs that can be incurred depending on the concepts of the broker, the liquidity of the assets and the type of assets. For more information, see \citep{AkGa2022} or \citep{NySe2022}. For simplicity, we focus on the situation of a retail investor using an online broker that charges a fixed fee per transaction for the U.S. stocks included in the SP500TR. Each transaction consists of one or more shares of an asset, and a transaction can be either a sale or a purchase. The fixed transaction fee is set at 1 USD, as is done by the online broker Trade Republic. The PSO can account for the transaction cost by increasing the objective value, but it is difficult to make the intensity of the transaction cost value comparable to the objective value. The objective value \(v^o\) of the ITP with MSTE approach, as in \ref{ITPMSTE}, is defined as:
+The cost of buying or selling assets must be considered as it can have a significant impact after several years of investment. There are many different costs that can be incurred depending on the concepts of the broker, the liquidity of the assets and the type of assets. For more information, see \citep{AkGa2022} or \citep{NySe2022}. For simplicity, we focus on the situation of a retail investor using an online broker that charges a fixed fee per transaction for the U.S. stocks included in the SP500TR. Each transaction consists of one or more shares of exactly one asset, and a transaction can be either a sale or a purchase. The fixed transaction fee is set at 1 USD, as is done by the online broker Trade Republic. The PSO can account for the transaction cost by increasing the objective value, but it is difficult to make the intensity of the transaction cost value comparable to the objective value. The objective value \(v^o\) of the ITP with MSTE approach, as in \ref{ITPMSTE}, is defined as:
 \[
  v^o = \left\Vert r_{p}-r_{bm} \right\Vert_2^2 = \sum_{t=1}^T (r_{t,p}-r_{t,bm})^2
 \]
@@ -1670,7 +1674,7 @@ and with a rebalancing constraint of, say, 30\%, the rebalanced portfolio is fea
 \hypertarget{objective}{%
 \section{Objective}\label{objective}}
 
-The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP() approach, continuously discarding assets as in section \ref{exampleitpsolveqp}, with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the training period. In addition, the solve.QP() approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which gives stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10\%, \(0.96 \leq \sum w_i \leq 0.995\), rebalancing under 30\% weight, considering transaction cost with diffrent values for \(k\), net asset value of 20000 USD, length of training period of four months and testing period of one month.
+The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP() approach, continuously discarding assets as in section \ref{exampleitpsolveqp}, with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the training period. In addition, the solve.QP() approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which yielded stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10\%, \(0.96 \leq \sum w_i \leq 0.995\), rebalancing under 30\% weight, considering transaction cost with diffrent values for \(k\), net asset value of 20000 USD, length of training period of four months and testing period of one month.
 
 Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraints are satisfied. Then it is run four more times to improve the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from \ref{portfolioreturns} until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool, they are sold and reduce the net asset value due to transaction costs. The same is done by buying or selling any remaining assets. A rough illustration of the process can be found in the following figure:
 
@@ -1683,7 +1687,7 @@ Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated unti
 \hypertarget{complete-itp-example}{%
 \section{Complete ITP Example}\label{complete-itp-example}}
 
-The following charts visualize the test period of the whole backtests. The \texttt{QP\_MSTE\_cont} line represents the performance of the continuous solution using the ITP MSTE approach solved with solve.QP() and stays the same for all backtests. The discretized solution using the PSO is named \texttt{PSO\_MSTE\_disc} and the \texttt{PSO\_MSTE\_disc\_TE} considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity \(k \in \{0, 10, 20, 30\}\) of each backtest which can be seen in the legends by \texttt{0tc}, \texttt{10tc}, \texttt{20tc} and \texttt{30tc}.
+The following charts visualize the test period of the whole backtests. The \texttt{QP\_MSTE\_cont} line represents the performance of the continuous solution of the ITP-MSTE objective solved with solve.QP() and stays the same for all backtests. The discretized solution using the PSO is named \texttt{PSO\_MSTE\_disc} and the \texttt{PSO\_MSTE\_disc\_TE} considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity \(k \in \{0, 10, 20, 30\}\) of each backtest which can be seen in the legends by \texttt{0tc}, \texttt{10tc}, \texttt{20tc} and \texttt{30tc}.
 
 Backtest for \(k=0\):
 
@@ -1713,7 +1717,7 @@ and the statistics of the discretized PSO with considered transaction costs are:
 It can be seen that increasing \(k\) tends to reduce the average transaction cost in USD. Since each backtest depends on different previous portfolios, further backtests are needed to confirm this result. The absolute loss of \texttt{nav} between the results of the PSO without and with transaction costs for each \(k\) can be found in the chart below:\\
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-14-1.png}
 
-Another interesting result is that the \texttt{solve.QP()} approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the follwing chart, comparing only the \texttt{solve.QP()} approach and the SP500TR:
+Another interesting result is that the continuous \texttt{solve.QP()} approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the following performance chart, comparing only the \texttt{solve.QP()} approach and the SP500TR:
 \includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-15-1.png}
 
 \hypertarget{future-research}{%
@@ -1726,7 +1730,7 @@ The last chapter analyzed backtests of a practical index tracking problem for re
 \hypertarget{conclusion}{%
 \chapter{Conclusion}\label{conclusion}}
 
-It has been shown that the PSO is capable of solving practical financial problems that are hardly solvable with analytical approaches without any limitations or losses in practicability. The advantage of the PSO is that problems can be formulated in any complexity and still be applied. This was shown especially in the last chapter, where a discrete index tracking problem was formulated, which is not analytically solvable. Exactly in such situations heuristics like the PSO are the last possibility to have the chance to formulate and solve the whole problem without restrictions. Nevertheless, an analytical approach should always be preferred if possible, since the PSO is not always able to find the best solution. If discretization is the only obstacle to the applicability of an analytical approach, the chapter on Particle Swarm Optimization (PSO) has shown that a continuous solution can be transformed into a discrete solution using PSO, taking into account the constraints. The chapter on PSO variants gave an insight into the many ways in which the standard PSO can be modified to improve behavior. It was shown that there are variants that increase diversification and reduce hyperparameters. In the chapter Active vs Passive Portfolio Management it has been analyzed how relevant it is to generate portfolios more and more automatically in order to save costs and to be more attractive in competition with other professional managed funds. This has an increasing relevance in the future, which is why it may be that PSO will be used more and more within portfolio management.
+This thesis has provided an insight into fundamental knowledge about the two basic investment strategies of passive investing and solved them using the PSO. It has been shown that the PSO requires significantly more time to solve problems than the analytical approaches. In contrast, the PSO is capable of solving practical financial problems that are hardly solvable with analytical approaches without any limitations or losses in practicability. The advantage of the PSO is that problems can be formulated in any complexity and still be applied. This was shown especially in the last chapter, where a discrete index tracking problem was formulated, which is not analytically solvable. Exactly in such situations heuristics like the PSO are the last possibility to have the chance to formulate and solve the whole problem without restrictions. Nevertheless, an analytical approach should always be preferred if possible, since the PSO is not always able to find the best solution. If discretization is the only obstacle to the applicability of an analytical approach, the chapter on Particle Swarm Optimization (PSO) has shown that a continuous solution can be transformed into a discrete solution using PSO, meanwhile taking into account the constraints. The chapter on PSO variants gave an insight into the many ways in which the standard PSO can be modified to improve behavior. It was shown that there are variants that increase diversification and reduce hyperparameters. In the chapter Active vs Passive Portfolio Management it has been analyzed how relevant it is to generate portfolios more and more automatically in order to save costs and to be more attractive in competition with other professional managed funds. This has an increasing relevance in the future, which is why it may be that the PSO will be used more and more within portfolio management.
 
   \bibliography{book.bib,packages.bib}
 
