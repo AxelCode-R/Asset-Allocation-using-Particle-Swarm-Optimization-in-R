@@ -14,6 +14,8 @@ bookdown::gitbook:
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
+    before_body: cover.tex
+    after_body: erklaerung.tex
   latex_engine: pdflatex
   citation_package: natbib
   keep_tex: yes

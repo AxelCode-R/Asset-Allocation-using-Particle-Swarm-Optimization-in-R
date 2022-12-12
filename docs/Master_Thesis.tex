@@ -105,7 +105,9 @@
 \usepackage{amsmath}
 \usepackage{animate}
 \usepackage{fvextra}
+\usepackage{pdfpages}
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines=true, breakanywhere=true, commandchars=\\\{\}}
+
 
 \makeatletter
 \def\thm@space@setup{%
@@ -122,22 +124,22 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Asset Allocation using Particle Swarm Optimization in R},
-  pdfauthor={Axel Roth},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{Asset Allocation using Particle Swarm Optimization in R}
-\author{Axel Roth}
-\date{2022-12-12}
+\author{}
+\date{\vspace{-2.5em}}
 
 \begin{document}
-\maketitle
+
+\includepdf[pages=-]{Master_Thesis_Cover.pdf}
 
 {
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
+\includepdf[pages=-]{Master_Thesis_Cover.pdf}
+
 \hypertarget{abstract}{%
 \chapter*{Abstract}\label{abstract}}
 \addcontentsline{toc}{chapter}{Abstract}
@@ -1733,5 +1735,7 @@ The last chapter analyzed backtests of a practical index tracking problem for re
 In this thesis, an insight into the basic knowledge of the two common investment strategies of passive investing was given and solved using the PSO. It has been shown that the PSO requires significantly more time to solve problems than the analytical approaches. In contrast, PSO is able to solve practical financial problems that are almost impossible to solve using analytical approaches without any limitations or loss of practicality. The advantage of PSO is that problems can be formulated in arbitrary complexity and still be applicable. This was shown in particular in the last chapter, where a discrete index tracking problem was formulated that is analytically intractable. In such situations, heuristics such as PSO are the last resort to formulate and solve the entire problem without limitations. Nevertheless, if possible, an analytical approach should always be preferred, since the PSO is not always able to find the best solution. If discretization is the only obstacle to the applicability of an analytical approach, the chapter on particle swarm optimization (PSO) has shown that a continuous solution can be transformed into a discrete solution using PSO, while simultaneously taking into account the constraints. The chapter on PSO variants provided insight into the many ways in which the standard PSO can be modified to improve behavior. The most promising variants for such financial problems are the local PSO and the PSO with self-adaptive velocity, since both increase the diversity of the swarm, which prevents premature convergence to local minima. The PSO with self-adaptive velocity additionally reduces the number of hyperparameters, which is why it was used for the real-life index tracking example in the last chapter. The other variants, PSO with feasibility preservation and PSO with function stretching, showed no advantages for such financial problems. The chapter Active vs.~Passive Portfolio Management showed how relevant it is to generate portfolios increasingly automatically in order to save costs and to be more attractive in competition with other professionally managed funds. This will become even more important in the future, which is why PSO could be used more and more in portfolio management.
 
   \bibliography{book.bib,packages.bib}
+
+\includepdf[pages=-]{Master_Thesis_Erklärung.pdf}
 
 \end{document}
