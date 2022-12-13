@@ -181,16 +181,16 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] ggpubr_0.5.0        metR_0.13.0         gganimate_1.0.8    
- [4] quantmod_0.4.20     TTR_0.24.3          reactable_0.3.0    
- [7] bookdown_0.30       webshot2_0.1.0      corrr_0.4.4        
-[10] data.table_1.14.4   pso_1.0.4           plotly_4.10.1      
-[13] matrixcalc_1.0-6    Matrix_1.5-1        quadprog_1.5-8     
-[16] xts_0.12.2          zoo_1.8-11          rvest_1.0.3        
-[19] forcats_0.5.2       stringr_1.4.1       purrr_0.3.5        
-[22] tidyr_1.2.1         tibble_3.1.8        ggplot2_3.4.0      
-[25] tidyverse_1.3.2     readr_2.1.3         dplyr_1.0.10       
-[28] alphavantager_0.1.2 lubridate_1.9.0     timechange_0.1.1   
+ [1] alphavantager_0.1.2 ggpubr_0.5.0        metR_0.13.0        
+ [4] gganimate_1.0.8     quantmod_0.4.20     TTR_0.24.3         
+ [7] reactable_0.3.0     bookdown_0.30       webshot2_0.1.0     
+[10] corrr_0.4.4         data.table_1.14.4   pso_1.0.4          
+[13] plotly_4.10.1       matrixcalc_1.0-6    Matrix_1.5-1       
+[16] quadprog_1.5-8      xts_0.12.2          zoo_1.8-11         
+[19] rvest_1.0.3         forcats_0.5.2       stringr_1.4.1      
+[22] purrr_0.3.5         tidyr_1.2.1         tibble_3.1.8       
+[25] ggplot2_3.4.0       tidyverse_1.3.2     readr_2.1.3        
+[28] dplyr_1.0.10        lubridate_1.9.0     timechange_0.1.1   
 
 loaded via a namespace (and not attached):
  [1] fs_1.5.2            progress_1.2.2      httr_1.4.4         
@@ -683,7 +683,7 @@ It can be observed that the portfolio with the lowest variance was obtained with
 \subsection{MVP: Compare Estimators}\label{mvp-compare-estimators}}
 
 The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns \(\mu\) and was also used in the estimation of the covariance \(\textstyle\sum\). This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of \(\lambda\) using the arithmetic mean versus the geometric mean to estimate \(\mu\). The weights of the MVP's using the geometric mean are used to calculate \(\mu\) and \(\sigma\) as a function of the arithmetic mean to make both efficient frontiers comparable:
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-5-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png}
 It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with \(\lambda\) are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.
 
 \hypertarget{index-tracking-portfolio-itp}{%
@@ -1420,11 +1420,11 @@ translated to the objective function:
 \end{Shaded}
 
 and the domain of definition is chosen as \(x \in [-20, 20]\). Suppose the PSO gets stuck in the local minimum at \(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\). The original function \texttt{fn} and the transformed function \texttt{fn\_stretched}, which matches \(H(x)\) in equation \eqref{eq:fnstretchH}, are shown in the following graph:\\
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-8-1.png}
 
 It can be seen that the fitness is stretched upward around the local minima \(\bar{x}\), making it much easier for the PSO to go down the hill and fall into new minima with lower fitness. It can be observed that on the right hand side there was only higher fitness before and after the transformation a local minimum has emerged which has a large area where only higher fitness values are located. In the worst case this can lead to a new local minimum from which it is even more difficult to escape. All regions with lower fitness remain unchanged, as can be seen in the zoomed version of the bottom diagram from above:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
 
 \hypertarget{implementation}{%
 \subsection{Implementation}\label{implementation}}
@@ -1489,7 +1489,7 @@ Other variants of PSO often provide solutions that are infeasible, resulting in 
 \end{verbatim}
 
 \begin{verbatim}
-[1] "Elapsed time: 297.01 seconds"
+[1] "Elapsed time: 667.88 seconds"
 \end{verbatim}
 
 It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step has been modified to start with only one feasible position, randomly selected from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
@@ -1592,7 +1592,7 @@ The process of this PSO variant is too different from the standard PSO, so all c
 \subsection{Analyse Implementation}\label{analyse-implementation}}
 
 The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration \(i\) with 100 maximum iterations are distributed as follows:\\
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
 It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in explorability and exploitability, indicated by probabilities outside \([0, 1]\).
 
 Even more difficult to interpret is the adjusting of the control parameters. The value \(W_d^i\) is a weighting of the distances to the worst fitness, resulting in a higher weighting of the particles with good fitness. Later, the control parameters are adjusted using the Cauchy distribution with a weighted value of the previous control parameters as the center, giving higher weights to the control parameters that produced better fitness. This results in random control parameters distributed around the best previous control parameters. The resulting behavior can be described with a small quote, ``If exploration is beneficial, more exploration is done. If not, more is exploited.''
@@ -1715,10 +1715,10 @@ and the statistics of the discretized PSO with considered transaction costs are:
 \includegraphics{Master_Thesis_files/figure-latex/9_10-1.png}
 
 It can be seen that increasing \(k\) tends to reduce the average transaction cost in USD. Since each backtest depends on different previous portfolios, further backtests are needed to confirm this result. The absolute loss of \texttt{nav} between the results of the PSO without and with transaction costs for each \(k\) can be found in the chart below:\\
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-14-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
 
 Another interesting result is that the continuous \texttt{solve.QP()} approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the following performance chart, comparing only the \texttt{solve.QP()} approach and the SP500TR:
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-15-1.png}
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
 
 \hypertarget{future-research}{%
 \chapter{Future Research}\label{future-research}}
