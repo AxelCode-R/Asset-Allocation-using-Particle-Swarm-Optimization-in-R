@@ -1,7 +1,7 @@
 --- 
-title: "Asset Allocation using Particle Swarm Optimization in R"
-author: "Axel Roth"
-date: "`r Sys.Date()`"
+params:
+  t1: "hallo"
+  t2: ""
 documentclass: book
 classoption: oneside
 github-repo: https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R
@@ -15,6 +15,10 @@ editor_options:
   chunk_output_type: console
 description: This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart.
 ---
+---
+title: `r if(knitr::is_html_output()){"Asset Allocation using Particle Swarm Optimization in R"}else{""}`
+---
+
 ```{r, include=FALSE, eval=FALSE}
 # Sys.setenv(R_GSCMD="C:\\Program Files (x86)\\gs\\gs9.55.0\\bin\\gswin32.exe")
 # #bookdown::render_book('index.Rmd', 'bookdown::pdf_book')
@@ -37,3 +41,4 @@ description: This GitBook is the Master Thesis of Axel Roth, which was created f
 # cat(paste0("<style> \n",paste0(readr::read_lines("my_style.css"), collapse = " \n")," </style>"))
 # cat(paste0("<script type='text/javascript'> \n",paste0(readr::read_lines("script.js"), collapse = " \n")," </script>"))
 ```
+
