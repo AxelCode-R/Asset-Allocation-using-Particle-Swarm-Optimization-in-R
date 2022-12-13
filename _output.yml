@@ -1,5 +1,5 @@
 bookdown::gitbook:
-  toc_depth: 4
+  toc_depth: 2
   includes:
     after_body: header.html
   css: ["style.css", "my_style.css"]
@@ -12,6 +12,7 @@ bookdown::gitbook:
     edit: https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R/edit/master/%s
     download: ["pdf"]
 bookdown::pdf_book:
+  toc_depth: 2
   includes:
     in_header: preamble.tex
     before_body: cover.tex
