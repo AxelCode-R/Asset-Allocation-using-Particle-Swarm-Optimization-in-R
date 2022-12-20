@@ -28,7 +28,7 @@ returns <- buffer(
 )
 ``` 
 The cumulative daily returns are:  
-```{r MVP_ex2, echo = F}
+```{r MVP_ex2, echo = F, fig.cap = "Cumulative daily returns of IBM (IBM), Apple (AAPL) and Google (GOOG)"}
 plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
   html_save()
 
@@ -80,7 +80,7 @@ portfolios <- data.frame(portfolios)
 colnames(portfolios) <- colnames(returns)
 ```
 The resulting portfolios are plotted in the daily $\mu$-$\sigma$ diagram to create the efficient frontier:  
-```{r MVP_ex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F}
+```{r MVP_ex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F, fig.cap = "Optimal MVP for each $\\lambda$ (lambda) and interpolated efficiency frontier"}
 plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
   add_lines(y = ~mu, x = ~sd, name = "efficient frontier", mode="lines", type = 'scatter') %>%
   add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps", type = 'scatter') %>%
@@ -93,7 +93,7 @@ plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
 ```
 
 The portfolio compositions for each $\lambda$ are:  
-```{r MVP_ex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", cache=F, warning=F, message=F}
+```{r MVP_ex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", cache=F, warning=F, message=F, fig.cap="Portfolio composition regarding each $\\lambda$ (lambda)"}
 p <- plot_ly(type="bar") %>% 
   layout(barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="weight"), margin=list(b=70))
 for(i in 1:ncol(portfolios)){
@@ -109,7 +109,7 @@ It can be observed that the portfolio with the lowest variance was obtained with
 
 ### MVP: Compare Estimators
 The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns $\mu$ and was also used in the estimation of the covariance $\textstyle\sum$. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of $\lambda$ using the arithmetic mean versus the geometric mean to estimate $\mu$. The weights of the MVP's using the geometric mean are used to calculate $\mu$ and $\sigma$ as a function of the arithmetic mean to make both efficient frontiers comparable:
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of the use of the arithmetic and geometric means in calculating MVP\'s for each lambda. Plot of MVP\'s in terms of $\\mu$-$\\sigma$ (mu - sigma) calculated using only the arithmetic mean."}
 
 cov_ <- function(mat, mean_vec=NULL){
   if(is.null(mean_vec)){
@@ -350,7 +350,7 @@ $$
 ### Example ITP
 This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. Because the returns are calculated from adjusted closing prices, the index needs to represent dividends, stock splits and rights offerings too. This can be achieved by taking the S&P 500 Total Return Index (SP500TR in short). The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
 
-```{r ITP_ex, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r ITP_ex, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of ITP-TEV and ITP-MSTE objectives, presented as cumulative daily returns."}
 pool_returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
   "CPI_3_assets"
