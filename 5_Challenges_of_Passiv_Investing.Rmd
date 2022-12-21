@@ -21,20 +21,24 @@ The risk aversion parameter $\lambda$ defines the tradeoff between risk and retu
 
 ### MVP: Example
 All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.  
-```{r MVP_ex1, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r MVPex1, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
   "CPI_3_assets"
 )
 ``` 
-The cumulative daily returns are:  
-```{r MVP_ex2, echo = F, fig.cap = "Cumulative daily returns of IBM (IBM), Apple (AAPL) and Google (GOOG)"}
+The cumulative daily returns are:
+
+
+```{r MVPex2, echo = F, fig.cap = "Cumulative daily returns of IBM (IBM), Apple (AAPL) and Google (GOOG)"}
 plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
   html_save()
 
 ```
+
+
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \@ref(mathfundations):  
-```{r MVP_ex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r MVPex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 mu <- ret_to_geomeanret(returns)
 cat0("estimation of expected daily returns:")
 mu
@@ -44,8 +48,10 @@ cat0("estimation of positiv definite covariance matrix:")
 cov
 ```
 
-This is all the data necessary to solve the MVP problem with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the long only ($w_i \geq 0 \ \forall \ i$) constraint and the weights should sum to 1.  
-```{r MVP_ex4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+This is all the data necessary to solve the MVP problem with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the long only ($w_i \geq 0 \ \forall \ i$) constraint and the weights should sum to 1.
+
+
+```{r MVPex4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 portfolios <- data.frame()
 mu_and_var <- NULL
 for(lambda in seq(0.01,1, 0.01)){
@@ -79,8 +85,12 @@ for(lambda in seq(0.01,1, 0.01)){
 portfolios <- data.frame(portfolios)
 colnames(portfolios) <- colnames(returns)
 ```
-The resulting portfolios are plotted in the daily $\mu$-$\sigma$ diagram to create the efficient frontier:  
-```{r MVP_ex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F, fig.cap = "Optimal MVP for each $\\lambda$ (lambda) and interpolated efficiency frontier"}
+
+
+The resulting portfolios are plotted in the daily $\mu$-$\sigma$ diagram to create the efficient frontier:
+
+
+```{r MVPex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F, fig.cap = "Optimal MVP for each lambda and interpolated efficiency frontier"}
 plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
   add_lines(y = ~mu, x = ~sd, name = "efficient frontier", mode="lines", type = 'scatter') %>%
   add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps", type = 'scatter') %>%
@@ -92,8 +102,11 @@ plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
   html_save()
 ```
 
-The portfolio compositions for each $\lambda$ are:  
-```{r MVP_ex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", cache=F, warning=F, message=F, fig.cap="Portfolio composition regarding each $\\lambda$ (lambda)"}
+
+The portfolio compositions for each $\lambda$ are:
+
+
+```{r MVPex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", cache=F, warning=F, message=F, fig.cap="Portfolio composition regarding each lambda"}
 p <- plot_ly(type="bar") %>% 
   layout(barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="weight"), margin=list(b=70))
 for(i in 1:ncol(portfolios)){
@@ -105,11 +118,15 @@ p %>%
   html_save()
 
 ```
+
+
 It can be observed that the portfolio with the lowest variance was obtained with a diversified composition of the three assets. With gradually decreasing $\lambda$, the minimization problem starts to ignore the variance, which leads to a portfolio investing more in the riskiest asset with the highest return.
 
 ### MVP: Compare Estimators
 The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns $\mu$ and was also used in the estimation of the covariance $\textstyle\sum$. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of $\lambda$ using the arithmetic mean versus the geometric mean to estimate $\mu$. The weights of the MVP's using the geometric mean are used to calculate $\mu$ and $\sigma$ as a function of the arithmetic mean to make both efficient frontiers comparable:
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of the use of the arithmetic and geometric means in calculating MVP\'s for each lambda. Plot of MVP\'s in terms of $\\mu$-$\\sigma$ (mu - sigma) calculated using only the arithmetic mean."}
+
+
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of the use of the arithmetic and geometric means in calculating MVPs for each lambda. Plot of MVPs in terms of mu - sigma calculated using only the arithmetic mean."}
 
 cov_ <- function(mat, mean_vec=NULL){
   if(is.null(mean_vec)){
@@ -240,6 +257,8 @@ plot_ly(data = all, type = 'scatter', mode="lines+markers", y = ~mu, x = ~sd, na
   config(mathjax = 'cdn') %>% 
   html_save()
 ```
+
+
 It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with $\lambda$ are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.
 
 
@@ -350,7 +369,8 @@ $$
 ### Example ITP
 This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. Because the returns are calculated from adjusted closing prices, the index needs to represent dividends, stock splits and rights offerings too. This can be achieved by taking the S&P 500 Total Return Index (SP500TR in short). The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
 
-```{r ITP_ex, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of ITP-TEV and ITP-MSTE objectives, presented as cumulative daily returns."}
+
+```{r ITPex, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of ITP-TEV and ITP-MSTE objectives, presented as cumulative daily returns."}
 pool_returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
   "CPI_3_assets"
@@ -407,8 +427,10 @@ port_returns_MSTE <- xts(pool_returns %*% qp$solution, order.by=index(pool_retur
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns_TEV, port_returns_MSTE, bm_returns))) %>% 
   html_save()
 ```
+
+
 The ITP-TEV and the ITP-MSTE had almost the same results, which can be seen in the compositions below:
-```{r ITP_ex2, echo=F}
+```{r ITPex2, echo=F}
 data.frame(rbind(composition_TEV, composition_MSTE), row.names = NULL)
 ```
 

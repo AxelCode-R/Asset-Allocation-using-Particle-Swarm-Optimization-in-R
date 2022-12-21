@@ -6,8 +6,8 @@
   oneside]{book}
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
-\usepackage{iftex}
-\ifPDFTeX
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
@@ -33,6 +33,12 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -115,17 +121,11 @@
   \thm@postskip=\thm@preskip
 }
 \makeatother
-\ifLuaTeX
+\ifluatex
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
-\hypersetup{
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
 
 \author{}
 \date{\vspace{-2.5em}}
@@ -138,6 +138,8 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
+\listoffigures
+
 \hypertarget{abstract}{%
 \chapter*{Abstract}\label{abstract}}
 \addcontentsline{toc}{chapter}{Abstract}
@@ -166,59 +168,58 @@ All of the work was done in the amazing IDE of R-Studio using R-Markdown extende
 The used packages and versions can be found in the table below:
 
 \begin{verbatim}
-R version 4.2.2 (2022-10-31 ucrt)
+R version 4.1.1 (2021-08-10)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 19044)
 
 Matrix products: default
 
 locale:
-[1] LC_COLLATE=German_Germany.utf8  LC_CTYPE=German_Germany.utf8   
-[3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
-[5] LC_TIME=German_Germany.utf8    
+[1] LC_COLLATE=German_Germany.1252  LC_CTYPE=German_Germany.1252   
+[3] LC_MONETARY=German_Germany.1252 LC_NUMERIC=C                   
+[5] LC_TIME=German_Germany.1252    
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] alphavantager_0.1.2 ggpubr_0.5.0        metR_0.13.0        
- [4] gganimate_1.0.8     quantmod_0.4.20     TTR_0.24.3         
- [7] reactable_0.3.0     bookdown_0.30       webshot2_0.1.0     
-[10] corrr_0.4.4         data.table_1.14.4   pso_1.0.4          
-[13] plotly_4.10.1       matrixcalc_1.0-6    Matrix_1.5-1       
-[16] quadprog_1.5-8      xts_0.12.2          zoo_1.8-11         
-[19] rvest_1.0.3         forcats_0.5.2       stringr_1.4.1      
-[22] purrr_0.3.5         tidyr_1.2.1         tibble_3.1.8       
-[25] ggplot2_3.4.0       tidyverse_1.3.2     readr_2.1.3        
-[28] dplyr_1.0.10        lubridate_1.9.0     timechange_0.1.1   
+ [1] alphavantager_0.1.2 ggpubr_0.5.0        metR_0.12.0        
+ [4] gganimate_1.0.7     quantmod_0.4.20     TTR_0.24.3         
+ [7] reactable_0.3.0     bookdown_0.31       webshot2_0.1.0     
+[10] corrr_0.4.3         data.table_1.14.2   pso_1.0.3          
+[13] plotly_4.10.0       matrixcalc_1.0-5    Matrix_1.5-3       
+[16] quadprog_1.5-8      xts_0.12.1          zoo_1.8-9          
+[19] rvest_1.0.2         forcats_0.5.1       stringr_1.4.0      
+[22] purrr_0.3.4         tidyr_1.2.0         tibble_3.1.8       
+[25] ggplot2_3.4.0       tidyverse_1.3.2     readr_2.1.2        
+[28] dplyr_1.0.9         lubridate_1.8.0    
 
 loaded via a namespace (and not attached):
- [1] fs_1.5.2            progress_1.2.2      httr_1.4.4         
- [4] tools_4.2.2         backports_1.4.1     utf8_1.2.2         
+ [1] fs_1.5.2            progress_1.2.2      httr_1.4.3         
+ [4] tools_4.1.1         backports_1.2.1     utf8_1.2.2         
  [7] R6_2.5.1            DBI_1.1.3           lazyeval_0.2.2     
-[10] colorspace_2.0-3    withr_2.5.0         prettyunits_1.1.1  
-[13] tidyselect_1.2.0    processx_3.8.0      curl_4.3.3         
-[16] compiler_4.2.2      cli_3.4.1           xml2_1.3.3         
-[19] checkmate_2.1.0     scales_1.2.1        digest_0.6.30      
-[22] rmarkdown_2.18      pkgconfig_2.0.3     htmltools_0.5.3    
-[25] dbplyr_2.2.1        fastmap_1.1.0       htmlwidgets_1.5.4  
-[28] rlang_1.0.6         readxl_1.4.1        rstudioapi_0.14    
-[31] farver_2.1.1        generics_0.1.3      jsonlite_1.8.3     
-[34] car_3.1-1           googlesheets4_1.0.1 magrittr_2.0.3     
-[37] Rcpp_1.0.9          munsell_0.5.0       fansi_1.0.3        
-[40] abind_1.4-5         lifecycle_1.0.3     stringi_1.7.8      
-[43] yaml_2.3.6          carData_3.0-5       grid_4.2.2         
-[46] promises_1.2.0.1    crayon_1.5.2        lattice_0.20-45    
-[49] haven_2.5.1         chromote_0.1.1      hms_1.1.2          
-[52] knitr_1.41          ps_1.7.2            pillar_1.8.1       
-[55] ggsignif_0.6.4      reprex_2.0.2        glue_1.6.2         
-[58] evaluate_0.18       modelr_0.1.10       tweenr_2.0.2       
-[61] vctrs_0.5.0         tzdb_0.3.0          cellranger_1.1.0   
-[64] gtable_0.3.1        assertthat_0.2.1    cachem_1.0.6       
-[67] xfun_0.34           broom_1.0.1         rstatix_0.7.1      
-[70] later_1.3.0         googledrive_2.0.0   viridisLite_0.4.1  
-[73] gargle_1.2.1        websocket_1.4.1     memoise_2.0.1      
-[76] ellipsis_0.3.2     
+[10] colorspace_2.0-2    withr_2.5.0         prettyunits_1.1.1  
+[13] tidyselect_1.1.2    processx_3.5.2      curl_4.3.2         
+[16] compiler_4.1.1      cli_3.3.0           xml2_1.3.3         
+[19] checkmate_2.0.0     scales_1.2.1        digest_0.6.29      
+[22] rmarkdown_2.19      pkgconfig_2.0.3     htmltools_0.5.3    
+[25] dbplyr_2.2.1        fastmap_1.1.0       htmlwidgets_1.5.3  
+[28] rlang_1.0.6         readxl_1.4.0        rstudioapi_0.13    
+[31] farver_2.1.0        generics_0.1.3      jsonlite_1.8.0     
+[34] car_3.1-1           googlesheets4_1.0.0 magrittr_2.0.3     
+[37] Rcpp_1.0.9          munsell_0.5.0       fansi_0.5.0        
+[40] abind_1.4-5         lifecycle_1.0.3     stringi_1.7.6      
+[43] yaml_2.3.5          carData_3.0-5       grid_4.1.1         
+[46] promises_1.2.0.1    crayon_1.5.1        lattice_0.20-44    
+[49] haven_2.5.0         chromote_0.1.0      hms_1.1.1          
+[52] knitr_1.41          ps_1.6.0            pillar_1.8.0       
+[55] ggsignif_0.6.4      reprex_2.0.1        glue_1.6.2         
+[58] evaluate_0.19       modelr_0.1.8        tweenr_1.0.2       
+[61] vctrs_0.5.1         tzdb_0.3.0          cellranger_1.1.0   
+[64] gtable_0.3.0        assertthat_0.2.1    xfun_0.35          
+[67] broom_1.0.0         rstatix_0.7.1       later_1.3.0        
+[70] googledrive_2.0.0   viridisLite_0.4.0   gargle_1.2.0       
+[73] websocket_1.4.0     ellipsis_0.3.2     
 \end{verbatim}
 
 \hypertarget{reproducibility}{%
@@ -256,8 +257,6 @@ The following functions were created to increase the ease of data collection wit
 
 This function is the main wrapper for collecting data with \texttt{getSymbols()} from yahoo-finance, and converts prices to returns with the \texttt{pri\_to\_ret()} function explained in \ref{pritoret}. The output is a list containing prices and returns as \href{https://cran.r-project.org/web/packages/xts/xts.pdf}{xts} objects. The arguments that can be passed to \texttt{get\_yf()} are:
 
-\vspace{-0.4cm}
-
 \begin{itemize}
 \tightlist
 \item
@@ -287,8 +286,14 @@ This chapter provides an overview of the mathematical calculations and conventio
 \hypertarget{basic-operators}{%
 \section{Basic Operators}\label{basic-operators}}
 
-The table below compares frequently used mathematical symbols with R code and their meaning:\\
-\includegraphics{Master_Thesis_files/figure-latex/operators-1.png}
+The table below compares frequently used mathematical symbols with R code and their meaning:
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-2-1.png}
+\caption{\label{fig:unnamed-chunk-2}List of used opterators and their meanings.}
+\end{figure}
+
 For a better understanding of the operators listed, the following examples are intended to illustrate the resulting dimensions and provide insight into the use of these operators.
 
 Matrix product:
@@ -654,36 +659,59 @@ The risk aversion parameter \(\lambda\) defines the tradeoff between risk and re
 
 All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP for each \(\lambda\). First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.
 
-The cumulative daily returns are:\\
-\includegraphics{Master_Thesis_files/figure-latex/MVP_ex2-1.png}
+The cumulative daily returns are:
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/MVPex2-1.png}
+\caption{\label{fig:MVPex2}Cumulative daily returns of IBM (IBM), Apple (AAPL) and Google (GOOG)}
+\end{figure}
+
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \ref{mathfundations}:
 
 \begin{verbatim}
 estimation of expected daily returns:
          AAPL           IBM          GOOG 
- 0.0011434115 -0.0001059164  0.0004870292 
+ 0.0011434117 -0.0001059161  0.0004870292 
 
 estimation of positiv definite covariance matrix:
              AAPL          IBM         GOOG
-AAPL 0.0003012226 0.0001177826 0.0001799097
-IBM  0.0001177826 0.0002047608 0.0001158735
-GOOG 0.0001799097 0.0001158735 0.0002728911
+AAPL 0.0003012226 0.0001177830 0.0001799099
+IBM  0.0001177830 0.0002047607 0.0001158736
+GOOG 0.0001799099 0.0001158736 0.0002728911
 \end{verbatim}
 
 This is all the data necessary to solve the MVP problem with \(\lambda \in \{0.01, 0.02, ..., 0.99, 1\}\). All 100 portfolios are computed by solving a quadratic minimization problem with the long only (\(w_i \geq 0 \ \forall \ i\)) constraint and the weights should sum to 1.
 
-The resulting portfolios are plotted in the daily \(\mu\)-\(\sigma\) diagram to create the efficient frontier:\\
-\includegraphics{Master_Thesis_files/figure-latex/MVP_ex5-1.png}
+The resulting portfolios are plotted in the daily \(\mu\)-\(\sigma\) diagram to create the efficient frontier:
 
-The portfolio compositions for each \(\lambda\) are:\\
-\includegraphics{Master_Thesis_files/figure-latex/MVP_ex6-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/MVPex5-1.png}
+\caption{\label{fig:MVPex5}Optimal MVP for each lambda and interpolated efficiency frontier}
+\end{figure}
+
+The portfolio compositions for each \(\lambda\) are:
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/MVPex6-1.png}
+\caption{\label{fig:MVPex6}Portfolio composition regarding each lambda}
+\end{figure}
+
 It can be observed that the portfolio with the lowest variance was obtained with a diversified composition of the three assets. With gradually decreasing \(\lambda\), the minimization problem starts to ignore the variance, which leads to a portfolio investing more in the riskiest asset with the highest return.
 
 \hypertarget{mvp-compare-estimators}{%
 \subsection{MVP: Compare Estimators}\label{mvp-compare-estimators}}
 
 The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns \(\mu\) and was also used in the estimation of the covariance \(\textstyle\sum\). This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of \(\lambda\) using the arithmetic mean versus the geometric mean to estimate \(\mu\). The weights of the MVP's using the geometric mean are used to calculate \(\mu\) and \(\sigma\) as a function of the arithmetic mean to make both efficient frontiers comparable:
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-3-1.png}
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-4-1.png}
+\caption{\label{fig:unnamed-chunk-4}Comparison of the use of the arithmetic and geometric means in calculating MVPs for each lambda. Plot of MVPs in terms of mu - sigma calculated using only the arithmetic mean.}
+\end{figure}
+
 It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with \(\lambda\) are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.
 
 \hypertarget{index-tracking-portfolio-itp}{%
@@ -797,13 +825,18 @@ and
 
 This example shows the results of tracking the S\&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. Because the returns are calculated from adjusted closing prices, the index needs to represent dividends, stock splits and rights offerings too. This can be achieved by taking the S\&P 500 Total Return Index (SP500TR in short). The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
 
-\includegraphics{Master_Thesis_files/figure-latex/ITP_ex-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/ITPex-1.png}
+\caption{\label{fig:ITPex}Comparison of ITP-TEV and ITP-MSTE objectives, presented as cumulative daily returns.}
+\end{figure}
+
 The ITP-TEV and the ITP-MSTE had almost the same results, which can be seen in the compositions below:
 
 \begin{verbatim}
       type      AAPL       IBM      GOOG
-1  ITP-TEV 0.2588844 0.4163274 0.3247882
-2 ITP-MSTE 0.2586717 0.4165150 0.3248133
+1  ITP-TEV 0.2588843 0.4163274 0.3247883
+2 ITP-MSTE 0.2586716 0.4165149 0.3248135
 \end{verbatim}
 
 \hypertarget{analyticalsolver}{%
@@ -958,9 +991,13 @@ Each \(\lambda \in \{0.01, 0.02, \cdots, 1\}\) and each combination of ascending
 \end{Highlighting}
 \end{Shaded}
 
-The result is filtered and names are added to represent the number of assets. Now the diagram can be created:
+The result is filtered and names are added to represent the number of assets. Now the \(\mu\)-\(\sigma\) diagram can be created:
 
-\includegraphics{Master_Thesis_files/figure-latex/qp_mvp4-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/qpmvp4-1.png}
+\caption{\label{fig:qpmvp4}Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset with the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm.}
+\end{figure}
 
 It can be seen that each added asset leads to a minimum variance portfolio with a smaller or equal standard deviation. Despite starting with the asset that has the smallest standard deviation of 0.012459. This is the effect of diversification mentioned by Markowitz.
 
@@ -1073,7 +1110,12 @@ The successive removal of assets can begin and the results are stored in \texttt
 \end{Shaded}
 
 The following chart illustrates the increase in standard deviation to track the historical performance of the SP500TR as the asset pool \(N\) decreases:
-\includegraphics{Master_Thesis_files/figure-latex/qp_itp4-1.png}
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/qpitp4-1.png}
+\caption{\label{fig:qpitp4}Standard deviation (sd) between the performance of the SP500TR and the tracking portfolio over the fitting period for each asset pool of size N. The asset pool was created successively by discarding the five assets with the lowest weights to create the next pool.}
+\end{figure}
 
 It can be seen that the standard deviation stagnates at about \(N=200\). This leads to the conclusion that a sparse replication with two hundred assets is sufficient in this particular case to track the historical performance of the SP500TR over this period.
 
@@ -1209,7 +1251,7 @@ The required data structure is available and the optimization can start with the
 \end{Highlighting}
 \end{Shaded}
 
-The global minimum is located at \([0, 0]\) which has a fitness of \(0\) and the best position found from the PSO after \(100\) iterations is located at {[}0.000000000003, 0.000000053925{]} and has a fitness of 0.0000001.
+The global minimum is located at \([0, 0]\) which has a fitness of \(0\) and the best position found from the PSO after \(100\) iterations is located at {[}0.000007596889, 0.000001662703{]} and has a fitness of 0.0000093.
 
 \hypertarget{animation-2-dimensional}{%
 \section{Animation 2-Dimensional}\label{animation-2-dimensional}}
@@ -1248,9 +1290,7 @@ The following code runs the PSO and tries to minimize the objective function:
 
 The function \texttt{f} has many local minima and a global minima at \((1,1)\) with the value \(0\). The background color scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:
 
-\begin{center}
-\animategraphics[loop, width=10cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{80}
-\end{center}
+\texttt{\{=latex,\ fig.cap="Visualization\ of\ the\ behavior\ of\ the\ standard\ PSO\ in\ a\ GIF."\}\ \textbackslash{}begin\{center\}\ \textbackslash{}animategraphics{[}loop,\ width=10cm{]}\{10\}\{./gifs/pso\_2dim/gganim\_plot\}\{1\}\{80\}\ \textbackslash{}end\{center\}}
 
 \hypertarget{animation-2-dimensional-app}{%
 \section{Animation 2-Dimensional App}\label{animation-2-dimensional-app}}
@@ -1321,7 +1361,11 @@ This approach to dealing with constraints is called the penalization method and 
 
 This example uses the \texttt{solve.QP()} approach from section \ref{exampleanalyticalmvp} with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible \(\lambda\). The PSO has 300 particles and 200 iterations for each lambda. The starting position is the equally weighted vector \(v\) with \(\textstyle\sum v_i=1\). The main characteristics of all portfolios created with the \texttt{solve.QP()} compared to the PSO are shown below:
 
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/pso7-1.png}
+\caption{\label{fig:pso7}Comparison of the MVP's generated with solve.QP() and the PSO. The gray lines show the difference of the solutions of both approaches for each lambda.}
+\end{figure}
 
 The corresponding portfolios for each \(\lambda\) are connected with a grey line to visualize the error of the PSO. It turns out that it is possible to solve MVP problems with a PSO approach. It is noticable that some PSO runs were not able to reach the global minimum and thus show a deviation from the \texttt{solve.QP()} approach, which can often be fixed by repeated runs.
 
@@ -1329,7 +1373,12 @@ The corresponding portfolios for each \(\lambda\) are connected with a grey line
 \section{Example: ITP-MSTE}\label{example-itp-mste}}
 
 The same ITP-MSTE solved with \texttt{solve.QP()} in \ref{exampleitpsolveqp} is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at \(1.2\) and decreases to zero, the upper bound is \(0.05\), and a starting position is the equally weighted vector \(v\) with \(\textstyle\sum v_i=1\). The PSO was run ten times, and the aggregated best and mean runs are compared to the \texttt{solve.QP()} approach for seed 0 in the table below:
+
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/pso8-1.png}
+\caption{\label{fig:pso8}Comparison of solving ITP-MSTE with solve.QP() and the PSO.}
+\end{figure}
 
 It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
 
@@ -1351,7 +1400,12 @@ A continuous solution for a portfolio is not sufficient for practical purposes, 
 \section{Example: Discrete ITP-MSTE}\label{example-discrete-itp-mste}}
 
 This example analyses the error of rounding a solution with the \texttt{solve.QP()} approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the \texttt{solve.QP()} and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the SP500TR with its top 100 assets derived from the example with discarding in section \ref{exampleitpsolveqp} and tries to construct a portfolio with the constraints long only, \(0.99 \leq \textstyle\sum w_i \leq 1\) and \(\text{nav} = 10000\) in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
+
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/pso9-1.png}
+\caption{\label{fig:pso9}Comparison of solving dicrete ITP-MSTE with solve.QP() with rounding and the PSO.}
+\end{figure}
 
 It can be seen that the rounded \texttt{solve.QP()} solution still has a good fitness but the constraints are not satisfied. The PSO has no constraint breaks and better fitness than the rounded \texttt{solve.QP()}. The PSO with \texttt{solve.QP()} solution as starting position has beaten both approaches. This indicates that a hybrid approach consisting of both the \texttt{solve.QP()} and afterwards the PSO for intelligent rounding with observed constraints would be a good heuristic for such problems in practice.
 
@@ -1367,11 +1421,19 @@ All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a t
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95\% and 5\% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/variants1-1.png}
+\caption{\label{fig:variants1}Fitness: Benchmark solution with the standard PSO for comparison with the created variants.}
+\end{figure}
 
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/variants2-1.png}
+\caption{\label{fig:variants2}Statistics: Benchmark solution with the standard PSO for comparison with the created variants.}
+\end{figure}
 
 \hypertarget{function-stretching}{%
 \section{Function Stretching}\label{function-stretching}}
@@ -1419,12 +1481,21 @@ translated to the objective function:
 \end{Highlighting}
 \end{Shaded}
 
-and the domain of definition is chosen as \(x \in [-20, 20]\). Suppose the PSO gets stuck in the local minimum at \(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\). The original function \texttt{fn} and the transformed function \texttt{fn\_stretched}, which matches \(H(x)\) in equation \eqref{eq:fnstretchH}, are shown in the following graph:\\
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-8-1.png}
+and the domain of definition is chosen as \(x \in [-20, 20]\). Suppose the PSO gets stuck in the local minimum at \(\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04\). The original function \texttt{fn} and the transformed function \texttt{fn\_stretched}, which matches \(H(x)\) in equation \eqref{eq:fnstretchH}, are shown in the following graph:
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
+\caption{\label{fig:unnamed-chunk-9}Analysis of the effect of function stretching using a simple 1D example.}
+\end{figure}
 
 It can be seen that the fitness is stretched upward around the local minima \(\bar{x}\), making it much easier for the PSO to go down the hill and fall into new minima with lower fitness. It can be observed that on the right hand side there was only higher fitness before and after the transformation a local minimum has emerged which has a large area where only higher fitness values are located. In the worst case this can lead to a new local minimum from which it is even more difficult to escape. All regions with lower fitness remain unchanged, as can be seen in the zoomed version of the bottom diagram from above:
 
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-9-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-10-1.png}
+\caption{\label{fig:unnamed-chunk-10}Zoomed version of the lower graphic from the figure above.}
+\end{figure}
 
 \hypertarget{implementation}{%
 \subsection{Implementation}\label{implementation}}
@@ -1436,11 +1507,19 @@ Since it is not possible to know if the PSO is stuck in a local minima, a stagna
 
 The PSO with function stretching is called \texttt{PSO-fnS} and is evaluated on the test problem with \(\gamma_1 = 5000\), \(\gamma_2 = 0.5\) and \(\mu = 10^{-10}\):
 
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/variants3-1.png}
+\caption{\label{fig:variants3}Comparison of fitness between the PSO with functional stretching and the standard PSO.}
+\end{figure}
 
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/variants4-1.png}
+\caption{\label{fig:variants4}Comparison of statistics between the PSO with functional stretching and the standard PSO.}
+\end{figure}
 
 It can be seen that the function stretching did not bring any advantages in this particular problem. Perhaps it is due to the unfavorable values for \(\gamma_1\), \(\gamma_2\) and \(\mu\), which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
 
@@ -1458,7 +1537,12 @@ with
 \]
 To illustrate this, the following figure defines the neighborhoods \(N(x_4, 4)\) and \(N(x_1, 4)\):
 
+\begin{figure}
+\centering
 \includegraphics{img/PSO_local_chart.jpg}
+\caption{Visualization of the simple neighborhood topology.}
+\end{figure}
+
 In the latter case, it can be seen that the overflowing boundary will continue on the opposite side of the arranged particles.
 
 \hypertarget{implementation-1}{%
@@ -1471,11 +1555,19 @@ First, the neighbors for each particle are stored in a suitable data structure b
 
 The PSO with particle neighborhoods is called \texttt{PSO-local} and evaluated on the test problem with \(k=10\):
 
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/variants5-1.png}
+\caption{\label{fig:variants5}Comparison of fitness between the local PSO and the standard PSO.}
+\end{figure}
 
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/variants6-1.png}
+\caption{\label{fig:variants6}Comparison of statistics between the local PSO and the standard PSO.}
+\end{figure}
 
 It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
 
@@ -1489,7 +1581,7 @@ Other variants of PSO often provide solutions that are infeasible, resulting in 
 \end{verbatim}
 
 \begin{verbatim}
-[1] "Elapsed time: 667.88 seconds"
+[1] "Elapsed time: 186.18 seconds"
 \end{verbatim}
 
 It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step has been modified to start with only one feasible position, randomly selected from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
@@ -1498,11 +1590,20 @@ It can be seen that after a million randomly generated positions, there was not 
 \subsection{Test Preserving Feasibility PSO}\label{test-preserving-feasibility-pso}}
 
 This section compares the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
-\includegraphics{Master_Thesis_files/figure-latex/variants6_next-1.png}
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/variants6next-1.png}
+\caption{\label{fig:variants6next}Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions.}
+\end{figure}
 
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
-\includegraphics{Master_Thesis_files/figure-latex/variants6_next2-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/variants6next2-1.png}
+\caption{\label{fig:variants6next2}Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions.}
+\end{figure}
 
 The results indicate that the PSO with feasibility preservation is not able to solve finance-related problems that have a very small feasible space. It is more efficient to repeat the PSO with the previous best position until the solution is feasible.
 
@@ -1591,8 +1692,14 @@ The process of this PSO variant is too different from the standard PSO, so all c
 \hypertarget{analyse-implementation}{%
 \subsection{Analyse Implementation}\label{analyse-implementation}}
 
-The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration \(i\) with 100 maximum iterations are distributed as follows:\\
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-11-1.png}
+The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration \(i\) with 100 maximum iterations are distributed as follows:
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
+\caption{\label{fig:unnamed-chunk-12}Comparison of the different distributions used in the velocity update of the PSO with self-adapting velocity depending on the iteration.}
+\end{figure}
+
 It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in explorability and exploitability, indicated by probabilities outside \([0, 1]\).
 
 Even more difficult to interpret is the adjusting of the control parameters. The value \(W_d^i\) is a weighting of the distances to the worst fitness, resulting in a higher weighting of the particles with good fitness. Later, the control parameters are adjusted using the Cauchy distribution with a weighted value of the previous control parameters as the center, giving higher weights to the control parameters that produced better fitness. This results in random control parameters distributed around the best previous control parameters. The resulting behavior can be described with a small quote, ``If exploration is beneficial, more exploration is done. If not, more is exploited.''
@@ -1602,23 +1709,43 @@ Even more difficult to interpret is the adjusting of the control parameters. The
 
 The PSO with self-adaptive velocity is called \texttt{PSO-SAvel} and is evaluated for the test problem with the constants used in the implementation section:
 
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/variants7-1.png}
+\caption{\label{fig:variants7}Comparison of fitness between the PSO with self-adaptive velocity and the standard PSO.}
+\end{figure}
 
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:\\
 \vspace{-0.1cm}
+
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/variants8-1.png}
+\caption{\label{fig:variants8}Comparison of statistics between the PSO with self-adaptive velocity and the standard PSO.}
+\end{figure}
 
 The results look very promising, and with fewer hyperparameters to fine-tune, this may be one of the best variants for general use of a PSO.
 
 \hypertarget{pso-r-package}{%
 \section{PSO R-Package}\label{pso-r-package}}
 
-In this section, the existing package \texttt{pso} from R is used to compare the results with the standard PSO. The PSO from the existing package is called \texttt{PSO-pkg} and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the \texttt{PSO-pkg} differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:\\
-\includegraphics{Master_Thesis_files/figure-latex/variants_pkg-1.png}
+In this section, the existing package \texttt{pso} from R is used to compare the results with the standard PSO. The PSO from the existing package is called \texttt{PSO-pkg} and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the \texttt{PSO-pkg} differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/variantspkg-1.png}
+\caption{\label{fig:variantspkg}Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO.}
+\end{figure}
+
 The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 \vspace{-0.1cm}
+
+\begin{figure}
+\centering
 \includegraphics{Master_Thesis_files/figure-latex/variants9-1.png}
+\caption{\label{fig:variants9}Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO.}
+\end{figure}
 
 \hypertarget{reallife}{%
 \chapter{Real Life ITP Example}\label{reallife}}
@@ -1681,44 +1808,93 @@ Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated unti
 \begin{figure}
 \centering
 \includegraphics{img/Chapter9_PSO_Process4.jpg}
-\caption{Backtest Process}
+\caption{Backtest Process: visualized as a flowchart}
 \end{figure}
 
 \hypertarget{complete-itp-example}{%
 \section{Complete ITP Example}\label{complete-itp-example}}
 
-The following charts visualize the test period of the whole backtests. The \texttt{QP\_MSTE\_cont} line represents the performance of the continuous solution of the ITP-MSTE objective solved with solve.QP() and stays the same for all backtests. The discretized solution using the PSO is named \texttt{PSO\_MSTE\_disc} and the \texttt{PSO\_MSTE\_disc\_TE} considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity \(k \in \{0, 10, 20, 30\}\) of each backtest which can be seen in the legends by \texttt{0tc}, \texttt{10tc}, \texttt{20tc} and \texttt{30tc}.
+The following charts visualize the test period of the whole backtests. The \texttt{QP\_MSTE\_cont} line represents the performance of the continuous solution of the ITP-MSTE objective solved with solve.QP() and stays the same for all backtests. The discretized solution using the PSO is named \texttt{PSO\_MSTE\_disc} and the \texttt{PSO\_MSTE\_disc\_TR} considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity \(k \in \{0, 10, 20, 30\}\) of each backtest which can be seen in the legends by \texttt{0tc}, \texttt{10tc}, \texttt{20tc} and \texttt{30tc}.
 
 Backtest for \(k=0\):
 
-\includegraphics{Master_Thesis_files/figure-latex/9_3-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/93-1.png}
+\caption{\label{fig:93}Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0}
+\end{figure}
+
 and the statistics of the discretized PSO with considered transaction costs are:
 
-\includegraphics{Master_Thesis_files/figure-latex/9_4-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/94-1.png}
+\caption{\label{fig:94}Comparison of the statistics of the backtests with the transaction cost value k=0}
+\end{figure}
 
-Backtest for \(k=10\):\\
-\includegraphics{Master_Thesis_files/figure-latex/9_5-1.png}
+Backtest for \(k=10\):
 
-and the statistics of the discretized PSO with considered transaction costs are:\\
-\includegraphics{Master_Thesis_files/figure-latex/9_6-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/95-1.png}
+\caption{\label{fig:95}Comparison of the cumulative daily returns of the backtests with the transaction cost value k=10}
+\end{figure}
 
-Backtest for \(k=20\):\\
-\includegraphics{Master_Thesis_files/figure-latex/9_7-1.png}
+and the statistics of the discretized PSO with considered transaction costs are:
 
-and the statistics of the discretized PSO with considered transaction costs are:\\
-\includegraphics{Master_Thesis_files/figure-latex/9_8-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/96-1.png}
+\caption{\label{fig:96}Comparison of the statistics of the backtests with the transaction cost value k=10}
+\end{figure}
 
-Backtest for \(k=20\):\\
-\includegraphics{Master_Thesis_files/figure-latex/9_9-1.png}
+Backtest for \(k=20\):
 
-and the statistics of the discretized PSO with considered transaction costs are:\\
-\includegraphics{Master_Thesis_files/figure-latex/9_10-1.png}
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/97-1.png}
+\caption{\label{fig:97}Comparison of the cumulative daily returns of the backtests with the transaction cost value k=20}
+\end{figure}
 
-It can be seen that increasing \(k\) tends to reduce the average transaction cost in USD. Since each backtest depends on different previous portfolios, further backtests are needed to confirm this result. The absolute loss of \texttt{nav} between the results of the PSO without and with transaction costs for each \(k\) can be found in the chart below:\\
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-12-1.png}
+and the statistics of the discretized PSO with considered transaction costs are:
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/98-1.png}
+\caption{\label{fig:98}Comparison of the statistics of the backtests with the transaction cost value k=20}
+\end{figure}
+
+Backtest for \(k=30\):
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/99-1.png}
+\caption{\label{fig:99}Comparison of the cumulative daily returns of the backtests with the transaction cost value k=30}
+\end{figure}
+
+and the statistics of the discretized PSO with considered transaction costs are:
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/910-1.png}
+\caption{\label{fig:910}Comparison of the statistics of the backtests with the transaction cost value k=30}
+\end{figure}
+
+It can be seen that increasing \(k\) tends to reduce the average transaction cost in USD. Since each backtest depends on different previous portfolios, further backtests are needed to confirm this result. The absolute loss of \texttt{nav} between the results of the PSO without and with transaction costs for each \(k\) can be found in the chart below:
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
+\caption{\label{fig:unnamed-chunk-13}Cumulative daily return loss of the discrete PSO backtests due to transaction costs with respect to the different values of k.}
+\end{figure}
 
 Another interesting result is that the continuous \texttt{solve.QP()} approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the following performance chart, comparing only the \texttt{solve.QP()} approach and the SP500TR:
-\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-13-1.png}
+
+\begin{figure}
+\centering
+\includegraphics{Master_Thesis_files/figure-latex/unnamed-chunk-14-1.png}
+\caption{\label{fig:unnamed-chunk-14}Comparison of cumulative daily returns of the continuous backtest performed with solve.QP() and the SP500TR.}
+\end{figure}
 
 \hypertarget{future-research}{%
 \chapter{Future Research}\label{future-research}}

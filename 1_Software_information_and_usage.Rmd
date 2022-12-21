@@ -3,6 +3,8 @@ All of the work was done in the amazing IDE of R-Studio using R-Markdown extende
 
 ## R-Version and Packages
 The used packages and versions can be found in the table below:
+
+
 ```{r, echo=F, fig.cap="Information about the used packages and their versions"}
 sessionInfo()
 ```

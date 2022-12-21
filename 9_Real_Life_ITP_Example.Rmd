@@ -64,7 +64,7 @@ Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated unti
 ## Complete ITP Example
 The following charts visualize the test period of the whole backtests. The `QP_MSTE_cont` line represents the performance of the continuous solution of the ITP-MSTE objective solved with solve.QP() and stays the same for all backtests. The discretized solution using the PSO is named `PSO_MSTE_disc` and the `PSO_MSTE_disc_TR` considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity $k \in \{0, 10, 20, 30\}$ of each backtest which can be seen in the legends by `0tc`, `10tc`, `20tc` and `30tc`.
 
-```{r 9_1, echo=F, include=F, eval=F}
+```{r 91, echo=F, include=F, eval=F}
 set.seed(0)
 
 train_months <- 4
@@ -882,7 +882,7 @@ save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v12_30tc_v3.r
 
 ```
 
-```{r 9_2, echo=F, include=F}
+```{r 92, echo=F, include=F}
 bm_returns_raw <- buffer(
   get_yf(tickers = "^SP500TR", from = from, to = to)$returns,
   "AS_sp500tr_long"
@@ -949,12 +949,16 @@ p_30tc_diff <- setNames(  (ret_to_cumret(perf_all$PSO_MSTE_disc_TR_30tc) - ret_t
 
 Backtest for $k=0$:
 
-```{r 9_3, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0"}
+
+```{r 93, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0"}
 p_0tc %>% html_save(., vwidth=700, vheight=400)
 ```
+
+
 and the statistics of the discretized PSO with considered transaction costs are:
 
-```{r 9_4, echo=F, fig.cap = "Comparison of the statistics of the backtests with the transaction cost value k=0"}
+
+```{r 94, echo=F, fig.cap = "Comparison of the statistics of the backtests with the transaction cost value k=0"}
 bind_rows(
   MSTE_infos_0tc %>% 
   group_by(type) %>% 
@@ -1024,13 +1028,19 @@ bind_rows(
   html_save(., vwidth = 900)
 ```
 
-Backtest for $k=10$:  
-```{r 9_5, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=10"}
+
+Backtest for $k=10$:
+
+
+```{r 95, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=10"}
 p_10tc %>% html_save(., vwidth=700, vheight=400)
 ```
 
-and the statistics of the discretized PSO with considered transaction costs are:  
-```{r 9_6, echo=F, fig.cap = "Comparison of the statistics of the backtests with the transaction cost value k=10"}
+
+and the statistics of the discretized PSO with considered transaction costs are:
+
+
+```{r 96, echo=F, fig.cap = "Comparison of the statistics of the backtests with the transaction cost value k=10"}
 bind_rows(
   MSTE_infos_10tc %>% 
   group_by(type) %>% 
@@ -1100,13 +1110,19 @@ bind_rows(
   html_save(., vwidth = 900)
 ```
 
-Backtest for $k=20$:  
-```{r 9_7, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=20"}
+
+Backtest for $k=20$:
+
+
+```{r 97, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=20"}
 p_20tc %>% html_save(., vwidth=700, vheight=400)
 ```
 
-and the statistics of the discretized PSO with considered transaction costs are:  
-```{r 9_8, echo=F, fig.cap = "Comparison of the statistics of the backtests with the transaction cost value k=20"}
+
+and the statistics of the discretized PSO with considered transaction costs are:
+
+
+```{r 98, echo=F, fig.cap = "Comparison of the statistics of the backtests with the transaction cost value k=20"}
 bind_rows(
   MSTE_infos_20tc %>% 
   group_by(type) %>% 
@@ -1176,13 +1192,19 @@ bind_rows(
   html_save(., vwidth = 900)
 ```
 
-Backtest for $k=30$:  
-```{r 9_9, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=30"}
+
+Backtest for $k=30$:
+
+
+```{r 99, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=30"}
 p_30tc %>% html_save(., vwidth=700, vheight=400)
 ```
 
-and the statistics of the discretized PSO with considered transaction costs are:  
-```{r 9_10, echo=F, fig.cap = "Comparison of the statistics of the backtests with the transaction cost value k=30"}
+
+and the statistics of the discretized PSO with considered transaction costs are:
+
+
+```{r 910, echo=F, fig.cap = "Comparison of the statistics of the backtests with the transaction cost value k=30"}
 bind_rows(
   MSTE_infos_30tc %>% 
   group_by(type) %>% 
@@ -1252,13 +1274,19 @@ bind_rows(
   html_save(., vwidth = 900)
 ```
 
-It can be seen that increasing $k$ tends to reduce the average transaction cost in USD. Since each backtest depends on different previous portfolios, further backtests are needed to confirm this result. The absolute loss of `nav` between the results of the PSO without and with transaction costs for each $k$ can be found in the chart below:  
+
+It can be seen that increasing $k$ tends to reduce the average transaction cost in USD. Since each backtest depends on different previous portfolios, further backtests are needed to confirm this result. The absolute loss of `nav` between the results of the PSO without and with transaction costs for each $k$ can be found in the chart below:
+
+
 ```{r, echo=F, fig.cap = "Cumulative daily return loss of the discrete PSO backtests due to transaction costs with respect to the different values of k."}
 plotly_line_chart_xts(cbind.xts(p_0tc_diff, p_10tc_diff, p_20tc_diff, p_30tc_diff)) %>% 
   html_save(., vwidth=700, vheight=400)
 ```
 
+
 Another interesting result is that the continuous `solve.QP()` approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the following performance chart, comparing only the `solve.QP()` approach and the SP500TR:
+
+
 ```{r, echo=F, fig.cap = "Comparison of cumulative daily returns of the continuous backtest performed with solve.QP() and the SP500TR."}
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(QP_perf, bm_returns_raw[paste0(min(index(QP_perf)),"/", max(index(QP_perf))),]))) %>% 
   html_save(., vwidth=700, vheight=400)

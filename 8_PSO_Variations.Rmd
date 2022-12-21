@@ -14,6 +14,7 @@ All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a t
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
+
 ```{r variants1, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Fitness: Benchmark solution with the standard PSO for comparison with the created variants."}
 nav <- 20000
  
@@ -136,7 +137,9 @@ plot_ly() %>%
   html_save()
 ```
 
+
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
 
 ```{r variants2, echo=F, fig.cap = "Statistics: Benchmark solution with the standard PSO for comparison with the created variants."}
 reactable(
@@ -199,7 +202,9 @@ fn <- function(pos){
   cos(pos) + 1/10 * pos
 }
 ```
-and the domain of definition is chosen as $x \in [-20, 20]$. Suppose the PSO gets stuck in the local minimum at $\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04$. The original function `fn` and the transformed function `fn_stretched`, which matches $H(x)$ in equation \@ref(eq:fnstretchH), are shown in the following graph:  
+and the domain of definition is chosen as $x \in [-20, 20]$. Suppose the PSO gets stuck in the local minimum at $\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04$. The original function `fn` and the transformed function `fn_stretched`, which matches $H(x)$ in equation \@ref(eq:fnstretchH), are shown in the following graph:
+
+
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Analysis of the effect of function stretching using a simple 1D example."}
 fn1 <- function(pos, pos_best, pos_best_fit){
   res <- fn(pos)
@@ -221,7 +226,9 @@ subplot(p1, p2, shareY=T, nrows=2) %>%
   html_save(., vheight=700, vwidth=800)
 ```
 
+
 It can be seen that the fitness is stretched upward around the local minima $\bar{x}$, making it much easier for the PSO to go down the hill and fall into new minima with lower fitness. It can be observed that on the right hand side there was only higher fitness before and after the transformation a local minimum has emerged which has a large area where only higher fitness values are located. In the worst case this can lead to a new local minimum from which it is even more difficult to escape. All regions with lower fitness remain unchanged, as can be seen in the zoomed version of the bottom diagram from above:
+
 
 ```{r, echo=F, fig.cap = "Zoomed version of the lower graphic from the figure above."}
 plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched", line=list(color="orange")) %>% 
@@ -237,6 +244,7 @@ Since it is not possible to know if the PSO is stuck in a local minima, a stagna
 
 ### Test PSO with Function Stretching
 The PSO with function stretching is called `PSO-fnS` and is evaluated on the test problem with $\gamma_1 = 5000$, $\gamma_2 = 0.5$ and $\mu = 10^{-10}$:
+
 
 ```{r variants3, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with functional stretching and the standard PSO."}
 set.seed(0)
@@ -301,7 +309,9 @@ plot_ly() %>%
 
 ```
 
+
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
 
 ```{r variants4, echo=F, fig.cap="Comparison of statistics between the PSO with functional stretching and the standard PSO."}
 reactable(
@@ -323,6 +333,7 @@ reactable(
   html_save(., vwidth = 880)
 ```
 
+
 It can be seen that the function stretching did not bring any advantages in this particular problem. Perhaps it is due to the unfavorable values for $\gamma_1$, $\gamma_2$ and $\mu$, which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
 
 
@@ -339,7 +350,10 @@ $$
 $$
 To illustrate this, the following figure defines the neighborhoods $N(x_4, 4)$ and $N(x_1, 4)$:
 
+
 ![Visualization of the simple neighborhood topology.](img/PSO_local_chart.jpg)
+
+
 In the latter case, it can be seen that the overflowing boundary will continue on the opposite side of the arranged particles.
 
 
@@ -348,6 +362,7 @@ First, the neighbors for each particle are stored in a suitable data structure b
 
 ### Test Local PSO
 The PSO with particle neighborhoods is called `PSO-local` and evaluated on the test problem with $k=10$:
+
 
 ```{r variants5, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the local PSO and the standard PSO."}
 set.seed(0)
@@ -414,7 +429,9 @@ plot_ly() %>%
 
 ```
 
+
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+
 
 ```{r variants6, echo=F, fig.cap="Comparison of statistics between the local PSO and the standard PSO."}
 reactable(
@@ -436,10 +453,13 @@ reactable(
   html_save(., vwidth = 880)
 ```
 
+
 It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
 
 ## Preserving Feasibility
 Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in [@XiEb2002] explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the result of trying to find a feasible position among a million randomly generated positions is as follows:
+
+
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 fn_const = function(x){
@@ -459,11 +479,15 @@ print(paste0("Feasable positions: ", sum(X_const==0)))
 print(paste0("Elapsed time: ", time[3], " seconds"))
 rm(X, X_const)
 ```
+
+
 It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step has been modified to start with only one feasible position, randomly selected from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
 
 ### Test Preserving Feasibility PSO
 This section compares the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
-```{r variants6_next, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions."}
+
+
+```{r variants6next, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions."}
 set.seed(0)
 # R/PSO_functions.R : pso_preserving_feasibility()
 
@@ -574,9 +598,11 @@ plot_ly() %>%
 
 ```
 
+
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
-```{r variants6_next2, echo=F, fig.cap = "Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions."}
+
+```{r variants6next2, echo=F, fig.cap = "Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions."}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -595,6 +621,7 @@ reactable(
 ) %>% 
   html_save(., vwidth = 880)
 ```
+
 
 The results indicate that the PSO with feasibility preservation is not able to solve finance-related problems that have a very small feasible space. It is more efficient to repeat the PSO with the previous best position until the solution is feasible.
 
@@ -674,6 +701,8 @@ Steps 2 to 5 are repeated until the maximum iteration $i_{max}$ is reached.
 
 ### Analyse Implementation
 The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration $i$ with 100 maximum iterations are distributed as follows:  
+
+
 ```{r, echo=F, fig.cap = "Comparison of the different distributions used in the velocity update of the PSO with self-adapting velocity depending on the iteration."}
 x <- seq(-1, 2, 0.01)
 i_max <- 100
@@ -697,6 +726,8 @@ p3 <- plot_ly(x=c(0,0,1,1), y=c(0,1,1,0), mode="lines", type="scatter", name="Un
 subplot(p1, p2, p3, nrows=3) %>% 
   html_save(., vheight=800, vwidth = 900)
 ```
+
+
 It can be seen that the randomness of the motion increases compared to the uniform distribution and the center of the Cauchy distributions slowly decreases towards the absolute term. In addition, the two Cauchy distributions differ in explorability and exploitability, indicated by probabilities outside $[0, 1]$.
 
 Even more difficult to interpret is the adjusting of the control parameters. The value $W_d^i$ is a weighting of the distances to the worst fitness, resulting in a higher weighting of the particles with good fitness. Later, the control parameters are adjusted using the Cauchy distribution with a weighted value of the previous control parameters as the center, giving higher weights to the control parameters that produced better fitness. This results in random control parameters distributed around the best previous control parameters. The resulting behavior can be described with a small quote, "If exploration is beneficial, more exploration is done. If not, more is exploited."
@@ -704,6 +735,7 @@ Even more difficult to interpret is the adjusting of the control parameters. The
 
 ### Test PSO with Self-Adaptive Velocity
 The PSO with self-adaptive velocity is called `PSO-SAvel` and is evaluated for the test problem with the constants used in the implementation section:
+
 
 ```{r variants7, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with self-adaptive velocity and the standard PSO."}
 set.seed(0)
@@ -763,8 +795,11 @@ plot_ly() %>%
 
 ```
 
+
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:  
 \vspace{-0.1cm}
+
+
 ```{r variants8, echo=F, fig.cap="Comparison of statistics between the PSO with self-adaptive velocity and the standard PSO."}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
@@ -785,13 +820,16 @@ reactable(
   html_save(., vwidth = 880)
 ```
 
+
 The results look very promising, and with fewer hyperparameters to fine-tune, this may be one of the best variants for general use of a PSO.
 
 
 
 ## PSO R-Package
-In this section, the existing package `pso` from R is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:  
-```{r variants_pkg, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO."}
+In this section, the existing package `pso` from R is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
+
+
+```{r variantspkg, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO."}
 set.seed(0)
 
 df <- NULL
@@ -866,9 +904,13 @@ plot_ly() %>%
   
 
 ```
+
+
 The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 \vspace{-0.1cm}
+
+
 ```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO."}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
@@ -888,3 +930,5 @@ reactable(
 ) %>% 
   html_save(., vwidth = 880)
 ```
+
+
