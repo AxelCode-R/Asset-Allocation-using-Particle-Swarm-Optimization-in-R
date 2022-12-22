@@ -50,14 +50,19 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/core-js-2.5.3/shim.min.js"></script>
+<script src="libs/react-17.0.0/react.min.js"></script>
+<script src="libs/react-17.0.0/react-dom.min.js"></script>
+<script src="libs/reactwidget-1.0.0/react-tools.js"></script>
 <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/reactable-binding-0.3.0/reactable.js"></script>
 <script src="libs/plotly-binding-4.10.1/plotly.js"></script>
-<script src="libs/mathjax-2.7.5/cdn.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="libs/mathjax-2.7.5/cdn.js"></script>
 
 
 <style type="text/css">
@@ -260,9 +265,16 @@ div.csl-indent {
 <p>This chapter provides an overview of the mathematical calculations and conventions used in this thesis. It is important to note that most mathematical formulas are written in matrix notation. In most cases, this will result in a direct translation to R code. All necessary assumptions required for the modeled return structure are listed in this chapter so that any reader can understand the formulas given. It is important to note that reality is too complex and can only be partially modeled. Simple, basic models are used that do not stand up to reality, but these models or variations of them are commonly used in the financial world and have proven to be helpful. The complexity of solving advanced and basic models does not differ for the PSO because the dimension of the objective function is based on the number of elements that can be selected, see chapter <a href="challenges.html#challenges">6</a>.</p>
 <div id="basic-operators" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Basic Operators<a href="mathfundations.html#basic-operators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The table below compares frequently used mathematical symbols with R code and their meaning:<br />
-<img src="Master_Thesis_files/figure-html/operators-1.png" width="672" />
-For a better understanding of the operators listed, the following examples are intended to illustrate the resulting dimensions and provide insight into the use of these operators.</p>
+The table below compares frequently used mathematical symbols with R code and their meaning:<br />
+
+<div class="figure"><span style="display:block;" id="fig:operators"></span>
+<div id="htmlwidget-e82219397fc963d32e23" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e82219397fc963d32e23">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Latex":["&#215;","&#x2297","A<sup>T<\/sup>","&middot;","/","+","-"],"R":["%*%","%*%","t(A)","*","/","+","-"],"Meaning":["Matrix product","Outer product","Transpose of matrix or vector A","Scalar or element-wise matrix multiplication","Scalar or elementwise matrix division","Scalar or elementwise matrix addition","Scalar or elementwise matrix subtraction"]},"columns":[{"accessor":"Latex","name":"Latex/Displayed","type":"character","html":true},{"accessor":"R","name":"R-Code","type":"character"},{"accessor":"Meaning","name":"Meaning","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"style":{"fontFamily":"arial","fontSize":13},"dataKey":"628e11ecdf058c5262b9716920833ee6"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 4.1: List of used opterators and their meaning
+</p>
+</div>
+<p>For a better understanding of the operators listed, the following examples are intended to illustrate the resulting dimensions and provide insight into the use of these operators.</p>
 <p>Matrix product:
 <span class="math display">\[\times: \ \ \mathbb{R}^{x \times y} \times \mathbb{R}^{y \times z} \rightarrow \mathbb{R}^{x \times z} \]</span>
 with an example:
