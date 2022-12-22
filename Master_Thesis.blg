@@ -1,0 +1,82 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: Master_Thesis.aux
+Reallocating 'name_of_file' (item size: 1) to 8 items.
+The style file: apalike.bst
+Reallocating 'name_of_file' (item size: 1) to 5 items.
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+Database file #1: book.bib
+Warning--entry type for "Rtic2021" isn't style-file defined
+--line 277 of file book.bib
+Warning--entry type for "AhBa2017" isn't style-file defined
+--line 295 of file book.bib
+Warning--entry type for "AkGa2022" isn't style-file defined
+--line 317 of file book.bib
+Warning--entry type for "NySe2022" isn't style-file defined
+--line 337 of file book.bib
+Warning--entry type for "GitHub" isn't style-file defined
+--line 357 of file book.bib
+Warning--entry type for "GitPSO" isn't style-file defined
+--line 377 of file book.bib
+Warning--entry type for "PSOApp" isn't style-file defined
+--line 393 of file book.bib
+Database file #2: packages.bib
+Warning--empty journal in TaDe2019
+Warning--empty journal in PaHi2016
+Warning--empty journal in Desm2016
+Warning--empty journal in Enge2013
+Warning--empty journal in FaFr2010
+Warning--empty journal in GoId1982
+Warning--empty journal in GoId1983
+Warning--empty journal in XiEb2002
+Warning--empty journal in IuGa2019
+Warning--empty journal in KeEb1995
+Warning--empty journal in PaVr2002
+Warning--empty publisher in Mari2005
+Warning--empty publisher in Mark1959
+Warning--empty journal in InSi2008
+Warning--empty journal in FaYa2014
+Warning--empty journal in RaSh2004
+Warning--empty publisher in Eric2021
+You've used 24 entries,
+            1935 wiz_defined-function locations,
+            590 strings with 6447 characters,
+and the built_in function-call counts, 6432 in all, are:
+= -- 597
+> -- 204
+< -- 24
++ -- 67
+- -- 60
+* -- 453
+:= -- 1218
+add.period$ -- 48
+call.type$ -- 24
+change.case$ -- 147
+chr.to.int$ -- 21
+cite$ -- 41
+duplicate$ -- 294
+empty$ -- 455
+format.name$ -- 96
+if$ -- 1192
+int.to.chr$ -- 4
+int.to.str$ -- 0
+missing$ -- 20
+newline$ -- 99
+num.names$ -- 72
+pop$ -- 159
+preamble$ -- 1
+purify$ -- 150
+quote$ -- 0
+skip$ -- 246
+stack$ -- 0
+substring$ -- 292
+swap$ -- 3
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 138
+warning$ -- 17
+while$ -- 48
+width$ -- 0
+write$ -- 242
+(There were 24 warnings)

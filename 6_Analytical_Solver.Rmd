@@ -36,7 +36,7 @@ The return of `solve.QP()` is a list and contains, among others, the following a
 
 ## Example: Solving MVP Problem with `solve.QP()` {#exampleanalyticalmvp}
 This section provides insights into the effects of diversification and the use of `solve.QP()` by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
-```{r qp_mvp1, class.source="code_fold_it_collapsed"}
+```{r qpmvp1, class.source="code_fold_it_collapsed"}
 returns_raw <- buffer(
   get_yf(
     tickers = c("IBM", "GOOG", "AAPL", "MSFT", "AMZN", 
@@ -54,7 +54,7 @@ returns_raw <- returns_raw[, order(vars, decreasing = F)]
 
 The next step is to create a function `mvp()` that has the arguments `return` and `lambda`. It computes the expected returns `mu` and the estimated positive definite covariance `cov`. It then solves an MVP problem with constraints $\textstyle\sum w_i = 1$ and $w_i \geq 0$, which yields the key features `mu`, `var` and `composition` of the portfolio. 
 
-```{r qp_mvp2, class.source="code_fold_it_collapsed"}
+```{r qpmvp2, class.source="code_fold_it_collapsed"}
 mvp <- function(returns, lambda){
   tc <- tryCatch({
     mu <- ret_to_geomeanret(returns)
@@ -105,7 +105,7 @@ mvp <- function(returns, lambda){
 
 Each $\lambda \in \{0.01, 0.02, \cdots, 1\}$ and each combination of ascending number of assets results in a portfolio that can be created with two for loops.
 
-```{r qp_mvp3, class.source="code_fold_it_collapsed"}
+```{r qpmvp3, class.source="code_fold_it_collapsed"}
 df <- data.frame(
   "index"=1, 
   "var"=as.numeric(var(returns_raw[, 1])), 
@@ -128,7 +128,8 @@ for(i in 2:ncol(returns_raw)){
 
 The result is filtered and names are added to represent the number of assets. Now the $\mu$-$\sigma$ diagram can be created:
 
-```{r qp_mvp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset with the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a $\\mu$-$\\sigma$ (mu - sigma) diagramm."}
+
+```{r qpmvp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset with the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm."}
 df <- df %>% 
   filter(!is.na(return)) %>% 
   distinct() %>% 
@@ -169,6 +170,7 @@ plot_ly(
 
 ```
 
+
 It can be seen that each added asset leads to a minimum variance portfolio with a smaller or equal standard deviation. Despite starting with the asset that has the smallest standard deviation of `r sqrt(min(vars))`. This is the effect of diversification mentioned by Markowitz.
 
 
@@ -176,7 +178,7 @@ It can be seen that each added asset leads to a minimum variance portfolio with 
 ## Example: Solving ITP-MSTE with `solve.QP()` {#exampleitpsolveqp}
 This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the SP500TR from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded, and the remaining assets serve as the new asset pool for the next replication until only five assets remain. First, the required data can be downloaded from the `R/` directory using existing functions. The function `get_spx_composition()` uses web scraping to read the components of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and converts them into monthly compositions of the SP500TR. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the SP500TR:
 
-```{r qp_itp1, class.source="code_fold_it_collapsed"}
+```{r qpitp1, class.source="code_fold_it_collapsed"}
 from <- "2018-01-01"
 to <- "2019-12-31"
 
@@ -208,7 +210,7 @@ bm_returns <- buffer(
 
 ```
 The required data is now available and the function for the ITP-MSTE can be created. It requires `pool_returns` with variable number of columns and the single-column matrix `bm_returns`.
-```{r qp_itp2, class.source="code_fold_it_collapsed"}
+```{r qpitp2, class.source="code_fold_it_collapsed"}
 
 itp <- function(pool_returns, bm_returns){
   mat <- list(
@@ -240,7 +242,7 @@ itp <- function(pool_returns, bm_returns){
 }
 ```
 The successive removal of assets can begin and the results are stored in `res`.
-```{r qp_itp3, class.source="code_fold_it_collapsed"}
+```{r qpitp3, class.source="code_fold_it_collapsed"}
 res <- NULL
 asset_pool <- NULL
 n_assets <- rev(seq(5, ncol(pool_returns_raw), 5))
@@ -271,11 +273,14 @@ for(i in n_assets){
 }
 ```
 The following chart illustrates the increase in standard deviation to track the historical performance of the SP500TR as the asset pool $N$ decreases:
-```{r qp_itp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Standard deviation (sd) between the performance of the SP500TR and the tracking portfolio over the fitting period for each asset pool of size N. The asset pool was created successively by discarding the five assets with the lowest weights to create the next pool."}
+
+
+```{r qpitp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Standard deviation (sd) between the performance of the SP500TR and the tracking portfolio over the fitting period for each asset pool of size N. The asset pool was created successively by discarding the five assets with the lowest weights to create the next pool."}
 plot_ly(data=res, x=~N, y=~sd, mode="lines", type = 'scatter') %>% 
   layout(yaxis=list(range=c(0, mean(max(res$sd),mean(res$sd)) ))) %>% 
   html_save()
 ```
+
 
 It can be seen that the standard deviation stagnates at about $N=200$. This leads to the conclusion that a sparse replication with two hundred assets is sufficient in this particular case to track the historical performance of the SP500TR over this period.
 

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Mathematical Fundations | Asset Allocation using Particle Swarm Optimization in R</title>
+  <meta name="description" content="This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart." />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Mathematical Fundations | Asset Allocation using Particle Swarm Optimization in R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart." />
+  <meta name="github-repo" content="https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Mathematical Fundations | Asset Allocation using Particle Swarm Optimization in R" />
+  
+  <meta name="twitter:description" content="This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart." />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="open-data-sources.html"/>
+<link rel="next" href="activevspassive.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/core-js-2.5.3/shim.min.js"></script>
+<script src="libs/react-17.0.0/react.min.js"></script>
+<script src="libs/react-17.0.0/react-dom.min.js"></script>
+<script src="libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/reactable-binding-0.3.0/reactable.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script src="libs/mathjax-2.7.5/cdn.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="my_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Master Thesis Axel Roth</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="abstract.html"><a href="abstract.html"><i class="fa fa-check"></i>Abstract</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html"><i class="fa fa-check"></i><b>2</b> Software information and usage</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-version-and-packages"><i class="fa fa-check"></i><b>2.1</b> R-Version and Packages</a></li>
+<li class="chapter" data-level="2.2" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#reproducibility"><i class="fa fa-check"></i><b>2.2</b> Reproducibility</a></li>
+<li class="chapter" data-level="2.3" data-path="software-information-and-usage.html"><a href="software-information-and-usage.html#r-functions"><i class="fa fa-check"></i><b>2.3</b> R-functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="open-data-sources.html"><a href="open-data-sources.html"><i class="fa fa-check"></i><b>3</b> Open Data Sources</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="open-data-sources.html"><a href="open-data-sources.html#r-functions-1"><i class="fa fa-check"></i><b>3.1</b> R-Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="mathfundations.html"><a href="mathfundations.html"><i class="fa fa-check"></i><b>4</b> Mathematical Fundations</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="mathfundations.html"><a href="mathfundations.html#basic-operators"><i class="fa fa-check"></i><b>4.1</b> Basic Operators</a></li>
+<li class="chapter" data-level="4.2" data-path="mathfundations.html"><a href="mathfundations.html#formula-conventions"><i class="fa fa-check"></i><b>4.2</b> Formula Conventions</a></li>
+<li class="chapter" data-level="4.3" data-path="mathfundations.html"><a href="mathfundations.html#return-calculation"><i class="fa fa-check"></i><b>4.3</b> Return Calculation</a></li>
+<li class="chapter" data-level="4.4" data-path="mathfundations.html"><a href="mathfundations.html#markowitz-modern-portfolio-theory-mpt"><i class="fa fa-check"></i><b>4.4</b> Markowitz Modern Portfolio Theory (MPT)</a></li>
+<li class="chapter" data-level="4.5" data-path="mathfundations.html"><a href="mathfundations.html#portfolio-math"><i class="fa fa-check"></i><b>4.5</b> Portfolio Math</a></li>
+<li class="chapter" data-level="4.6" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>4.6</b> R-Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="activevspassive.html"><a href="activevspassive.html"><i class="fa fa-check"></i><b>5</b> Activ vs Passiv Portfolio Managment</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="activevspassive.html"><a href="activevspassive.html#results-of-the-literature"><i class="fa fa-check"></i><b>5.1</b> Results of the Literature</a></li>
+<li class="chapter" data-level="5.2" data-path="activevspassive.html"><a href="activevspassive.html#aggregation-of-the-literature"><i class="fa fa-check"></i><b>5.2</b> Aggregation of the Literature</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>6</b> Challenges of Passiv Investing</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>6.1</b> Mean-Variance Portfolio (MVP)</a></li>
+<li class="chapter" data-level="6.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>6.2</b> Index-Tracking Portfolio (ITP)</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="analyticalsolver.html"><a href="analyticalsolver.html"><i class="fa fa-check"></i><b>7</b> Analytic Solver for Quadratic Programming Problems</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="analyticalsolver.html"><a href="analyticalsolver.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
+<li class="chapter" data-level="7.2" data-path="analyticalsolver.html"><a href="analyticalsolver.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP-Solver from quadprog</a></li>
+<li class="chapter" data-level="7.3" data-path="analyticalsolver.html"><a href="analyticalsolver.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>7.3</b> Example: Solving MVP Problem with <code>solve.QP()</code></a></li>
+<li class="chapter" data-level="7.4" data-path="analyticalsolver.html"><a href="analyticalsolver.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>7.4</b> Example: Solving ITP-MSTE with <code>solve.QP()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization (PSO)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#the-algorithm"><i class="fa fa-check"></i><b>8.1</b> The Algorithm</a></li>
+<li class="chapter" data-level="8.2" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pso-function"><i class="fa fa-check"></i><b>8.2</b> <code>pso()</code> Function</a></li>
+<li class="chapter" data-level="8.3" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
+<li class="chapter" data-level="8.4" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#animation-2-dimensional-app"><i class="fa fa-check"></i><b>8.4</b> Animation 2-Dimensional App</a></li>
+<li class="chapter" data-level="8.5" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#simple-constraint-handling"><i class="fa fa-check"></i><b>8.5</b> Simple Constraint Handling</a></li>
+<li class="chapter" data-level="8.6" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-mvp"><i class="fa fa-check"></i><b>8.6</b> Example MVP</a></li>
+<li class="chapter" data-level="8.7" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-itp-mste"><i class="fa fa-check"></i><b>8.7</b> Example: ITP-MSTE</a></li>
+<li class="chapter" data-level="8.8" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#pros-and-cons-for-continuous-problems"><i class="fa fa-check"></i><b>8.8</b> Pros and Cons for Continuous Problems</a></li>
+<li class="chapter" data-level="8.9" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#discrete-problems"><i class="fa fa-check"></i><b>8.9</b> Discrete Problems</a></li>
+<li class="chapter" data-level="8.10" data-path="particle-swarm-optimization-pso.html"><a href="particle-swarm-optimization-pso.html#example-discrete-itp-mste"><i class="fa fa-check"></i><b>8.10</b> Example: Discrete ITP-MSTE</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="psovariants.html"><a href="psovariants.html"><i class="fa fa-check"></i><b>9</b> PSO Variations</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="psovariants.html"><a href="psovariants.html#testproblem-discrete-itp-mste"><i class="fa fa-check"></i><b>9.1</b> Testproblem: Discrete ITP-MSTE</a></li>
+<li class="chapter" data-level="9.2" data-path="psovariants.html"><a href="psovariants.html#function-stretching"><i class="fa fa-check"></i><b>9.2</b> Function Stretching</a></li>
+<li class="chapter" data-level="9.3" data-path="psovariants.html"><a href="psovariants.html#local-pso"><i class="fa fa-check"></i><b>9.3</b> Local PSO</a></li>
+<li class="chapter" data-level="9.4" data-path="psovariants.html"><a href="psovariants.html#preserving-feasibility"><i class="fa fa-check"></i><b>9.4</b> Preserving Feasibility</a></li>
+<li class="chapter" data-level="9.5" data-path="psovariants.html"><a href="psovariants.html#self-adaptive-velocity"><i class="fa fa-check"></i><b>9.5</b> Self-Adaptive Velocity</a></li>
+<li class="chapter" data-level="9.6" data-path="psovariants.html"><a href="psovariants.html#pso-r-package"><i class="fa fa-check"></i><b>9.6</b> PSO R-Package</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="reallife.html"><a href="reallife.html"><i class="fa fa-check"></i><b>10</b> Real Life ITP Example</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="reallife.html"><a href="reallife.html#transaction-costs"><i class="fa fa-check"></i><b>10.1</b> Transaction Costs</a></li>
+<li class="chapter" data-level="10.2" data-path="reallife.html"><a href="reallife.html#rebalancing-constraint"><i class="fa fa-check"></i><b>10.2</b> Rebalancing Constraint</a></li>
+<li class="chapter" data-level="10.3" data-path="reallife.html"><a href="reallife.html#objective"><i class="fa fa-check"></i><b>10.3</b> Objective</a></li>
+<li class="chapter" data-level="10.4" data-path="reallife.html"><a href="reallife.html#complete-itp-example"><i class="fa fa-check"></i><b>10.4</b> Complete ITP Example</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="future-research.html"><a href="future-research.html"><i class="fa fa-check"></i><b>11</b> Future Research</a></li>
+<li class="chapter" data-level="12" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>12</b> Conclusion</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R" target="blank">GitHub Repository</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Asset Allocation using Particle Swarm Optimization in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="mathfundations" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Mathematical Fundations<a href="mathfundations.html#mathfundations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This chapter provides an overview of the mathematical calculations and conventions used in this thesis. It is important to note that most mathematical formulas are written in matrix notation. In most cases, this will result in a direct translation to R code. All necessary assumptions required for the modeled return structure are listed in this chapter so that any reader can understand the formulas given. It is important to note that reality is too complex and can only be partially modeled. Simple, basic models are used that do not stand up to reality, but these models or variations of them are commonly used in the financial world and have proven to be helpful. The complexity of solving advanced and basic models does not differ for the PSO because the dimension of the objective function is based on the number of elements that can be selected, see chapter <a href="challenges.html#challenges">6</a>.</p>
+<div id="basic-operators" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Basic Operators<a href="mathfundations.html#basic-operators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The table below compares frequently used mathematical symbols with R code and their meaning:</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<div id="htmlwidget-15df369c475581329fbe" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-15df369c475581329fbe">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Latex":["&#215;","&#x2297","A<sup>T<\/sup>","&middot;","/","+","-"],"R":["%*%","%*%","t(A)","*","/","+","-"],"Meaning":["Matrix product","Outer product","Transpose of matrix or vector A","Scalar or element-wise matrix multiplication","Scalar or elementwise matrix division","Scalar or elementwise matrix addition","Scalar or elementwise matrix subtraction"]},"columns":[{"accessor":"Latex","name":"Latex/Displayed","type":"character","html":true},{"accessor":"R","name":"R-Code","type":"character"},{"accessor":"Meaning","name":"Meaning","type":"character"}],"defaultPageSize":10,"paginationType":"numbers","showPageInfo":true,"minRows":1,"style":{"fontFamily":"arial","fontSize":13},"dataKey":"628e11ecdf058c5262b9716920833ee6"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 4.1: List of used opterators and their meanings.
+</p>
+</div>
+<p>For a better understanding of the operators listed, the following examples are intended to illustrate the resulting dimensions and provide insight into the use of these operators.</p>
+<p>Matrix product:
+<span class="math display">\[\times: \ \ \mathbb{R}^{x \times y} \times \mathbb{R}^{y \times z} \rightarrow \mathbb{R}^{x \times z} \]</span>
+with an example:
+<span class="math display">\[ 
+\begin{bmatrix}a_{1,1} &amp;\cdots  &amp; a_{1,y} \\ \vdots &amp; \ddots &amp; \vdots  \\ a_{x,1} &amp; \cdots &amp; a_{x,y} \end{bmatrix}
+\times
+\begin{bmatrix}b_{1,1} &amp;\cdots  &amp; b_{1,z} \\ \vdots &amp; \ddots &amp; \vdots  \\ b_{y,1} &amp; \cdots &amp; b_{y,z} \end{bmatrix}
+=
+\begin{bmatrix} \sum_{i=1}^y a_{1, i} \cdot  b_{i,1} &amp;\cdots  &amp; \sum_{i=1}^y a_{1, i} \cdot  b_{i,z} \\ \vdots &amp; \ddots &amp; \vdots  \\ \sum_{i=1}^y a_{x, i} \cdot  b_{i,1}  &amp; \cdots &amp; \sum_{i=1}^y a_{x, i} \cdot  b_{i,z} \end{bmatrix}
+\]</span>
+and for a vector
+<span class="math display">\[\times: \ \ \mathbb{R}^{1 \times N} \times \mathbb{R}^{N \times 1} \rightarrow \mathbb{R}\]</span>
+with an example:
+<span class="math display">\[
+\begin{bmatrix}a_{1} &amp;\cdots  &amp;  a_{N}\end{bmatrix}
+\times
+\begin{bmatrix}b_{1}\\ \vdots \\  b_{N}\end{bmatrix}
+=
+\sum_{i=1}^N a_i \cdot  b_i
+\]</span></p>
+<p>Outer product:
+<span class="math display">\[\otimes: \ \ \mathbb{R}^{x \times 1} \times \mathbb{R}^{1 \times y} \rightarrow \mathbb{R}^{x \times y} \]</span>
+with an example:
+<span class="math display">\[
+\begin{bmatrix}a_{1}\\ \vdots \\ a_{x}\end{bmatrix}
+\otimes
+\begin{bmatrix}b_{1} &amp;\cdots  &amp; b_{y}\end{bmatrix}
+=
+\begin{bmatrix}a_{1} \cdot b_{1} &amp;\cdots  &amp; a_{1} \cdot b_{y} \\ \vdots &amp; \ddots &amp; \vdots  \\ a_{x} \cdot b_{1}  &amp; \cdots &amp; a_{x} \cdot b_{y} \end{bmatrix}
+\]</span></p>
+<p>This thesis is specified for the use of R, so element-wise operators are very important to make code comparable with formulas. In mathematics, these operators are not common. For this reason, they must be explicitly specified. All element-wise operators work in the same way. Suppose <span class="math inline">\(\square\)</span> is one of the four element-wise operators, then this follows:
+<span class="math display">\[\begin{align*}
+\square &amp;: \ \ R^{x \times y} \times R^{x \times y}  \rightarrow R^{x \times y}\\
+\text{or }\ \square &amp;: \ \ R^{x} \times R^{x \times y}  \rightarrow R^{x \times y}\\
+\text{or }\ \square &amp;: \ \ R \times R^{x \times y}  \rightarrow R^{x \times y}
+\end{align*}\]</span></p>
+<p>with examples respectively:
+<span class="math display">\[
+\begin{bmatrix}a_{11} &amp;\cdots  &amp; a_{1y} \\ \vdots &amp; \ddots &amp; \vdots  \\ a_{x1} &amp; \cdots &amp; a_{xy} \end{bmatrix}
+\square
+\begin{bmatrix}b_{11} &amp;\cdots  &amp; b_{1y} \\ \vdots &amp; \ddots &amp; \vdots  \\ b_{x1} &amp; \cdots &amp; b_{xy} \end{bmatrix}
+=
+\begin{bmatrix}a_{11} \square b_{11} &amp;\cdots  &amp; a_{1y} \square b_{1y} \\ \vdots &amp; \ddots &amp; \vdots  \\ a_{x1} \square b_{x1}  &amp; \cdots &amp; a_{xy} \square b_{xy} \end{bmatrix}
+\]</span>
+or
+<span class="math display">\[
+\begin{bmatrix}a_{1} \\ \vdots \\ a_{x} \end{bmatrix}
+\square
+\begin{bmatrix}b_{11} &amp;\cdots  &amp; b_{1y} \\ \vdots &amp; \ddots &amp; \vdots  \\ b_{x1} &amp; \cdots &amp; b_{xy} \end{bmatrix}
+=
+\begin{bmatrix}a_{1} \square b_{11} &amp;\cdots  &amp; a_{1} \square b_{1y} \\ \vdots &amp; \ddots &amp; \vdots  \\ a_{x} \square b_{x1}  &amp; \cdots &amp; a_{x} \square b_{xy} \end{bmatrix}
+\]</span>
+or
+<span class="math display">\[
+a \ 
+\square
+\begin{bmatrix}b_{11} &amp;\cdots  &amp; b_{1y} \\ \vdots &amp; \ddots &amp; \vdots  \\ b_{x1} &amp; \cdots &amp; b_{xy} \end{bmatrix}
+=
+\begin{bmatrix}a \square b_{11} &amp;\cdots  &amp; a \square b_{1y} \\ \vdots &amp; \ddots &amp; \vdots  \\ a \square b_{x1}  &amp; \cdots &amp; a \square b_{xy} \end{bmatrix}
+\]</span></p>
+</div>
+<div id="formula-conventions" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Formula Conventions<a href="mathfundations.html#formula-conventions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In mathematics, random variables are written in capital letters, which also applies to matrices. In order to allow an unambiguous assignment, the random variables are written in bold and in capital letters. For example, <span class="math inline">\(A\)</span> should represent a matrix and <span class="math inline">\(\pmb{A}\)</span> should represent a random variable.</p>
+</div>
+<div id="return-calculation" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Return Calculation<a href="mathfundations.html#return-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Any portfolio optimization strategy based on historical data must start with returns. These returns are calculated using <a href="https://www.investopedia.com/terms/a/adjusted%20closingprice.asp">adjusted closing prices</a>, which show the percentage change over time. Adjusted closing prices reflect dividends and are adjusted for stock splits and rights offerings. These returns are essential for comparing assets and analyzing dependencies.</p>
+<div id="simple-returns" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Simple Returns<a href="mathfundations.html#simple-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The default time frame for all raw data in this thesis is a working day, prices are always measured in the evening, and only simple returns are used. Assuming that there is an asset with price <span class="math inline">\(p_{t_i}\)</span> on working day <span class="math inline">\(t_i\)</span> and price <span class="math inline">\(p_{t_{i+1}}\)</span> on the following working day <span class="math inline">\(t_{i+1}\)</span>, the simple rate of return for <span class="math inline">\(t_{i+1}\)</span> can be calculated as follows:
+<span class="math display">\[
+  r_{i+1} = \frac{p_{t_{i+1}}}{p_{t_i}}-1
+\]</span></p>
+</div>
+</div>
+<div id="markowitz-modern-portfolio-theory-mpt" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Markowitz Modern Portfolio Theory (MPT)<a href="mathfundations.html#markowitz-modern-portfolio-theory-mpt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In 1952, Harry Markowitz published his first seminal paper, which had a significant impact on modern finance, primarily by outlining the implications of diversification and efficient portfolios. The definition of an efficient portfolio is a portfolio that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification might be, “A portfolio has the same return but less variance than the sum of its parts.” This is the case when assets are not perfectly correlated, as poor and good performances can offset each other, reducing the likelihood of extreme events. For more information, see <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
+<div id="assumptions-of-markowitz-portfolio-theory" class="section level3 hasAnchor" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> Assumptions of Markowitz Portfolio Theory<a href="mathfundations.html#assumptions-of-markowitz-portfolio-theory" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This thesis focuses on problems derived from Markowitz’s portfolio theory <span class="citation">(<a href="#ref-Mark1959" role="doc-biblioref">Markowitz 1959</a>)</span>, without closed form solutions, which are studied in <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span> by excluding short selling. The following list contains these types of Markowitz assumptions according to <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>:</p>
+<ul>
+<li>Perfect market without taxes or transaction costs</li>
+<li>Assets are infinitely divisible</li>
+<li>Short sales are disallowed</li>
+<li>Expected returns, variances and covariances contain all information</li>
+<li>Investors are risk-averse, they will only accept greater risk if they
+are compensated with a higher expected return</li>
+</ul>
+<p>The assumption that the returns are normally distributed is not required, but is assumed in this case to simplify the problem. It is obvious that these assumptions are unrealistic in reality. More details on the requirements for using other distributions can be found in <span class="citation">(<a href="#ref-Mari2005" role="doc-biblioref">Maringer 2005</a>)</span>.</p>
+</div>
+</div>
+<div id="portfolio-math" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Portfolio Math<a href="mathfundations.html#portfolio-math" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Proofs of the basic calculations required for portfolio optimization, as shown in <span class="citation">(<a href="#ref-Eric2021" role="doc-biblioref">Zivot 2021</a>)</span>, are provided in this section. Returns are presented differently than in most sources, as this is the most common data format used in practice. Suppose there are <span class="math inline">\(N\)</span> assets described by a return vector <span class="math inline">\(\pmb{R}\)</span> of random variables and a portfolio weight vector <span class="math inline">\(w\)</span>, respectively:
+<span class="math display">\[
+  \pmb{R} = 
+  \begin{bmatrix}
+    \pmb{R}_{1} &amp; \pmb{R}_{2} &amp; \cdots &amp; \pmb{R}_{N}  
+ \end{bmatrix}
+ , \ \ 
+ w = 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \vdots \\
+    w_{N}  
+ \end{bmatrix}
+\]</span></p>
+<p>In this thesis, each return is simplified as being normally distributed with <span class="math inline">\(\pmb{R}_i = \mathbb{N}(\mu_i, \sigma_i^2)\)</span>. As a result, linear combinations of normally distributed random variables are jointly normally distributed and have a mean, variance, and covariance that can be used to fully describe them.</p>
+<div id="expected-returns" class="section level3 hasAnchor" number="4.5.1">
+<h3><span class="header-section-number">4.5.1</span> Expected Returns<a href="mathfundations.html#expected-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The following formula can be used to get the expected returns of a vector with normally distributed random variables <span class="math inline">\(\pmb{R} \in \mathbb{R}^{1\times N}\)</span>:
+<span class="math display">\[\begin{align*}
+  E[\pmb{R}] &amp;=
+  \begin{bmatrix}
+    E[\pmb{R}_{1}] &amp; E[\pmb{R}_{2}] &amp; \cdots &amp; E[\pmb{R}_{N}]  
+ \end{bmatrix}\\
+ &amp;=
+ \begin{bmatrix}
+    \mu_{1} &amp; \mu_{2} &amp; \cdots &amp; \mu_{N} 
+ \end{bmatrix}
+ =
+ \mu
+\end{align*}\]</span>
+and <span class="math inline">\(\mu_i\)</span> can be estimated in R using historical data and the formula for the geometric mean of returns (also called compound returns). The function to calculate the geometric mean of returns from an xts object can be found in <a href="mathfundations.html#geomeanret">4.6.4</a>.</p>
+</div>
+<div id="expected-portfolio-returns" class="section level3 hasAnchor" number="4.5.2">
+<h3><span class="header-section-number">4.5.2</span> Expected Portfolio Returns<a href="mathfundations.html#expected-portfolio-returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The following equation can be used to obtain the expected portfolio return <span class="math inline">\(E[\pmb{R}_p]\)</span> using the formulations from the section above and a weighting vector <span class="math inline">\(w\)</span> (e.g. portfolio weights):
+<span class="math display">\[\begin{align*}
+E[\pmb{R}_p] &amp;=
+ E[\pmb{R} \times w] = 
+ E[\pmb{R}] \times w \\
+ &amp;= 
+  \begin{bmatrix}
+    E[\pmb{R}_{1}] &amp; E[\pmb{R}_{2}] &amp; \cdots &amp; E[\pmb{R}_{N}]
+ \end{bmatrix}
+  \times 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \vdots \\
+    w_{N}  
+ \end{bmatrix} \\
+ &amp;=
+   \begin{bmatrix}
+    \mu_{1} &amp; \mu_{2} &amp; \cdots &amp; \mu_{N}
+ \end{bmatrix}
+  \times 
+  \begin{bmatrix}
+    w_{1} \\ 
+    w_{2} \\
+    \vdots \\
+    w_{N}  
+ \end{bmatrix} \\
+ &amp;=
+ \mu_{1} \cdot w_1 + \mu_{2} \cdot w_2 + \cdots + \mu_{N} \cdot w_{N} 
+ =
+ \mu_P
+\end{align*}\]</span></p>
+</div>
+<div id="covariance" class="section level3 hasAnchor" number="4.5.3">
+<h3><span class="header-section-number">4.5.3</span> Covariance<a href="mathfundations.html#covariance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The general formula of the covariance matrix <span class="math inline">\(\textstyle\sum\)</span> of a random vector <span class="math inline">\(\pmb{R}\)</span> with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(\sigma_{i,j}\)</span> as correlation of two unique values is described as follows:
+<span class="math display">\[\begin{align*}
+  Cov(\pmb{R}) &amp;= E[(\pmb{R}-\mu)^T \otimes (\pmb{R}-\mu)] \\
+  &amp;=   \begin{bmatrix}
+    \sigma_1^2 &amp; \sigma_{1,2} &amp; \cdots &amp; \sigma_{1,N} \\
+    \sigma_{2, 1} &amp; \sigma_2^2 &amp; \cdots &amp; \sigma_{2, N} \\
+    \vdots  &amp; \vdots &amp; \ddots &amp; \vdots \\
+    \sigma_{N, 1} &amp; \sigma_{N, 2} &amp; \cdots &amp; \sigma_N^2 \\
+ \end{bmatrix}\\
+  &amp;=\textstyle\sum
+\end{align*}\]</span>
+and can be estimated in R using the basis function <code>cov()</code> and historical data. The function <code>cov_()</code> explained in <a href="mathfundations.html#covfun">4.6.1</a> can be used to calculate the covariance using the geometric mean to estimate the expected returns.</p>
+</div>
+<div id="portvar" class="section level3 hasAnchor" number="4.5.4">
+<h3><span class="header-section-number">4.5.4</span> Portfolio Variance<a href="mathfundations.html#portvar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let <span class="math inline">\(\pmb{R}\)</span> be a random vector with <span class="math inline">\(N\)</span> normally distributed elements and <span class="math inline">\(w\)</span> a weight vector. Assuming that the covariance matrix <span class="math inline">\(\sum\)</span> of <span class="math inline">\(\pmb{R}\)</span> is known, the variance of the linear combination of <span class="math inline">\(\pmb{R}\)</span> can be calculated as follows:
+<span class="math display">\[\begin{align*}
+  Var(\pmb{R} \times w) &amp;= E[(\pmb{R} \times w - \mu \times w)^2] \\
+  &amp;= E[((\pmb{R} - \mu) \times w)^2]
+\end{align*}\]</span></p>
+<p>Since <span class="math inline">\((\pmb{R} - \mu) \times w\)</span> is a scalar, it can be transformed from <span class="math inline">\(((\pmb{R} - \mu) \times w)^2\)</span> to <span class="math inline">\(((\pmb{R} - \mu) \times w)^T \cdot ((\pmb{R} - \mu) \times w)\)</span> and results in:
+<span class="math display">\[\begin{align*}
+  Var(\pmb{R} \times w) &amp;= E[((\pmb{R} - \mu) \times w)^T \times ((\pmb{R} - \mu) \times w)]\\ 
+  &amp;= E[(w^T \times (\pmb{R} - \mu)^T) \cdot ((\pmb{R} - \mu) \times w)]\\ 
+  &amp;= w^T \times E[(\pmb{R} - \mu)^T \otimes (\pmb{R} - \mu)] \times w \\
+  &amp;= w^T \times Cov(\pmb{R}) \times w \\
+  &amp;= w^T \times \textstyle\sum \times w
+\end{align*}\]</span></p>
+<p>The same is true for an estimate of <span class="math inline">\(Var(\pmb{R} \times w)\)</span> by using the estimate of <span class="math inline">\(\textstyle\sum\)</span>.</p>
+</div>
+<div id="portfolioreturns" class="section level3 hasAnchor" number="4.5.5">
+<h3><span class="header-section-number">4.5.5</span> Portfolio Returns<a href="mathfundations.html#portfolioreturns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Suppose there are <span class="math inline">\(N\)</span> assets that form a portfolio with weights <span class="math inline">\(w_{t_0}\)</span> at time step <span class="math inline">\(t_0\)</span>, and the portfolio is to go through several time steps until <span class="math inline">\(t_T\)</span> without rebalancing. What are the portfolio returns at each time step <span class="math inline">\(t_i\)</span>? Clearly, assets with higher performance at the current time step will have a higher weight at the next time step. This can be done by adjusting the weights after each time step as a function of returns. Suppose we have a complete portfolio <span class="math inline">\(\textstyle\sum w_{t_0} = 1\)</span> with a return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span> and we want to calculate the portfolio returns <span class="math inline">\(R_{t_1}^P\)</span>. This can be done with the following two steps:
+
+<span class="math display">\[\begin{align*}
+  Z_{t_1} &amp;= (1+R_{t_1}) \cdot t(w_{t_0})\\
+  R_{t_1}^P &amp;= \sum_{n = 1}^N Z_{t_1, n} - 1
+\end{align*}\]</span>
+And since the portfolio was full in <span class="math inline">\(t_0\)</span>, the adjusted weights in <span class="math inline">\(t_1\)</span> are <span class="math inline">\(w_{t_1} = Z_{t_1}/\sum_{n = 1}^N Z_{t_1, n}\)</span> (element-wise division). These new weights can be used in the next time step to replace the weights <span class="math inline">\(w_{t_0}\)</span> in the above formula. The recursive formula for holding a portfolio with weights <span class="math inline">\(\textstyle\sum w_{t_0} = 1\)</span> in <span class="math inline">\(t_0\)</span> and return matrix <span class="math inline">\(R \in \mathbb{R}^{T \times N}\)</span>, has portfolio return <span class="math inline">\(R_{t_i}^P = \textstyle\sum_{n = 1}^N Z_{t_i, n} - 1\)</span> in <span class="math inline">\(t_i\)</span> with <span class="math inline">\(i=1, 2, \cdots, T\)</span> for:<br />
+<span class="math display">\[
+  Z_{t_i} =
+  \begin{cases}
+  (1+R_{t_i})\cdot t(w_{t_0}) &amp;\text{ if }i=1\\
+  (1+R_{t_i})\cdot \frac{Z_{t_{i-1}}}{\sum_{n = 1}^N Z_{t_{i-1, n}}} &amp;\text{ if }i&gt;1
+  \end{cases}
+\]</span>
+The requirement that the portfolio is full can be achieved by adding an additional weight to <span class="math inline">\(w_{t_0}\)</span>, which includes the residual <span class="math inline">\(1-\textstyle\sum w_{t_0}\)</span> and an additional zero return vector to <span class="math inline">\(R\)</span>. This calculation of portfolio returns is implemented in the function <code>calc_portfolio_returns()</code> below.</p>
+</div>
+</div>
+<div id="r-functions-2" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> R-Functions<a href="mathfundations.html#r-functions-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The following functions serve the purpose to encapsulate mathematical calculations and to make the calculations reusable. All functions are located in the corresponding GitHub repository inside the <code>R/</code> folder.</p>
+<div id="covfun" class="section level3 hasAnchor" number="4.6.1">
+<h3><span class="header-section-number">4.6.1</span> <code>cov_()</code><a href="mathfundations.html#covfun" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This function extends the base R function <code>cov()</code> by allowing the user to pass an expected value vector. This is used to calculate the covariance with expected returns based on the geometric mean instead of the arithmetic mean.</p>
+</div>
+<div id="pritoret" class="section level3 hasAnchor" number="4.6.2">
+<h3><span class="header-section-number">4.6.2</span> <code>pri_to_ret()</code><a href="mathfundations.html#pritoret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This function calculates the simple returns of a given xts object and replaces missing values with the previous value of this column.</p>
+</div>
+<div id="ret_to_cumret" class="section level3 hasAnchor" number="4.6.3">
+<h3><span class="header-section-number">4.6.3</span> <code>ret_to_cumret()</code><a href="mathfundations.html#ret_to_cumret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This function is used to calculate cumulative returns normalized to 100 from a given xts object containing returns. This function is often used before plotting time series.</p>
+</div>
+<div id="geomeanret" class="section level3 hasAnchor" number="4.6.4">
+<h3><span class="header-section-number">4.6.4</span> <code>ret_to_geomeanret()</code><a href="mathfundations.html#geomeanret" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The geometric mean of returns is a better estimator than the arithmetic mean of returns because it captures the exact mean price changes over a period of time. The variance estimated from the daily returns is a daily variance, so the returns must have the same time base. This can be done by calculating the geometric mean of the returns from multiple daily returns. Assuming there is an asset with returns <span class="math inline">\(r_1 = 0.01\)</span>, <span class="math inline">\(r_2=-0.03\)</span>, and <span class="math inline">\(r_3=0.02\)</span>, it follows that the geometric mean return <span class="math inline">\(r^{geom}\)</span> can be calculated as:
+<span class="math display">\[
+  r^{geom} = ((1+r_1) \cdot (1+r_2) \cdot (1+r_3))^{1/3}-1 = -0.0002353887
+\]</span>
+And the advantage is that it is a daily average return that gives exactly the same result as the real returns, that is:
+<span class="math display">\[
+  (1+r^{geom})^3 = (1+r_1) \cdot (1+r_2) \cdot (1+r_3)
+\]</span>
+This is not the case with the arithmetic mean of the returns. The general formula for calculating the geometric mean return of <span class="math inline">\(n\)</span> days is:
+<span class="math display">\[
+  r^{geom} = (\prod_{i=1}^n (1+r_i))^{\frac{1}{n}}-1
+\]</span>
+and as R code:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="mathfundations.html#cb2-1" aria-hidden="true" tabindex="-1"></a>ret_to_geomeanret <span class="ot">&lt;-</span> <span class="cf">function</span>(xts_ret){</span>
+<span id="cb2-2"><a href="mathfundations.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>((<span class="dv">1</span><span class="sc">+</span>xts_ret), prod)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">nrow</span>(xts_ret))<span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb2-3"><a href="mathfundations.html#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="calc_portfolio_returns" class="section level3 hasAnchor" number="4.6.5">
+<h3><span class="header-section-number">4.6.5</span> <code>calc_portfolio_returns()</code><a href="mathfundations.html#calc_portfolio_returns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This is the implementation of a vectorial calculation of portfolio returns over multiple periods with a weighting vector <code>weights</code> at <span class="math inline">\(t_0\)</span> and no re-balancing:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="mathfundations.html#cb3-1" aria-hidden="true" tabindex="-1"></a>calc_portfolio_returns <span class="ot">&lt;-</span> </span>
+<span id="cb3-2"><a href="mathfundations.html#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(xts_returns, weights, <span class="at">name=</span><span class="st">&quot;portfolio&quot;</span>){</span>
+<span id="cb3-3"><a href="mathfundations.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">sum</span>(weights)<span class="sc">!=</span><span class="dv">1</span>){</span>
+<span id="cb3-4"><a href="mathfundations.html#cb3-4" aria-hidden="true" tabindex="-1"></a>    xts_returns<span class="sc">$</span>temp___X1 <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-5"><a href="mathfundations.html#cb3-5" aria-hidden="true" tabindex="-1"></a>    weights <span class="ot">&lt;-</span> <span class="fu">c</span>(weights, <span class="dv">1</span><span class="sc">-</span><span class="fu">sum</span>(weights))</span>
+<span id="cb3-6"><a href="mathfundations.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-7"><a href="mathfundations.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">cumprod</span>((<span class="dv">1</span><span class="sc">+</span>xts_returns)) <span class="sc">*</span> <span class="fu">matrix</span>(</span>
+<span id="cb3-8"><a href="mathfundations.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(weights, <span class="fu">nrow</span>(xts_returns)), <span class="at">ncol=</span><span class="fu">length</span>(weights), <span class="at">byrow=</span>T)</span>
+<span id="cb3-9"><a href="mathfundations.html#cb3-9" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">xts</span>(</span>
+<span id="cb3-10"><a href="mathfundations.html#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rowSums</span>(res<span class="sc">/</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">rowSums</span>(res[<span class="sc">-</span><span class="fu">nrow</span>(xts_returns),])))<span class="sc">-</span><span class="dv">1</span>, </span>
+<span id="cb3-11"><a href="mathfundations.html#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">order.by=</span><span class="fu">index</span>(xts_returns)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-12"><a href="mathfundations.html#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setNames</span>(., name)</span>
+<span id="cb3-13"><a href="mathfundations.html#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb3-14"><a href="mathfundations.html#cb3-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>This function has the same results as the <code>Return.portfolio()</code> function from the <code>PortfolioAnalytics</code> package.</p>
+
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Mari2005" class="csl-entry">
+Maringer, Dientmar. 2005. <em>Portfolio Management with Heuristic Optimization</em>.
+</div>
+<div id="ref-Mark1959" class="csl-entry">
+Markowitz, Harry M. 1959. <em>Portfolio Selection EFFICIENT DIVERSIFICATION OF INVESTMENTS</em>.
+</div>
+<div id="ref-Eric2021" class="csl-entry">
+Zivot, Eric. 2021. <em>Introduction to Computational Finance and Financial Econometrics with r</em>.
+</div>
+</div>
+<script src="script.js"></script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="open-data-sources.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="activevspassive.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R/edit/master/3_Matrix_Algebra_for_Finance.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Master_Thesis.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

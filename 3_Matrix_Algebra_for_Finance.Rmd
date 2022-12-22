@@ -8,15 +8,17 @@ This chapter provides an overview of the mathematical calculations and conventio
 
 
 ## Basic Operators
-The table below compares frequently used mathematical symbols with R code and their meaning:  
-```{r operators, echo=F, fig.cap = "List of used opterators and their meaning"}
+The table below compares frequently used mathematical symbols with R code and their meaning:
+
+
+```{r, fig.cap = "List of used opterators and their meanings.", echo=F}
 reactable(
   data.frame(
     "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;", "/", "+", "-"),
     "R"= c("%*%", "%*%","t(A)", "*", "/", "+", "-"),
     "Meaning" = c("Matrix product", "Outer product (special case of the matrix product)", "Transpose of matrix or vector A", "Scalar or element-wise matrix multiplication", "Scalar or elementwise matrix division", "Scalar or elementwise matrix addition", "Scalar or elementwise matrix subtraction")
   ), 
-  columns <- list(
+  columns = list(
     Latex = colDef(name = "Latex/Displayed", html = T),
     R = colDef(name="R-Code")
   ),
@@ -24,6 +26,8 @@ reactable(
 ) %>% 
   html_save()
 ```
+
+
 For a better understanding of the operators listed, the following examples are intended to illustrate the resulting dimensions and provide insight into the use of these operators.  
 
 Matrix product:
