@@ -8,6 +8,5 @@ rsconnect
 .Renviron
 *.rdata
 gifs
-docs/*
-docs
-docs/
+
+/docs
