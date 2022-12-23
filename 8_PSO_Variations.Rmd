@@ -156,9 +156,10 @@ reactable(
     best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
-  rownames = F
+  rownames = F,
+  style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 880)
+  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
 ```
 
 
@@ -328,9 +329,10 @@ reactable(
     best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
-  rownames = F
+  rownames = F,
+  style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 880)
+  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
 ```
 
 
@@ -340,10 +342,12 @@ It can be seen that the function stretching did not bring any advantages in this
 
 ## Local PSO
 A local PSO is a more general case of the global PSO, which is called the standard PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$, and the global best particle in its neighborhood is called the local best particle of $x_i$. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ given in [@Enge2013] would be:
+
 \vspace{-0.1cm}
 $$
   N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
 $$
+
 with
 $$
   \bar{k} = floor(\frac{k}{2}) = \lfloor \frac{k}{2} \rfloor
@@ -448,9 +452,10 @@ reactable(
     best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
-  rownames = F
+  rownames = F,
+  style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 880)
+  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
 ```
 
 
@@ -617,9 +622,10 @@ reactable(
     best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
-  rownames = F
+  rownames = F,
+  style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 880)
+  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
 ```
 
 
@@ -797,7 +803,6 @@ plot_ly() %>%
 
 
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:  
-\vspace{-0.1cm}
 
 
 ```{r variants8, echo=F, fig.cap="Comparison of statistics between the PSO with self-adaptive velocity and the standard PSO."}
@@ -815,9 +820,10 @@ reactable(
     best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
-  rownames = F
+  rownames = F,
+  style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 880)
+  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
 ```
 
 
@@ -908,7 +914,6 @@ plot_ly() %>%
 
 The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
-\vspace{-0.1cm}
 
 
 ```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO."}
@@ -926,9 +931,10 @@ reactable(
     best_fit_median = colDef(format = colFormat(digits=6), width=125)
   ),
   compact = T,
-  rownames = F
+  rownames = F,
+  style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 880)
+  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
 ```
 
 

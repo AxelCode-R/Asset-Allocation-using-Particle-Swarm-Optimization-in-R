@@ -1,7 +1,7 @@
 ```{r, setup, include=F}
 #rmarkdown::find_pandoc(version = "2.7.3")
 source("global.R")
-knitr::opts_chunk$set(cache = T, warning=F, message=F, comment="")
+knitr::opts_chunk$set(cache = T, warning=F, message=F, comment="", fig.pos="H", out.extra="")
 global_buffer_force <- F
 
 # library(knitr)
@@ -18,7 +18,9 @@ global_buffer_force <- F
 \listoffigures
 
 \newpage
-# List of Abbreviations
+# List of Abbreviations {-}
+
+
 ```{r, echo=F}
 reactable(
   data.frame(
@@ -40,7 +42,7 @@ reactable(
       "Quadratic programming"
       )
   ), 
-  style = list(fontFamily="arial", fontSize=13)
+  style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
   html_save()
 ```

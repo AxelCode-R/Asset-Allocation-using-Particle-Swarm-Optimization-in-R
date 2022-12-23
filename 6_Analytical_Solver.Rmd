@@ -21,7 +21,7 @@ Some other sources notate the problem with different signs or coefficients, all 
 ## QP-Solver from quadprog
 The most common free QP-Solver used in R comes from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf), which consists of a single function called `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani published in [@GoId1982] and [@GoId1983]. It uses the above QP with the condition that $D$ must be a symmetric positive definite matrix. This means that $D\in \mathbb{R}^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in \mathbb{R}^N \setminus \{\vec{0}\}$, which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix $\sum$, but it is possible to find the nearest positive definite matrix of $\textstyle\sum$ using the function `nearPD()` from the [matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R package. The error encountered often does not exceed a percent change in elements greater than $10^{-15} \%$, which is negligible for the context of this work. The function `solve.QP()` for an $N$ dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:  
 
-\vspace{-0.4cm}
+\vspace{-0.2cm}
 + `Dmat`: Symmetric positive definite matrix $D \in \mathbb{R}^{N \times N}$ of the quadratic term
 + `dvec`: Vector $d \in \mathbb{R}^{N}$ of the linear term
 + `Amat`: Constraint matrix $A$
@@ -30,7 +30,7 @@ The most common free QP-Solver used in R comes from the package [quadprog](https
 
 The return of `solve.QP()` is a list and contains, among others, the following attributes of interest:  
 
-\vspace{-0.4cm}
+\vspace{-0.2cm}
 + `solution`: Vector containing the solution $x$ of the quadratic programming problem (e.g. portfolio weights)
 + `value`: Scalar, the value of the quadratic function at the solution
 
