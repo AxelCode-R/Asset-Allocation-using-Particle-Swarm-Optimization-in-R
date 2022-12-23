@@ -199,7 +199,7 @@ E[\pmb{R}_p] &=
 
 
 ### Covariance
-The general formula of the covariance matrix $\textstyle\sum$ of a random vector $\pmb{R}$ with $N$ normally distributed elements and $\sigma_{i,j}$ as correlation of two unique values is described as follows:
+The general formula of the covariance matrix $\textstyle\sum$ of a random vector $\pmb{R}$ with $N$ normally distributed elements and $\sigma_{i,j}$ as correlation of two distinct values is described as follows:
 \begin{align*}
   Cov(\pmb{R}) &= E[(\pmb{R}-\mu)^T \otimes (\pmb{R}-\mu)] \\
   &=   \begin{bmatrix}
@@ -221,7 +221,7 @@ Let $\pmb{R}$ be a random vector with $N$ normally distributed elements and $w$ 
 
 Since $(\pmb{R} - \mu) \times w$ is a scalar, it can be transformed from $((\pmb{R} - \mu) \times w)^2$ to $((\pmb{R} - \mu) \times w)^T \cdot ((\pmb{R} - \mu) \times w)$ and results in:
 \begin{align*}
-  Var(\pmb{R} \times w) &= E[((\pmb{R} - \mu) \times w)^T \times ((\pmb{R} - \mu) \times w)]\\ 
+  Var(\pmb{R} \times w) &= E[((\pmb{R} - \mu) \times w)^T \cdot ((\pmb{R} - \mu) \times w)]\\ 
   &= E[(w^T \times (\pmb{R} - \mu)^T) \cdot ((\pmb{R} - \mu) \times w)]\\ 
   &= w^T \times E[(\pmb{R} - \mu)^T \otimes (\pmb{R} - \mu)] \times w \\
   &= w^T \times Cov(\pmb{R}) \times w \\
