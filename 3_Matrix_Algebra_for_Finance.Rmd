@@ -126,7 +126,7 @@ are compensated with a higher expected return
 The assumption that the returns are normally distributed is not required, but is assumed in this case to simplify the problem. It is obvious that these assumptions are unrealistic in reality. More details on the requirements for using other distributions can be found in [@Mari2005]. 
 
 ## Portfolio Math
-Proofs of the basic calculations required for portfolio optimization, as shown in [@Eric2021], are provided in this section. Returns are presented differently than in most sources, as this is the most common data format used in practice. Suppose there are $N$ assets described by a return vector $\pmb{R}$ of random variables and a portfolio weight vector $w$, respectively:
+Proofs of the basic calculations required for portfolio optimization, as shown in [@Eric2021], are provided in this section. Returns are presented differently than in most sources, as this is the most common data format used in practice. Suppose there are $N$ assets described by a return vector $\pmb{R}$ of random variables, and the relative contribution to the net asset value of the portfolio is described by the weight vector $w$, which typically satisfies $\sum w = 1$:
 $$
   \pmb{R} = 
   \begin{bmatrix}
