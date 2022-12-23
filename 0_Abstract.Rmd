@@ -24,6 +24,7 @@ reactable(
   data.frame(
     "Abbreviation" = c(
       "xts", 
+      "IDE",
       "MVP",
       "ITP", 
       "TEV",
@@ -33,6 +34,7 @@ reactable(
       ),
     "Definition"= c(
       "R-object used to store time series data", 
+      "Integrated development environment",
       "Mean variance portfolio",
       "Index tracking problem", 
       "Tracking error variance",
