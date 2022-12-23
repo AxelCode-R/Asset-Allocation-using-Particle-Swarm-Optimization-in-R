@@ -7,7 +7,7 @@ editor_options:
 ---
 
 # Future Research
-Some PSO variants were analyzed and showed promising results in solving the index tracking problem. The best of them were the local and the self-adaptive velocity variants, both of which increase the ability to find good solutions by increasing the diversity in the swarm. This often prevents premature convergence in local minimum situations. The additional advantage of the self-adaptive velocity variant is the reduction in hyperparameters, making it capable of solving a wide range of problems without additional fine-tuning effort. The implementation is identical to the source and works well, but it would be interesting to analyze whether it can be improved by combining it with the local variant.
+Some PSO variants were analyzed and showed promising results in solving the index tracking problem. The best of them were the local and the self-adaptive velocity variants, both of which increase the ability to find good solutions by increasing the diversity in the swarm. This often prevents premature convergence in local minimum situations. The additional advantage of the self-adaptive velocity variant is the reduction in hyperparameters, making it capable of solving a wide range of problems without additional fine-tuning effort. The implementation is identical to the source in [@FaYa2014] and works well, but it would be interesting to analyze whether it can be improved by combining it with the local variant.
 
 The last chapter analyzed backtests of a practical index tracking problem for retail investors, which yielded promising results but require further evaluation to verify their stability due to path-dependent portfolios.
 

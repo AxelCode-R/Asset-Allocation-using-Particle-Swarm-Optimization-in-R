@@ -175,7 +175,7 @@ and
 (\#eq:fnstretchH)
 \end{equation} 
 
-The function $G(\bar{x})$ can be simplified to $f(\bar{x})$, the norm used in $G(x)$ is the Manhattan norm and the $\text{sign}()$ function is defined as follows:
+The value $G(\bar{x})$ can be simplified to $f(\bar{x})$, the norm used in $G(x)$ is the Manhattan norm and the $\text{sign}()$ function is defined as follows:
 $$
   \text{sign}(x) = 
   \begin{cases}
@@ -240,7 +240,7 @@ plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="s
 
 
 ### Implementation
-Since it is not possible to know if the PSO is stuck in a local minima, a stagnation value was added that increases by one if the global best particle does not change. After ten iterations with no change, a local minimum is assumed and the transformation of the objective function takes place. After that, all personal best fitness values must be re-evaluated to work with the evaluated space and the stagnation value is set to zero. To prevent transformation just at the end of all iterations, the current iteration must be less than the maximum iteration minus twenty to allow transformation to occur.
+Since it is not possible to know if the PSO is stuck in a local minimum, a stagnation value was added that increases by one if the global best particle does not change. After ten iterations with no change, a local minimum is assumed and the transformation of the original objective function $f(x)$ takes place. After that, all personal best fitness values must be re-evaluated to work with the evaluated space and the stagnation value is set to zero. To prevent transformation just at the end of all iterations, the current iteration must be less than the maximum iteration minus twenty to allow transformation to occur. The transformed function $H(x)$ remains the objective function until the next local minimum is suspected, which again leads to a transformation of the original function $f(x)$.
 
 
 ### Test PSO with Function Stretching
