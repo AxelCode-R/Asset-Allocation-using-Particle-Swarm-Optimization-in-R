@@ -61,6 +61,10 @@ Konstantinos~Parsopoulos, M. N.~V. (2002).
 Maringer, D. (2005).
 \newblock {\em Portfolio Management with Heuristic Optimization}.
 
+\bibitem[Markowitz, 1952]{Mark1952}
+Markowitz, H.~M. (1952).
+\newblock {\em Portfolio Selection}.
+
 \bibitem[Markowitz, 1959]{Mark1959}
 Markowitz, H.~M. (1959).
 \newblock {\em Portfolio Selection EFFICIENT DIVERSIFICATION OF INVESTMENTS}.
@@ -69,6 +73,11 @@ Markowitz, H.~M. (1959).
 Mauro S.~Innocente, J.~S. (2008).
 \newblock Constraint handling techniques for particle swarm optimization
   algorithms.
+
+\bibitem[Mercangöz, 2021]{BuAd2021}
+Mercangöz, B.~A. (2021).
+\newblock Applying particle swarm optimization: New solutions and cases for
+  optimized portfolios.
 
 \bibitem[nyse.com, 2022]{NySe2022}
 nyse.com (2022).

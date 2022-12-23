@@ -8,10 +8,11 @@ This chapter provides an overview of the mathematical calculations and conventio
 
 
 ## Basic Operators
+
 The table below compares frequently used mathematical symbols with R code and their meaning:
 
 
-```{r, fig.cap = "List of used opterators and their meanings.", echo=F}
+```{r, fig.cap = "List of used opterators and their meanings.", echo=F, fig.pos="H", out.extra=""}
 reactable(
   data.frame(
     "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;", "/", "+", "-"),
