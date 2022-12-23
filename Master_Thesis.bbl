@@ -60,14 +60,17 @@ Konstantinos~Parsopoulos, M. N.~V. (2002).
 \bibitem[Maringer, 2005]{Mari2005}
 Maringer, D. (2005).
 \newblock {\em Portfolio Management with Heuristic Optimization}.
+\newblock Springer.
 
 \bibitem[Markowitz, 1952]{Mark1952}
 Markowitz, H.~M. (1952).
 \newblock {\em Portfolio Selection}.
+\newblock The Journal of Finance.
 
 \bibitem[Markowitz, 1959]{Mark1959}
 Markowitz, H.~M. (1959).
 \newblock {\em Portfolio Selection EFFICIENT DIVERSIFICATION OF INVESTMENTS}.
+\newblock Yale UNIVERSITY PRESS.
 
 \bibitem[Mauro S.~Innocente, 2008]{InSi2008}
 Mauro S.~Innocente, J.~S. (2008).
@@ -111,7 +114,7 @@ Shukla, R. (2004).
 
 \bibitem[Zivot, 2021]{Eric2021}
 Zivot, E. (2021).
-\newblock {\em Introduction to Computational Finance and Financial Econometrics
-  with R}.
+\newblock Introduction to computational finance and financial econometrics with
+  r.
 
 \end{thebibliography}

@@ -6,20 +6,22 @@ The style file: apalike.bst
 Reallocating 'name_of_file' (item size: 1) to 5 items.
 Reallocating 'name_of_file' (item size: 1) to 9 items.
 Database file #1: book.bib
+Warning--entry type for "Eric2021" isn't style-file defined
+--line 57 of file book.bib
 Warning--entry type for "Rtic2021" isn't style-file defined
---line 297 of file book.bib
+--line 313 of file book.bib
 Warning--entry type for "AhBa2017" isn't style-file defined
---line 315 of file book.bib
+--line 331 of file book.bib
 Warning--entry type for "AkGa2022" isn't style-file defined
---line 337 of file book.bib
+--line 353 of file book.bib
 Warning--entry type for "NySe2022" isn't style-file defined
---line 357 of file book.bib
+--line 373 of file book.bib
 Warning--entry type for "GitHub" isn't style-file defined
---line 377 of file book.bib
+--line 393 of file book.bib
 Warning--entry type for "GitPSO" isn't style-file defined
---line 397 of file book.bib
-Warning--entry type for "PSOApp" isn't style-file defined
 --line 413 of file book.bib
+Warning--entry type for "PSOApp" isn't style-file defined
+--line 429 of file book.bib
 Database file #2: packages.bib
 Warning--empty journal in TaDe2019
 Warning--empty journal in PaHi2016
@@ -32,53 +34,49 @@ Warning--empty journal in XiEb2002
 Warning--empty journal in IuGa2019
 Warning--empty journal in KeEb1995
 Warning--empty journal in PaVr2002
-Warning--empty publisher in Mari2005
-Warning--empty publisher in Mark1952
-Warning--empty publisher in Mark1959
 Warning--empty journal in InSi2008
 Warning--empty journal in BuAd2021
 Warning--empty journal in FaYa2014
 Warning--empty journal in RaSh2004
-Warning--empty publisher in Eric2021
 You've used 26 entries,
             1935 wiz_defined-function locations,
-            599 strings with 6644 characters,
-and the built_in function-call counts, 6967 in all, are:
-= -- 644
+            602 strings with 6687 characters,
+and the built_in function-call counts, 6944 in all, are:
+= -- 651
 > -- 218
 < -- 26
 + -- 71
 - -- 64
-* -- 491
-:= -- 1317
-add.period$ -- 52
+* -- 477
+:= -- 1321
+add.period$ -- 55
 call.type$ -- 26
-change.case$ -- 158
+change.case$ -- 159
 chr.to.int$ -- 23
-cite$ -- 45
-duplicate$ -- 321
-empty$ -- 498
+cite$ -- 41
+duplicate$ -- 317
+empty$ -- 490
 format.name$ -- 102
-if$ -- 1293
+if$ -- 1290
 int.to.chr$ -- 4
 int.to.str$ -- 0
-missing$ -- 23
-newline$ -- 107
+missing$ -- 21
+newline$ -- 110
 num.names$ -- 78
-pop$ -- 175
+pop$ -- 167
 preamble$ -- 1
 purify$ -- 162
 quote$ -- 0
-skip$ -- 267
+skip$ -- 266
 stack$ -- 0
 substring$ -- 316
-swap$ -- 4
+swap$ -- 3
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 148
-warning$ -- 19
+type$ -- 150
+warning$ -- 15
 while$ -- 52
 width$ -- 0
-write$ -- 262
-(There were 26 warnings)
+write$ -- 268
+(There were 23 warnings)
