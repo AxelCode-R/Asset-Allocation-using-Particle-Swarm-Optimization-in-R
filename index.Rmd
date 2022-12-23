@@ -8,7 +8,7 @@ bibliography:
 - packages.bib
 site: bookdown::bookdown_site
 biblio-style: apalike
-csl: apa.csl
+csl: chicago-note-bibliography.csl
 editor_options:
   chunk_output_type: console
 description: This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart.
