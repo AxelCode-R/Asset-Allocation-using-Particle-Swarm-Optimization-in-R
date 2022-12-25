@@ -1,120 +1,161 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{26}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[Badary, 2017]{AhBa2017}
-Badary, A. (2017).
-\newblock How to build a basic particle swarm optimiser from scratch in r.
+\bibitem[Badary(2017)]{AhBa2017}
+Ahmad Badary.
+\newblock How to build a basic particle swarm optimiser from scratch in r,
+  2017.
+\newblock URL
+  \url{https://ahmedbadary.github.io/work_files/research/conv_opt/hw/iftp}.
 
-\bibitem[Derenzis, 2019]{TaDe2019}
-Derenzis, T. (2019).
+\bibitem[Derenzis(2019)]{TaDe2019}
+Tania Derenzis.
 \newblock Net performance of active and passive equity ucits.
+\newblock \emph{ESMA Report on Trends, Risks and Vulnerabilities}, 2019.
 
-\bibitem[Desmond~Pace and Grima, 2016a]{PaHi2016}
-Desmond~Pace, J.~H. and Grima, S. (2016a).
+\bibitem[Desmond~Pace and Grima(2016{\natexlab{a}})]{Desm2016}
+Jana~Hili Desmond~Pace and Simon Grima.
 \newblock Active versus passive investing: An empirical study on the us and
   european mutual funds and etfs.
+\newblock \emph{www.emeraldinsight.com}, 2016{\natexlab{a}}.
 
-\bibitem[Desmond~Pace and Grima, 2016b]{Desm2016}
-Desmond~Pace, J.~H. and Grima, S. (2016b).
+\bibitem[Desmond~Pace and Grima(2016{\natexlab{b}})]{PaHi2016}
+Jana~Hili Desmond~Pace and Simon Grima.
 \newblock Active versus passive investing: An empirical study on the us and
   european mutual funds and etfs.
+\newblock \emph{Emerald Insight}, 2016{\natexlab{b}}.
 
-\bibitem[Engelbrecht, 2013]{Enge2013}
-Engelbrecht, A. (2013).
+\bibitem[Engelbrecht(2013)]{Enge2013}
+AP~Engelbrecht.
 \newblock Particle swarm optimization: Global best or local best?
+\newblock \emph{Department of Computer Science University of Pretoria Pretoria,
+  South Africa}, 2013.
 
-\bibitem[Fama and French, 2010]{FaFr2010}
-Fama, E.~F. and French, K.~R. (2010).
+\bibitem[Fama and French(2010)]{FaFr2010}
+Eugene~F. Fama and Kenneth~R. French.
 \newblock Luck versus skill in the cross-section of mutual fund returns.
+\newblock \emph{THE JOURNAL OF FINANCE}, 2010.
 
-\bibitem[GANTI, 2022]{AkGa2022}
-GANTI, A. (2022).
-\newblock What is a brokerage fee? how fees work, types, and expense.
+\bibitem[GANTI(2022)]{AkGa2022}
+AKHILESH GANTI.
+\newblock What is a brokerage fee? how fees work, types, and expense, 2022.
+\newblock URL
+  \url{https://www.investopedia.com/terms/b/brokerage-fee.asp#:~:text=Realtors%20and%20real%20estate%20brokers,offer%20a%20fixed%2Dfee%20service.}
 
-\bibitem[Goldfarb and Idnani, 1982]{GoId1982}
-Goldfarb, D. and Idnani, A. (1982).
+\bibitem[Goldfarb and Idnani(1982)]{GoId1982}
+D.~Goldfarb and A.~Idnani.
 \newblock Dual and primal-dual methods for solving strictly convex quadratic
   programs.
+\newblock \emph{In J. P. Hennart (ed.), Numerical Analysis, Springer-Verlag,
+  Berlin, pages 226–239}, 1982.
 
-\bibitem[Goldfarb and Idnani, 1983]{GoId1983}
-Goldfarb, D. and Idnani, A. (1983).
+\bibitem[Goldfarb and Idnani(1983)]{GoId1983}
+D.~Goldfarb and A.~Idnani.
 \newblock A numerically stable dual method for solving strictly convex
   quadratic programs.
+\newblock \emph{Mathematical Programming, 27, 1–33}, 1983.
 
-\bibitem[Hu and Eberhardt, 2002]{XiEb2002}
-Hu, X. and Eberhardt, R. (2002).
+\bibitem[Hu and Eberhardt(2002)]{XiEb2002}
+Xiaohui Hu and Russell Eberhardt.
 \newblock Luck versus skill in the cross-section of mutual fund returns.
+\newblock \emph{swarmintelligence.org}, 2002.
 
-\bibitem[Iuliia~Gavriushina, 2019]{IuGa2019}
-Iuliia~Gavriushina, O.~S. (2019).
+\bibitem[Iuliia~Gavriushina(2019)]{IuGa2019}
+Oliver~Sampson Iuliia~Gavriushina.
 \newblock Widened learning of index tracking portfolios.
+\newblock \emph{18th IEEE International Conference On Machine Learning And
+  Applications (ICMLA)}, 2019.
 
-\bibitem[James~Kennedy, 1995]{KeEb1995}
-James~Kennedy, R.~E. (1995).
+\bibitem[James~Kennedy(1995)]{KeEb1995}
+Russell~Eberhart James~Kennedy.
 \newblock Particle swarm optimization.
+\newblock 1995.
+\newblock URL \url{https://www.cs.tufts.edu/}.
 
-\bibitem[Konstantinos~Parsopoulos, 2002]{PaVr2002}
-Konstantinos~Parsopoulos, M. N.~V. (2002).
+\bibitem[Konstantinos~Parsopoulos(2002)]{PaVr2002}
+Michael N.~Vrahatis Konstantinos~Parsopoulos.
 \newblock Recent approaches to global optimization problems through particle
   swarm optimization.
+\newblock \emph{Natural Computing}, 2002.
 
-\bibitem[Maringer, 2005]{Mari2005}
-Maringer, D. (2005).
-\newblock {\em Portfolio Management with Heuristic Optimization}.
-\newblock Springer.
+\bibitem[Maringer(2005)]{Mari2005}
+Dientmar Maringer.
+\newblock \emph{Portfolio Management with Heuristic Optimization}.
+\newblock Springer, 2005.
 
-\bibitem[Markowitz, 1952]{Mark1952}
-Markowitz, H.~M. (1952).
-\newblock {\em Portfolio Selection}.
-\newblock The Journal of Finance.
+\bibitem[Markowitz(1952)]{Mark1952}
+Harry~M. Markowitz.
+\newblock \emph{Portfolio Selection}.
+\newblock The Journal of Finance, 1952.
 
-\bibitem[Markowitz, 1959]{Mark1959}
-Markowitz, H.~M. (1959).
-\newblock {\em Portfolio Selection EFFICIENT DIVERSIFICATION OF INVESTMENTS}.
-\newblock Yale UNIVERSITY PRESS.
+\bibitem[Markowitz(1959)]{Mark1959}
+Harry~M. Markowitz.
+\newblock \emph{Portfolio Selection EFFICIENT DIVERSIFICATION OF INVESTMENTS}.
+\newblock Yale UNIVERSITY PRESS, 1959.
 
-\bibitem[Mauro S.~Innocente, 2008]{InSi2008}
-Mauro S.~Innocente, J.~S. (2008).
+\bibitem[Mauro S.~Innocente(2008)]{InSi2008}
+Johann~Sienz Mauro S.~Innocente.
 \newblock Constraint handling techniques for particle swarm optimization
   algorithms.
+\newblock \emph{ADOPT Research Group, Civil and Computational Engineering
+  Centre}, 2008.
 
-\bibitem[Mercangöz, 2021]{BuAd2021}
-Mercangöz, B.~A. (2021).
+\bibitem[Mercangöz(2021)]{BuAd2021}
+Burcu~Adigüzel Mercangöz.
 \newblock Applying particle swarm optimization: New solutions and cases for
   optimized portfolios.
+\newblock \emph{Springer Nature Switzerland AG}, 2021.
 
-\bibitem[nyse.com, 2022]{NySe2022}
-nyse.com (2022).
-\newblock New york stock exchange price list 2022.
+\bibitem[nyse.com(2022)]{NySe2022}
+nyse.com.
+\newblock New york stock exchange price list 2022, 2022.
+\newblock URL
+  \url{https://www.nyse.com/publicdocs/nyse/markets/nyse/NYSE_Price_List.pdf}.
 
-\bibitem[Qinqin~Fan, 2014]{FaYa2014}
-Qinqin~Fan, X.~Y. (2014).
+\bibitem[Qinqin~Fan(2014)]{FaYa2014}
+Xuefeng~Yan Qinqin~Fan.
 \newblock Self-adaptive particle swarm optimization with multiple velocity
   strategies and its application for p-xylene oxidation reaction process
   optimization.
+\newblock \emph{ScienceDirect}, 2014.
 
-\bibitem[Roth, 2022a]{GitHub}
-Roth, A. (2022a).
-\newblock Asset allocation using particle swarm optimization in r.
+\bibitem[Roth(2022{\natexlab{a}})]{GitHub}
+Axel Roth.
+\newblock Asset allocation using particle swarm optimization in r,
+  2022{\natexlab{a}}.
+\newblock URL
+  \url{https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R}.
 
-\bibitem[Roth, 2022b]{GitPSO}
-Roth, A. (2022b).
-\newblock Github:pso-app.
+\bibitem[Roth(2022{\natexlab{b}})]{GitPSO}
+Axel Roth.
+\newblock Github:pso-app, 2022{\natexlab{b}}.
+\newblock URL \url{https://github.com/AxelCode-R/PSO-App}.
 
-\bibitem[Roth, 2022c]{PSOApp}
-Roth, A. (2022c).
-\newblock Pso-app.
+\bibitem[Roth(2022{\natexlab{c}})]{PSOApp}
+Axel Roth.
+\newblock Pso-app, 2022{\natexlab{c}}.
+\newblock URL \url{https://edjut-all.shinyapps.io/PSO-App/}.
 
-\bibitem[R'tichoke, 2021]{Rtic2021}
-R'tichoke (2021).
-\newblock How to build a basic particle swarm optimiser from scratch in r.
+\bibitem[R'tichoke(2021)]{Rtic2021}
+R'tichoke.
+\newblock How to build a basic particle swarm optimiser from scratch in r,
+  2021.
+\newblock URL
+  \url{https://www.r-bloggers.com/2021/10/how-to-build-a-basic-particle-swarm-optimiser-from-scratch-in-r/}.
 
-\bibitem[Shukla, 2004]{RaSh2004}
-Shukla, R. (2004).
+\bibitem[Shukla(2004)]{RaSh2004}
+Ravi Shukla.
 \newblock The value of active portfolio management.
+\newblock \emph{Elsevier Journal of Economics and Business}, 2004.
 
-\bibitem[Zivot, 2021]{Eric2021}
-Zivot, E. (2021).
+\bibitem[Zivot(2021)]{Eric2021}
+Eric Zivot.
 \newblock Introduction to computational finance and financial econometrics with
-  r.
+  r, 2021.
+\newblock URL \url{https://bookdown.org/compfinezbook/introcompfinr/}.
 
 \end{thebibliography}
