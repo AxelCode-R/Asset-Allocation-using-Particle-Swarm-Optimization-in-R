@@ -27,6 +27,8 @@ $$
 
 With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$ and $c_g$ are stile scalars. The random numbers $r_1$ and $r_2$ are replaced by the vectors $\vec{r}_1$ and $\vec{r}_2$, in which each element is a uniformly distributed random number generated in $[0, 1]$. The first transpose is needed to multiply each random number element-wise with each column and the second transpose transforms it back to the format of $V$ and $X$.
 
+The algorithm mentioned above is the first published variant of PSO and is therefore referred to as standard PSO in this thesis. There are also other names like global PSO, because the information is distributed globally over all particles in the swarm and some also call it the basic or original PSO.
+
 
 ## `pso()` Function
 In this section, a general PSO function is created that follows the structure of other optimization heuristics in R, in particular the existing PSO implementation from the R package `pso`. The key component of the problem is a objective function called `fn()`, which needs a vector that describes the position of one particle (e.g. weights) and returns a scalar that needs to be minimized. The other main parameter for the PSO function is `par`, which is a position of a particle used to derive the dimension of the problem and used as the initial position of one particle. The vector can contain only `NA`'s, resulting in completely random starting positions. The last two arguments are `lower` and `upper` bounds (e.g. weights greater than 0 and less than 1). All other parameters have default values that can be overridden by passing a list called `control`. The resulting structure is:
@@ -216,9 +218,10 @@ The function `f` has many local minima and a global minima at $(1,1)$ with the v
 # }
 
 ```
-```{=latex, fig.cap="Visualization of the behavior of the standard PSO in a GIF."}
+```{=latex}
 \begin{center}
 \animategraphics[loop, width=10cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{80}
+\caption{"Visualization of the behavior of the standard PSO in a GIF."}
 \end{center}
 ```
 
@@ -271,6 +274,43 @@ fn <- function(x){
 }
 ```
 This approach to dealing with constraints is called the penalization method and is definitely the most straightforward approach. Its disadvantage is the fact that the PSO has to find a balance between the violation of constraints and the goal. As explained in [@InSi2008], there are three other constraint handling methods, but the results show that none of them is superior. The treatment of constraints should be chosen appropriately for the given problem. For example, it may be useful to use the feasibility preservation technique to obtain a solution that is guaranteed not to break any constraints. The disadvantages here are longer computation time and less exploration of particles, since only feasible solutions can be stored as personal or global best solutions.
+
+
+## Convergence analysis of the standard PSO
+This section summarizes the mathematical analysis of the convergence of the standard PSO performed in [@FbEn2010], which has the main goal to prove whether the PSO converges to a local or even a global minimum. This section provides only a simplified and therefore inaccurate reproduction of all relevant results of the source, so it is recommended to also look at the exact statements and proofs in the source. At first the PSO has to satisfy the algorithm condition for random search algorithms and the objective function $f$: \newline
+
+**Algorithm condition:** The mapping $D: S \times \mathbf{R}^n\rightarrow S$ should satisfy $f(D(x, \xi)) \leq f(x)$ and if $\xi \in S$, then $f(D(x, \xi)) \leq f(\xi)$.
+
+That is, the *algorithm condition* is satisfied if the algorithm has a mapping $D$ that compares two positions and returns the position with the lowest objective value that is also in the definition region. In relation to the PSO, this concentrates on the behavior of changing the global best particle $x_{global}$. If a new local best particle $x_{new}$ is found, it is garanteed that it is in the definition region, because all positions caluclated are pushed back if they are outside of the definition region. Afterwards the PSO compares the objective value of the new local best particle $x_{new}$ with the objective value of the $x_{global}$ and saves the lowest as global best particle. Therefore the PSO satisfies the *algorithm condition*. 
+
+
+
+the PSO compares it to the $x_{global}$ and if its objective values 
+
+
+
+Starting with the convergence to a local minimum, the PSO converges to a local minimum if the algorithm condition and the convergence condition for local search is satisfied.
+
+
+
+
+
+
+
+
+Starting with the congerence into a local minimum, the PSO has to satisfie the following local search condition for algorithms:
+
+
+::: {.theorem #localsearch name="Local Search Alogirthm"}
+Assume that $f$ is a measurable function, $S$ is a measurable subset of $\mathbf{R}^n$ and both the algorithm and the convergence condition for local search are satisfied. Let ${x_t}^{\infty}_{t=0}$ be a sequence generated by the algorithm, D. Then,
+$$
+  \lim_{t\rightarrow \infty} \ P(x_t \in R_{\epsilon}) = 1
+$$
+:::
+
+more information in the book!!!!!!!!!!!!!
+
+
 
 ## Example MVP
 This example uses the `solve.QP()` approach from section \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The main characteristics of all portfolios created with the `solve.QP()` compared to the PSO are shown below:
