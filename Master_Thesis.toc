@@ -50,33 +50,34 @@
 \contentsline {chapter}{\numberline {8}Particle Swarm Optimization (PSO)}{45}{chapter.8}%
 \contentsline {section}{\numberline {8.1}The Algorithm}{45}{section.8.1}%
 \contentsline {section}{\numberline {8.2}\texttt {pso()} Function}{46}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Animation 2-Dimensional}{48}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Animation 2-Dimensional App}{49}{section.8.4}%
+\contentsline {section}{\numberline {8.3}Animation 2-Dimensional}{49}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Animation 2-Dimensional App}{50}{section.8.4}%
 \contentsline {section}{\numberline {8.5}Simple Constraint Handling}{50}{section.8.5}%
-\contentsline {section}{\numberline {8.6}Example MVP}{51}{section.8.6}%
-\contentsline {section}{\numberline {8.7}Example: ITP-MSTE}{52}{section.8.7}%
-\contentsline {section}{\numberline {8.8}Pros and Cons for Continuous Problems}{53}{section.8.8}%
-\contentsline {section}{\numberline {8.9}Discrete Problems}{53}{section.8.9}%
-\contentsline {section}{\numberline {8.10}Example: Discrete ITP-MSTE}{54}{section.8.10}%
-\contentsline {chapter}{\numberline {9}PSO Variations}{55}{chapter.9}%
-\contentsline {section}{\numberline {9.1}Testproblem: Discrete ITP-MSTE}{55}{section.9.1}%
-\contentsline {section}{\numberline {9.2}Function Stretching}{56}{section.9.2}%
-\contentsline {subsection}{\numberline {9.2.1}Implementation}{59}{subsection.9.2.1}%
-\contentsline {subsection}{\numberline {9.2.2}Test PSO with Function Stretching}{59}{subsection.9.2.2}%
-\contentsline {section}{\numberline {9.3}Local PSO}{60}{section.9.3}%
-\contentsline {subsection}{\numberline {9.3.1}Implementation}{61}{subsection.9.3.1}%
-\contentsline {subsection}{\numberline {9.3.2}Test Local PSO}{61}{subsection.9.3.2}%
-\contentsline {section}{\numberline {9.4}Preserving Feasibility}{62}{section.9.4}%
-\contentsline {subsection}{\numberline {9.4.1}Test Preserving Feasibility PSO}{63}{subsection.9.4.1}%
-\contentsline {section}{\numberline {9.5}Self-Adaptive Velocity}{64}{section.9.5}%
-\contentsline {subsection}{\numberline {9.5.1}Implementation}{64}{subsection.9.5.1}%
-\contentsline {subsection}{\numberline {9.5.2}Analyse Implementation}{66}{subsection.9.5.2}%
-\contentsline {subsection}{\numberline {9.5.3}Test PSO with Self-Adaptive Velocity}{67}{subsection.9.5.3}%
-\contentsline {section}{\numberline {9.6}PSO R-Package}{67}{section.9.6}%
-\contentsline {chapter}{\numberline {10}Real Life ITP Example}{69}{chapter.10}%
-\contentsline {section}{\numberline {10.1}Transaction Costs}{69}{section.10.1}%
-\contentsline {section}{\numberline {10.2}Rebalancing Constraint}{71}{section.10.2}%
-\contentsline {section}{\numberline {10.3}Objective}{71}{section.10.3}%
-\contentsline {section}{\numberline {10.4}Complete ITP Example}{73}{section.10.4}%
-\contentsline {chapter}{\numberline {11}Future Research}{78}{chapter.11}%
-\contentsline {chapter}{\numberline {12}Conclusion}{79}{chapter.12}%
+\contentsline {section}{\numberline {8.6}Convergence analysis of the standard PSO}{52}{section.8.6}%
+\contentsline {section}{\numberline {8.7}Example MVP}{53}{section.8.7}%
+\contentsline {section}{\numberline {8.8}Example: ITP-MSTE}{54}{section.8.8}%
+\contentsline {section}{\numberline {8.9}Pros and Cons for Continuous Problems}{55}{section.8.9}%
+\contentsline {section}{\numberline {8.10}Discrete Problems}{55}{section.8.10}%
+\contentsline {section}{\numberline {8.11}Example: Discrete ITP-MSTE}{56}{section.8.11}%
+\contentsline {chapter}{\numberline {9}PSO Variations}{57}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Testproblem: Discrete ITP-MSTE}{57}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Function Stretching}{58}{section.9.2}%
+\contentsline {subsection}{\numberline {9.2.1}Implementation}{61}{subsection.9.2.1}%
+\contentsline {subsection}{\numberline {9.2.2}Test PSO with Function Stretching}{61}{subsection.9.2.2}%
+\contentsline {section}{\numberline {9.3}Local PSO}{62}{section.9.3}%
+\contentsline {subsection}{\numberline {9.3.1}Implementation}{63}{subsection.9.3.1}%
+\contentsline {subsection}{\numberline {9.3.2}Test Local PSO}{63}{subsection.9.3.2}%
+\contentsline {section}{\numberline {9.4}Preserving Feasibility}{64}{section.9.4}%
+\contentsline {subsection}{\numberline {9.4.1}Test Preserving Feasibility PSO}{65}{subsection.9.4.1}%
+\contentsline {section}{\numberline {9.5}Self-Adaptive Velocity}{66}{section.9.5}%
+\contentsline {subsection}{\numberline {9.5.1}Implementation}{66}{subsection.9.5.1}%
+\contentsline {subsection}{\numberline {9.5.2}Analyse Implementation}{68}{subsection.9.5.2}%
+\contentsline {subsection}{\numberline {9.5.3}Test PSO with Self-Adaptive Velocity}{69}{subsection.9.5.3}%
+\contentsline {section}{\numberline {9.6}PSO R-Package}{69}{section.9.6}%
+\contentsline {chapter}{\numberline {10}Real Life ITP Example}{71}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Transaction Costs}{71}{section.10.1}%
+\contentsline {section}{\numberline {10.2}Rebalancing Constraint}{73}{section.10.2}%
+\contentsline {section}{\numberline {10.3}Objective}{73}{section.10.3}%
+\contentsline {section}{\numberline {10.4}Complete ITP Example}{75}{section.10.4}%
+\contentsline {chapter}{\numberline {11}Future Research}{80}{chapter.11}%
+\contentsline {chapter}{\numberline {12}Conclusion}{81}{chapter.12}%

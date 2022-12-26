@@ -221,7 +221,9 @@ The function `f` has many local minima and a global minima at $(1,1)$ with the v
 ```{=latex}
 \begin{center}
 \animategraphics[loop, width=10cm]{10}{./gifs/pso_2dim/gganim_plot}{1}{80}
-\caption{"Visualization of the behavior of the standard PSO in a GIF."}
+\begin{figure}[!h]
+\caption{Visualization of the behavior of the standard PSO in a GIF.}
+\end{figure}
 \end{center}
 ```
 
@@ -277,11 +279,53 @@ This approach to dealing with constraints is called the penalization method and 
 
 
 ## Convergence analysis of the standard PSO
-This section summarizes the mathematical analysis of the convergence of the standard PSO performed in [@FbEn2010], which has the main goal to prove whether the PSO converges to a local or even a global minimum. This section provides only a simplified and therefore inaccurate reproduction of all relevant results of the source, so it is recommended to also look at the exact statements and proofs in the source. At first the PSO has to satisfy the algorithm condition for random search algorithms and the objective function $f$: \newline
+This section summarizes the mathematical convergence analysis of the standard PSO performed in [@FbEn2010], which has the main goal to prove whether the PSO converges to a local or even a global minimum. This section provides only a simplified and therefore inaccurate reproduction of the relevant results of the source, so it is recommended to also look at the exact statements and proofs in the source. At first the PSO has to satisfy the algorithm condition for random search algorithms with the objective function $f$: \newline
 
-**Algorithm condition:** The mapping $D: S \times \mathbf{R}^n\rightarrow S$ should satisfy $f(D(x, \xi)) \leq f(x)$ and if $\xi \in S$, then $f(D(x, \xi)) \leq f(\xi)$.
+**Algorithm condition**: The mapping $D: S \times \mathbb{R}^n\rightarrow S$ should satisfy $f(D(x, \xi)) \leq f(x)$ and if $\xi \in S$, then $f(D(x, \xi)) \leq f(\xi)$.
 
-That is, the *algorithm condition* is satisfied if the algorithm has a mapping $D$ that compares two positions and returns the position with the lowest objective value that is also in the definition region. In relation to the PSO, this concentrates on the behavior of changing the global best particle $x_{global}$. If a new local best particle $x_{new}$ is found, it is garanteed that it is in the definition region, because all positions caluclated are pushed back if they are outside of the definition region. Afterwards the PSO compares the objective value of the new local best particle $x_{new}$ with the objective value of the $x_{global}$ and saves the lowest as global best particle. Therefore the PSO satisfies the *algorithm condition*. 
+That is, the *algorithm condition* is satisfied if the algorithm has a mapping $D$ that compares two positions and returns the position with the lowest objective value that is also in the definition region. In relation to the PSO, this concentrates on the behavior of changing the global best particle $x_{global}$. If a new local best particle $x_{new}$ is found, it is guaranteed that it is in the definition region, because all positions calculated are pushed back to there boundary, if they are outside of the definition region. Afterwards the PSO compares the objective value of $x_{new}$ with the objective value of $x_{global}$ and saves the position with the lowest objective value as global best particle. Therefore the PSO satisfies the *algorithm condition*. 
+
+The next condition focuses on the point of convergence, which first
+
+
+
+```{r convergenceregion, echo=F, fig.cap="Relationship between $\\omega$ and $c$ when $c_l$=$c_g$=$c$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the expected positions of each particle. The cyan area shows the convergence condition for the expected positions and the variances tend to zero for each particle. And the blue area shows the convergence condition for the expected positions, with the variances tending to zero for each particle and the entire swarm converging to a single point. This is a replicated representation made in [@Mjly2006]."}
+
+# Relationship between $$\\omega$$ and $$c$$ when $$c_l$$=$c_g$$=$c$$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the expected positions of each particle. The cyan area shows the convergence condition for the expected positions and the variances tend to zero for each particle. And the blue area shows the convergence condition for the expected positions, with the variances tending to zero for each particle and the entire swarm converging to a single point. This is a replicated representation made in (ref:Mjly2006)
+
+df <- expand.grid(w=seq(from=0, to=1, length.out=1000), c=seq(from=0, to=4, length.out=1000))
+
+df <- df %>% 
+  mutate(
+    black = 
+      c > 0 &
+      w > 0 &
+      2*c < 4*(1+w),
+    blue = 
+       w > 0 & 
+       w < 1 &
+       c > 0 &
+       (2*c)<(4*(1+w)) &  
+       (-2*c*w^2+(2/6*c^2+1/2*c^2)*w+2*c-2/3*c^2-1/2*c^2) > 0,
+    dark_blue = 
+       w > 0 & 
+       w < 1 &
+       c > 0 &
+       (2*c)<(4*(1+w)) &  
+       (-2*c*w^2+(2/6*c^2+1/2*c^2)*w+2*c-2/3*c^2-1/2*c^2) > 0 &
+       (-2*c*w^2+(2/6*c^2+1/2*c^2)*w+2*c-2/3*c^2-1/2*c^2) < (c^2*(1+w)/6),
+    
+  )
+
+grid <- df %>% select(black, c, w) %>% spread(., key = w, value = black) %>% column_to_rownames("c") %>% as.matrix() + df %>% select(blue, c, w) %>% spread(., key = w, value = blue) %>% column_to_rownames("c") %>% as.matrix() + df %>% select(dark_blue, c, w) %>% spread(., key = w, value = dark_blue) %>% column_to_rownames("c") %>% as.matrix()
+
+plot_ly(z = grid*1, type = "heatmap", x = colnames(grid), y=rownames(grid), colors = colorRamp(c("white", "black", "blue", "cyan")), showscale = FALSE) %>% 
+  layout(xaxis=list(title="w"), yaxis=list(title="c"), margin=list(r=60)) %>% 
+  config(displayModeBar = FALSE) %>% 
+  html_save()
+
+```
+
 
 
 
@@ -301,12 +345,13 @@ Starting with the convergence to a local minimum, the PSO converges to a local m
 Starting with the congerence into a local minimum, the PSO has to satisfie the following local search condition for algorithms:
 
 
-::: {.theorem #localsearch name="Local Search Alogirthm"}
-Assume that $f$ is a measurable function, $S$ is a measurable subset of $\mathbf{R}^n$ and both the algorithm and the convergence condition for local search are satisfied. Let ${x_t}^{\infty}_{t=0}$ be a sequence generated by the algorithm, D. Then,
+::: {.theorem name="Local Search Alogirthm"}
+Assume that $f$ is a measurable function, $S$ is a measurable subset of $\mathbb{R}^n$ and both the algorithm and the convergence condition for local search are satisfied. Let ${x_t}^{\infty}_{t=0}$ be a sequence generated by the algorithm, D. Then,
 $$
   \lim_{t\rightarrow \infty} \ P(x_t \in R_{\epsilon}) = 1
 $$
 :::
+
 
 more information in the book!!!!!!!!!!!!!
 

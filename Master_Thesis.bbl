@@ -1,4 +1,4 @@
-\begin{thebibliography}{26}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -151,6 +151,11 @@ R'tichoke.
 Ravi Shukla.
 \newblock The value of active portfolio management.
 \newblock \emph{Elsevier Journal of Economics and Business}, 2004.
+
+\bibitem[van~den Bergh and Engelbrecht(2010)]{FbEn2010}
+F~van~den Bergh and AP~Engelbrecht.
+\newblock A convergence proof for the particle swarm optimiser.
+\newblock \emph{Fundamenta Informaticae 105(4):341-374}, 2010.
 
 \bibitem[Zivot(2021)]{Eric2021}
 Eric Zivot.

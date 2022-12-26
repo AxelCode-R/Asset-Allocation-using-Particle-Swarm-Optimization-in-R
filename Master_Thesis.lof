@@ -14,37 +14,39 @@
 \contentsline {figure}{\numberline {7.1}{\ignorespaces Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset with the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm.}}{41}{figure.7.1}%
 \contentsline {figure}{\numberline {7.2}{\ignorespaces Standard deviation (sd) between the performance of the SP500TR and the tracking portfolio over the fitting period for each asset pool of size N. The asset pool was created successively by discarding the five assets with the lowest weights to create the next pool.}}{44}{figure.7.2}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {8.1}{\ignorespaces Comparison of the MVP's generated with solve.QP() and the PSO. The gray lines show the difference of the solutions of both approaches for each lambda.}}{52}{figure.8.1}%
-\contentsline {figure}{\numberline {8.2}{\ignorespaces Comparison of solving ITP-MSTE with solve.QP() and the PSO. }}{53}{figure.8.2}%
-\contentsline {figure}{\numberline {8.3}{\ignorespaces Comparison of solving dicrete ITP-MSTE with solve.QP() with rounding and the PSO.}}{54}{figure.8.3}%
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Visualization of the behavior of the standard PSO in a GIF.}}{50}{figure.8.1}%
+\contentsline {figure}{\numberline {8.2}{\ignorespaces Relationship between $\omega $ and $c$ when $c_l$=$c_g$=$c$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the expected positions of each particle. The cyan area shows the convergence condition for the expected positions and the variances tend to zero for each particle. And the blue area shows the convergence condition for the expected positions, with the variances tending to zero for each particle and the entire swarm converging to a single point. This is a replicated representation made in [@Mjly2006].}}{53}{figure.8.2}%
+\contentsline {figure}{\numberline {8.3}{\ignorespaces Comparison of the MVP's generated with solve.QP() and the PSO. The gray lines show the difference of the solutions of both approaches for each lambda.}}{54}{figure.8.3}%
+\contentsline {figure}{\numberline {8.4}{\ignorespaces Comparison of solving ITP-MSTE with solve.QP() and the PSO. }}{55}{figure.8.4}%
+\contentsline {figure}{\numberline {8.5}{\ignorespaces Comparison of solving dicrete ITP-MSTE with solve.QP() with rounding and the PSO.}}{56}{figure.8.5}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {9.1}{\ignorespaces Fitness: Benchmark solution with the standard PSO for comparison with the created variants.}}{56}{figure.9.1}%
-\contentsline {figure}{\numberline {9.2}{\ignorespaces Statistics: Benchmark solution with the standard PSO for comparison with the created variants.}}{56}{figure.9.2}%
-\contentsline {figure}{\numberline {9.3}{\ignorespaces Analysis of the effect of function stretching using a simple 1D example.}}{58}{figure.9.3}%
-\contentsline {figure}{\numberline {9.4}{\ignorespaces Zoomed version of the lower graphic from the figure above.}}{59}{figure.9.4}%
-\contentsline {figure}{\numberline {9.5}{\ignorespaces Comparison of fitness between the PSO with functional stretching and the standard PSO.}}{60}{figure.9.5}%
-\contentsline {figure}{\numberline {9.6}{\ignorespaces Comparison of statistics between the PSO with functional stretching and the standard PSO.}}{60}{figure.9.6}%
-\contentsline {figure}{\numberline {9.7}{\ignorespaces Visualization of the simple neighborhood topology.}}{61}{figure.9.7}%
-\contentsline {figure}{\numberline {9.8}{\ignorespaces Comparison of fitness between the local PSO and the standard PSO.}}{62}{figure.9.8}%
-\contentsline {figure}{\numberline {9.9}{\ignorespaces Comparison of statistics between the local PSO and the standard PSO.}}{62}{figure.9.9}%
-\contentsline {figure}{\numberline {9.10}{\ignorespaces Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions.}}{63}{figure.9.10}%
-\contentsline {figure}{\numberline {9.11}{\ignorespaces Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions.}}{63}{figure.9.11}%
-\contentsline {figure}{\numberline {9.12}{\ignorespaces Comparison of the different distributions used in the velocity update of the PSO with self-adapting velocity depending on the iteration.}}{66}{figure.9.12}%
-\contentsline {figure}{\numberline {9.13}{\ignorespaces Comparison of fitness between the PSO with self-adaptive velocity and the standard PSO.}}{67}{figure.9.13}%
-\contentsline {figure}{\numberline {9.14}{\ignorespaces Comparison of statistics between the PSO with self-adaptive velocity and the standard PSO.}}{67}{figure.9.14}%
-\contentsline {figure}{\numberline {9.15}{\ignorespaces Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO.}}{68}{figure.9.15}%
-\contentsline {figure}{\numberline {9.16}{\ignorespaces Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO.}}{68}{figure.9.16}%
+\contentsline {figure}{\numberline {9.1}{\ignorespaces Fitness: Benchmark solution with the standard PSO for comparison with the created variants.}}{58}{figure.9.1}%
+\contentsline {figure}{\numberline {9.2}{\ignorespaces Statistics: Benchmark solution with the standard PSO for comparison with the created variants.}}{58}{figure.9.2}%
+\contentsline {figure}{\numberline {9.3}{\ignorespaces Analysis of the effect of function stretching using a simple 1D example.}}{60}{figure.9.3}%
+\contentsline {figure}{\numberline {9.4}{\ignorespaces Zoomed version of the lower graphic from the figure above.}}{61}{figure.9.4}%
+\contentsline {figure}{\numberline {9.5}{\ignorespaces Comparison of fitness between the PSO with functional stretching and the standard PSO.}}{62}{figure.9.5}%
+\contentsline {figure}{\numberline {9.6}{\ignorespaces Comparison of statistics between the PSO with functional stretching and the standard PSO.}}{62}{figure.9.6}%
+\contentsline {figure}{\numberline {9.7}{\ignorespaces Visualization of the simple neighborhood topology.}}{63}{figure.9.7}%
+\contentsline {figure}{\numberline {9.8}{\ignorespaces Comparison of fitness between the local PSO and the standard PSO.}}{64}{figure.9.8}%
+\contentsline {figure}{\numberline {9.9}{\ignorespaces Comparison of statistics between the local PSO and the standard PSO.}}{64}{figure.9.9}%
+\contentsline {figure}{\numberline {9.10}{\ignorespaces Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions.}}{65}{figure.9.10}%
+\contentsline {figure}{\numberline {9.11}{\ignorespaces Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions.}}{65}{figure.9.11}%
+\contentsline {figure}{\numberline {9.12}{\ignorespaces Comparison of the different distributions used in the velocity update of the PSO with self-adapting velocity depending on the iteration.}}{68}{figure.9.12}%
+\contentsline {figure}{\numberline {9.13}{\ignorespaces Comparison of fitness between the PSO with self-adaptive velocity and the standard PSO.}}{69}{figure.9.13}%
+\contentsline {figure}{\numberline {9.14}{\ignorespaces Comparison of statistics between the PSO with self-adaptive velocity and the standard PSO.}}{69}{figure.9.14}%
+\contentsline {figure}{\numberline {9.15}{\ignorespaces Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO.}}{70}{figure.9.15}%
+\contentsline {figure}{\numberline {9.16}{\ignorespaces Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO.}}{70}{figure.9.16}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {10.1}{\ignorespaces Backtest Process: visualized as a flowchart}}{72}{figure.10.1}%
-\contentsline {figure}{\numberline {10.2}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0}}{73}{figure.10.2}%
-\contentsline {figure}{\numberline {10.3}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=0}}{73}{figure.10.3}%
-\contentsline {figure}{\numberline {10.4}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=10}}{74}{figure.10.4}%
-\contentsline {figure}{\numberline {10.5}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=10}}{74}{figure.10.5}%
-\contentsline {figure}{\numberline {10.6}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=20}}{75}{figure.10.6}%
-\contentsline {figure}{\numberline {10.7}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=20}}{75}{figure.10.7}%
-\contentsline {figure}{\numberline {10.8}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=30}}{76}{figure.10.8}%
-\contentsline {figure}{\numberline {10.9}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=30}}{76}{figure.10.9}%
-\contentsline {figure}{\numberline {10.10}{\ignorespaces Cumulative daily return loss of the discrete PSO backtests due to transaction costs with respect to the different values of k.}}{77}{figure.10.10}%
-\contentsline {figure}{\numberline {10.11}{\ignorespaces Comparison of cumulative daily returns of the continuous backtest performed with solve.QP() and the SP500TR.}}{77}{figure.10.11}%
+\contentsline {figure}{\numberline {10.1}{\ignorespaces Backtest Process: visualized as a flowchart}}{74}{figure.10.1}%
+\contentsline {figure}{\numberline {10.2}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0}}{75}{figure.10.2}%
+\contentsline {figure}{\numberline {10.3}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=0}}{75}{figure.10.3}%
+\contentsline {figure}{\numberline {10.4}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=10}}{76}{figure.10.4}%
+\contentsline {figure}{\numberline {10.5}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=10}}{76}{figure.10.5}%
+\contentsline {figure}{\numberline {10.6}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=20}}{77}{figure.10.6}%
+\contentsline {figure}{\numberline {10.7}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=20}}{77}{figure.10.7}%
+\contentsline {figure}{\numberline {10.8}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=30}}{78}{figure.10.8}%
+\contentsline {figure}{\numberline {10.9}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=30}}{78}{figure.10.9}%
+\contentsline {figure}{\numberline {10.10}{\ignorespaces Cumulative daily return loss of the discrete PSO backtests due to transaction costs with respect to the different values of k.}}{79}{figure.10.10}%
+\contentsline {figure}{\numberline {10.11}{\ignorespaces Comparison of cumulative daily returns of the continuous backtest performed with solve.QP() and the SP500TR.}}{79}{figure.10.11}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
