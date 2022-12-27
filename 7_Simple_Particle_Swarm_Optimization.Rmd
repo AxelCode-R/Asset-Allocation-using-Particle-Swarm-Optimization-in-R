@@ -9,10 +9,10 @@ editor_options:
 The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm [@PaVr2002]. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are the low computational costs, since only basic mathematical operators are used, the extensibility and the simplicity.
 
 ## The Algorithm
-Each particle $d$ with position $x_d$ moves in the search space $\mathbb{R}^N$ and has its own velocity $v_d$ and remembers its previous best position $P_d$. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
+Each particle $d$ with position $x_d$ moves in the search space $\mathbb{R}^N$ and has its own velocity $v_d$ and remembers its previous best position $p_{p,d}$. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
 $$
 \begin{aligned}
-  v_d^{i+1} &= wv_d^{i} + c_p r_1^{i(d)} (P_d^i - x_d^i) + c_g r_2^{i(d)} (p_g^i - x_d^i) \\
+  v_d^{i+1} &= wv_d^{i} + c_p r_1^{i(d)} (p_{p,d}^i - x_d^i) + c_g r_2^{i(d)} (p_g^i - x_d^i) \\
   x_d^{i+1} &= x_d^i + v_d^{i+1}
 \end{aligned}
 $$
@@ -279,19 +279,21 @@ This approach to dealing with constraints is called the penalization method and 
 
 
 ## Convergence analysis of the standard PSO
-This section summarizes the mathematical convergence analysis of the standard PSO performed in [@FbEn2010], which has the main goal to prove whether the PSO converges to a local or even a global minimum. This section provides only a simplified and therefore inaccurate reproduction of the relevant results of the source, so it is recommended to also look at the exact statements and proofs in the source. At first the PSO has to satisfy the algorithm condition for random search algorithms with the objective function $f$: \newline
+This section summarizes the mathematical convergence analysis of the standard PSO performed in [@FbEn2010], which has the main goal to prove whether the PSO converges to a local or even a global minimum. This section provides only a simplified and therefore inaccurate reproduction of the relevant results of the source, so it is recommended to also look at the exact statements and proofs in the source. At first the PSO has to satisfy the algorithm condition for random search algorithms with the objective function $f$:
 
-**Algorithm condition**: The mapping $D: S \times \mathbb{R}^n\rightarrow S$ should satisfy $f(D(x, \xi)) \leq f(x)$ and if $\xi \in S$, then $f(D(x, \xi)) \leq f(\xi)$.
+**Algorithm condition**: The mapping $D: S \times \mathbb{R}^n\rightarrow S$ should satisfy $f(D(z, \xi)) \leq f(z)$ and if $\xi \in S$, then $f(D(z, \xi)) \leq f(\xi)$.
 
-That is, the *algorithm condition* is satisfied if the algorithm has a mapping $D$ that compares two positions and returns the position with the lowest objective value that is also in the definition region. In relation to the PSO, this concentrates on the behavior of changing the global best particle $x_{global}$. If a new local best particle $x_{new}$ is found, it is guaranteed that it is in the definition region, because all positions calculated are pushed back to there boundary, if they are outside of the definition region. Afterwards the PSO compares the objective value of $x_{new}$ with the objective value of $x_{global}$ and saves the position with the lowest objective value as global best particle. Therefore the PSO satisfies the *algorithm condition*. 
+That is, the *algorithm condition* is satisfied if the algorithm has a mapping $D$ that compares two positions and returns the position with the lowest objective value that is also in the definition region. In relation to the PSO, this concentrates on the behavior of changing the global best position $z := p_{g}$. If a new personal best position $\xi:=p_{p}$ is found, it is guaranteed that it is in the definition region, because all positions calculated are pushed back to there boundary, if they are outside of the definition region. Afterwards the PSO compares the objective value of $\xi$ with the objective value of $z$ and saves the position with the lowest objective value as global best position. Therefore the PSO satisfies the *algorithm condition*. 
 
-The next condition focuses on the point of convergence, which first
+The next condition focuses on the behavior of the convergence of the PSO, which must ensure that a fixed convergence point exists. In [@FbEn2010], results were referenced from [@RiPo2007], which analyzed the convergence property of a deterministic PSO, i.e., when the uniformly random numbers are replaced by their upper bounds. Afterwards, the results were verified by simulations of the stochastic case. This work was subsequently extended by [@Mjly2006] to directly address the stochastic version of the standard PSO. 
+
+In [@Mjly2006] three properties are described for the behavior of the PSO. First, the position of each particle $d$ is described as a sequence of random variables $\pmb{X}^d_i$ in iteration $i$. The particle $d$ converges to a fixed point if the expected sequence of positions in mean square converges to a point $p^d$ (property 1) and the variance of the sequence of positions tends to zero (property 2), which can be summarized as $\lim_{i\rightarrow \infty} E[\pmb{X}^d_i-p^d]^2=0$. And the entire particle swarm converges to a fixed point (property 3) if all sequences of particle positions converge to a single point $\hat{p}$, which can be summarized as $\lim_{i\rightarrow \infty} E[\pmb{X}_i^d-\hat{p}]^2=0$ $\forall d$. 
+
+The properties 1-3 are dependent on the choices of $c_p$, $c_g$ and $w$, which can be found in [@Mjly2006]. The proofs and deeper explanation of the constraints for parameters are beyond the scope of this thesis. In the following the regions for the respective properties are visualized and the cyan region is further on called the convergent parameter region:
 
 
+```{r convergenceregion, echo=F, fig.cap="Relationship between $w$ and $c$ when $c_p$=$c_g$=$c$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the expected positions of each particle. The cyan area shows the convergence condition for the expected positions and the variances tend to zero for each particle. And the blue area shows the convergence condition for the expected positions, with the variances tending to zero for each particle and the entire swarm converging to a single point. This is a replicated representation made in [M. Jiang, 2006]."}
 
-```{r convergenceregion, echo=F, fig.cap="Relationship between $\\omega$ and $c$ when $c_l$=$c_g$=$c$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the expected positions of each particle. The cyan area shows the convergence condition for the expected positions and the variances tend to zero for each particle. And the blue area shows the convergence condition for the expected positions, with the variances tending to zero for each particle and the entire swarm converging to a single point. This is a replicated representation made in [@Mjly2006]."}
-
-# Relationship between $$\\omega$$ and $$c$$ when $$c_l$$=$c_g$$=$c$$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the expected positions of each particle. The cyan area shows the convergence condition for the expected positions and the variances tend to zero for each particle. And the blue area shows the convergence condition for the expected positions, with the variances tending to zero for each particle and the entire swarm converging to a single point. This is a replicated representation made in (ref:Mjly2006)
 
 df <- expand.grid(w=seq(from=0, to=1, length.out=1000), c=seq(from=0, to=4, length.out=1000))
 
@@ -327,22 +329,28 @@ plot_ly(z = grid*1, type = "heatmap", x = colnames(grid), y=rownames(grid), colo
 ```
 
 
+In the online version of this thesis, the diagram can be viewed with additional information as mouse-hover, which helps to accurately classify a parameter pair.
+
+Back to the convergence behavior of the PSO analyzed in [@FbEn2010], which uses parameters $w$, $c_p$ and $c_g$ that are located in the convergent parameter region. This results in a standard PSO that converges with all particles in a single point $\hat{p}$. The PSO is guaranteed to reach at least a local minimum if the following condition is fullfilled:
+
+**Convergence condition (for local search):** Sufficient condition for convergence to at least a local minimum: For any $x_i\in S$ there exists a $\gamma > 0$ and an $0<\eta\leq1$ such that
+
+$$
+  \mu_i(\text{dist}(x_{i+1}, R_{\epsilon}) \leq \text{dist}(x_{i}, R_{\epsilon})-\gamma \ \text{  or  } \  x_i \in R_{\epsilon} ) \geq \eta
+$$
+with a probability measure $\mu_i$, a distance measure $\text{dist}()$ and a optimality region $R_{\epsilon}$ defined as
+$$
+ R_{\epsilon} = \{z\in S \ | f(z) < \psi + \epsilon\}
+$$
+where $\psi$ denotes the essential infimum of $f$ on $S$, and $\epsilon > 0$.
 
 
-the PSO compares it to the $x_{global}$ and if its objective values 
-
-
-
-Starting with the convergence to a local minimum, the PSO converges to a local minimum if the algorithm condition and the convergence condition for local search is satisfied.
 
 
 
 
 
 
-
-
-Starting with the congerence into a local minimum, the PSO has to satisfie the following local search condition for algorithms:
 
 
 ::: {.theorem name="Local Search Alogirthm"}

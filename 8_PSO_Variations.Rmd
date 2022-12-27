@@ -644,7 +644,7 @@ Each particle $d$ must initialize its own inertial weight $w_d^0=0.5$ and accele
 2) Velocity and positions  
 Update the velocity of each particle $d$ with the following switch-case for a uniform random number $r = \text{Unif}(0,1)$ in iteration $i+1$:
 \begin{align*}
-  v_d^{i+1} &= w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot Z \cdot (P_{d}^i-x_d^i) + c_{g,d}^i \cdot Z \cdot (p_{g}^i-x_d^i) \\
+  v_d^{i+1} &= w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot Z \cdot (p_{p,d}^i-x_d^i) + c_{g,d}^i \cdot Z \cdot (p_{g}^i-x_d^i) \\
   Z &= \begin{cases}
     \text{Unif}(0,1), & \text{if}\ \ r > 0.8\\
     \text{Cauchy}(\mu_1, \sigma_1), & \text{if}\ \ 0.8 \geq r > 0.4\\

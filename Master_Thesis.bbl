@@ -1,4 +1,4 @@
-\begin{thebibliography}{27}
+\begin{thebibliography}{29}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -82,6 +82,12 @@ Michael N.~Vrahatis Konstantinos~Parsopoulos.
   swarm optimization.
 \newblock \emph{Natural Computing}, 2002.
 
+\bibitem[M.~Jiang(2006)]{Mjly2006}
+S.Y.~Yang M.~Jiang, Y.P.~Luo.
+\newblock Stochastic convergence analysis and parameter selection of the
+  standard particle swarm optimization algorithm.
+\newblock \emph{SienceDirect}, 2006.
+
 \bibitem[Maringer(2005)]{Mari2005}
 Dientmar Maringer.
 \newblock \emph{Portfolio Management with Heuristic Optimization}.
@@ -115,6 +121,12 @@ nyse.com.
 \newblock New york stock exchange price list 2022, 2022.
 \newblock URL
   \url{https://www.nyse.com/publicdocs/nyse/markets/nyse/NYSE_Price_List.pdf}.
+
+\bibitem[Poli(2007)]{RiPo2007}
+Riccardo Poli.
+\newblock The sampling distribution of particle swarm optimisers and their
+  stability.
+\newblock \emph{ResearchGate}, 2007.
 
 \bibitem[Qinqin~Fan(2014)]{FaYa2014}
 Xuefeng~Yan Qinqin~Fan.
