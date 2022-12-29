@@ -1,4 +1,4 @@
-\begin{thebibliography}{29}
+\begin{thebibliography}{30}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -163,6 +163,11 @@ R'tichoke.
 Ravi Shukla.
 \newblock The value of active portfolio management.
 \newblock \emph{Elsevier Journal of Economics and Business}, 2004.
+
+\bibitem[van~den Bergh(2006)]{Fdbe2006}
+F~van~den Bergh.
+\newblock \emph{An Analysis of Particle Swarm Optimizers}.
+\newblock dissertation, University of Pretoria, 2006.
 
 \bibitem[van~den Bergh and Engelbrecht(2010)]{FbEn2010}
 F~van~den Bergh and AP~Engelbrecht.

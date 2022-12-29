@@ -9,60 +9,60 @@ Database file #1: book.bib
 Warning--entry type for "Eric2021" isn't style-file defined
 --line 95 of file book.bib
 Warning--entry type for "Rtic2021" isn't style-file defined
---line 373 of file book.bib
+--line 399 of file book.bib
 Warning--entry type for "AhBa2017" isn't style-file defined
---line 391 of file book.bib
+--line 417 of file book.bib
 Warning--entry type for "AkGa2022" isn't style-file defined
---line 429 of file book.bib
+--line 455 of file book.bib
 Warning--entry type for "NySe2022" isn't style-file defined
---line 449 of file book.bib
+--line 475 of file book.bib
 Warning--entry type for "GitHub" isn't style-file defined
---line 469 of file book.bib
+--line 495 of file book.bib
 Warning--entry type for "GitPSO" isn't style-file defined
---line 489 of file book.bib
+--line 515 of file book.bib
 Warning--entry type for "PSOApp" isn't style-file defined
---line 505 of file book.bib
+--line 531 of file book.bib
 Database file #2: packages.bib
 Warning--empty journal in KeEb1995
-You've used 29 entries,
+You've used 30 entries,
             2773 wiz_defined-function locations,
-            749 strings with 8883 characters,
-and the built_in function-call counts, 9127 in all, are:
-= -- 786
-> -- 367
-< -- 29
-+ -- 140
-- -- 108
-* -- 505
-:= -- 1460
-add.period$ -- 88
-call.type$ -- 29
-change.case$ -- 120
-chr.to.int$ -- 26
-cite$ -- 59
-duplicate$ -- 522
-empty$ -- 893
-format.name$ -- 151
-if$ -- 1912
+            755 strings with 8988 characters,
+and the built_in function-call counts, 9405 in all, are:
+= -- 813
+> -- 377
+< -- 30
++ -- 144
+- -- 111
+* -- 521
+:= -- 1510
+add.period$ -- 91
+call.type$ -- 30
+change.case$ -- 124
+chr.to.int$ -- 27
+cite$ -- 61
+duplicate$ -- 538
+empty$ -- 915
+format.name$ -- 155
+if$ -- 1966
 int.to.chr$ -- 4
 int.to.str$ -- 1
 missing$ -- 24
-newline$ -- 154
-num.names$ -- 116
-pop$ -- 302
+newline$ -- 159
+num.names$ -- 120
+pop$ -- 309
 preamble$ -- 1
-purify$ -- 94
+purify$ -- 97
 quote$ -- 0
-skip$ -- 397
+skip$ -- 408
 stack$ -- 0
-substring$ -- 58
-swap$ -- 33
+substring$ -- 60
+swap$ -- 34
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 304
+type$ -- 315
 warning$ -- 1
-while$ -- 87
+while$ -- 90
 width$ -- 0
-write$ -- 356
+write$ -- 369
 (There were 9 warnings)
