@@ -16,3 +16,49 @@ The last chapter analyzed backtests of a practical index tracking problem for re
 In this thesis, an insight into the basic knowledge of the two common investment strategies of passive investing was given and solved using the PSO. It has been shown that the PSO requires significantly more time to solve problems than the analytical approaches. In contrast, PSO is able to solve practical financial problems that are almost impossible to solve using analytical approaches without any limitations or loss of practicality. The advantage of PSO is that problems can be formulated in arbitrary complexity and still be applicable. This was shown in particular in the last chapter, where a discrete index tracking problem was formulated that is analytically intractable. In such situations, heuristics such as PSO are the last resort to formulate and solve the entire problem without limitations. Nevertheless, if possible, an analytical approach should always be preferred, since the PSO is not always able to find the best solution. If discretization is the only obstacle to the applicability of an analytical approach, the chapter on particle swarm optimization (PSO) has shown that a continuous solution can be transformed into a discrete solution using PSO, while simultaneously taking into account the constraints. The chapter on PSO variants provided insight into the many ways in which the standard PSO can be modified to improve behavior. The most promising variants for such financial problems are the local PSO and the PSO with self-adaptive velocity, since both increase the diversity of the swarm, which prevents premature convergence to local minima. The PSO with self-adaptive velocity additionally reduces the number of hyperparameters, which is why it was used for the real-life index tracking example in the last chapter. The other variants, PSO with feasibility preservation and PSO with function stretching, showed no advantages for such financial problems. The chapter Active vs. Passive Portfolio Management showed how relevant it is to generate portfolios increasingly automatically in order to save costs and to be more attractive in competition with other professionally managed funds. This will become even more important in the future, which is why PSO could be used more and more in portfolio management.
 
 
+
+
+
+In dieser Thesis wurde gezeigt, dass das PSO auf komplexe finanzmathematische Optimierungsprobleme angewandt werden kann und diese durch das PSO zuverlässig gelöst werden können. Um das Verhalten und die Stabilität des standard PSO zu analysieren wurden typische Optimierungsprobleme 
+
+
+
+
+
+
+Diese Thesis hat sich damit beschäftigt das PSO zu analysieren und zu testen. Es wurde dabei der Schwerpunkt auf finanzmathematische Optimierungsprobleme im Bereich des quantitativen Portfoliomanagements gelegt. In der Paxis ist es relevant diese Art von Problemen mit der gleichen komplexität wie im echten Leben abzubilden, was durch nutzen des PSO ermöglicht wird. 
+
+Es wurde in Kapitel (active vs passive) gezeigt, das immer mehr anleger in passive gemanagte Funds investieren, da sie stabieler im Zeitverlauf sind und weniger kosten aufweisen. Um die konkurenzfähigkeit zu gewährleisten ist es wichtig das die quantitativen strategien weitestgehend automatisiert werden. 
+
+In Kapitel (challenges) wurden die typischen Optimierungsprobleme der quantitativen anlagestrategien im passiven Investment analyisert und anhand von Besipielen visualisiert. Dazu gehört das mean variance portfolio (MVP) problem wessen Lösung einem risiko und rendite optimalem portfolio entspricht. Anschließend wurde das index tracking problem (ITP) eingeführt, was das Ziel hat ein Trackingportfolio zu konstruiert welches die Benchmark trackt. Es hat sich dabei gezeigt, das es sinnvoll ist das ITP durch reduktion des mean square tracking errors zu definieren, was in kurz durch ITP-MSTE definiert ist.
+
+
+Anschließend wurden im Kapitel (solveQP) ein quadratischer Optimierer namens solve.QP verwendet, um damit die quadratischen Probleme mit ihren Nebenbedingungen im stetigen fall des MVP problems und des ITP-MSTE zu lösen. Das solve.QP wurde im weiteren als Benchmark verwendet, mit der die Qualität des PSO im darauffolgenden Kapitel (pso) getestet wurde. Es hat sich herausgestellt, dass das PSO zwar deutlich mehr Rechenzeit benötigt aber die Ergebnisse häufig sehr nah an der solve.QP Lösung sind. Zusätzlich wurde das PSO oder genauer das standard PSO ausgiebig erläutert und mithilfe von visualisierungen und WebApps verbildlicht. Es zudem gezeigt, wie die penalty methode funktioniert, um bei der Optimierung die Nebenbedingungen zu beachten. Desweiteren wurde das konvergenz verhalten des standard PSO analysiert, was zur folge hatte, dass das standard PSO kein lokaler suchalgorithmus ist aber durch kleinere Änderungen zu einem globalen suchalgorithmus umgebaut werden kann.
+
+
+Da in der realität ein Portfolio aus ganzzahligen anzahlen von assets besteht, wurde gezeigt das quadratische optimierer und anschließendes runden für diskrete probleme nicht ausreichen. Für das PSO wurde gezeigt wie mit solch diskreten problemen umgegangen werden kann und anschließend wurde das diskrete ITP-MSTE gelöst, was stabiele ergebnisse liefert. 
+
+Im darauffolgenden Kapitel (variants) wurden verschiedene Varianten des PSO analysiert und mit dem standard PSO verglichen. Es hat sich herausgestellt, dass das local PSO und das self-adaptive velocity PSO die besten Varianten sind um das diskrete ITP-MSTE zu lösen. Da das self-adaptive velocity PSO keine Hyperparameter hat die angepasst werden müssen wurde es ausgiebig im darauffoglendne Kapitel getestet. 
+
+
+Im Kapitel (real life) wurde das self-adaptive velocity PSO verwendet um ein diskretes ITP-MSTE zu backtesten. Dabei wurde die situation eines privatanlegers simuliert, der einmal pro Monat sein Portfolio umschichten. Es wurden dafür ein modell entwickelt welches die transaktionskosten und die maximale umschichtung pro monat berücksichtigt.
+
+
+
+
+
+
+
+
+In der Praxis können diese Probleme oft nicht realgetreu gelöst werden, weshalb 
+
+
+Das PSO wurde in stetigen Benchmarkproblemen mit einem analytischen Optimierer verglichen und es konnte gezeigt werden, dass das PSO zwar eine erhöhte Rechenzeit benötigt aber stabiele Lösungen liefert.
+
+
+
+
+In Kapitel x wurde gezeigt, wie das PSO funktioniert und wie es sich verhält. Dabei wurden neben der Erklärung der Formeln des standard PSOs auch 
+
+
+
