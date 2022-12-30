@@ -1,11 +1,13 @@
 # Open Data Sources
 To increase reproducibility, all data are free and can be loaded from the quantmod R package with the function `getSymbols()`. It is possible to choose between different data sources like yahoo-finance (default), alpha-vantage, google and others. 
 
+
 ## R-Functions
 The following functions were created to increase the ease of data collection with the quantmod R package, which can be found in the `R/` directory in the dedicated GitHub repository [@GitHub].
 
+
 ### `get_yf()`
-This function is the main wrapper for collecting data with `getSymbols()` from yahoo-finance, and converts prices to returns with the `pri_to_ret()` function explained in \@ref(pritoret). The output is a list containing prices and returns as [xts](https://cran.r-project.org/web/packages/xts/xts.pdf) objects, which is the usual object in R for storing time series. The arguments that can be passed to `get_yf()` are:  
+This function is the main wrapper for collecting data with `getSymbols()` from yahoo-finance, and converts prices to returns with the `pri_to_ret()` function explained in \@ref(pritoret). The output is a list containing prices and returns as [xts](https://cran.r-project.org/web/packages/xts/xts.pdf) objects, which is the usual object in R for storing time series. The arguments that can be passed to `get_yf()` are:
 
 + `tickers`: Vector of symbols (asset names, e.g. "APPL", "GOOG", ...)
 + `from ="2018-01-01"`: R-Date

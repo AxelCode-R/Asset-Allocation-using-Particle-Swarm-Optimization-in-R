@@ -165,6 +165,7 @@ reactable(
 
 ## Function Stretching
 PSO often gets stuck in local minima, i.e. when the current global best position is a local minimum with a surrounding region, with only higher fitnesses. In such situations, it is difficult for the PSO to escape to find the global minimum. Function stretching attempts to allow the PSO to escape from such local minima by transforming the fitness function in the manner described in [@PaVr2002]. After finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function such that the discovered local minimum is transformed into a maximum, but any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum $\bar{x}$ are:
+
 \begin{equation} 
 G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
 (\#eq:fnstretchG)
@@ -176,6 +177,7 @@ and
 \end{equation} 
 
 The value $G(\bar{x})$ can be simplified to $f(\bar{x})$, the norm used in $G(x)$ is the Manhattan norm and the $\text{sign}()$ function is defined as follows:
+
 $$
   \text{sign}(x) = 
   \begin{cases}
@@ -184,7 +186,9 @@ $$
     -1, & \text{if}\ \ x < 0
   \end{cases}
 $$
+
 In the source it is suggested to select the following parameter values as default:
+
 \begin{align*}
   \gamma_1 &= 5000 \\
   \gamma_2 &= 0.5 \\
@@ -194,15 +198,21 @@ In the source it is suggested to select the following parameter values as defaul
 It is difficult to interpret both transformations exactly, especially in higher dimensions. But some concepts can be recognized by looking only at the most important parts. The first transformation $G(x)$ uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function $H(x)$ also does not change any values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity and dropping steeply to repel particles.
 
 To better understand the transformation, it is used to stretch a simple function in $\mathbb{R}^1$ defined as follows:
+
 $$
 f(x) = cos(x)+\frac{1}{10}\cdot x
 $$
+
 translated to the objective function:
+
+
 ```{r}
 fn <- function(pos){
   cos(pos) + 1/10 * pos
 }
 ```
+
+
 and the domain of definition is chosen as $x \in [-20, 20]$. Suppose the PSO gets stuck in the local minimum at $\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04$. The original function `fn` and the transformed function `fn_stretched`, which matches $H(x)$ in equation \@ref(eq:fnstretchH), are shown in the following graph:
 
 
@@ -343,15 +353,16 @@ It can be seen that the function stretching did not bring any advantages in this
 ## Local PSO
 A local PSO is a more general case of the global PSO, which is called the standard PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$, and the global best particle in its neighborhood is called the local best particle of $x_i$. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ given in [@Enge2013] would be:
 
-\vspace{-0.1cm}
 $$
   N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
 $$
 
 with
+
 $$
   \bar{k} = floor(\frac{k}{2}) = \lfloor \frac{k}{2} \rfloor
 $$
+
 To illustrate this, the following figure defines the neighborhoods $N(x_4, 4)$ and $N(x_1, 4)$:
 
 
@@ -638,11 +649,15 @@ A PSO approach with self-adaptive velocity that attempts to reduce hyperparamete
 ### Implementation
 The process of this PSO variant is too different from the standard PSO, so all changes are combined in steps:  
 
-1) Initialize  
+1\) Initialize
+
 Each particle $d$ must initialize its own inertial weight $w_d^0=0.5$ and acceleration coefficients $c_{p,d}^0 = c_{g,d}^0 = 2$.
 
-2) Velocity and positions  
+
+2\) Velocity and positions
+
 Update the velocity of each particle $d$ with the following switch-case for a uniform random number $r = \text{Unif}(0,1)$ in iteration $i+1$:
+
 \begin{align*}
   v_d^{i+1} &= w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot Z \cdot (p_{p,d}^i-x_d^i) + c_{g,d}^i \cdot Z \cdot (p_{g}^i-x_d^i) \\
   Z &= \begin{cases}
@@ -651,14 +666,18 @@ Update the velocity of each particle $d$ with the following switch-case for a un
     \text{Cauchy}(\mu_2, \sigma_2), & \text{if}\ \ 0.4 \geq r\\
   \end{cases}
 \end{align*}
-with 
+
+with
+
 \begin{align*}
   \mu_1 &= 0.1 \cdot (1-(\frac{i}{i_{max}})^2) + 0.3 \\
   \sigma_1 &= 0.1 \\
   \mu_2 &= 0.4 \cdot (1-(\frac{i}{i_{max}})^2) + 0.2 \\
   \sigma_2 &= 0.4
 \end{align*}
+
 and $\text{Cauchy}(\mu, \sigma)$ is a random number generated from the Cauchy distribution obtained with `rcauchy()` in R. The position update is the same as for the standard PSO. When a particle $d$ has left the feasible search space in its coordinate $z$, it is moved back with the following switch-case for $r = \text{Unif}(0,1)$:
+
 $$
   x_{z,d} = 
   \begin{cases}
@@ -667,18 +686,25 @@ $$
   \end{cases}
 $$
 
-3) Fitness evaluation  
+
+3\) Fitness evaluation
+
 In the same way as for the standard PSO.
 
-4) Self-adaptive control parameters  
+
+4\) Self-adaptive control parameters
+
 For an objective function $f()$ and the maximum fitness of all particles $f_{max} = \text{max}(f(X^{i+1}))$, the parameters $w_d^{i}$, $c_{p,d}^{i}$ and $c_{g,d}^{i}$ are adjusted for each particle $d$ as follows:
+
 \begin{align*}
   W^i_d &= \frac{\left| f(x_d^{i+1})-f_{max} \right|}{\sum_d\left| f(x_d^{i+1})-f_{max} \right|} \\
   w_d^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot w_d^{i}, 0.2) \\
   c_{p,d}^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot c_{p,d}^{i}, 0.3) \\
   c_{g,d}^{i+1} &= \text{Cauchy}(\sum_d W^i_d \cdot c_{g,d}^{i}, 0.3)
 \end{align*}
+
 Then, the parameters are adjusted to their limits using the following formulas:
+
 \begin{align*}
 w_d^{i+1} &= 
   \begin{cases}
@@ -699,11 +725,17 @@ c_{g,d}^{i+1} &=
     c_{g,d}^{i+1}, & \text{otherwise}
   \end{cases}\\
 \end{align*}
-5) Update the best positions  
+
+
+5\) Update the best positions
+
 Update the personal best $P$ and global best $p_g$ positions as in the standard PSO.
 
-6) Repeat  
+
+6\) Repeat
+
 Steps 2 to 5 are repeated until the maximum iteration $i_{max}$ is reached.
+
 
 ### Analyse Implementation
 The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration $i$ with 100 maximum iterations are distributed as follows:  

@@ -6,11 +6,14 @@ editor_options:
 # Challenges of Passiv Investing {#challenges}
 In this chapter, two common challenges of passive investing are analyzed to create simple use cases for testing the PSO. The first challenge is the mean-variance portfolio (MVP) from Markowitz's modern portfolio theory, which, simply put, is an optimal allocation of assets in terms of risk and return. The second challenge is the index tracking problem, which attempts to construct a portfolio with minimal tracking error to a given benchmark.
 
+
 ## Mean-Variance Portfolio (MVP)
 Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier. The problem behind Markowitz's original MVP without constraints can be solved in a closed form, which is explained in [@Eric2021]. This type of MVP has no practical use, so only MVP problems with constraints and without closed forms are of interest in this thesis.
 
+
 ### MVP: Problem
 Let there be $N$ assets and their returns on $T$ different days, creating a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The estimated covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the estimation of the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP problem with the risk aversion parameter $\lambda \in [0,1]$, as shown in [@Mari2005], can be formalized as follows:
+
 \begin{equation} 
 \underset{w}{min} \ \ \ \lambda \ w^T \textstyle\sum w - (1-\lambda) \ \mu^T w
 (\#eq:MVP)
@@ -21,12 +24,16 @@ The risk aversion parameter $\lambda$ defines the tradeoff between risk and retu
 
 ### MVP: Example
 All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.  
+
+
 ```{r MVPex1, include = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
   "CPI_3_assets"
 )
 ``` 
+
+
 The cumulative daily returns are:
 
 
@@ -38,6 +45,8 @@ plotly_line_chart_xts(ret_to_cumret(returns)) %>%
 
 
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \@ref(mathfundations):  
+
+
 ```{r MVPex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 mu <- ret_to_geomeanret(returns)
 cat0("estimation of expected daily returns:")
@@ -47,6 +56,7 @@ cov <- as.matrix(nearPD(cov_(returns, mu))$mat)
 cat0("estimation of positiv definite covariance matrix:")
 cov
 ```
+
 
 This is all the data necessary to solve the MVP problem with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the long only ($w_i \geq 0 \ \forall \ i$) constraint and the weights should sum to 1.
 
@@ -121,6 +131,7 @@ p %>%
 
 
 It can be observed that the portfolio with the lowest variance was obtained with a diversified composition of the three assets. With gradually decreasing $\lambda$, the minimization problem starts to ignore the variance, which leads to a portfolio investing more in the riskiest asset with the highest return.
+
 
 ### MVP: Compare Estimators
 The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns $\mu$ and was also used in the estimation of the covariance $\textstyle\sum$. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of $\lambda$ using the arithmetic mean versus the geometric mean to estimate $\mu$. The weights of the MVP's using the geometric mean are used to calculate $\mu$ and $\sigma$ as a function of the arithmetic mean to make both efficient frontiers comparable:
@@ -268,29 +279,38 @@ Indices are baskets of assets that are used to track the performance of a partic
 
 ### ITP with TEV objective (ITP-TEV) {#itpmste}
 The classic and widely used model tries to reduce the tracking error variance (TEV) with the following formula:
+
 $$
  \min \ \ Var(\pmb{TE}) = Var(\pmb{R}_{p}-\pmb{R}_{bm})
 $$
+
 where the random tracking portfolio return is $\pmb{R}_{p}$ and the random benchmark return is $\pmb{R}_{bm}$. To obtain the portfolio weights $w$, one needs to substitute the tracking portfolio return $\pmb{R}_{p}$ as follows:
+
 $$
   \pmb{R}_{p} = \pmb{R} \times w
 $$
+
 where $\pmb{R}$ is the random return vector containing the random return of each asset. The variance is then solved until a quadratic problem is presented as a function of portfolio weights $w$:
+
 \begin{align*}
  Var(\pmb{R}_{p}-\pmb{R}_{bm}) &= Var(\pmb{R} \times w - \pmb{R}_{bm}) \\
  &= Var(\pmb{R} \times w) + Var(\pmb{R}_{bm}) - 2 \cdot Cov(\pmb{R} \times w,\pmb{R}_{bm}) 
 \end{align*}
 
 Now the three terms can be solved, starting with the simplest one.
+
 $$
 Var(\pmb{R}_{bm}) = \sigma_{bm}^2
 $$
 
 The variance of the portfolio can be solved with \@ref(portvar):
+
 $$
 Var(\pmb{R} \times w) = w^T \times Cov(\pmb{R}) \times w
 $$
+
 And the last term can be solved in the same way as in [@Eric2021]:
+
 \begin{align*}
   Cov(\pmb{R} \times w, \pmb{R}_{bm}) &= Cov(\pmb{R}_{bm}, \pmb{R} \times w) \\
   &= E[(\pmb{R}_{bm}-\mu_{bm}) \cdot (\pmb{R} \times w-\mu_{\pmb{R}} \times w)] \\
@@ -300,6 +320,7 @@ And the last term can be solved in the same way as in [@Eric2021]:
 \end{align*}
 
 This results in the final formulation of the ITP:
+
 \begin{align*}
   Var(\pmb{R}_{p}-\pmb{R}_{bm}) & = Var(\pmb{R} \times w - \pmb{R}_{bm}) \\
   & = Var(\pmb{R} \times w) - 2 \cdot Cov(\pmb{R} \times w,\pmb{R}_{bm}) + Var(\pmb{R}_{bm})  \\
@@ -308,15 +329,19 @@ This results in the final formulation of the ITP:
 \end{align*}
 
 The above problem can be estimated using the formulas and functions created in chapter \@ref(mathfundations) and historical returns $R$ and $r_{bm}$. The minimization problem of the ITP in the general structure required by many optimizers is:
+
 $$
   \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w -d^T \times w
 $$
 
 Minimization problems can ignore constant terms and global stretch coefficients and still find the same minimum. This leads to a general substitution of the ITP with TEV objective as follows:
+
 $$
   D = Cov(R)
 $$
+
 and
+
 $$
 d = Cov(r_{bm}, R)^T
 $$
@@ -330,14 +355,19 @@ $$
   \frac{1}{T} \sum^T_{t=1}(r_{t, p}-r_{t, bm})^2
 $$
 The formula can be rewritten as vector norm:
+
 $$
   \frac{1}{T} \left\Vert r_{p}-r_{bm} \right\Vert_2^2
 $$
+
 Which results in the following minimization with neglected stretching factor:
+
 $$
  min \ \  \left\Vert r_{p}-r_{bm} \right\Vert_2^2
 $$
+
 The portfolio returns $r_p$ needs to be substituted to contain the portfolio weights $w$ like in the TEV objective above. This results in the below transformation of the problem:
+
 \begin{align*}
   \left\Vert r_{p}-r_{bm} \right\Vert_2^2 &= \left\Vert R \times w-r_{bm} \right\Vert_2^2 \\ 
   &= (R \times w-r_{bm})^T \times (R \times w-r_{bm}) \\ 
@@ -346,24 +376,29 @@ The portfolio returns $r_p$ needs to be substituted to contain the portfolio wei
 \end{align*}
 
 The minimization and the fact that the scalars $w^T \times R^T \times r_{bm}$ and $r_{bm}^T \times R \times w$ are equal, transforms the problem to:
+
 $$
   \min\limits_{w} \ \  \left\Vert r_{p}-r_{bm} \right\Vert_2^2 
   = w^T \times R^T \times R \times w - 2\cdot r_{bm}^T \times R \times w
 $$
+
 This leads to the equivalent general representation of the ITP with MSTE objective as follows:
+
 $$
   \min\limits_{w} \ \ \frac{1}{2} \cdot w^T \times D \times w - d^T \times w
 $$
+
 with
+
 $$
 D = R^T \times R
 $$
-and 
+
+and
+
 $$
   d = R^T \times r_{bm}
 $$
-
-
 
 
 ### Example ITP
@@ -430,6 +465,8 @@ plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns_TEV, port_returns_MST
 
 
 The ITP-TEV and the ITP-MSTE had almost the same results, which can be seen in the compositions below:
+
+
 ```{r ITPex2, echo=F}
 data.frame(rbind(composition_TEV, composition_MSTE), row.names = NULL)
 ```

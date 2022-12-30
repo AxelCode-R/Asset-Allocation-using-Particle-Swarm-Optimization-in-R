@@ -5,9 +5,12 @@
 \usepackage{fvextra}
 \usepackage{pdfpages}
 \usepackage{float}
+
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines=true, breakanywhere=true, commandchars=\\\{\}}
 
 \setlength{\abovecaptionskip}{-0.5\baselineskip}
+
+
 
 \makeatletter
 \def\thm@space@setup{%
@@ -15,3 +18,13 @@
   \thm@postskip=\thm@preskip
 }
 \makeatother
+
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize%
+    \setlength\abovedisplayskip{-6pt}%
+    \setlength\belowdisplayskip{6pt}%
+    \setlength\abovedisplayshortskip{-6pt}%
+    \setlength\belowdisplayshortskip{6pt}%
+}
+

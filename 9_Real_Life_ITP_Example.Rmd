@@ -11,14 +11,19 @@ In the previous chapters, the capabilities of the PSO and the quality of its res
 
 ## Transaction Costs
 The cost of buying or selling assets must be considered as it can have a significant impact after several years of investment. There are many different costs that can be incurred depending on the concepts of the broker, the liquidity of the assets and the type of assets. For more information, see [@AkGa2022] or [@NySe2022]. For simplicity, we focus on the situation of a retail investor using an online broker that charges a fixed fee per transaction for the U.S. stocks included in the SP500TR. Each transaction consists of one or more shares of exactly one asset, and a transaction can be either a sale or a purchase. The fixed transaction fee is set at 1 USD, as is done by the online broker Trade Republic. The PSO can account for the transaction cost by increasing the objective value, but it is difficult to make the intensity of the transaction cost value comparable to the objective value. The objective value $v^o$ of the ITP with MSTE approach, as in \@ref(ITPMSTE), is defined as:
+
 $$
  v^o = \left\Vert r_{p}-r_{bm} \right\Vert_2^2 = \sum_{t=1}^T (r_{t,p}-r_{t,bm})^2
 $$
+
 The objective value $v^o$ is the squared tracking error or, more precisely, the squared difference of the portfolio returns $r_p$ and the benchmark returns $r_{bm}$. To create a comparable value $v^{tc}$ for transaction costs, we attempt to interpret the absolute loss due to transactions as the absolute error of return $r_{tc}$ incurred in $t_0$ (before the first data point in $t_1$). This absolute error $r_{tc}$ can be calculated by counting the required transactions divided by the net asset value $nav$. The required transactions can be calculated by comparing the shares vector of the previous portfolio $s^{prev}$ and the shares vector of the rebalanced portfolio $s^{reba}$. This results in the following formula for the absolute error return $r_{tc}$:
+
 $$
  r_{tc} = \frac{1 \cdot \sum_{n=1}^N g(s^{prev}_n-s^{reba}_n) }{nav}
 $$
-with 
+
+with
+
 $$
   g(x) =    \begin{cases}
   0 &\text{, if }\ x = 0\\
@@ -27,27 +32,35 @@ $$
 $$
 
 This results in the following transaction costs value $v^{tc}$:
+
 $$
 v^{tc} = \left\Vert r_{tc} \right\Vert_2^2 = r_{tc}^2
 $$
 
 The idea is to use the $v^{tc}$ value and increase the objective value $v^o$ of the ITP with MSTE approach, but these values are still not the same. The $v^o$ is the sum of squared positive or negative errors and $v^{tc}$ is a squared negative error. To increase the impact of the transaction cost, a coefficient $k$ should increase the intensity, which leads to the following minimization problem:
+
 $$
   min \ \  v^o + k \cdot v^{tc}
 $$
+
 A suitable value for $k$ could be calculated by dividing the number of training days by the number of days in the holding period increased by a factor of $2.5$. This can be roughly interpreted as weighting the transaction cost error as the $2.5$-day error in the test period. For example, a 4-month training period with 96 working days and a holding period of 1 month with 24 working days yields the following value:
+
 $$
   k = \frac{96}{24} \cdot 2.5 = 10
 $$
+
 When the holding period is shortened, the intensity coefficient increases, which is a suitable behavior. Nevertheless, it should be analyzed and fine-tuned more.
 
 
 ## Rebalancing Constraint
 The rebalancing constraint restricts the changes in weights by considering the previous portfolio weight vector $w^{prev}$, which is recalculated using the previous shares vector and the rebalanced portfolio weight vector $w^{reba}$. The value constrained by the rebalancing constraint should take into account the weights moved between assets and additional weights added. Example: the previous portfolio had a weight vector $w^{prev} = [0.5, 0.4]$ as of the current rebalancing date and the rebalanced portfolio has a weight vector $w^{reba} = [0.8, 0.2]$. The rebalanced weight from the second to the first asset is $0.2$ and the additional weight added is $0.1$, resulting in a rebalance of $0.2+0.1=0.3$ weight. Below is the formula for calculating the rebalancing weight $w^{rb}$:
+
 $$
   w^{rb} := \frac{\left\Vert w^{prev}-w^{reba} \right\Vert_1 - |\sum w^{prev} - \sum w^{reba}|}{2}+|\sum w^{prev} - \sum w^{reba}|
 $$
+
 and with a rebalancing constraint of, say, 30%, the rebalanced portfolio is feasible if:
+
 $$
   w^{rb} \leq 0.3
 $$
@@ -59,10 +72,13 @@ The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool
 
 Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraints are satisfied. Then it is run four more times to improve the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from \@ref(portfolioreturns) until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool, they are sold and reduce the net asset value due to transaction costs. The same is done by buying or selling any remaining assets. A rough illustration of the process can be found in the following figure:
 
+
 ![Backtest Process: visualized as a flowchart](img/Chapter9_PSO_Process4.jpg)
+
 
 ## Complete ITP Example
 The following charts visualize the test period of the whole backtests. The `QP_MSTE_cont` line represents the performance of the continuous solution of the ITP-MSTE objective solved with solve.QP() and stays the same for all backtests. The discretized solution using the PSO is named `PSO_MSTE_disc` and the `PSO_MSTE_disc_TR` considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity $k \in \{0, 10, 20, 30\}$ of each backtest which can be seen in the legends by `0tc`, `10tc`, `20tc` and `30tc`.
+
 
 ```{r 91, echo=F, include=F, eval=F}
 set.seed(0)
@@ -882,6 +898,7 @@ save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v12_30tc_v3.r
 
 ```
 
+
 ```{r 92, echo=F, include=F}
 bm_returns_raw <- buffer(
   get_yf(tickers = "^SP500TR", from = from, to = to)$returns,
@@ -946,6 +963,7 @@ p_30tc_diff <- setNames(  (ret_to_cumret(perf_all$PSO_MSTE_disc_TR_30tc) - ret_t
 #subplot(p_0tc, p_10tc, p_20tc, p_30tc, nrows=4)
 #plotly_line_chart_xts(cbind.xts(p_0tc_diff, p_10tc_diff, p_20tc_diff, p_30tc_diff))
 ```
+
 
 Backtest for $k=0$:
 

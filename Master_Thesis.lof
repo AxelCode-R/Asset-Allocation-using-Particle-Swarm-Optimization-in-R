@@ -16,9 +16,9 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {8.1}{\ignorespaces Visualization of the behavior of the standard PSO in a GIF.}}{50}{figure.8.1}%
 \contentsline {figure}{\numberline {8.2}{\ignorespaces Relationship between $w$ and $c$ when $c_p$=$c_g$=$c$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the sequence of expected positions satisfying property 1. The cyan area shows the convergence condition for the sequence of expected positions and the variances tending to zero, which satisfies properties 1 and 2. And the blue area shows the convergence condition for the sequence of expected positions with the variances tending to zero and the entire swarm converging to a single point, which satisfies properties 1, 2, and 3. This is a replication of the visualization from [M. Jiang, 2006].}}{54}{figure.8.2}%
-\contentsline {figure}{\numberline {8.3}{\ignorespaces Comparison of the MVP's generated with solve.QP() and the PSO. The gray lines show the difference of the solutions of both approaches for each lambda.}}{57}{figure.8.3}%
-\contentsline {figure}{\numberline {8.4}{\ignorespaces Comparison of solving ITP-MSTE with solve.QP() and the PSO. }}{58}{figure.8.4}%
-\contentsline {figure}{\numberline {8.5}{\ignorespaces Comparison of solving dicrete ITP-MSTE with solve.QP() with rounding and the PSO.}}{59}{figure.8.5}%
+\contentsline {figure}{\numberline {8.3}{\ignorespaces Comparison of the MVP's generated with solve.QP() and the PSO. The gray lines show the difference of the solutions of both approaches for each lambda.}}{56}{figure.8.3}%
+\contentsline {figure}{\numberline {8.4}{\ignorespaces Comparison of solving ITP-MSTE with solve.QP() and the PSO. }}{57}{figure.8.4}%
+\contentsline {figure}{\numberline {8.5}{\ignorespaces Comparison of solving dicrete ITP-MSTE with solve.QP() with rounding and the PSO.}}{58}{figure.8.5}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {9.1}{\ignorespaces Fitness: Benchmark solution with the standard PSO for comparison with the created variants.}}{61}{figure.9.1}%
 \contentsline {figure}{\numberline {9.2}{\ignorespaces Statistics: Benchmark solution with the standard PSO for comparison with the created variants.}}{61}{figure.9.2}%
@@ -37,9 +37,9 @@
 \contentsline {figure}{\numberline {9.15}{\ignorespaces Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO.}}{73}{figure.9.15}%
 \contentsline {figure}{\numberline {9.16}{\ignorespaces Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO.}}{73}{figure.9.16}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {10.1}{\ignorespaces Backtest Process: visualized as a flowchart}}{77}{figure.10.1}%
-\contentsline {figure}{\numberline {10.2}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0}}{78}{figure.10.2}%
-\contentsline {figure}{\numberline {10.3}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=0}}{78}{figure.10.3}%
+\contentsline {figure}{\numberline {10.2}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0}}{77}{figure.10.2}%
+\contentsline {figure}{\numberline {10.1}{\ignorespaces Backtest Process: visualized as a flowchart}}{78}{figure.10.1}%
+\contentsline {figure}{\numberline {10.3}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=0}}{79}{figure.10.3}%
 \contentsline {figure}{\numberline {10.4}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=10}}{79}{figure.10.4}%
 \contentsline {figure}{\numberline {10.5}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=10}}{79}{figure.10.5}%
 \contentsline {figure}{\numberline {10.6}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=20}}{80}{figure.10.6}%

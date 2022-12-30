@@ -13,14 +13,14 @@
 \contentsline {subsection}{\numberline {3.1.2}\texttt {buffer()}}{16}{subsection.3.1.2}%
 \contentsline {chapter}{\numberline {4}Mathematical Foundations}{17}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Basic Operators}{17}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Formula Conventions}{19}{section.4.2}%
+\contentsline {section}{\numberline {4.2}Formula Conventions}{20}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Return Calculation}{20}{section.4.3}%
 \contentsline {subsection}{\numberline {4.3.1}Simple Returns}{20}{subsection.4.3.1}%
 \contentsline {section}{\numberline {4.4}Markowitz Modern Portfolio Theory (MPT)}{20}{section.4.4}%
 \contentsline {subsection}{\numberline {4.4.1}Assumptions of Markowitz Portfolio Theory}{20}{subsection.4.4.1}%
 \contentsline {section}{\numberline {4.5}Portfolio Math}{21}{section.4.5}%
 \contentsline {subsection}{\numberline {4.5.1}Expected Returns}{21}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}Expected Portfolio Returns}{21}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.2}Expected Portfolio Returns}{22}{subsection.4.5.2}%
 \contentsline {subsection}{\numberline {4.5.3}Covariance}{22}{subsection.4.5.3}%
 \contentsline {subsection}{\numberline {4.5.4}Portfolio Variance}{22}{subsection.4.5.4}%
 \contentsline {subsection}{\numberline {4.5.5}Portfolio Returns}{23}{subsection.4.5.5}%
@@ -56,9 +56,9 @@
 \contentsline {section}{\numberline {8.6}Convergence analysis of the standard PSO}{52}{section.8.6}%
 \contentsline {section}{\numberline {8.7}Example MVP}{56}{section.8.7}%
 \contentsline {section}{\numberline {8.8}Example: ITP-MSTE}{57}{section.8.8}%
-\contentsline {section}{\numberline {8.9}Pros and Cons for Continuous Problems}{58}{section.8.9}%
+\contentsline {section}{\numberline {8.9}Pros and Cons for Continuous Problems}{57}{section.8.9}%
 \contentsline {section}{\numberline {8.10}Discrete Problems}{58}{section.8.10}%
-\contentsline {section}{\numberline {8.11}Example: Discrete ITP-MSTE}{59}{section.8.11}%
+\contentsline {section}{\numberline {8.11}Example: Discrete ITP-MSTE}{58}{section.8.11}%
 \contentsline {chapter}{\numberline {9}PSO Variations}{60}{chapter.9}%
 \contentsline {section}{\numberline {9.1}Testproblem: Discrete ITP-MSTE}{60}{section.9.1}%
 \contentsline {section}{\numberline {9.2}Function Stretching}{61}{section.9.2}%
@@ -78,6 +78,6 @@
 \contentsline {section}{\numberline {10.1}Transaction Costs}{74}{section.10.1}%
 \contentsline {section}{\numberline {10.2}Rebalancing Constraint}{76}{section.10.2}%
 \contentsline {section}{\numberline {10.3}Objective}{76}{section.10.3}%
-\contentsline {section}{\numberline {10.4}Complete ITP Example}{78}{section.10.4}%
+\contentsline {section}{\numberline {10.4}Complete ITP Example}{77}{section.10.4}%
 \contentsline {chapter}{\numberline {11}Future Research}{83}{chapter.11}%
 \contentsline {chapter}{\numberline {12}Conclusion}{84}{chapter.12}%
