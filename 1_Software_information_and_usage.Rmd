@@ -9,7 +9,9 @@ The used packages and versions can be found in the table below:
 
 
 ```{r, echo=F, fig.cap="Information about the used packages and their versions"}
-sessionInfo()
+x <- capture.output(sessionInfo())
+x <- x[-c(5:11)]
+z <- sapply(x, function(k){cat(paste0(k, "\n"))})
 ```
 
 
@@ -18,7 +20,7 @@ Everything in this thesis can be reproduced via the public GitHub repository at 
 
 
 ## R-functions
-The following functions were created to simplify working with R-Markdown.
+The following functions were created to simplify working with R-Markdown and to take advantage of the HTML version of this thesis.
 
 
 ### `html_save()`
@@ -26,4 +28,4 @@ Converts HTML plots to images to display them in the PDF output. This allows the
 
 
 ### javascript files
-These files are located in the `www/` folder and are used for the HTML version to make chunks expandable.
+The javascript files are located in the `www/` folder and are used for the HTML version of this thesis to make code blocks expandable. This allows the reader to inspect the code used and to follow analyses in detail.

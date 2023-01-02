@@ -8,7 +8,7 @@ This chapter provides an overview of the mathematical calculations and conventio
 
 
 ## Basic Operators
-The table below compares frequently used mathematical symbols with R code and their meaning:
+The programming language R makes it possible to formulate almost all computations in a matrix notation, since the usual matrix operators and element-wise operators are already efficiently implemented in base R. Elementwise operators are not considered standard in mathematics, so they are defined in more detail in this section. The representation of calculations in a matrix notation helps the user to keep the overview, because the formulas are more compact and in addition, these operators are already implemented efficiently in base R, which makes them more performant than simple for-loops. The operators used here can be found in the table below and are intended to establish the relationship between the notation in the text, in the R code and their meaning:
 
 
 ```{r, fig.cap = "List of used opterators and their meanings.", echo=F}
@@ -91,7 +91,7 @@ $$
 $$
 
 or
-
+\vspace{0.2cm}
 $$
 \begin{bmatrix}a_{1} \\ \vdots \\ a_{x} \end{bmatrix}
 \square
@@ -101,7 +101,7 @@ $$
 $$
 
 or
-
+\vspace{0.2cm}
 $$
 a \ 
 \square

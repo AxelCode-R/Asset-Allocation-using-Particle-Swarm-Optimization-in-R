@@ -22,9 +22,12 @@
 
 \expandafter\def\expandafter\normalsize\expandafter{%
     \normalsize%
-    \setlength\abovedisplayskip{-6pt}%
-    \setlength\belowdisplayskip{6pt}%
-    \setlength\abovedisplayshortskip{-6pt}%
-    \setlength\belowdisplayshortskip{6pt}%
+    \setlength\abovedisplayskip{-6pt plus 3pt minus 1pt}%
+    \setlength\belowdisplayskip{6pt plus 3pt minus 4pt}%
+    \setlength\abovedisplayshortskip{-6pt plus 3pt minus 1pt}%
+    \setlength\belowdisplayshortskip{6pt plus 3pt minus 4pt}%
 }
+
+\displaywidowpenalty=10000
+\predisplaypenalty=10000
 
