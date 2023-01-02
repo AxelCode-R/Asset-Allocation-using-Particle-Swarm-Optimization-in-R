@@ -10,7 +10,7 @@ The standard PSO analyzed in the previous chapter is capable of solving a wide r
 
 
 ## Testproblem: Discrete ITP-MSTE
-All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in section \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO function created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSO's start with the zero vector as the initial particle position to test the ability to find the feasible space.
+All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in section \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSO's start with the zero vector as the initial particle position to test the ability to find the feasible space.
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
@@ -164,7 +164,7 @@ reactable(
 
 
 ## Function Stretching
-PSO often gets stuck in local minima, i.e. when the current global best position is a local minimum with a surrounding region, with only higher fitnesses. In such situations, it is difficult for the PSO to escape to find the global minimum. Function stretching attempts to allow the PSO to escape from such local minima by transforming the fitness function in the manner described in [@PaVr2002]. After finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function such that the discovered local minimum is transformed into a maximum, but any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum $\bar{x}$ are:
+PSO often gets stuck in local minima, i.e. when the current global best position is a local minimum with a surrounding region, with only higher fitnesses. In such situations, it is difficult for the PSO to escape to find the global minimum. Function stretching attempts to allow the PSO to escape from such local minima by transforming the fitness function in the manner described in [@PaVr2002]. After finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function such that the discovered local minimum is transformed into a maximum and any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum $\bar{x}$ are:
 
 \begin{equation} 
 G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
@@ -203,7 +203,7 @@ $$
 f(x) = cos(x)+\frac{1}{10}\cdot x
 $$
 
-translated to the objective function:
+and translated to the objective function:
 
 
 ```{r}
@@ -213,10 +213,10 @@ fn <- function(pos){
 ```
 
 
-and the domain of definition is chosen as $x \in [-20, 20]$. Suppose the PSO gets stuck in the local minimum at $\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04$. The original function `fn` and the transformed function `fn_stretched`, which matches $H(x)$ in equation \@ref(eq:fnstretchH), are shown in the following graph:
+The domain of definition is chosen as $x \in [-20, 20]$. Suppose the PSO gets stuck in the local minimum at $\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04$. The original function `fn` and the transformed function `fn_stretched`, which matches $H(x)$ in equation \@ref(eq:fnstretchH), are shown in the following graph:
 
 
-```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Analysis of the effect of function stretching using a simple 1D example."}
+```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="The effect of function stretching in a 1D example."}
 fn1 <- function(pos, pos_best, pos_best_fit){
   res <- fn(pos)
   G <- res + 5000 * sqrt(sum((pos - pos_best)^2))/length(pos) * (sign(res - pos_best_fit) + 1)
@@ -234,7 +234,7 @@ p2 <- plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), t
   layout(yaxis=list(range=c(-2, 20)*10^5))
 
 subplot(p1, p2, shareY=T, nrows=2) %>% 
-  html_save(., vheight=700, vwidth=800)
+  html_save(., vheight=550, vwidth=800)
 ```
 
 
@@ -245,7 +245,7 @@ It can be seen that the fitness is stretched upward around the local minimum $\b
 plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched", line=list(color="orange")) %>% 
   add_trace(x=X, y=rep(fn(pi-asin(1/10)), length(X)), type="scatter", mode="lines", name="local_minima", line=list(dash="dot", color="grey")) %>% 
   layout(yaxis=list(range=c(1.1*min(sapply(X, fn)), 1.1*max(sapply(X, fn))))) %>% 
-  html_save(., vheight=350, vwidth=800)
+  html_save(., vheight=250, vwidth=800)
 ```
 
 
@@ -376,7 +376,7 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 First, the neighbors for each particle are stored in a suitable data structure before the main part of the PSO is executed. In the local version there is no global best particle, instead the global best particle for the neighborhood of each particle has to be calculated in each step.
 
 ### Test Local PSO
-The PSO with particle neighborhoods is called `PSO-local` and evaluated on the test problem with $k=10$:
+The PSO with particle neighborhoods is called `PSO-local` and is evaluated on the test problem with $k=10$:
 
 
 ```{r variants5, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the local PSO and the standard PSO."}
@@ -503,7 +503,7 @@ It can be seen that after a million randomly generated positions, there was not 
 This section compares the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
 
 
-```{r variants6next, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions."}
+```{r variants6next, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions."}
 set.seed(0)
 # R/PSO_functions.R : pso_preserving_feasibility()
 
@@ -618,7 +618,7 @@ plot_ly() %>%
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
-```{r variants6next2, echo=F, fig.cap = "Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO benchmark solutions."}
+```{r variants6next2, echo=F, fig.cap = "Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions."}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -669,12 +669,15 @@ Update the velocity of each particle $d$ with the following switch-case for a un
 
 with
 
+\begingroup
+\allowdisplaybreaks
 \begin{align*}
   \mu_1 &= 0.1 \cdot (1-(\frac{i}{i_{max}})^2) + 0.3 \\
   \sigma_1 &= 0.1 \\
   \mu_2 &= 0.4 \cdot (1-(\frac{i}{i_{max}})^2) + 0.2 \\
   \sigma_2 &= 0.4
 \end{align*}
+\endgroup
 
 and $\text{Cauchy}(\mu, \sigma)$ is a random number generated from the Cauchy distribution obtained with `rcauchy()` in R. The position update is the same as for the standard PSO. When a particle $d$ has left the feasible search space in its coordinate $z$, it is moved back with the following switch-case for $r = \text{Unif}(0,1)$:
 
