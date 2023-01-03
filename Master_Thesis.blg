@@ -1,10 +1,7 @@
-This is BibTeX, Version 0.99d
+This is BibTeX, Version 0.99d (TeX Live 2022)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: Master_Thesis.aux
-Reallocating 'name_of_file' (item size: 1) to 9 items.
 The style file: plainnat.bst
-Reallocating 'name_of_file' (item size: 1) to 5 items.
-Reallocating 'name_of_file' (item size: 1) to 9 items.
 Database file #1: book.bib
 Warning--entry type for "Eric2021" isn't style-file defined
 --line 95 of file book.bib
@@ -26,7 +23,7 @@ Database file #2: packages.bib
 Warning--empty journal in KeEb1995
 You've used 30 entries,
             2773 wiz_defined-function locations,
-            755 strings with 8988 characters,
+            756 strings with 9000 characters,
 and the built_in function-call counts, 9405 in all, are:
 = -- 813
 > -- 377

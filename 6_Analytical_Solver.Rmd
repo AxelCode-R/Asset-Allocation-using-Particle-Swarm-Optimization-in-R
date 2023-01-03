@@ -3,8 +3,9 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# Analytic Solver for Quadratic Programming Problems {#analyticalsolver}
-The advantages and disadvantages of analytical solvers for quadratic programming problems are discussed in this chapter. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver solves quadratic problems; only the applications and analysis are discussed. The main reason for dealing with analytic solvers for quadratic programming problems is to use them as a benchmark for the PSO.
+# Mathematical Optimization Methods for Quadratic Programming Problems {#analyticalsolver}
+In this chapter, the advantages and disadvantages of mathematical optimization methods for quadratic programming problems are discussed. For simplicity, the implementation of a mathematical optimization method is referred to as a solver in this thesis. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver handles quadratic problems; only the applications and analysis are discussed. The main reason for dealing with solvers for quadratic programming problems is to use them as a benchmark for the PSO.
+
 
 ## Quadratic Programming (QP)
 A quadratic program is a minimization problem of a function that returns a scalar and consists of a quadratic term and a linear term that depend on the variable of interest. In addition, the problem may be constrained by several linear inequalities that bound the solution. The general formulation used is to find $x$ that minimizes the following problem:
@@ -21,8 +22,8 @@ $$
 
 Some other sources notate the problem with different signs or coefficients, all of which are interchangeable with the above problem. In addition, the above problem has the same notation used in the R package `quadprog`, which reduces the substitution overhead. All modern programming languages have many solvers for quadratic problems. They differ mainly in the computation time for certain problems and the requirements. Some commercial QP solvers additionally accept more complex constraints, such as absolute (e.g., $|A^T \times x| \geq a_0$) or mixed-integer (e.g., $x \in \mathbb{N}$). Especially the mixed-integer constraint problems lead to a huge increase in memory requirements.
 
-## QP-Solver from quadprog
-The most common free QP-Solver used in R comes from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf), which consists of a single function called `solve.QP()`. Its implementation routine is the dual method of Goldfarb and Idnani published in [@GoId1982] and [@GoId1983]. It uses the above QP with the condition that $D$ must be a symmetric positive definite matrix. This means that $D\in \mathbb{R}^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in \mathbb{R}^N \setminus \{\vec{0}\}$, which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix $\sum$, but it is possible to find the nearest positive definite matrix of $\textstyle\sum$ using the function `nearPD()` from the [matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R package. The error encountered often does not exceed a percent change in elements greater than $10^{-15} \%$, which is negligible for the context of this work. The function `solve.QP()` for an $N$ dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
+## QP Solver from quadprog
+The common free QP solver used in R comes from the package [quadprog](https://cran.r-project.org/web/packages/quadprog/quadprog.pdf), which consists of a single function called `solve.QP`. Its implementation routine is the dual method of Goldfarb and Idnani published in [@GoId1982] and [@GoId1983]. It uses the above QP with the condition that $D$ must be a symmetric positive definite matrix. This means that $D\in \mathbb{R}^{N \times N}$ and $x^T D x > 0 \ \forall \ x \in \mathbb{R}^N \setminus \{\vec{0}\}$, which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix $\sum$, but it is possible to find the nearest positive definite matrix of $\textstyle\sum$ using the function `nearPD()` from the [matrix](https://cran.r-project.org/web/packages/Matrix/Matrix.pdf) R package. The error encountered often does not exceed a percent change in elements greater than $10^{-15} \%$, which is negligible for the context of this work. The function `solve.QP` for an $N$ dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:
 
 + `Dmat`: Symmetric positive definite matrix $D \in \mathbb{R}^{N \times N}$ of the quadratic term
 + `dvec`: Vector $d \in \mathbb{R}^{N}$ of the linear term
@@ -30,14 +31,14 @@ The most common free QP-Solver used in R comes from the package [quadprog](https
 + `bvec`: Constraint vector $b_0$
 + `meq = 1`: means that the first `meq` columns of $A$ are treated as an equality constraint
 
-The return of `solve.QP()` is a list and contains, among others, the following attributes of interest:
+The return of `solve.QP` is a list and contains, among others, the following attributes of interest:
 
 + `solution`: Vector containing the solution $x$ of the quadratic programming problem (e.g. portfolio weights)
 + `value`: Scalar, the value of the quadratic function at the solution
 
 
-## Example: Solving MVP Problem with `solve.QP()` {#exampleanalyticalmvp}
-This section provides insights into the effects of diversification and the use of `solve.QP()` by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
+## Example: Solving MVP Problem with `solve.QP` {#exampleanalyticalmvp}
+This section provides insights into the effects of diversification and the use of `solve.QP` by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
 
 
 ```{r qpmvp1, class.source="code_fold_it_collapsed"}
@@ -183,7 +184,7 @@ It can be seen that each added asset leads to a minimum variance portfolio with 
 
 
 
-## Example: Solving ITP-MSTE with `solve.QP()` {#exampleitpsolveqp}
+## Example: Solving ITP-MSTE with `solve.QP` {#exampleitpsolveqp}
 This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the SP500TR from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded, and the remaining assets serve as the new asset pool for the next replication until only five assets remain. First, the required data can be downloaded from the `R/` directory using existing functions. The function `get_spx_composition()` uses web scraping to read the components of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and converts them into monthly compositions of the SP500TR. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the SP500TR:
 
 

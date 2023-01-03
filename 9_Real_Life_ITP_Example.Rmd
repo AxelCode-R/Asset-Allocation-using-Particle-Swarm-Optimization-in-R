@@ -67,7 +67,7 @@ $$
 
 
 ## Objective
-The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP() approach, continuously discarding assets as in section \@ref(exampleitpsolveqp), with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the training period. In addition, the solve.QP() approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which yielded stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10%, $0.96 \leq \sum w_i \leq 0.995$, rebalancing under 30% weight, considering transaction cost with diffrent values for $k$, net asset value of 20000 USD, length of training period of four months and testing period of one month. 
+The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP approach, continuously discarding assets as in section \@ref(exampleitpsolveqp), with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the training period. In addition, the solve.QP approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which yielded stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10%, $0.96 \leq \sum w_i \leq 0.995$, rebalancing under 30% weight, considering transaction cost with diffrent values for $k$, net asset value of 20000 USD, length of training period of four months and testing period of one month. 
 
 
 Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraints are satisfied. Then it is run four more times to improve the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from \@ref(portfolioreturns) until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool, they are sold and reduce the net asset value due to transaction costs. The same is done by buying or selling any remaining assets. A rough illustration of the process can be found in the following figure:
@@ -77,7 +77,7 @@ Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated unti
 
 
 ## Complete ITP Example
-The following charts visualize the test period of the whole backtests. The `QP_MSTE_cont` line represents the performance of the continuous solution of the ITP-MSTE objective solved with solve.QP() and stays the same for all backtests. The discretized solution using the PSO is named `PSO_MSTE_disc` and the `PSO_MSTE_disc_TR` considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity $k \in \{0, 10, 20, 30\}$ of each backtest which can be seen in the legends by `0tc`, `10tc`, `20tc` and `30tc`.
+The following charts visualize the test period of the whole backtests. The `QP_MSTE_cont` line represents the performance of the continuous solution of the ITP-MSTE objective solved with solve.QP and stays the same for all backtests. The discretized solution using the PSO is named `PSO_MSTE_disc` and the `PSO_MSTE_disc_TR` considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity $k \in \{0, 10, 20, 30\}$ of each backtest which can be seen in the legends by `0tc`, `10tc`, `20tc` and `30tc`.
 
 
 ```{r 91, echo=F, include=F, eval=F}
@@ -1306,10 +1306,10 @@ plotly_line_chart_xts(cbind.xts(p_0tc_diff, p_10tc_diff, p_20tc_diff, p_30tc_dif
 ```
 
 
-Another interesting result is that the continuous `solve.QP()` approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the following performance chart, comparing only the `solve.QP()` approach and the SP500TR:
+Another interesting result is that the continuous `solve.QP` approach with a pool of 100 assets had a slightly higher performance than the SP500TR, suggesting that the asset pool in that particular period consists of assets that performed relatively well. This can be inspected in the following performance chart, comparing only the `solve.QP` approach and the SP500TR:
 
 
-```{r, echo=F, fig.cap = "Comparison of cumulative daily returns of the continuous backtest performed with solve.QP() and the SP500TR."}
+```{r, echo=F, fig.cap = "Comparison of cumulative daily returns of the continuous backtest performed with solve.QP and the SP500TR."}
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(QP_perf, bm_returns_raw[paste0(min(index(QP_perf)),"/", max(index(QP_perf))),]))) %>% 
   html_save(., vwidth=700, vheight=400)
 ```
