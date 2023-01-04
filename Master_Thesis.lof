@@ -37,16 +37,16 @@
 \contentsline {figure}{\numberline {9.15}{\ignorespaces Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO.}}{64}{figure.9.15}%
 \contentsline {figure}{\numberline {9.16}{\ignorespaces Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO.}}{64}{figure.9.16}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {10.2}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0}}{68}{figure.10.2}%
-\contentsline {figure}{\numberline {10.1}{\ignorespaces Backtest Process: visualized as a flowchart}}{69}{figure.10.1}%
-\contentsline {figure}{\numberline {10.3}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=0}}{70}{figure.10.3}%
-\contentsline {figure}{\numberline {10.4}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=10}}{70}{figure.10.4}%
-\contentsline {figure}{\numberline {10.5}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=10}}{70}{figure.10.5}%
-\contentsline {figure}{\numberline {10.6}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=20}}{71}{figure.10.6}%
-\contentsline {figure}{\numberline {10.7}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=20}}{71}{figure.10.7}%
-\contentsline {figure}{\numberline {10.8}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=30}}{72}{figure.10.8}%
-\contentsline {figure}{\numberline {10.9}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=30}}{72}{figure.10.9}%
-\contentsline {figure}{\numberline {10.10}{\ignorespaces Cumulative daily return loss of the discrete PSO backtests due to transaction costs with respect to the different values of k.}}{73}{figure.10.10}%
-\contentsline {figure}{\numberline {10.11}{\ignorespaces Comparison of cumulative daily returns of the continuous backtest performed with solve.QP and the SP500TR.}}{73}{figure.10.11}%
+\contentsline {figure}{\numberline {10.1}{\ignorespaces Backtest Process: visualized as a flowchart}}{68}{figure.10.1}%
+\contentsline {figure}{\numberline {10.2}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0.}}{69}{figure.10.2}%
+\contentsline {figure}{\numberline {10.3}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=0.}}{69}{figure.10.3}%
+\contentsline {figure}{\numberline {10.4}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=10.}}{70}{figure.10.4}%
+\contentsline {figure}{\numberline {10.5}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=10.}}{70}{figure.10.5}%
+\contentsline {figure}{\numberline {10.6}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=20.}}{70}{figure.10.6}%
+\contentsline {figure}{\numberline {10.7}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=20.}}{71}{figure.10.7}%
+\contentsline {figure}{\numberline {10.8}{\ignorespaces Comparison of the cumulative daily returns of the backtests with the transaction cost value k=30.}}{71}{figure.10.8}%
+\contentsline {figure}{\numberline {10.9}{\ignorespaces Comparison of the statistics of the backtests with the transaction cost value k=30.}}{71}{figure.10.9}%
+\contentsline {figure}{\numberline {10.10}{\ignorespaces Cumulative daily return loss of the discrete PSO backtests due to transaction costs with respect to the different values of k.}}{72}{figure.10.10}%
+\contentsline {figure}{\numberline {10.11}{\ignorespaces Comparison of cumulative daily returns of the continuous backtest performed with solve.QP and the SP500TR.}}{72}{figure.10.11}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

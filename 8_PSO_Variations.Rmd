@@ -647,16 +647,13 @@ A PSO approach with self-adaptive velocity that attempts to reduce hyperparamete
 
 
 ### Implementation
-The process of this PSO variant is too different from the standard PSO, so all changes are combined in steps:  
-
-1\) Initialize
-
-Each particle $d$ must initialize its own inertial weight $w_d^0=0.5$ and acceleration coefficients $c_{p,d}^0 = c_{g,d}^0 = 2$.
+The process of this PSO variant is too different from the standard PSO, so all changes are combined in steps.
 
 
-2\) Velocity and positions
+1\) Initialize: Each particle $d$ must initialize its own inertial weight $w_d^0=0.5$ and acceleration coefficients $c_{p,d}^0 = c_{g,d}^0 = 2$.
 
-Update the velocity of each particle $d$ with the following switch-case for a uniform random number $r = \text{Unif}(0,1)$ in iteration $i+1$:
+
+2\) Velocity and positions: Update the velocity of each particle $d$ with the following switch-case for a uniform random number $r = \text{Unif}(0,1)$ in iteration $i+1$:
 
 \begin{align*}
   v_d^{i+1} &= w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot Z \cdot (p_{p,d}^i-x_d^i) + c_{g,d}^i \cdot Z \cdot (p_{g}^i-x_d^i) \\
@@ -690,14 +687,10 @@ $$
 $$
 
 
-3\) Fitness evaluation
-
-In the same way as for the standard PSO.
+3\) Fitness evaluation: In the same way as for the standard PSO.
 
 
-4\) Self-adaptive control parameters
-
-For an objective function $f()$ and the maximum fitness of all particles $f_{max} = \text{max}(f(X^{i+1}))$, the parameters $w_d^{i}$, $c_{p,d}^{i}$ and $c_{g,d}^{i}$ are adjusted for each particle $d$ as follows:
+4\) Self-adaptive control parameters: For an objective function $f()$ and the maximum fitness of all particles $f_{max} = \text{max}(f(X^{i+1}))$, the parameters $w_d^{i}$, $c_{p,d}^{i}$ and $c_{g,d}^{i}$ are adjusted for each particle $d$ as follows:
 
 \begin{align*}
   W^i_d &= \frac{\left| f(x_d^{i+1})-f_{max} \right|}{\sum_d\left| f(x_d^{i+1})-f_{max} \right|} \\
@@ -730,14 +723,10 @@ c_{g,d}^{i+1} &=
 \end{align*}
 
 
-5\) Update the best positions
-
-Update the personal best $P$ and global best $p_g$ positions as in the standard PSO.
+5\) Update the best positions: Update the personal best $P$ and global best $p_g$ positions as in the standard PSO.
 
 
-6\) Repeat
-
-Steps 2 to 5 are repeated until the maximum iteration $i_{max}$ is reached.
+6\) Repeat: Steps 2 to 5 are repeated until the maximum iteration $i_{max}$ is reached.
 
 
 ### Analyse Implementation

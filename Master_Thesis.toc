@@ -53,7 +53,7 @@
 \contentsline {section}{\numberline {8.3}Animation 2-Dimensional}{41}{section.8.3}%
 \contentsline {section}{\numberline {8.4}Animation 2-Dimensional App}{42}{section.8.4}%
 \contentsline {section}{\numberline {8.5}Simple Constraint Handling}{42}{section.8.5}%
-\contentsline {section}{\numberline {8.6}Convergence analysis of the standard PSO}{44}{section.8.6}%
+\contentsline {section}{\numberline {8.6}Convergence Analysis of the Standard PSO}{44}{section.8.6}%
 \contentsline {section}{\numberline {8.7}Example MVP}{48}{section.8.7}%
 \contentsline {section}{\numberline {8.8}Example: ITP-MSTE}{49}{section.8.8}%
 \contentsline {section}{\numberline {8.9}Pros and Cons for Continuous Problems}{49}{section.8.9}%
@@ -73,11 +73,11 @@
 \contentsline {subsection}{\numberline {9.5.1}Implementation}{60}{subsection.9.5.1}%
 \contentsline {subsection}{\numberline {9.5.2}Analyse Implementation}{62}{subsection.9.5.2}%
 \contentsline {subsection}{\numberline {9.5.3}Test PSO with Self-Adaptive Velocity}{63}{subsection.9.5.3}%
-\contentsline {section}{\numberline {9.6}PSO R-Package}{64}{section.9.6}%
+\contentsline {section}{\numberline {9.6}PSO R-Package}{63}{section.9.6}%
 \contentsline {chapter}{\numberline {10}Real Life ITP Example}{65}{chapter.10}%
 \contentsline {section}{\numberline {10.1}Transaction Costs}{65}{section.10.1}%
 \contentsline {section}{\numberline {10.2}Rebalancing Constraint}{67}{section.10.2}%
 \contentsline {section}{\numberline {10.3}Objective}{67}{section.10.3}%
-\contentsline {section}{\numberline {10.4}Complete ITP Example}{68}{section.10.4}%
-\contentsline {chapter}{\numberline {11}Future Research}{74}{chapter.11}%
-\contentsline {chapter}{\numberline {12}Conclusion}{75}{chapter.12}%
+\contentsline {section}{\numberline {10.4}Complete ITP Example}{69}{section.10.4}%
+\contentsline {chapter}{\numberline {11}Future Research}{73}{chapter.11}%
+\contentsline {chapter}{\numberline {12}Conclusion}{74}{chapter.12}%
