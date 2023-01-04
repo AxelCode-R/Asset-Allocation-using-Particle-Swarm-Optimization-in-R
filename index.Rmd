@@ -1,6 +1,6 @@
 --- 
 documentclass: book
-classoption: oneside
+classoption: twoside, openany
 github-repo: https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R
 link-citations: yes
 bibliography:

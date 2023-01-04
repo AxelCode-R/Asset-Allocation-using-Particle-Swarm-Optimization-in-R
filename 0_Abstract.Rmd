@@ -19,14 +19,13 @@ global_buffer_force <- F
 \listoffigures
 
 
-\newpage
-
 
 # List of Abbreviations {-}
+
 ```{r, echo=F}
 reactable(
   data.frame(
-    "Abbreviation" = c(
+    Abbreviation = c(
       "xts", 
       "IDE",
       "MVP",
@@ -36,9 +35,8 @@ reactable(
       "QP",
       "SP500",
       "SP500TR"
-      
       ),
-    "Definition"= c(
+    Definition = c(
       "R-object used to store time series data", 
       "Integrated development environment",
       "Mean variance portfolio",
@@ -46,17 +44,19 @@ reactable(
       "Tracking error variance",
       "Mean square tracking error",
       "Quadratic programming",
-      "Standard and Poor's 500 Index",
-      "Standard and Poor's 500 Total Return Index"
+      "Standard and Poor\'s 500 Index",
+      "Standard and Poor\'s 500 Total Return Index"
       )
   ), 
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
   html_save()
+
 ```
 
 
 # Abstract {-}
+\pagenumbering{arabic}
 Asset allocation aims at constructing applicable portfolios that follow a specific investment strategy, e.g. index tracking or optimal risk return. These investment strategies are formulated as equivalent constrained optimization problems whose solutions represent an optimal portfolio depending on the strategy. In practice, these problems are often too complicated to be solved directly by mathematical optimization methods, which usually leads to simplified models that may already contain faulty assumptions or inaccuracies. When this is ruled out and the problem is to be solved realistically, the need for metaheuristics such as particle swarm optimization (PSO) arises. PSO is able to find optimal solutions to complex problems by evaluating random positions in the search space to iteratively approach the optimum. In this thesis, common asset allocation problems are first explained and continuously solved using mathematical optimization methods to generate benchmark problems. After introducing the PSO, it is visualized using simple examples and the convergence behavior is analyzed until it is subsequently tested using the benchmark problems. Then, the PSO and its variants are used to solve optimization problems that cannot be solved by mathematical optimization methods. Finally, the most promising PSO variant is used to solve a discrete index tracking problem considering transaction costs and a rebalancing constraint. Backtests show that the PSO can provide time-stable results for such problems.
 
 

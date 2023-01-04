@@ -4,7 +4,6 @@ editor_options:
   chunk_output_type: console
 ---
 # Challenges of Passive Portfolio Management {#challenges}
-\chaptermark{Challenges of Passive Management}
 In this chapter, two common challenges of passive portfolio management are analyzed to create simple use cases for testing the PSO. The first challenge is the mean-variance portfolio (MVP) from Markowitz's modern portfolio theory, which, simply put, is an optimal allocation of assets in terms of risk and return. The second challenge is the index tracking problem, which attempts to construct a portfolio with minimal tracking error to a given benchmark.
 
 
