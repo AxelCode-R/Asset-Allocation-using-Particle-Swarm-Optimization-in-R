@@ -125,7 +125,7 @@ Any portfolio optimization strategy based on historical data must start with ret
 The default time frame for all raw data in this thesis is a working day, prices are always measured in the evening, and only simple returns are used. Assuming that there is an asset with price $p_{t_i}$ on working day $t_i$ and price $p_{t_{i+1}}$ on the following working day $t_{i+1}$, the simple rate of return for $t_{i+1}$ can be calculated as follows:
 
 $$
-  r_{i+1} = \frac{p_{t_{i+1}}}{p_{t_i}}-1
+  r_{t_{i+1}} = \frac{p_{t_{i+1}}}{p_{t_i}}-1
 $$
 
 
@@ -291,7 +291,7 @@ This function extends the base R function `cov()` by allowing the user to pass a
 
 
 ### `pri_to_ret()` {#pritoret}
-This function calculates the simple returns of a given xts object and replaces missing values with the previous value of this column.
+This function calculates the simple returns of a given xts object containing prices. Before that, missing prices are replaced by the previous value in the respective column.
 
 
 ### `ret_to_cumret()`
