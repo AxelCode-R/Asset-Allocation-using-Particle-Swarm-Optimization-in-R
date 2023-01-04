@@ -900,6 +900,8 @@ save(MSTE_perf, MSTE_infos, MSTE_nav, file="analyses/ITP_long_MSTE_v12_30tc_v3.r
 
 
 ```{r 92, echo=F, include=F}
+from <- "2016-01-01"
+to <- "2022-10-27"
 bm_returns_raw <- buffer(
   get_yf(tickers = "^SP500TR", from = from, to = to)$returns,
   "AS_sp500tr_long"
@@ -1310,8 +1312,12 @@ Another interesting result is that the continuous `solve.QP` approach with a poo
 
 
 ```{r, echo=F, fig.cap = "Comparison of cumulative daily returns of the continuous backtest performed with solve.QP and the SP500TR."}
-plotly_line_chart_xts(ret_to_cumret(cbind.xts(QP_perf, bm_returns_raw[paste0(min(index(QP_perf)),"/", max(index(QP_perf))),]))) %>% 
+
+plotly_line_chart_xts(ret_to_cumret(
+  cbind.xts(QP_perf, bm_returns_raw[paste0(min(index(QP_perf)),"/", max(index(QP_perf))),])
+)) %>% 
   html_save(., vwidth=700, vheight=400)
+
 ```
 
 
