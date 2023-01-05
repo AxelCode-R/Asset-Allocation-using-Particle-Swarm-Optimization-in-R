@@ -134,7 +134,7 @@ plot_ly() %>%
   add_trace(data = df_res, x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
 ```
 
 
@@ -146,20 +146,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
@@ -315,7 +315,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q1, name = "PSO-fnS_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q3, name = "PSO-fnS_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -329,20 +329,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
@@ -439,7 +439,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q1, name = "PSO-local_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q3, name = "PSO-local_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -453,20 +453,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
@@ -609,7 +609,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q1, name = "PSO-preFe_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q3, name = "PSO-preFe_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -623,20 +623,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
@@ -820,7 +820,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q1, name = "PSO-SAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q3, name = "PSO-SAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -834,20 +834,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
@@ -930,7 +930,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q1, name = "PSO-pkg_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q3, name = "PSO-pkg_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -945,20 +945,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
