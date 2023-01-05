@@ -844,7 +844,7 @@ reactable(
     constraint = colDef(name = "constraint break", format = colFormat(digits=9)),
     time = colDef(width=80)
   ),
-  style = list(fontFamily="Computer Modern", fontSize=13)
+  style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
   html_save(., expand = c(-40,-20,-60,-20))
 ```
@@ -1017,7 +1017,7 @@ reactable(
     sum_wgt = colDef(format = colFormat(digits=3)),
     time = colDef(format = colFormat(digits=3))
   ),
-  style = list(fontFamily="Computer Modern", fontSize=13)
+  style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
   html_save(., expand = c(-40,-20,-60,-20))
 ```

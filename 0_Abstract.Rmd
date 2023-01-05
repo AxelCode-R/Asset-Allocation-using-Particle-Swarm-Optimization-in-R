@@ -48,7 +48,7 @@ reactable(
       "Standard and Poor\'s 500 Total Return Index"
       )
   ), 
-  style = list(fontFamily="Computer Modern", fontSize=13)
+  style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
   html_save()
 

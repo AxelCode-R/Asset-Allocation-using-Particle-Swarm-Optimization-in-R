@@ -22,7 +22,7 @@ reactable(
     Latex = colDef(name = "Latex/Displayed", html = T),
     R = colDef(name="R-Code")
   ),
-  style = list(fontFamily="Computer Modern", fontSize=13)
+  style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
   html_save(., expand = c(-40,-20,-45,-20))
 ```

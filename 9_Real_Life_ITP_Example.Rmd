@@ -1044,7 +1044,7 @@ bind_rows(
       n_assets = colDef(name = "count of assets"),
       transaction_costs = colDef(name = "transaction costs (in USD)")
     ),
-    style = list(fontFamily="Computer Modern", fontSize=13)
+    style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
   ) %>% 
   html_save(., vwidth = 900, expand=c(-40,-40,-40,-40))
 ```
@@ -1127,7 +1127,7 @@ bind_rows(
       n_assets = colDef(name = "count of assets"),
       transaction_costs = colDef(name = "transaction costs (in USD)")
     ),
-    style = list(fontFamily="Computer Modern", fontSize=13)
+    style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
   ) %>% 
   html_save(., vwidth = 900, expand=c(-40,-40,-40,-40))
 ```
@@ -1210,7 +1210,7 @@ bind_rows(
       n_assets = colDef(name = "count of assets"),
       transaction_costs = colDef(name = "transaction costs (in USD)")
     ),
-    style = list(fontFamily="Computer Modern", fontSize=13)
+    style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
   ) %>% 
   html_save(., vwidth = 900, expand=c(-40,-40,-40,-40))
 ```
@@ -1293,7 +1293,7 @@ bind_rows(
       n_assets = colDef(name = "count of assets"),
       transaction_costs = colDef(name = "transaction costs (in USD)")
     ),
-    style = list(fontFamily="Computer Modern", fontSize=13)
+    style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
   ) %>% 
   html_save(., vwidth = 900, expand=c(-40,-40,-40,-40))
 ```
