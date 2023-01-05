@@ -14,31 +14,30 @@ Ahmad Badary.
 
 \bibitem[Derenzis(2019)]{TaDe2019}
 Tania Derenzis.
-\newblock Net performance of active and passive equity ucits.
-\newblock \emph{ESMA Report on Trends, Risks and Vulnerabilities}, 2019.
-
-\bibitem[Desmond~Pace and Grima(2016{\natexlab{a}})]{Desm2016}
-Jana~Hili Desmond~Pace and Simon Grima.
-\newblock Active versus passive investing: An empirical study on the us and
-  european mutual funds and etfs.
-\newblock \emph{www.emeraldinsight.com}, 2016{\natexlab{a}}.
-
-\bibitem[Desmond~Pace and Grima(2016{\natexlab{b}})]{PaHi2016}
-Jana~Hili Desmond~Pace and Simon Grima.
-\newblock Active versus passive investing: An empirical study on the us and
-  european mutual funds and etfs.
-\newblock \emph{Emerald Insight}, 2016{\natexlab{b}}.
+\newblock Net performance of active and passive equity ucits, 2019.
+\newblock URL
+  \url{https://www.esma.europa.eu/sites/default/files/trv_2019_2-net_performance_of_active_and_passive_equity_ucits.pdf}.
 
 \bibitem[Engelbrecht(2013)]{Enge2013}
-AP~Engelbrecht.
+Andries~Petrus Engelbrecht.
 \newblock Particle swarm optimization: Global best or local best?
-\newblock \emph{Department of Computer Science University of Pretoria Pretoria,
-  South Africa}, 2013.
+\newblock In \emph{2013 BRICS congress on computational intelligence and 11th
+  Brazilian congress on computational intelligence}, pages 124--135. IEEE,
+  2013.
 
 \bibitem[Fama and French(2010)]{FaFr2010}
-Eugene~F. Fama and Kenneth~R. French.
+Eugene~F Fama and Kenneth~R French.
 \newblock Luck versus skill in the cross-section of mutual fund returns.
-\newblock \emph{THE JOURNAL OF FINANCE}, 2010.
+\newblock \emph{The journal of finance}, 65\penalty0 (5):\penalty0 1915--1947,
+  2010.
+
+\bibitem[Fan and Yan(2014)]{FaYa2014}
+Qinqin Fan and Xuefeng Yan.
+\newblock Self-adaptive particle swarm optimization with multiple velocity
+  strategies and its application for p-xylene oxidation reaction process
+  optimization.
+\newblock \emph{Chemometrics and Intelligent Laboratory Systems}, 139:\penalty0
+  15--25, 2014.
 
 \bibitem[GANTI(2022)]{AkGa2022}
 AKHILESH GANTI.
@@ -46,75 +45,72 @@ AKHILESH GANTI.
 \newblock URL
   \url{https://www.investopedia.com/terms/b/brokerage-fee.asp#:~:text=Realtors%20and%20real%20estate%20brokers,offer%20a%20fixed%2Dfee%20service.}
 
+\bibitem[Gavriushina et~al.(2019)Gavriushina, Sampson, Berthold, Pohlmeier, and
+  Borgelt]{IuGa2019}
+Iuliia Gavriushina, Oliver Sampson, Michael~R Berthold, Winfried Pohlmeier, and
+  Christian Borgelt.
+\newblock Widened learning of index tracking portfolios.
+\newblock In \emph{2019 18th IEEE International Conference On Machine Learning
+  And Applications (ICMLA)}, pages 1800--1805. IEEE, 2019.
+
 \bibitem[Goldfarb and Idnani(1982)]{GoId1982}
-D.~Goldfarb and A.~Idnani.
+Donald Goldfarb and Ashok Idnani.
 \newblock Dual and primal-dual methods for solving strictly convex quadratic
   programs.
-\newblock \emph{In J. P. Hennart (ed.), Numerical Analysis, Springer-Verlag,
-  Berlin, pages 226–239}, 1982.
+\newblock pages 226--239, 1982.
 
 \bibitem[Goldfarb and Idnani(1983)]{GoId1983}
-D.~Goldfarb and A.~Idnani.
+Donald Goldfarb and Ashok Idnani.
 \newblock A numerically stable dual method for solving strictly convex
   quadratic programs.
 \newblock \emph{Mathematical Programming, 27, 1–33}, 1983.
 
-\bibitem[Hu and Eberhardt(2002)]{XiEb2002}
-Xiaohui Hu and Russell Eberhardt.
-\newblock Luck versus skill in the cross-section of mutual fund returns.
-\newblock \emph{swarmintelligence.org}, 2002.
+\bibitem[Hu et~al.(2003)Hu, Eberhart, and Shi]{XiEb2002}
+Xiaohui Hu, Russell~C Eberhart, and Yuhui Shi.
+\newblock Engineering optimization with particle swarm.
+\newblock In \emph{Proceedings of the 2003 IEEE Swarm Intelligence Symposium.
+  SIS'03 (Cat. No. 03EX706)}, pages 53--57. IEEE, 2003.
 
-\bibitem[Iuliia~Gavriushina(2019)]{IuGa2019}
-Oliver~Sampson Iuliia~Gavriushina.
-\newblock Widened learning of index tracking portfolios.
-\newblock \emph{18th IEEE International Conference On Machine Learning And
-  Applications (ICMLA)}, 2019.
+\bibitem[Innocente and Sienz(2021)]{InSi2008}
+Mauro~S Innocente and Johann Sienz.
+\newblock Constraint-handling techniques for particle swarm optimization
+  algorithms.
+\newblock \emph{arXiv preprint arXiv:2101.10933}, 2021.
 
-\bibitem[James~Kennedy(1995)]{KeEb1995}
-Russell~Eberhart James~Kennedy.
-\newblock Particle swarm optimization.
-\newblock 1995.
-\newblock URL \url{https://www.cs.tufts.edu/}.
-
-\bibitem[Konstantinos~Parsopoulos(2002)]{PaVr2002}
-Michael N.~Vrahatis Konstantinos~Parsopoulos.
-\newblock Recent approaches to global optimization problems through particle
-  swarm optimization.
-\newblock \emph{Natural Computing}, 2002.
-
-\bibitem[M.~Jiang(2006)]{Mjly2006}
-S.Y.~Yang M.~Jiang, Y.P.~Luo.
+\bibitem[Jiang et~al.(2007)Jiang, Luo, and Yang]{Mjly2006}
+Ming Jiang, Yupin~P. Luo, and Shiyuan~Y. Yang.
 \newblock Stochastic convergence analysis and parameter selection of the
   standard particle swarm optimization algorithm.
-\newblock \emph{SienceDirect}, 2006.
+\newblock \emph{Information processing letters}, 102\penalty0 (1):\penalty0
+  8--16, 2007.
+
+\bibitem[Kennedy and Eberhart(1995)]{KeEb1995}
+James Kennedy and Russell Eberhart.
+\newblock Particle swarm optimization.
+\newblock In \emph{Proceedings of ICNN'95-international conference on neural
+  networks}, volume~4, pages 1942--1948. IEEE, 1995.
 
 \bibitem[Maringer(2005)]{Mari2005}
-Dientmar Maringer.
-\newblock \emph{Portfolio Management with Heuristic Optimization}.
-\newblock Springer, 2005.
+Dietmar Maringer.
+\newblock \emph{Portfolio management with heuristic optimization}, volume~8.
+\newblock Springer Science \& Business Media, 2005.
 
 \bibitem[Markowitz(1952)]{Mark1952}
-Harry~M. Markowitz.
-\newblock \emph{Portfolio Selection}.
-\newblock The Journal of Finance, 1952.
+Harry Markowitz.
+\newblock {Portfolio Selection}.
+\newblock \emph{Journal of Finance}, 7\penalty0 (1):\penalty0 77--91, March
+  1952.
+\newblock \doi{j.1540-6261.1952.tb01525.}
 
 \bibitem[Markowitz(1959)]{Mark1959}
-Harry~M. Markowitz.
-\newblock \emph{Portfolio Selection EFFICIENT DIVERSIFICATION OF INVESTMENTS}.
-\newblock Yale UNIVERSITY PRESS, 1959.
+Harry Markowitz.
+\newblock \emph{Portfolio Selection: Efficient Diversification of Investments}.
+\newblock Yale University Press, 1959.
 
-\bibitem[Mauro S.~Innocente(2008)]{InSi2008}
-Johann~Sienz Mauro S.~Innocente.
-\newblock Constraint handling techniques for particle swarm optimization
-  algorithms.
-\newblock \emph{ADOPT Research Group, Civil and Computational Engineering
-  Centre}, 2008.
-
-\bibitem[Mercangöz(2021)]{BuAd2021}
-Burcu~Adigüzel Mercangöz.
-\newblock Applying particle swarm optimization: New solutions and cases for
-  optimized portfolios.
-\newblock \emph{Springer Nature Switzerland AG}, 2021.
+\bibitem[Mercang{\"o}z(2021)]{BuAd2021}
+Burcu~Ad{\i}g{\"u}zel Mercang{\"o}z.
+\newblock \emph{Applying Particle Swarm Optimization}.
+\newblock Springer, 2021.
 
 \bibitem[nyse.com(2022)]{NySe2022}
 nyse.com.
@@ -122,18 +118,31 @@ nyse.com.
 \newblock URL
   \url{https://www.nyse.com/publicdocs/nyse/markets/nyse/NYSE_Price_List.pdf}.
 
+\bibitem[Pace et~al.(2016{\natexlab{a}})Pace, Hili, and Grima]{Desm2016}
+Desmond Pace, Jana Hili, and Simon Grima.
+\newblock Active versus passive investing: An empirical study on the us and
+  european mutual funds and etfs.
+\newblock In \emph{Contemporary Issues in Bank Financial Management}. Emerald
+  Group Publishing Limited, 2016{\natexlab{a}}.
+
+\bibitem[Pace et~al.(2016{\natexlab{b}})Pace, Hili, and Grima]{PaHi2016}
+Desmond Pace, Jana Hili, and Simon Grima.
+\newblock Active versus passive investing: An empirical study on the us and
+  european mutual funds and etfs.
+\newblock In \emph{Contemporary Issues in Bank Financial Management}. Emerald
+  Group Publishing Limited, 2016{\natexlab{b}}.
+
+\bibitem[Parsopoulos and Vrahatis(2002)]{PaVr2002}
+Konstantinos~E Parsopoulos and Michael~N. Vrahatis.
+\newblock Recent approaches to global optimization problems through particle
+  swarm optimization.
+\newblock \emph{Natural computing}, 1\penalty0 (2):\penalty0 235--306, 2002.
+
 \bibitem[Poli(2007)]{RiPo2007}
 Riccardo Poli.
-\newblock The sampling distribution of particle swarm optimisers and their
-  stability.
-\newblock \emph{ResearchGate}, 2007.
-
-\bibitem[Qinqin~Fan(2014)]{FaYa2014}
-Xuefeng~Yan Qinqin~Fan.
-\newblock Self-adaptive particle swarm optimization with multiple velocity
-  strategies and its application for p-xylene oxidation reaction process
-  optimization.
-\newblock \emph{ScienceDirect}, 2014.
+\newblock Csm-465: The sampling distribution of particle swarm optimisers and
+  their stability.
+\newblock 2007.
 
 \bibitem[Roth(2022{\natexlab{a}})]{GitHub}
 Axel Roth.
@@ -152,8 +161,8 @@ Axel Roth.
 \newblock Pso-app, 2022{\natexlab{c}}.
 \newblock URL \url{https://edjut-all.shinyapps.io/PSO-App/}.
 
-\bibitem[R'tichoke(2021)]{Rtic2021}
-R'tichoke.
+\bibitem[Roy(2021)]{Rtic2021}
+Riddhiman Roy.
 \newblock How to build a basic particle swarm optimiser from scratch in r,
   2021.
 \newblock URL
@@ -162,17 +171,19 @@ R'tichoke.
 \bibitem[Shukla(2004)]{RaSh2004}
 Ravi Shukla.
 \newblock The value of active portfolio management.
-\newblock \emph{Elsevier Journal of Economics and Business}, 2004.
+\newblock \emph{Journal of economics and business}, 56\penalty0 (4):\penalty0
+  331--346, 2004.
 
-\bibitem[van~den Bergh(2006)]{Fdbe2006}
-F~van~den Bergh.
-\newblock \emph{An Analysis of Particle Swarm Optimizers}.
-\newblock dissertation, University of Pretoria, 2006.
-
-\bibitem[van~den Bergh and Engelbrecht(2010)]{FbEn2010}
-F~van~den Bergh and AP~Engelbrecht.
+\bibitem[Van~den Bergh and Engelbrecht(2010)]{FbEn2010}
+Frans Van~den Bergh and Andries~Petrus Engelbrecht.
 \newblock A convergence proof for the particle swarm optimiser.
-\newblock \emph{Fundamenta Informaticae 105(4):341-374}, 2010.
+\newblock \emph{Fundamenta Informaticae}, 105\penalty0 (4):\penalty0 341--374,
+  2010.
+
+\bibitem[Van Den~Bergh et~al.(2006)]{Fdbe2006}
+Frans Van Den~Bergh et~al.
+\newblock \emph{An analysis of particle swarm optimizers}.
+\newblock PhD thesis, University of Pretoria, 2006.
 
 \bibitem[Zivot(2021)]{Eric2021}
 Eric Zivot.
