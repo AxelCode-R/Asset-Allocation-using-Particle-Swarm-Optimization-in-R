@@ -134,7 +134,7 @@ plot_ly() %>%
   add_trace(data = df_res, x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
 ```
 
 
@@ -146,20 +146,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
@@ -315,7 +315,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q1, name = "PSO-fnS_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q3, name = "PSO-fnS_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -329,20 +329,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
@@ -439,7 +439,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q1, name = "PSO-local_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q3, name = "PSO-local_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -453,27 +453,27 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
 It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
 
 ## Preserving Feasibility
-Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, one of the inventors of PSO, Russel Eberhardt, in [@XiEb2002] explored a variant that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the result of trying to find a feasible position among a million randomly generated positions is as follows:
+Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, a new variant was investigated in [@XiEb2002] that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the result of trying to find a feasible position among a million randomly generated positions is as follows:
 
 
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
@@ -609,7 +609,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q1, name = "PSO-preFe_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q3, name = "PSO-preFe_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -623,20 +623,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
@@ -647,16 +647,13 @@ A PSO approach with self-adaptive velocity that attempts to reduce hyperparamete
 
 
 ### Implementation
-The process of this PSO variant is too different from the standard PSO, so all changes are combined in steps:  
-
-1\) Initialize
-
-Each particle $d$ must initialize its own inertial weight $w_d^0=0.5$ and acceleration coefficients $c_{p,d}^0 = c_{g,d}^0 = 2$.
+The process of this PSO variant is too different from the standard PSO, so all changes are combined in steps.
 
 
-2\) Velocity and positions
+1\) Initialize: Each particle $d$ must initialize its own inertial weight $w_d^0=0.5$ and acceleration coefficients $c_{p,d}^0 = c_{g,d}^0 = 2$.
 
-Update the velocity of each particle $d$ with the following switch-case for a uniform random number $r = \text{Unif}(0,1)$ in iteration $i+1$:
+
+2\) Velocity and positions: Update the velocity of each particle $d$ with the following switch-case for a uniform random number $r = \text{Unif}(0,1)$ in iteration $i+1$:
 
 \begin{align*}
   v_d^{i+1} &= w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot Z \cdot (p_{p,d}^i-x_d^i) + c_{g,d}^i \cdot Z \cdot (p_{g}^i-x_d^i) \\
@@ -690,14 +687,10 @@ $$
 $$
 
 
-3\) Fitness evaluation
-
-In the same way as for the standard PSO.
+3\) Fitness evaluation: In the same way as for the standard PSO.
 
 
-4\) Self-adaptive control parameters
-
-For an objective function $f()$ and the maximum fitness of all particles $f_{max} = \text{max}(f(X^{i+1}))$, the parameters $w_d^{i}$, $c_{p,d}^{i}$ and $c_{g,d}^{i}$ are adjusted for each particle $d$ as follows:
+4\) Self-adaptive control parameters: For an objective function $f()$ and the maximum fitness of all particles $f_{max} = \text{max}(f(X^{i+1}))$, the parameters $w_d^{i}$, $c_{p,d}^{i}$ and $c_{g,d}^{i}$ are adjusted for each particle $d$ as follows:
 
 \begin{align*}
   W^i_d &= \frac{\left| f(x_d^{i+1})-f_{max} \right|}{\sum_d\left| f(x_d^{i+1})-f_{max} \right|} \\
@@ -730,14 +723,10 @@ c_{g,d}^{i+1} &=
 \end{align*}
 
 
-5\) Update the best positions
-
-Update the personal best $P$ and global best $p_g$ positions as in the standard PSO.
+5\) Update the best positions: Update the personal best $P$ and global best $p_g$ positions as in the standard PSO.
 
 
-6\) Repeat
-
-Steps 2 to 5 are repeated until the maximum iteration $i_{max}$ is reached.
+6\) Repeat: Steps 2 to 5 are repeated until the maximum iteration $i_{max}$ is reached.
 
 
 ### Analyse Implementation
@@ -831,7 +820,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q1, name = "PSO-SAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q3, name = "PSO-SAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -845,20 +834,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 
@@ -941,7 +930,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q1, name = "PSO-pkg_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q3, name = "PSO-pkg_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save()
+  html_save(., vheight=400, vwidth = 950)
   
 
 ```
@@ -956,20 +945,20 @@ reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
   columns = list(
-    iter = colDef(width=50),
-    type = colDef(width=90),
-    time_mean = colDef(format = colFormat(digits=2), width=90),
-    const_break_mean = colDef(format = colFormat(digits=6), width=145),
-    best_fit_q1 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_q3 = colDef(format = colFormat(digits=6), width=100),
-    best_fit_mean = colDef(format = colFormat(digits=6), width=110),
-    best_fit_median = colDef(format = colFormat(digits=6), width=125)
+    iter = colDef(width=45),
+    type = colDef(width=85),
+    time_mean = colDef(format = colFormat(digits=2), width=80),
+    const_break_mean = colDef(format = colFormat(digits=6), width=135),
+    best_fit_q1 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_q3 = colDef(format = colFormat(digits=6), width=90),
+    best_fit_mean = colDef(format = colFormat(digits=6), width=100),
+    best_fit_median = colDef(format = colFormat(digits=6), width=115)
   ),
   compact = T,
   rownames = F,
   style = list(fontFamily="Computer Modern", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 870, expand = c(-40,-20,-60,-20))
+  html_save(., vwidth = 800, expand = c(-45,-20,-60,-20))
 ```
 
 

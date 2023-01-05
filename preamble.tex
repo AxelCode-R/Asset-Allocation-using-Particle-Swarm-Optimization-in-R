@@ -5,10 +5,11 @@
 \usepackage{fvextra}
 \usepackage{pdfpages}
 \usepackage{float}
+\usepackage{fancyhdr}
 
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines=true, breakanywhere=true, commandchars=\\\{\}}
 
-\setlength{\abovecaptionskip}{-0.5\baselineskip}
+\setlength{\abovecaptionskip}{-0.1\baselineskip}
 
 
 
@@ -19,6 +20,9 @@
 }
 \makeatother
 
+\makeatletter
+\let\ps@plain\ps@empty
+\makeatother
 
 \expandafter\def\expandafter\normalsize\expandafter{%
     \normalsize%
@@ -31,3 +35,8 @@
 \displaywidowpenalty=10000
 \predisplaypenalty=10000
 
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\nouppercase{\thepage\hfill\leftmark}}
+\fancyhead[RO]{\nouppercase{\leftmark\hfill\thepage}}

@@ -4,7 +4,8 @@ editor_options:
   chunk_output_type: console
 ---
 # Mathematical Optimization Methods for Quadratic Programming Problems {#analyticalsolver}
-In this chapter, the advantages and disadvantages of mathematical optimization methods for quadratic programming problems are discussed. For simplicity, the implementation of a mathematical optimization method is referred to as a solver in this thesis. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver handles quadratic problems; only the applications and analysis are discussed. The main reason for dealing with solvers for quadratic programming problems is to use them as a benchmark for the PSO.
+\chaptermark{Mathematical Optimization Methods}
+In this chapter, the advantages and disadvantages of mathematical optimization methods for quadratic programming problems are discussed. For simplicity, this thesis refers to the implementation of a mathematical optimization method as a solver. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver handles quadratic problems; only the applications and analysis are discussed. The main reason for dealing with solvers for quadratic programming problems is to use them as a benchmark for the PSO.
 
 
 ## Quadratic Programming (QP)

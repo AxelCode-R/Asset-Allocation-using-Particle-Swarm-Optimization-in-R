@@ -3,8 +3,8 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# Challenges of Passiv Investing {#challenges}
-In this chapter, two common challenges of passive investing are analyzed to create simple use cases for testing the PSO. The first challenge is the mean-variance portfolio (MVP) from Markowitz's modern portfolio theory, which, simply put, is an optimal allocation of assets in terms of risk and return. The second challenge is the index tracking problem, which attempts to construct a portfolio with minimal tracking error to a given benchmark.
+# Challenges of Passive Portfolio Management {#challenges}
+In this chapter, two common challenges of passive portfolio management are analyzed to create simple use cases for testing the PSO. The first challenge is the mean-variance portfolio (MVP) from Markowitz's modern portfolio theory, which, simply put, is an optimal allocation of assets in terms of risk and return. The second challenge is the index tracking problem, which attempts to construct a portfolio with minimal tracking error to a given benchmark.
 
 
 ## Mean-Variance Portfolio (MVP)
@@ -109,14 +109,14 @@ plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
     xaxis = list(title=list(text = "sigma", standoff = 10L), range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05))
   ) %>% 
   #config(mathjax = 'cdn') %>% 
-  html_save(., expand = c(-10,0,-10,0))
+  html_save(., expand = c(-10,0,0,0))
 ```
 
 
 The portfolio compositions for each $\lambda$ are:
 
 
-```{r MVPex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", cache=F, warning=F, message=F, fig.cap="Portfolio composition regarding each lambda"}
+```{r MVPex6, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", cache=F, warning=F, message=F, fig.cap="Portfolio composition of MVP\'s in respect of each lambda"}
 p <- plot_ly(type="bar") %>% 
   layout(barmode="stack", xaxis = list(title="lambda", autorange = "reversed"), yaxis = list(title="weight"), margin=list(b=70))
 for(i in 1:ncol(portfolios)){
@@ -137,7 +137,7 @@ It can be observed that the portfolio with the lowest variance was obtained with
 The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns $\mu$ and was also used in the estimation of the covariance $\textstyle\sum$. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of $\lambda$ using the arithmetic mean versus the geometric mean to estimate $\mu$. The weights of the MVP's using the geometric mean are used to calculate $\mu$ and $\sigma$ as a function of the arithmetic mean to make both efficient frontiers comparable:
 
 
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of the use of the arithmetic and geometric means in calculating MVPs for each lambda. Plot of MVPs in terms of mu - sigma calculated using only the arithmetic mean."}
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of the use of the arithmetic and geometric means in the calculation of MVP\'s for each lambda. The plot of MVP\'s in terms of mu - sigma is calculated with the arithmetic mean using the resulting portfolio weights."}
 
 cov_ <- function(mat, mean_vec=NULL){
   if(is.null(mean_vec)){
@@ -274,7 +274,7 @@ It can be seen, that both estimators produce portfolios on the same efficient fr
 
 
 ## Index-Tracking Portfolio (ITP)
-Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor's 500 Index (S&P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by asset managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost [@Desm2016]. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reblanance daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark's assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&P 500 might consist of the one hundred highest-weighted assets in the S&P 500. The ITP can be modeled in two ways analysed in [@IuGa2019]. 
+Indices are baskets of assets that are used to track the performance of a particular asset group. For example, the well-known Standard and Poor's 500 Index (S&P 500 for short) tracks the 500 largest companies in the United States. Indices are not for sale and serve only to visualize the performance of a particular asset group, without incurring transaction costs. Such indices, or a combination of indices, are used by portfolio managers as benchmarks to compare the performance of their funds. Each fund has its own benchmark, which contains roughly the same assets that the manager might buy. If the fund underperforms its benchmark, it may indicate that the fund manager has made poor decisions. Therefore, fund managers strive to outperform their benchmarks through carefully selected investments. Past experience has shown that this is rarely achieved with active management by cost [@Desm2016]. This has led to the growing popularity of passively managed funds whose goal is to track their benchmarks as closely as possible. This can be achieved through either full or sparse replication. Full replication is a portfolio that contains all the assets in the benchmark with the same weightings. The resulting performance equals the performance of the benchmark when transaction costs are neglected. The first problem is that a benchmark may contain assets that are not liquid or cannot be purchased. The second problem is the weighting scheme of the indices, because they are often weighted by their market capitalization, which changes daily. This would result in the need to reblanance daily and increase transaction costs to replicate the performance of the benchmark as closely as possible. To avoid this, sparse replications are used that contain only a fraction of the benchmark's assets. To do so, the portfolio manager must define his benchmark, which should overlap with the investment universe of his fund. He then reduces this universe, taking into account investor constraints and availability, to create a pool of possible assets. For example, a pool that replicates the S&P 500 might consist of the one hundred highest-weighted assets in the S&P 500. The ITP can be modeled in two ways analysed in [@IuGa2019]. 
 
 
 ### ITP with TEV objective (ITP-TEV) {#itpmste}
