@@ -971,7 +971,7 @@ Backtest for $k=0$:
 
 
 ```{r 93, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=0."}
-p_0tc %>% html_save(., vwidth=700, vheight=350, expand=c(-30,20,-15,-20))
+p_0tc %>% html_save(., vwidth=700, vheight=290, expand=c(-30,20,-15,-20))
 ```
 
 
@@ -1054,7 +1054,7 @@ Backtest for $k=10$:
 
 
 ```{r 95, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=10."}
-p_10tc %>% html_save(., vwidth=700, vheight=350, expand=c(-30,20,-15,-20))
+p_10tc %>% html_save(., vwidth=700, vheight=290, expand=c(-30,20,-15,-20))
 ```
 
 
@@ -1137,7 +1137,7 @@ Backtest for $k=20$:
 
 
 ```{r 97, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=20."}
-p_20tc %>% html_save(., vwidth=700, vheight=350, expand=c(-30,20,-15,-20))
+p_20tc %>% html_save(., vwidth=700, vheight=290, expand=c(-30,20,-15,-20))
 ```
 
 
@@ -1220,7 +1220,7 @@ Backtest for $k=30$:
 
 
 ```{r 99, echo=F, fig.cap = "Comparison of the cumulative daily returns of the backtests with the transaction cost value k=30."}
-p_30tc %>% html_save(., vwidth=700, vheight=350, expand=c(-30,20,-15,-20))
+p_30tc %>% html_save(., vwidth=700, vheight=290, expand=c(-30,20,-15,-20))
 ```
 
 
@@ -1304,7 +1304,7 @@ It can be seen that increasing $k$ tends to reduce the average transaction cost 
 
 ```{r, echo=F, fig.cap = "Cumulative daily return loss of the discrete PSO backtests due to transaction costs with respect to the different values of k."}
 plotly_line_chart_xts(cbind.xts(p_0tc_diff, p_10tc_diff, p_20tc_diff, p_30tc_diff)) %>% 
-  html_save(., vwidth=700, vheight=350, expand=c(-30,20,-15,-20))
+  html_save(., vwidth=700, vheight=290, expand=c(-30,20,-15,-20))
 ```
 
 
@@ -1316,7 +1316,7 @@ Another interesting result is that the continuous `solve.QP` approach with a poo
 plotly_line_chart_xts(ret_to_cumret(
   cbind.xts(QP_perf, bm_returns_raw[paste0(min(index(QP_perf)),"/", max(index(QP_perf))),])
 )) %>% 
-  html_save(., vwidth=700, vheight=350, expand=c(-30,20,-15,-20))
+  html_save(., vwidth=700, vheight=290, expand=c(-30,20,-15,-20))
 
 ```
 
