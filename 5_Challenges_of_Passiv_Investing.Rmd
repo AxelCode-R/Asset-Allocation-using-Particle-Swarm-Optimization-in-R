@@ -51,7 +51,6 @@ The expected daily returns and the covariance matrix for the three assets can be
 mu <- ret_to_geomeanret(returns)
 cat0("estimation of expected daily returns:")
 mu
-cat("\n")
 cov <- as.matrix(nearPD(cov_(returns, mu))$mat)
 cat0("estimation of positiv definite covariance matrix:")
 cov
