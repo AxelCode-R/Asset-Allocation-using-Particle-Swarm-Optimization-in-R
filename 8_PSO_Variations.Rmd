@@ -15,7 +15,7 @@ All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a t
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
 
-```{r variants1, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Fitness: Benchmark solution with the standard PSO for comparison with the created variants."}
+```{r variants1, eval = T, include = knitr::is_html_output(), echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 nav <- 20000
  
 from <- "2018-01-01"
@@ -128,6 +128,15 @@ df_res <- df_SPSO %>%
   group_by(iter, type) %>% 
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
+
+save(df_res, df_SPSO, nav, from, to, prices, calc_fit, calc_const, mat, pool_returns, bm_returns, SPSO_feasable_solutions, file="data/save_variant1.rdata")
+
+```
+
+
+```{r variants1s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Fitness: Benchmark solution with the standard PSO for comparison with the created variants."}
+
+load("data/save_variant1.rdata")
 
 plot_ly() %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
@@ -257,7 +266,7 @@ Since it is not possible to know if the PSO is stuck in a local minimum, a stagn
 The PSO with function stretching is called `PSO-fnS` and is evaluated on the test problem with $\gamma_1 = 5000$, $\gamma_2 = 0.5$ and $\mu = 10^{-10}$:
 
 
-```{r variants3, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with functional stretching and the standard PSO."}
+```{r variants3, eval = T, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 # R/PSO_functions.R : pso_fn_stretching()
 
@@ -306,6 +315,13 @@ df_res <- rbind(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
+save(df_res, file="data/save_variant2.rdata")
+```
+
+
+```{r variants3s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with functional stretching and the standard PSO."}
+
+load("data/save_variant2.rdata")
 
 plot_ly() %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
@@ -379,7 +395,7 @@ First, the neighbors for each particle are stored in a suitable data structure b
 The PSO with particle neighborhoods is called `PSO-local` and is evaluated on the test problem with $k=10$:
 
 
-```{r variants5, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the local PSO and the standard PSO."}
+```{r variants5, eval = T, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 # R/PSO_functions.R : pso_local()
 
@@ -430,6 +446,13 @@ df_res <- rbind(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
+save(df_res, file="data/save_variant3.rdata")
+```
+
+
+```{r variants5s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the local PSO and the standard PSO."}
+
+load("data/save_variant3.rdata")
 
 plot_ly() %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
@@ -503,7 +526,7 @@ It can be seen that after a million randomly generated positions, there was not 
 This section compares the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
 
 
-```{r variants6next, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions."}
+```{r variants6next, eval=F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 # R/PSO_functions.R : pso_preserving_feasibility()
 
@@ -600,6 +623,14 @@ df_res <- rbind(df_SPSO2, df) %>%
   ungroup()
 
 df_res$iter <- df_res$iter+400
+
+save(df_res, file="data/save_variant4.rdata")
+```
+
+
+```{r variants6nexts, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions."}
+
+load("data/save_variant4.rdata")
 
 plot_ly() %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
@@ -767,7 +798,7 @@ Even more difficult to interpret is the adjusting of the control parameters. The
 The PSO with self-adaptive velocity is called `PSO-SAvel` and is evaluated for the test problem with the constants used in the implementation section:
 
 
-```{r variants7, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with self-adaptive velocity and the standard PSO."}
+```{r variants7, eval = T, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 # R/PSO_functions.R : pso_self_adaptive_velocity()
 
@@ -811,6 +842,14 @@ df_res <- rbind(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
+
+save(df_res, file="data/save_variant5.rdata")
+```
+
+
+```{r variants7s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with self-adaptive velocity and the standard PSO."}
+
+load("data/save_variant5.rdata")
 
 plot_ly() %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
@@ -859,7 +898,7 @@ The results look very promising, and with fewer hyperparameters to fine-tune, th
 In this section, the existing package `pso` from R is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
 
 
-```{r variantspkg, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO."}
+```{r variantspkg, eval = T, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 set.seed(0)
 
 df <- NULL
@@ -921,6 +960,13 @@ df_res <- bind_rows(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
+save(df_res, file="data/save_variant6.rdata")
+```
+
+
+```{r variantspkgs, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO."}
+
+load("data/save_variant6.rdata")
 
 plot_ly() %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 

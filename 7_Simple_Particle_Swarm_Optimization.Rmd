@@ -355,7 +355,7 @@ In [@Mjly2006], three properties are described for the behavior of the PSO. Firs
 Properties 1-3 depend on the choice of $c_p$, $c_g$ and $w$, which can be found in [@Mjly2006]. The proofs and deeper explanations of the constraints on parameters are beyond the scope of this thesis. In the following, the regions for each property are visualized and the blue region is denoted as the convergent parameter region with bounds $c_p$=$c_g$=$c>0$ and $0<w<1$:
 
 
-```{r convergenceregion, echo=F, fig.cap="Relationship between $w$ and $c$ when $c_p$=$c_g$=$c$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the sequence of expected positions satisfying property 1. The cyan area shows the convergence condition for the sequence of expected positions and the variances tending to zero, which satisfies properties 1 and 2. And the blue area shows the convergence condition for the sequence of expected positions with the variances tending to zero and the entire swarm converging to a single point, which satisfies properties 1, 2, and 3. This is a replication of the visualization from [M. Jiang, 2006]."}
+```{r convergenceregion, echo=F, fig.cap="Relationship between $w$ and $c$ when $c_p$=$c_g$=$c$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the sequence of expected positions satisfying property 1. The cyan area shows the convergence condition for the sequence of expected positions and the variances tending to zero, which satisfies properties 1 and 2. And the blue area shows the convergence condition for the sequence of expected positions with the variances tending to zero and the entire swarm converging to a single point, which satisfies properties 1, 2, and 3. This is a replication of the visualization from [Jiang et al., 2007]."}
 
 
 
@@ -838,11 +838,11 @@ reactable(
   wrap = FALSE,
   compact = T,
   columns = list(
-    type = colDef(width=150),
+    type = colDef(width=140),
     var = colDef(format = colFormat(digits=9), show =F),
-    sd = colDef(format = colFormat(digits=5), width=80),
+    sd = colDef(format = colFormat(digits=5), width=75),
     constraint = colDef(name = "constraint break", format = colFormat(digits=9)),
-    time = colDef(width=80)
+    time = colDef(width=75)
   ),
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
@@ -1012,8 +1012,9 @@ reactable(
   "time" = c(time_qp[3], time_pso[3], time_pso_2[3])
   ),
   columns = list(
+    type = colDef(width = 120),
     fitness = colDef(format = colFormat(digits=5)),
-    const_break = colDef(format = colFormat(digits=4)),
+    const_break = colDef(format = colFormat(digits=9)),
     sum_wgt = colDef(format = colFormat(digits=3)),
     time = colDef(format = colFormat(digits=3))
   ),
