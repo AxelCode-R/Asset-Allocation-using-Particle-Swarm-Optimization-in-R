@@ -143,7 +143,7 @@ plot_ly() %>%
   add_trace(data = df_res, x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  html_save(., vheight=400, vwidth = 850, expand=c(-20, 0, 0, 0))
 ```
 
 
@@ -332,7 +332,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q1, name = "PSO-fnS_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q3, name = "PSO-fnS_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  html_save(., vheight=400, vwidth = 850, expand=c(-20, 0, 0, 0))
   
 
 ```
@@ -464,7 +464,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q1, name = "PSO-local_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q3, name = "PSO-local_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  html_save(., vheight=400, vwidth = 850, expand=c(-20, 0, 0, 0))
   
 
 ```
@@ -643,7 +643,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q1, name = "PSO-preFe_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q3, name = "PSO-preFe_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  html_save(., vheight=400, vwidth = 850, expand=c(-20, 0, 0, 0))
   
 
 ```
@@ -863,7 +863,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q1, name = "PSO-SAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q3, name = "PSO-SAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  html_save(., vheight=400, vwidth = 850, expand=c(-20, 0, 0, 0))
   
 
 ```
@@ -981,7 +981,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q1, name = "PSO-pkg_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q3, name = "PSO-pkg_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  html_save(., vheight=400, vwidth = 850, expand=c(-20, 0, 0, 0))
   
 
 ```
