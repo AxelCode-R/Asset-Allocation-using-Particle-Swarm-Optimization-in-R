@@ -15,7 +15,7 @@ All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a t
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
 
-```{r variants1, eval = T, include = knitr::is_html_output(), echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r variants1, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 nav <- 20000
  
 from <- "2018-01-01"
@@ -129,12 +129,12 @@ df_res <- df_SPSO %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
-save(df_res, df_SPSO, nav, from, to, prices, calc_fit, calc_const, mat, pool_returns, bm_returns, SPSO_feasable_solutions, file="data/save_variant1.rdata")
+save(df_res, df_SPSO, nav, from, to, prices, calc_fit, calc_const, mat, pool_returns, bm_returns, SPSO_feasable_solutions, pool_data, file="data/save_variant1.rdata")
 
 ```
 
 
-```{r variants1s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Fitness: Benchmark solution with the standard PSO for comparison with the created variants."}
+```{r variants1s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Fitness: Benchmark solution with the standard PSO for comparison with the created variants.", strip.white=T}
 
 load("data/save_variant1.rdata")
 
@@ -150,7 +150,7 @@ plot_ly() %>%
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
-```{r variants2, echo=F, fig.cap = "Statistics: Benchmark solution with the standard PSO for comparison with the created variants."}
+```{r variants2, echo=F, fig.cap = "Statistics: Benchmark solution with the standard PSO for comparison with the created variants.", strip.white=T}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -242,8 +242,8 @@ p1 <- plot_ly(x=X, y=sapply(X, fn), type="scatter", mode="lines", name="fn") %>%
 p2 <- plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched", line=list(color="orange")) %>% 
   layout(yaxis=list(range=c(-2, 20)*10^5))
 
-subplot(p1, p2, shareY=T, nrows=2) %>% 
-  html_save(., vheight=550, vwidth=800)
+subplot(p1, p2, shareY=T, nrows=2, margin=0.05) %>% 
+  html_save(., vheight=500, vwidth=800)
 ```
 
 
@@ -254,7 +254,7 @@ It can be seen that the fitness is stretched upward around the local minimum $\b
 plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched", line=list(color="orange")) %>% 
   add_trace(x=X, y=rep(fn(pi-asin(1/10)), length(X)), type="scatter", mode="lines", name="local_minima", line=list(dash="dot", color="grey")) %>% 
   layout(yaxis=list(range=c(1.1*min(sapply(X, fn)), 1.1*max(sapply(X, fn))))) %>% 
-  html_save(., vheight=250, vwidth=800)
+  html_save(., vheight=225, vwidth=800)
 ```
 
 
@@ -266,7 +266,8 @@ Since it is not possible to know if the PSO is stuck in a local minimum, a stagn
 The PSO with function stretching is called `PSO-fnS` and is evaluated on the test problem with $\gamma_1 = 5000$, $\gamma_2 = 0.5$ and $\mu = 10^{-10}$:
 
 
-```{r variants3, eval = T, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r variants3, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+load("data/save_variant1.rdata")
 set.seed(0)
 # R/PSO_functions.R : pso_fn_stretching()
 
@@ -395,7 +396,8 @@ First, the neighbors for each particle are stored in a suitable data structure b
 The PSO with particle neighborhoods is called `PSO-local` and is evaluated on the test problem with $k=10$:
 
 
-```{r variants5, eval = T, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r variants5, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+load("data/save_variant1.rdata")
 set.seed(0)
 # R/PSO_functions.R : pso_local()
 
@@ -526,7 +528,8 @@ It can be seen that after a million randomly generated positions, there was not 
 This section compares the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
 
 
-```{r variants6next, eval=F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r variants6next, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+load("data/save_variant1.rdata")
 set.seed(0)
 # R/PSO_functions.R : pso_preserving_feasibility()
 
@@ -628,7 +631,7 @@ save(df_res, file="data/save_variant4.rdata")
 ```
 
 
-```{r variants6nexts, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions."}
+```{r variants6nextss, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions."}
 
 load("data/save_variant4.rdata")
 
@@ -798,7 +801,8 @@ Even more difficult to interpret is the adjusting of the control parameters. The
 The PSO with self-adaptive velocity is called `PSO-SAvel` and is evaluated for the test problem with the constants used in the implementation section:
 
 
-```{r variants7, eval = T, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r variants7, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+load("data/save_variant1.rdata")
 set.seed(0)
 # R/PSO_functions.R : pso_self_adaptive_velocity()
 
@@ -898,7 +902,8 @@ The results look very promising, and with fewer hyperparameters to fine-tune, th
 In this section, the existing package `pso` from R is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
 
 
-```{r variantspkg, eval = T, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r variantspkg, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+load("data/save_variant1.rdata")
 set.seed(0)
 
 df <- NULL
