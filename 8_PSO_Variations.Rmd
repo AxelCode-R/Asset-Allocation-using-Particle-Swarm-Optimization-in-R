@@ -383,7 +383,7 @@ $$
 To illustrate this, the following figure defines the neighborhoods $N(x_4, 4)$ and $N(x_1, 4)$:
 
 
-![Visualization of the simple neighborhood topology.](img/PSO_local_chart4.jpg){width=50%, height=50%}
+![Visualization of the simple neighborhood topology.](img/PSO_local_chart4.jpg){width=30%, height=30%}
 
 
 In the latter case, it can be seen that the overflowing boundary will continue on the opposite side of the arranged particles.
