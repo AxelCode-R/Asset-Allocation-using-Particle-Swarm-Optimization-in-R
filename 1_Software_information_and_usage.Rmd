@@ -8,7 +8,7 @@ The used packages and versions can be found in the table below:
 
 
 ```{r, echo=F, fig.cap="Information about the used packages and their versions"}
-options(width=60)
+options(width=70)
 x <- capture.output(sessionInfo())
 x <- x[-c(5:11)]
 z <- sapply(x, function(k){cat(paste0(k, "\n"))})
