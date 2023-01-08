@@ -30,7 +30,7 @@ reactable(
 
 For a better understanding of the operators listed, the following examples are intended to illustrate the resulting dimensions and provide insight into the use of these operators.
 
-Matrix product:
+The matrix product is defined by the following mapping:
 
 $$\times: \ \ \mathbb{R}^{x \times y} \times \mathbb{R}^{y \times z} \rightarrow \mathbb{R}^{x \times z},$$
 
@@ -41,10 +41,10 @@ $$
 \times
 \begin{bmatrix}b_{1,1} &\cdots  & b_{1,z} \\ \vdots & \ddots & \vdots  \\ b_{y,1} & \cdots & b_{y,z} \end{bmatrix}
 =
-\begin{bmatrix} \sum_{i=1}^y a_{1, i} \cdot  b_{i,1} &\cdots  & \sum_{i=1}^y a_{1, i} \cdot  b_{i,z} \\ \vdots & \ddots & \vdots  \\ \sum_{i=1}^y a_{x, i} \cdot  b_{i,1}  & \cdots & \sum_{i=1}^y a_{x, i} \cdot  b_{i,z} \end{bmatrix}
+\begin{bmatrix} \sum_{i=1}^y a_{1, i} \cdot  b_{i,1} &\cdots  & \sum_{i=1}^y a_{1, i} \cdot  b_{i,z} \\ \vdots & \ddots & \vdots  \\ \sum_{i=1}^y a_{x, i} \cdot  b_{i,1}  & \cdots & \sum_{i=1}^y a_{x, i} \cdot  b_{i,z} \end{bmatrix}.
 $$
 
-and for a vector:
+In the case of vectors, the matrix product has the following mapping:
 
 $$\times: \ \ \mathbb{R}^{1 \times N} \times \mathbb{R}^{N \times 1} \rightarrow \mathbb{R},$$
 
@@ -58,7 +58,7 @@ $$
 \sum_{i=1}^N a_i \cdot  b_i.
 $$
 
-Outer product:
+The outer product is defined by the following mapping:
 
 $$\otimes: \ \ \mathbb{R}^{x \times 1} \times \mathbb{R}^{1 \times y} \rightarrow \mathbb{R}^{x \times y},$$
 
@@ -72,7 +72,7 @@ $$
 \begin{bmatrix}a_{1} \cdot b_{1} &\cdots  & a_{1} \cdot b_{y} \\ \vdots & \ddots & \vdots  \\ a_{x} \cdot b_{1}  & \cdots & a_{x} \cdot b_{y} \end{bmatrix}.
 $$
 
-This thesis is specified for the use of R, so element-wise operators are very important to make code comparable with formulas. In mathematics, these operators are not common. For this reason, they must be explicitly specified. All element-wise operators work in the same way. Suppose $\square$ is one of the four element-wise operators, then it follows:
+This thesis is specified for the use of R, so element-wise operators are very important to make code comparable with formulas. In mathematics, these operators are not common. For this reason, they must be explicitly specified. All element-wise operators work in the same way. Assuming $\square$ is one of the four element-wise operators, the mapping is defined as follows:
 
 \begin{align*}
 \square &: \ \ R^{x \times y} \times R^{x \times y}  \rightarrow R^{x \times y}\\
@@ -237,7 +237,7 @@ The general formula of the covariance matrix $\textstyle\sum$ of a random vector
   &=\textstyle\sum
 \end{align*}
 
-and can be estimated in R using the basis function `cov()` and historical data. The function `cov_()` explained in \@ref(covfun) can be used to calculate the covariance using the geometric mean to estimate the expected returns.
+and can be estimated in R using the basis function `cov()` and historical data. The function `cov_()` explained in section \@ref(covfun) can be used to calculate the covariance using the geometric mean to estimate the expected returns.
 
 
 ### Portfolio Variance {#portvar}
@@ -248,14 +248,14 @@ Let $\pmb{R}$ be a random vector with $N$ normally distributed elements and $w$ 
   &= E[((\pmb{R} - \mu) \times w)^2]
 \end{align*}
 
-Since $(\pmb{R} - \mu) \times w$ is a scalar, it can be transformed from $((\pmb{R} - \mu) \times w)^2$ to $((\pmb{R} - \mu) \times w)^T \cdot ((\pmb{R} - \mu) \times w)$ and results in:
+Since $(\pmb{R} - \mu) \times w$ is a scalar, it can be transformed from $((\pmb{R} - \mu) \times w)^2$ to \mbox{$((\pmb{R} - \mu) \times w)^T \cdot ((\pmb{R} - \mu) \times w)$} and results in:
 
 \begin{align*}
   Var(\pmb{R} \times w) &= E[((\pmb{R} - \mu) \times w)^T \cdot ((\pmb{R} - \mu) \times w)]\\ 
   &= E[(w^T \times (\pmb{R} - \mu)^T) \cdot ((\pmb{R} - \mu) \times w)]\\ 
   &= w^T \times E[(\pmb{R} - \mu)^T \otimes (\pmb{R} - \mu)] \times w \\
   &= w^T \times Cov(\pmb{R}) \times w \\
-  &= w^T \times \textstyle\sum \times w
+  &= w^T \times \textstyle\sum \times w.
 \end{align*}
 
 The same is true for an estimate of $Var(\pmb{R} \times w)$ by using the estimate of $\textstyle\sum$.
@@ -266,7 +266,7 @@ Suppose there are $N$ assets that form a portfolio with weights $w_{t_0}$ at tim
 
 \begin{align*}
   Z_{t_1} &= (1+R_{t_1}) \cdot w_{t_0}^T\\
-  R_{t_1}^P &= \sum_{n = 1}^N Z_{t_1, n} - 1
+  R_{t_1}^P &= \sum_{n = 1}^N Z_{t_1, n} - 1.
 \end{align*}
 
 And since the portfolio was full in $t_0$, the adjusted weights in $t_1$ are $w_{t_1} = Z_{t_1}/\sum_{n = 1}^N Z_{t_1, n}$ (element-wise division). These new weights can be used in the next time step to replace the weights $w_{t_0}$ in the above formula. The recursive formula for holding a portfolio with weights $\textstyle\sum w_{t_0} = 1$ in $t_0$ and return matrix $R \in \mathbb{R}^{T \times N}$, has portfolio return $R_{t_i}^P = \textstyle\sum_{n = 1}^N Z_{t_i, n} - 1$ in $t_i$ with $i=1, 2, \cdots, T$ for:
@@ -275,7 +275,7 @@ $$
   Z_{t_i} =
   \begin{cases}
   (1+R_{t_i})\cdot w_{t_0}^T &\text{ if }i=1\\
-  (1+R_{t_i})\cdot \frac{Z_{t_{i-1}}}{\sum_{n = 1}^N Z_{t_{i-1, n}}} &\text{ if }i>1
+  (1+R_{t_i})\cdot \frac{Z_{t_{i-1}}}{\sum_{n = 1}^N Z_{t_{i-1, n}}} &\text{ if }i>1.
   \end{cases}
 $$
 

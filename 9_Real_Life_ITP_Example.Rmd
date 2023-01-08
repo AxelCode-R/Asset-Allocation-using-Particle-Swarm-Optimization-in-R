@@ -10,10 +10,10 @@ In the previous chapters, the capabilities of the PSO and the quality of its res
 
 
 ## Transaction Costs
-The cost of buying or selling assets must be considered as it can have a significant impact after several years of investment. There are many different costs that can be incurred depending on the concepts of the broker, the liquidity of the assets and the type of assets. For more information, see [@AkGa2022] or [@NySe2022]. For simplicity, we focus on the situation of a retail investor using an online broker that charges a fixed fee per transaction for the U.S. stocks included in the SP500TR. Each transaction consists of one or more shares of exactly one asset, and a transaction can be either a sale or a purchase. The fixed transaction fee is set at 1 USD, as is done by the online broker Trade Republic. The PSO can account for the transaction cost by increasing the objective value, but it is difficult to make the intensity of the transaction cost value comparable to the objective value. The objective value $v^o$ of the ITP with MSTE approach, as in \@ref(ITPMSTE), is defined as:
+The cost of buying or selling assets must be considered as it can have a significant impact after several years of investment. There are many different costs that can be incurred depending on the concepts of the broker, the liquidity of the assets and the type of assets. For more information, see [@AkGa2022] or [@NySe2022]. For simplicity, we focus on the situation of a retail investor using an online broker that charges a fixed fee per transaction for the U.S. stocks included in the SP500TR. Each transaction consists of one or more shares of exactly one asset, and a transaction can be either a sale or a purchase. The fixed transaction fee is set at 1 USD, as is done by the online broker Trade Republic. The PSO can account for the transaction cost by increasing the objective value, but it is difficult to make the intensity of the transaction cost value comparable to the objective value. The objective value $v^o$ of the ITP with MSTE approach, as in section \@ref(ITPMSTE), is defined as:
 
 $$
- v^o = \left\Vert r_{p}-r_{bm} \right\Vert_2^2 = \sum_{t=1}^T (r_{t,p}-r_{t,bm})^2
+ v^o = \left\Vert r_{p}-r_{bm} \right\Vert_2^2 = \sum_{t=1}^T (r_{t,p}-r_{t,bm})^2.
 $$
 
 The objective value $v^o$ is the squared tracking error or, more precisely, the squared difference of the portfolio returns $r_p$ and the benchmark returns $r_{bm}$. To create a comparable value $v^{tc}$ for transaction costs, we attempt to interpret the absolute loss due to transactions as the absolute error of return $r_{tc}$ incurred in $t_0$ (before the first data point in $t_1$). This absolute error $r_{tc}$ can be calculated by counting the required transactions divided by the net asset value $nav$. The required transactions can be calculated by comparing the shares vector of the previous portfolio $s^{prev}$ and the shares vector of the rebalanced portfolio $s^{reba}$. This results in the following formula for the absolute error return $r_{tc}$:
@@ -27,26 +27,26 @@ with
 $$
   g(x) =    \begin{cases}
   0 &\text{, if }\ x = 0\\
-  1 &\text{, else}
+  1 &\text{, else,}
   \end{cases}
 $$
 
 This results in the following transaction costs value $v^{tc}$:
 
 $$
-v^{tc} = \left\Vert r_{tc} \right\Vert_2^2 = r_{tc}^2
+v^{tc} = \left\Vert r_{tc} \right\Vert_2^2 = r_{tc}^2.
 $$
 
 The idea is to use the $v^{tc}$ value and increase the objective value $v^o$ of the ITP with MSTE approach, but these values are still not the same. The $v^o$ is the sum of squared positive or negative errors and $v^{tc}$ is a squared negative error. To increase the impact of the transaction cost, a coefficient $k$ should increase the intensity, which leads to the following minimization problem:
 
 $$
-  min \ \  v^o + k \cdot v^{tc}
+  min \ \  v^o + k \cdot v^{tc}.
 $$
 
 A suitable value for $k$ could be calculated by dividing the number of training days by the number of days in the holding period increased by a factor of $2.5$. This can be roughly interpreted as weighting the transaction cost error as the $2.5$-day error in the test period. For example, a 4-month training period with 96 working days and a holding period of 1 month with 24 working days yields the following value:
 
 $$
-  k = \frac{96}{24} \cdot 2.5 = 10
+  k = \frac{96}{24} \cdot 2.5 = 10.
 $$
 
 When the holding period is shortened, the intensity coefficient increases, which is a suitable behavior. Nevertheless, it should be analyzed and fine-tuned more.
@@ -62,7 +62,7 @@ $$
 and with a rebalancing constraint of, say, 30%, the rebalanced portfolio is feasible if:
 
 $$
-  w^{rb} \leq 0.3
+  w^{rb} \leq 0.3.
 $$
 
 
@@ -73,7 +73,7 @@ The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool
 Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraints are satisfied. Then it is run four more times to improve the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from \@ref(portfolioreturns) until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool, they are sold and reduce the net asset value due to transaction costs. The same is done by buying or selling any remaining assets. A rough illustration of the process can be found in the following figure:
 
 
-![Backtest Process: visualized as a flowchart](img/Chapter9_PSO_Process6.jpg)
+![Backtest Process: visualized as a flowchart](img/Chapter9_PSO_Process2.drawio.svg)
 
 
 ## Complete ITP Example
