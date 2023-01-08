@@ -134,7 +134,7 @@ save(df_res, df_SPSO, nav, from, to, prices, calc_fit, calc_const, mat, pool_ret
 ```
 
 
-```{r variants1s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Fitness: Benchmark solution with the standard PSO for comparison with the created variants.", strip.white=T}
+```{r variants1s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Fitness: Benchmark solution with the standard PSO for comparison with the created variants", strip.white=T}
 
 load("data/save_variant1.rdata")
 
@@ -150,7 +150,7 @@ plot_ly() %>%
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
-```{r variants2, echo=F, fig.cap = "Statistics: Benchmark solution with the standard PSO for comparison with the created variants.", strip.white=T}
+```{r variants2, echo=F, fig.cap = "Statistics: Benchmark solution with the standard PSO for comparison with the created variants", strip.white=T}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -168,7 +168,7 @@ reactable(
   rownames = F,
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 808, expand = c(-45,-35,-60,-35))
+  html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
 
 
@@ -225,7 +225,7 @@ fn <- function(pos){
 The domain of definition is chosen as $x \in [-20, 20]$. Suppose the PSO gets stuck in the local minimum at $\bar{x} = \pi - \text{arcsin}(\frac{1}{10}) \approx 3.04$. The original function `fn` and the transformed function `fn_stretched`, which matches $H(x)$ in equation \@ref(eq:fnstretchH), are shown in the following graph:
 
 
-```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="The effect of function stretching in a 1D example."}
+```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="The effect of function stretching in a 1D example"}
 fn1 <- function(pos, pos_best, pos_best_fit){
   res <- fn(pos)
   G <- res + 5000 * sqrt(sum((pos - pos_best)^2))/length(pos) * (sign(res - pos_best_fit) + 1)
@@ -250,11 +250,11 @@ subplot(p1, p2, shareY=T, nrows=2, margin=0.05) %>%
 It can be seen that the fitness is stretched upward around the local minimum $\bar{x}$, making it much easier for the PSO to go down the hill and fall into new minima with lower fitness. It can be observed that on the right hand side there was only higher fitness before and after the transformation a local minimum has emerged which has a large area where only higher fitness values are located. In the worst case this can lead to a new local minimum from which it is even more difficult to escape. All regions with lower fitness remain unchanged, as can be seen in the zoomed version of the bottom diagram from above:
 
 
-```{r, echo=F, fig.cap = "Zoomed version of the lower graphic from the figure above."}
+```{r, echo=F, fig.cap = "Zoomed version of the lower graphic from the figure above"}
 plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched", line=list(color="orange")) %>% 
   add_trace(x=X, y=rep(fn(pi-asin(1/10)), length(X)), type="scatter", mode="lines", name="local_minima", line=list(dash="dot", color="grey")) %>% 
   layout(yaxis=list(range=c(1.1*min(sapply(X, fn)), 1.1*max(sapply(X, fn))))) %>% 
-  html_save(., vheight=225, vwidth=800)
+  html_save(., vheight=250, vwidth=800)
 ```
 
 
@@ -320,7 +320,7 @@ save(df_res, file="data/save_variant2.rdata")
 ```
 
 
-```{r variants3s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with functional stretching and the standard PSO."}
+```{r variants3s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with functional stretching and the standard PSO"}
 
 load("data/save_variant2.rdata")
 
@@ -341,7 +341,7 @@ plot_ly() %>%
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
-```{r variants4, echo=F, fig.cap="Comparison of statistics between the PSO with functional stretching and the standard PSO."}
+```{r variants4, echo=F, fig.cap="Comparison of statistics between the PSO with functional stretching and the standard PSO"}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -359,7 +359,7 @@ reactable(
   rownames = F,
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 808, expand = c(-45,-35,-60,-35))
+  html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
 
 
@@ -452,7 +452,7 @@ save(df_res, file="data/save_variant3.rdata")
 ```
 
 
-```{r variants5s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the local PSO and the standard PSO."}
+```{r variants5s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the local PSO and the standard PSO"}
 
 load("data/save_variant3.rdata")
 
@@ -473,7 +473,7 @@ plot_ly() %>%
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
-```{r variants6, echo=F, fig.cap="Comparison of statistics between the local PSO and the standard PSO."}
+```{r variants6, echo=F, fig.cap="Comparison of statistics between the local PSO and the standard PSO"}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -491,7 +491,7 @@ reactable(
   rownames = F,
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 808, expand = c(-45,-35,-60,-35))
+  html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
 
 
@@ -631,7 +631,7 @@ save(df_res, file="data/save_variant4.rdata")
 ```
 
 
-```{r variants6nextss, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions."}
+```{r variants6nextss, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions"}
 
 load("data/save_variant4.rdata")
 
@@ -652,7 +652,7 @@ plot_ly() %>%
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
-```{r variants6next2, echo=F, fig.cap = "Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions."}
+```{r variants6next2, echo=F, fig.cap = "Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions"}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -670,7 +670,7 @@ reactable(
   rownames = F,
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 808, expand = c(-45,-35,-60,-35))
+  html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
 
 
@@ -767,7 +767,7 @@ c_{g,d}^{i+1} &=
 The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration $i$ with 100 maximum iterations are distributed as follows:  
 
 
-```{r, echo=F, fig.cap = "Comparison of the different distributions used in the velocity update of the PSO with self-adapting velocity depending on the iteration."}
+```{r, echo=F, fig.cap = "Comparison of the different distributions used in the velocity update of the PSO with self-adapting velocity depending on the iteration"}
 x <- seq(-1, 2, 0.01)
 i_max <- 100
 
@@ -851,7 +851,7 @@ save(df_res, file="data/save_variant5.rdata")
 ```
 
 
-```{r variants7s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with self-adaptive velocity and the standard PSO."}
+```{r variants7s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with self-adaptive velocity and the standard PSO"}
 
 load("data/save_variant5.rdata")
 
@@ -872,7 +872,7 @@ plot_ly() %>%
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:  
 
 
-```{r variants8, echo=F, fig.cap="Comparison of statistics between the PSO with self-adaptive velocity and the standard PSO."}
+```{r variants8, echo=F, fig.cap="Comparison of statistics between the PSO with self-adaptive velocity and the standard PSO"}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -890,7 +890,7 @@ reactable(
   rownames = F,
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 808, expand = c(-45,-35,-60,-35))
+  html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
 
 
@@ -969,7 +969,7 @@ save(df_res, file="data/save_variant6.rdata")
 ```
 
 
-```{r variantspkgs, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO."}
+```{r variantspkgs, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO"}
 
 load("data/save_variant6.rdata")
 
@@ -991,7 +991,7 @@ The existing PSO package is slightly different from the standard PSO, which is m
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
-```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO."}
+```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO"}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -1009,7 +1009,7 @@ reactable(
   rownames = F,
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 808, expand = c(-45,-35,-60,-35))
+  html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
 
 

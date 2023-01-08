@@ -139,7 +139,7 @@ for(i in 2:ncol(returns_raw)){
 The result is filtered and names are added to represent the number of assets. Now the $\mu$-$\sigma$ diagram can be created:
 
 
-```{r qpmvp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset with the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm."}
+```{r qpmvp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset with the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm"}
 df <- df %>% 
   filter(!is.na(return)) %>% 
   distinct() %>% 
@@ -296,7 +296,7 @@ for(i in n_assets){
 The following chart illustrates the increase in standard deviation to track the historical performance of the SP500TR as the asset pool $N$ decreases:
 
 
-```{r qpitp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Standard deviation (sd) between the performance of the SP500TR and the tracking portfolio over the fitting period for each asset pool of size N. The asset pool was created successively by discarding the five assets with the lowest weights to create the next pool."}
+```{r qpitp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Standard deviation between the performance of the SP500TR and the tracking portfolio over the fitting period for each asset pool of size N. The asset pool was created successively by discarding the five assets with the lowest weights to create the next pool"}
 plot_ly(data=res, x=~N, y=~sd, mode="lines", type = 'scatter') %>% 
   layout(yaxis=list(range=c(0, mean(max(res$sd),mean(res$sd)) ))) %>% 
   html_save()

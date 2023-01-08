@@ -6,13 +6,13 @@
 \usepackage{pdfpages}
 \usepackage{float}
 \usepackage{fancyhdr}
-\usepackage[a4paper,left=2.6cm,right=2.6cm,asymmetric]{geometry}
-\geometry{bindingoffset=1.7cm}
+\usepackage[a4paper,left=4.2cm,right=2.5cm, top=2cm, bottom=2cm]{geometry}
 \usepackage{lmodern}
+\usepackage[nottoc]{tocbibind}
 
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines=true, breakanywhere=true, commandchars=\\\{\}}
 
-\setlength{\abovecaptionskip}{-0.7\baselineskip}
+\setlength{\abovecaptionskip}{-0.3\baselineskip}
 
 
 
@@ -41,7 +41,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LE]{\nouppercase{\thepage\hfill\leftmark}}
-\fancyhead[RO]{\nouppercase{\leftmark\hfill\thepage}}
+\fancyhead[L]{\nouppercase{\leftmark\hfill\thepage}}
+
 
 \setlength{\headheight}{13.59999pt}

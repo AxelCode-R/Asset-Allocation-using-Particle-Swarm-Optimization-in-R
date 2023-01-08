@@ -37,7 +37,7 @@ returns <- buffer(
 The cumulative daily returns are:
 
 
-```{r MVPex2, echo = F, fig.cap = "Cumulative daily returns of IBM (IBM), Apple (AAPL) and Google (GOOG)"}
+```{r MVPex2, echo = F, fig.cap = "Cumulative daily returns of IBM, Apple and Google"}
 plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
   html_save(., expand = c(-10,0,-10,0))
 
@@ -136,7 +136,7 @@ It can be observed that the portfolio with the lowest variance was obtained with
 The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns $\mu$ and was also used in the estimation of the covariance $\textstyle\sum$. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of $\lambda$ using the arithmetic mean versus the geometric mean to estimate $\mu$. The weights of the MVP's using the geometric mean are used to calculate $\mu$ and $\sigma$ as a function of the arithmetic mean to make both efficient frontiers comparable:
 
 
-```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of the use of the arithmetic and geometric means in the calculation of MVP\'s for each lambda. The plot of MVP\'s in terms of mu - sigma is calculated with the arithmetic mean using the resulting portfolio weights."}
+```{r, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of the use of the arithmetic and geometric means in the calculation of MVP\'s for each lambda. The plot of MVP\'s in terms of mu - sigma is calculated with the arithmetic mean using the resulting portfolio weights"}
 
 cov_ <- function(mat, mean_vec=NULL){
   if(is.null(mean_vec)){
@@ -404,7 +404,7 @@ $$
 This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. Because the returns are calculated from adjusted closing prices, the index needs to represent dividends, stock splits and rights offerings too. This can be achieved by taking the S&P 500 Total Return Index (SP500TR in short). The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
 
 
-```{r ITPex, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of ITP-TEV and ITP-MSTE objectives, presented as cumulative daily returns."}
+```{r ITPex, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of ITP-TEV and ITP-MSTE objectives, presented as cumulative daily returns"}
 pool_returns <- buffer(
   get_yf(tickers = c("IBM", "GOOG", "AAPL"), from = "2018-01-01", to = "2019-12-31")$returns, 
   "CPI_3_assets"
@@ -459,7 +459,7 @@ port_returns_MSTE <- xts(pool_returns %*% qp$solution, order.by=index(pool_retur
 
 
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns_TEV, port_returns_MSTE, bm_returns))) %>% 
-  html_save()
+  html_save(., expand=c(-20,0,0,0))
 ```
 
 
