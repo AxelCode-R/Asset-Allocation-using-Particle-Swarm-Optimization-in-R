@@ -124,13 +124,14 @@ for(i in 1:control$maxiter){
   X_fit <- apply(X, 2, fn)
   
   # save new personal best
-  P[, P_fit > X_fit] <- X[, P_fit > X_fit]
-  P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+  P[, P_fit >= X_fit] <- X[, P_fit >= X_fit]
+  P_fit[P_fit >= X_fit] <- X_fit[P_fit >= X_fit]
   
   # save new global best
   if(any(P_fit < p_g_fit)){
-    p_g <- P[, which.min(P_fit)]
-    p_g_fit <- min(P_fit)
+      sel <- sample(which(P_fit==min(P_fit)), 1)
+      p_g <- P[, sel]
+      p_g_fit <- P_fit[sel]
   }
 }
 ```

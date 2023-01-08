@@ -70,13 +70,14 @@ pso_default <- function(
     X_fit <- apply(X, 2, fn)
 
     # save new previews best
-    P[, P_fit > X_fit] <- X[, P_fit > X_fit]
-    P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+    P[, P_fit >= X_fit] <- X[, P_fit >= X_fit]
+    P_fit[P_fit >= X_fit] <- X_fit[P_fit >= X_fit]
 
     # save new global best
-    if(any(P_fit < p_g_fit)){
-      p_g <- P[, which.min(P_fit)]
-      p_g_fit <- min(P_fit)
+    if(any(P_fit <= p_g_fit)){
+      sel <- sample(which(P_fit==min(P_fit)), 1)
+      p_g <- P[, sel]
+      p_g_fit <- P_fit[sel]
     }
 
     if(control$save_traces){
@@ -417,7 +418,7 @@ pso_local <- function(
     # generate global best of each neighborhood
     P_g <- matrix(1, nrow=length(par), ncol=control$s)
     for(z in 1:ncol(P_g)){
-      P_g[, z] <- P[, neighbors[which.min(P_fit[neighbors[, z]]), z]]
+      P_g[, z] <- P[, neighbors[sample(which(P_fit[neighbors[, z]]==min(P_fit[neighbors[, z]])), 1), z]]
     }
 
     # move particles
@@ -439,8 +440,8 @@ pso_local <- function(
     X_fit <- apply(X, 2, fn)
 
     # save new previews best
-    P[, P_fit > X_fit] <- X[, P_fit > X_fit]
-    P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+    P[, P_fit >= X_fit] <- X[, P_fit >= X_fit]
+    P_fit[P_fit >= X_fit] <- X_fit[P_fit >= X_fit]
 
 
     if(control$save_traces){
@@ -593,13 +594,14 @@ pso_self_adaptive_velocity <- function(
 
 
     # save new previews best
-    P[, P_fit > X_fit] <- X[, P_fit > X_fit]
-    P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+    P[, P_fit >= X_fit] <- X[, P_fit >= X_fit]
+    P_fit[P_fit >= X_fit] <- X_fit[P_fit >= X_fit]
 
     # save new global best
     if(any(P_fit < p_g_fit)){
-      p_g <- P[, which.min(P_fit)]
-      p_g_fit <- min(P_fit)
+      sel <- sample(which(P_fit==min(P_fit)), 1)
+      p_g <- P[, sel]
+      p_g_fit <- P_fit[sel]
     }
 
     if(control$save_traces){
