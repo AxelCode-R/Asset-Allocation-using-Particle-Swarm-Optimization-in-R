@@ -134,7 +134,7 @@ save(df_res, df_SPSO, nav, from, to, prices, calc_fit, calc_const, mat, pool_ret
 ```
 
 
-```{r variants1s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Fitness: Benchmark solution with the standard PSO for comparison with the created variants", strip.white=T}
+```{r variants1s, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Fitness of the standard PSO for comparison with later variants", strip.white=T}
 
 load("data/save_variant1.rdata")
 
@@ -150,7 +150,7 @@ plot_ly() %>%
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
-```{r variants2, echo=F, fig.cap = "Statistics: Benchmark solution with the standard PSO for comparison with the created variants", strip.white=T}
+```{r variants2, echo=F, fig.cap = "Statistics of the standard PSO for comparison with later variants", strip.white=T}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),

@@ -6,7 +6,7 @@ editor_options:
   chunk_output_type: console
 ---
 # Particle Swarm Optimization (PSO) {#spso}
-The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm [@PaVr2002]. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are the low computational costs, since only basic mathematical operators are used, the extensibility and the simplicity.
+The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm [@PaVr2002]. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are extensibility, simplicity, and low computational cost, since only basic mathematical operators are used.
 
 ## The Algorithm
 Each particle $d$ with position $x_d$ moves in the search space $\mathbb{R}^N$ and has its own velocity $v_d$ and remembers its previous best position $p_{p,d}$. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
@@ -343,7 +343,7 @@ $$
 
 where $\psi$ denotes the essential infimum of $f$ on $S$, and $\epsilon > 0$. The optimality region can be interpreted as a union of arbitrarily small bounded subsets of $S$ containing a local minimum. This is necessary because each point in the search space $S$ has a probability measure of zero to be randomly generated. For a precise mathematical definition of the optimality region $R_{l,\epsilon}$ see [@Fdbe2006].
 
-We can now start analyzing the *algorithm condition*, which is defined as follows:
+The analysis starts with the *algorithm condition*, which is defined as follows:
 
 **Algorithm condition**: The mapping $D: S \times \mathbb{R}^n\rightarrow S$ should satisfy $f(D(z, \xi)) \leq f(z)$ and if $\xi \in S$, then $f(D(z, \xi)) \leq f(\xi)$.
 
