@@ -1008,7 +1008,7 @@ $$
 This example analyses the error of rounding a solution with the `solve.QP` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP` and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the SP500TR with its top 100 assets derived from the example with discarding in section \@ref(exampleitpsolveqp) and tries to construct a portfolio with the constraints long only, $0.99 \leq \textstyle\sum w_i \leq 1$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
 
 
-```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of solving dicrete ITP-MSTE with solve.QP with rounding and the PSO"}
+```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of solving a discrete ITP-MSTE with PSO and the solve.QP with rounding afterwards"}
 set.seed(0)
 
 nav <- 10000
