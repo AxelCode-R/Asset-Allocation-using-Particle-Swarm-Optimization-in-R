@@ -173,7 +173,7 @@ reactable(
 
 
 ## Function Stretching
-PSO often gets stuck in local minima, i.e. when the current global best position is a local minimum with a surrounding region, with only higher fitnesses. In such situations, it is difficult for the PSO to escape to find the global minimum. Function stretching attempts to allow the PSO to escape from such local minima by transforming the fitness function in the manner described in [@PaVr2002]. After finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function such that the discovered local minimum is transformed into a maximum and any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum $\bar{x}$ are:
+PSO often gets stuck in local minima, i.e. when the current global best position is a local minimum with a surrounding region, with only higher fitnesses. In such situations, it is difficult for the PSO to escape to find the global minimum. Function stretching attempts to allow the PSO to escape such local minima by transforming the fitness function in the same way as described in [@PaVr2002]. After finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function such that the discovered local minimum is transformed into a maximum and any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum $\bar{x}$ are:
 
 \begin{equation} 
 G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
@@ -204,7 +204,7 @@ In the source it is suggested to select the following parameter values as defaul
   \mu &= 10^{-10}.
 \end{align*}
 
-It is difficult to interpret both transformations exactly, especially in higher dimensions. But some concepts can be recognized by looking only at the most important parts. The first transformation $G(x)$ uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function $H(x)$ also does not change any values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity and dropping steeply to repel particles.
+It is difficult to interpret both transformations accurately, especially in higher dimensions, but some concepts can be recognized by looking only at the most important parts. The first transformation $G(x)$ uplifts all values greater than or equal to the local minimum and increases the uplift as a function of distance from the local minimum. The second function $H(x)$ also does not change any values below the local minimum and otherwise focuses on all values near the local minimum, stretching it to infinity and dropping steeply to repel particles.
 
 To better understand the transformation, it is used to stretch a simple function in $\mathbb{R}^1$ defined as follows:
 
@@ -368,7 +368,7 @@ It can be seen that the function stretching did not bring any advantages in this
 
 
 ## Local PSO
-A local PSO is a more general case of the global PSO, which is called the standard PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$, and the global best particle in its neighborhood is called the local best particle of $x_i$. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ given in [@Enge2013] would be:
+The local PSO is a more general case of the standard PSO, which is also referred to as global PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$, and the global best particle in its neighborhood is called the local best particle of $x_i$. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ given in [@Enge2013] would be:
 
 $$
   N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
@@ -522,7 +522,7 @@ rm(X, X_const)
 ```
 
 
-It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step has been modified to start with only one feasible position, randomly selected from one of the final solutions of the standard PSO. To allow comparison with the standard PSO, the procedure was run again with the same starting positions.
+It can be seen that after a million randomly generated positions, there was not a single feasible position. For this reason, the first step has been modified to start with only one feasible position, randomly selected from one of the final solutions of the standard PSO. The standard PSO was also repeated with the same starting positions to allow comparison.
 
 ### Test Preserving Feasibility PSO
 This section compares the PSO with feasibility preservation and the standard PSO. Both PSOs use the same feasible solutions as starting positions:
@@ -681,7 +681,7 @@ A PSO approach with self-adaptive velocity that attempts to reduce hyperparamete
 
 
 ### Implementation
-The process of this PSO variant is too different from the standard PSO, so all changes are combined in steps.
+The process of this PSO variant is significantly different from the standard PSO, so all changes are summarized in steps.
 
 
 1\) Initialize: Each particle $d$ must initialize its own inertial weight $w_d^0=0.5$ and acceleration coefficients $c_{p,d}^0 = c_{g,d}^0 = 2$.
