@@ -390,7 +390,7 @@ for(i in 1:length(unique(trace_data$iter)) ){
 
 
 ## Animation 2-Dimensional App
-To gain an even better understanding of the behavior of a PSO, a WebApp was developed that allows the user to minimize arbitrary two-dimensional functions with constraints. Three variants of the PSO were implemented, which will be analyzed in detail in the later chapters of this thesis. The app can also be used to study the effect of hyperparameters on the behavior of the PSO in more detail. Within the app it is possible to display each step of the iterations and this even with all the direction vectors that generate the resulting motion of each particle. The app is hosted at [@PSOApp] and the code for it is also freely available at [@GitPSO]. The hosted app may be used for educational purposes and using, copying, modifying, and sharing the code is permitted without restriction.
+To gain an even better understanding of the behavior of a PSO, a WebApp was developed that allows the user to minimize any two-dimensional functions with constraints. Three variants of the PSO were implemented, which will be analyzed in detail in the later chapters of this thesis. The app can also be used to study the effect of hyperparameters on the behavior of the PSO in more detail. Within the app it is possible to display each step of the iterations and this even with all the direction vectors that generate the resulting motion of each particle. The app is hosted at [@PSOApp] and the code for it is also freely available at [@GitPSO]. The hosted app may be used for educational purposes and using, copying, modifying, and sharing the code is permitted without restriction.
 
 
 ## Simple Constraint Handling
@@ -462,7 +462,7 @@ This approach to dealing with constraints is called the penalization method and 
 ## Convergence Analysis of the Standard PSO
 This section summarizes the mathematical convergence analysis of the standard PSO with constant inertia weight $w$ performed in [@FbEn2010], whose main goal is to prove whether the PSO converges to a local or even a global minimum. In this section, the results from the sources are presented in a simplified form so that the complete scope can be understood. For this purpose, mathematical principles are presented in a simplified way and not proven, since otherwise it would exceed the scope of this thesis. It is recommended to look at the exact proofs in the mentioned sources to get a deeper understanding of it.
 
-First, we show whether the PSO satisfies the *algorithm condition* and the *convergence condition (for local search)* to be classified as a local search algorithm, i.e., that the PSO is guaranteed to converge to at least one local minimum. Formally, this is defined in the following theorem:
+First, we show whether the PSO satisfies the *algorithm condition* and the *convergence condition (for local search)* to be classified as a local search algorithm, i.e., that the PSO is guaranteed to converge to at least a local minimum. Formally, this is defined in the following theorem:
 
 
 ::: {.theorem name="Local search algorithm"}
@@ -491,9 +491,9 @@ That is, the *algorithm condition* is satisfied if the algorithm has a mapping $
 
 The next condition focuses on the convergence behavior of the PSO, which must ensure that the swarm converges to a fixed point. In [@FbEn2010], results were referenced from [@RiPo2007], which analyzed the convergence property of a deterministic PSO, i.e., when the uniformly random numbers are replaced by their upper bounds. Subsequently, the results were verified by simulations of the stochastic standard PSO. This work was subsequently extended by [@Mjly2006] to deal directly with the stochastic version of the standard PSO. 
 
-In [@Mjly2006], three properties are described for the behavior of the PSO. First, the trajectory of each particle $d$ is described as a sequence of random variables $\{\pmb{X}^d_i\}$, with particle positions $\pmb{X}^d_i$ at iteration $i$. Property 1 is satisfied if the expected value of particle positions $\pmb{X}^d_i$ converges to a fixed point for each particle ($\lim_{i\rightarrow \infty} E[\pmb{X}^d_i] = p^d \ \forall d$). Property 2 is satisfied if the variance of the positions for each particle tends to zero ($\lim_{i\rightarrow \infty} Var[\pmb{X}^d_i] = 0 \ \forall d$). Property 3 is satisfied if the entire particle swarm converges to a fixed point in the mean square, i.e., all particle positions converge to a single point $\hat{p}$, which can be summarized as $\lim_{i\rightarrow \infty} E[\pmb{X}_i^d-\hat{p}]^2=0 \ \forall d$. 
+In [@Mjly2006], the trajectory of each particle $d$ is described as a sequence of random variables $\{\pmb{X}^d_i\}$, with particle positions $\pmb{X}^d_i$ in iteration $i$. This is used to determine the following three properties that govern the convergence behavior of the PSO: Property 1 is satisfied if the expected value of particle positions $\pmb{X}^d_i$ converges to a fixed point for each particle, which can be summarized as $\lim_{i\rightarrow \infty} E[\pmb{X}^d_i] = p^d \ \forall d$. Property 2 is satisfied if the variance of the positions for each particle tends to zero, which can be summarized as $\lim_{i\rightarrow \infty} Var[\pmb{X}^d_i] = 0 \ \forall d$. Property 3 is satisfied if the entire particle swarm converges to a fixed point in the mean square, i.e., all particle positions converge to a single point $\hat{p}$, which can be summarized as $\lim_{i\rightarrow \infty} E[\pmb{X}_i^d-\hat{p}]^2=0 \ \forall d$. 
 
-Properties 1-3 depend on the choice of $c_p$, $c_g$ and $w$, which can be found in [@Mjly2006]. The proofs and deeper explanations of the constraints on parameters are beyond the scope of this thesis. In the following, the regions for each property are visualized and the blue region is denoted as the convergent parameter region with bounds $c_p$=$c_g$=$c>0$ and $0<w<1$:
+Properties 1-3 depend on the choices of $c_p$, $c_g$ and $w$, which can be found in [@Mjly2006]. The proofs and deeper explanations of the constraints on parameters are beyond the scope of this thesis. In the following, the regions for each property are visualized and the blue region is denoted as the convergent parameter region with bounds $c_p$=$c_g$=$c>0$ and $0<w<1$:
 
 
 ```{r convergenceregion, echo=F, fig.cap="Relationship between $w$ and $c$ when $c_p$=$c_g$=$c$ to distinguish between different convergence behaviors. The black area shows the convergence condition for the sequence of expected positions satisfying property 1. The cyan area shows the convergence condition for the sequence of expected positions and the variances tending to zero, which satisfies properties 1 and 2. And the blue area shows the convergence condition for the sequence of expected positions with the variances tending to zero and the entire swarm converging to a single point, which satisfies properties 1, 2, and 3. This is a replication of the visualization from [Jiang et al., 2007]"}
@@ -534,9 +534,7 @@ plot_ly(z = grid*1, type = "heatmap", x = colnames(grid), y=rownames(grid), colo
 ```
 
 
-In the online version of this thesis, the diagram can be displayed with additional information as a mouse-hover, which facilitates the precise classification of a parameter pair.
-
-Back to the convergence behavior of the PSO analyzed in [@FbEn2010], which uses parameters $w$, $c_p$ and $c_g$ that are located in the convergent parameter region. This results in a standard PSO that converges with all particles in a single point $\hat{p}$. The PSO is guaranteed to reach at least a local minimum if, in addition to the *algorithm condition*, the following condition is also satisfied:
+In the HTML version of this thesis, the diagram can be displayed with additional information as a mouse-hover, which facilitates the precise classification of a parameter pair.
 
 Returning to the convergence behavior of the PSO analyzed in [@FbEn2010], which uses parameters $w$, $c_p$, and $c_g$ that lie in the convergent parameter region. This leads to a standard PSO that converges with all particles in a single point $\hat{p}$. The PSO is guaranteed to reach at least a local minimum if, in addition to the *algorithm condition*, the following condition is also satisfied:
 
@@ -549,7 +547,7 @@ $$
 with a probability measure $\mu_i$ and a distance measure $\text{dist}()$.
 
 
-Simply put, the *convergence condition (for local search)* is satisfied if the PSO has a zero probability of decreasing the distance to the optimality region in each iteration. Unfortunately, this is not the case, as can be seen in a simple example. Suppose the PSO is to minimize a 2-dimensional objective function $f$ with only two particles and the initial positions are $x_1=(k_1, k_2)$, $x_2=(k_1, k_2) + a_1 \cdot (1, 0)$ and the initial velocities are $v_1=a_2 \cdot (1, 0)$ and $v_2=a_3 \cdot (1, 0)$ with constants $k_1, k_2, a_1, a_2$, and $a_3$. It follows that the personal and global best positions have $k_2$ in the second coordinate, resulting in a zero in the second coordinate of the velocity update in all iterations. Therefore, the coordinate $k_2$ is not guaranteed to lead to the optimality region and the PSO cannot improve in the second coordinate, which contradicts the *convergence condition (for local search)* and it follows that the PSO is not a local search algorithm.
+Simply put, the *convergence condition (for local search)* is satisfied if the PSO has a zero probability of decreasing the distance to the optimality region in each iteration. Unfortunately, this is not the case, as can be seen in a simple example. Suppose the PSO is to minimize a 2-dimensional objective function $f$ with only two particles and the initial positions are $x_1=(k_1, k_2)$, $x_2=(k_1, k_2) + a_1 \cdot (1, 0)$ and the initial velocities are $v_1=a_2 \cdot (1, 0)$ and $v_2=a_3 \cdot (1, 0)$ with constants $k_1, k_2, a_1, a_2$, and $a_3$. It follows that the personal and global best positions have $k_2$ in the second coordinate, resulting in a zero in the second coordinate of the velocity update in all iterations. Therefore, the second coordinate with $k_2$ is not guaranteed to lead to the optimality region and the PSO cannot improve in this coordinate, which contradicts with the *convergence condition (for local search)* and it follows that the PSO is not a local search algorithm.
 
 The possibility of this premature stagnation in a coordinate decreases significantly with increasing particle number, which is why it is very unlikely in practice. In order for the PSO to still be classified as a local search algorithm, a variant of the PSO was developed in [@FbEn2010], called the guaranteed convergence PSO (GCPSO). In this variant, it is guaranteed that if no improvement occurs, it is at least possible to randomly shift the position of each particle in each coordinate by the machine precision. Therefore, the GCPSO is classified as a local search algorithm. 
 
@@ -979,15 +977,16 @@ reactable(
   wrap = FALSE,
   compact = T,
   columns = list(
-    type = colDef(width=140),
+    type = colDef(width=150),
     var = colDef(format = colFormat(digits=9), show =F),
     sd = colDef(format = colFormat(digits=5), width=75),
-    constraint = colDef(name = "constraint break", format = colFormat(digits=9)),
-    time = colDef(width=75)
+    constraint = colDef(name = "constraint break", format = colFormat(digits=9), width=120),
+    time = colDef(width=65)
   ),
-  style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
+  style = list(fontFamily="Computer Modern, sans-serif", fontSize=13),
+  defaultColDef = colDef(align="left")
 ) %>% 
-  html_save(., expand = c(-40,-20,-60,-20))
+  html_save(., force=T, expand = c(-40,-20,-35,-20))
 ```
 
 
