@@ -295,7 +295,7 @@ This function calculates the simple returns of a given xts object containing pri
 
 
 ### `ret_to_cumret()`
-This function is used to calculate cumulative returns normalized to 100 from a given xts object containing returns. This function is often used before plotting time series.
+This function is used to calculate cumulative returns normalized to 100 from a given xts object containing returns. This function is often used before plotting return time series.
 
 
 ### `ret_to_geomeanret()` {#geomeanret}

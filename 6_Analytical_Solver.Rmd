@@ -18,7 +18,7 @@ $$
 and is valid under the linear constraints:
 
 $$
-  A^T \times x \geq b_0
+  A^T \times x \geq b_0.
 $$
 
 Some other sources notate the problem with different signs or coefficients, all of which are interchangeable with the above problem. In addition, the above problem has the same notation used in the R package `quadprog`, which reduces the substitution overhead. All modern programming languages have many solvers for quadratic problems. They differ mainly in the computation time for certain problems and the requirements. Some commercial QP solvers additionally accept more complex constraints, such as absolute (e.g., $|A^T \times x| \geq a_0$) or mixed-integer (e.g., $x \in \mathbb{N}$). Especially the mixed-integer constraint problems lead to a huge increase in memory requirements.
@@ -139,7 +139,7 @@ for(i in 2:ncol(returns_raw)){
 The result is filtered and names are added to represent the number of assets. Now the $\mu$-$\sigma$ diagram can be created:
 
 
-```{r qpmvp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset with the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm"}
+```{r qpmvp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset that has the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm"}
 df <- df %>% 
   filter(!is.na(return)) %>% 
   distinct() %>% 
@@ -293,7 +293,7 @@ for(i in n_assets){
 ```
 
 
-The following chart illustrates the increase in standard deviation to track the historical performance of the SP500TR as the asset pool $N$ decreases:
+The following chart illustrates the increase in standard deviation to track the historical performance of the SP500TR as the number of assets $N$ in the asset pool decreases:
 
 
 ```{r qpitp4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Standard deviation between the performance of the SP500TR and the tracking portfolio over the fitting period for each asset pool of size N. The asset pool was created successively by discarding the five assets with the lowest weights to create the next pool"}

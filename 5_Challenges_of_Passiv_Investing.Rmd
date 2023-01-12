@@ -302,7 +302,7 @@ $$
 Var(\pmb{R}_{bm}) = \sigma_{bm}^2
 $$
 
-The variance of the portfolio can be solved with dection \@ref(portvar):
+The variance of the portfolio can be solved with section \@ref(portvar):
 
 $$
 Var(\pmb{R} \times w) = w^T \times Cov(\pmb{R}) \times w.
@@ -359,7 +359,7 @@ $$
   \frac{1}{T} \left\Vert r_{p}-r_{bm} \right\Vert_2^2.
 $$
 
-Which results in the following minimization with neglected stretching factor:
+This results in the following minimization with neglected stretching coefficient:
 
 $$
  min \ \  \left\Vert r_{p}-r_{bm} \right\Vert_2^2.

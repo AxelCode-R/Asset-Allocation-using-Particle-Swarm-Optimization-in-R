@@ -6,7 +6,7 @@ editor_options:
   chunk_output_type: console
 ---
 # Particle Swarm Optimization (PSO) {#spso}
-The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm [@PaVr2002]. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are the low computational costs, since only basic mathematical operators are used, the extensibility and the simplicity.
+The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm [@PaVr2002]. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are extensibility, simplicity, and low computational cost, since only basic mathematical operators are used.
 
 ## The Algorithm
 Each particle $d$ with position $x_d$ moves in the search space $\mathbb{R}^N$ and has its own velocity $v_d$ and remembers its previous best position $p_{p,d}$. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
@@ -182,7 +182,7 @@ res <- pso(
 ```
 
 
-The function `f` has many local minima and a global minima at $(1,1)$ with the value $0$. The background color scale ranges from 0 as red to 20 as purple. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:
+The function `f` has many local minima and a global minimum at $(1,1)$ with the value $0$. The background color scale ranges from 0 as purple to 20 as yellow. The PSO has 10 particles, iterated 30 times with an inertia weight decreasing from 0.8 to 0. The iterations are visualized in the following GIF:
 
 
 ```{r gifanimate, echo=F, eval=F, include=F}
@@ -306,7 +306,7 @@ fig <- plot_ly() %>%
 fig
 ```
 
-```{r gifanimate, echo=F, eval=F, include=F}
+```{r gifanimate2, echo=F, eval=F, include=F}
 
 
 grid <- setNames(expand.grid(seq(-10, 10, length.out = 100), seq(-10, 10, length.out = 100)), c("x1", "x2"))
@@ -339,7 +339,7 @@ trace_data <- trace_data %>% arrange(iter)
 
 temp <- sapply(list.files('gifs/pso_2dim_v2/', full.names = T), file.remove)
 for(i in 1:length(unique(trace_data$iter)) ){
-  fig <- plot_ly() %>%
+  plot_ly() %>%
       add_trace(
         data=trace_data[trace_data$iter==i,],
         x=~X1,
@@ -351,9 +351,9 @@ for(i in 1:length(unique(trace_data$iter)) ){
         marker = list(color = 'red', size=9, opacity = 1, showscale = F)
       ) %>%
       layout(
-        xaxis = list(title = "axis_1", gridcolor = '#0000', zerolinewidth = 0, 
+        xaxis = list(title = "axis_1", gridcolor = '#0000', zerolinewidth = 0, tickfont=list(size=18), titlefont=list(size=18), 
                      zeroline = FALSE, zerolinecolor = '#0000', range=c(min(as.numeric(colnames(grid))), max(as.numeric(colnames(grid))))),
-        yaxis = list(title = "axis_2", gridcolor = '#0000', zerolinewidth = 0, 
+        yaxis = list(title = "axis_2", gridcolor = '#0000', zerolinewidth = 0, tickfont=list(size=18), titlefont=list(size=18),
                      zeroline = FALSE, zerolinecolor = '#0000', range=c(min(as.numeric(rownames(grid))), max(as.numeric(rownames(grid))))),
         images = list(
           list(
@@ -375,13 +375,13 @@ for(i in 1:length(unique(trace_data$iter)) ){
       ) %>%
       config(displayModeBar = FALSE) %>% 
       html_save(., force=T, vheight = 600, vwidth = 800, delay = 1)
-  file.copy(from = "docs/p.png", to = paste0("gifs/pso_2dim_v2/gif_2dim_", if(i<10){paste0("0",i)}else{i},".png"))
+  file.copy(from = "docs/p.png", to = paste0("gifs/pso_2dim_v2/gif_2dim_", i,".png"))
 }
 
 ```
 ```{=latex}
 \begin{center}
-\animategraphics[loop, width=10cm]{10}{./gifs/pso_2dim_v2/gif_2dim_}{1}{40}
+\animategraphics[loop, width=10cm]{5}{./gifs/pso_2dim_v2/gif_2dim_}{1}{40}
 \begin{figure}[!h]
 \caption{Visualization of the behavior of the standard PSO in a GIF.}
 \end{figure}
@@ -483,7 +483,7 @@ $$
 
 where $\psi$ denotes the essential infimum of $f$ on $S$, and $\epsilon > 0$. The optimality region can be interpreted as a union of arbitrarily small bounded subsets of $S$ containing a local minimum. This is necessary because each point in the search space $S$ has a probability measure of zero to be randomly generated. For a precise mathematical definition of the optimality region $R_{l,\epsilon}$ see [@Fdbe2006].
 
-We can now start analyzing the *algorithm condition*, which is defined as follows:
+The analysis starts with the *algorithm condition*, which is defined as follows:
 
 **Algorithm condition**: The mapping $D: S \times \mathbb{R}^n\rightarrow S$ should satisfy $f(D(z, \xi)) \leq f(z)$ and if $\xi \in S$, then $f(D(z, \xi)) \leq f(\xi)$.
 
