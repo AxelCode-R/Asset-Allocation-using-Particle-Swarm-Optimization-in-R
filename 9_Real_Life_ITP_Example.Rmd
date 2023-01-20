@@ -53,7 +53,7 @@ When the holding period is shortened, the intensity coefficient increases, which
 
 
 ## Rebalancing Constraint
-The rebalancing constraint restricts the changes in weights by considering the previous portfolio weight vector $w^{prev}$, which is recalculated using the previous shares vector and the rebalanced portfolio weight vector $w^{reba}$. The value constrained by the rebalancing constraint should take into account the weights moved between assets and additional weights added. Example: the previous portfolio had a weight vector $w^{prev} = [0.5, 0.4]$ as of the current rebalancing date and the rebalanced portfolio has a weight vector $w^{reba} = [0.8, 0.2]$. The rebalanced weight from the second to the first asset is $0.2$ and the additional weight added is $0.1$, resulting in a rebalance of $0.2+0.1=0.3$ weight. Below is the formula for calculating the rebalancing weight $w^{rb}$:
+The rebalancing constraint restricts the changes in weights by comparing the previous portfolio weight vector $w^{prev}$ and the rebalanced portfolio weight vector $w^{reba}$. The value of the rebalancing should account for the weights shifted between assets and the additional weights added. Example: the previous portfolio had a weight vector $w^{prev} = [0.5, 0.4]$ at the time before rebalancing, and the rebalanced portfolio has a weight vector $w^{reba} = [0.8, 0.2]$. The shifted weight from the second asset to the first asset is $0.2$ and the additional weight added is $0.1$, resulting in a rebalancing of $0.2+0.1=0.3$ weight. Below is the formula for calculating the rebalancing weight $w^{rb}$ in the general case:
 
 $$
   w^{rb} := \frac{\left\Vert w^{prev}-w^{reba} \right\Vert_1 - |\sum w^{prev} - \sum w^{reba}|}{2}+|\sum w^{prev} - \sum w^{reba}|
@@ -70,14 +70,15 @@ $$
 The goal is to simulate a tracking portfolio that tracks the SP500TR with a pool of 100 assets included in SP500TR over multiple rebalancing dates between 2016-05-01 and 2022-10-27 with one-month intervals. The pool of assets is created for each rebalancing date using the solve.QP approach, continuously discarding assets as in section \@ref(exampleitpsolveqp), with a maximum of 10 assets changing on each rebalancing date to reduce forced rebalancing. All considered assets have no missing values in the training period. In addition, the solve.QP approach serves as a benchmark and the continuous solution is used as a particle position for the first rebalancing date. The tracking portfolio is solved using the self-adaptive velocity PSO from the last chapter, which yielded stable results. The tracking portfolio has the following constraints: discrete number of stocks, long only, maximum weight of 10%, $0.96 \leq \sum w_i \leq 0.995$, rebalancing under 30% weight, considering transaction cost with diffrent values for $k$, net asset value of 20000 USD, length of training period of four months and testing period of one month. 
 
 
-Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraints are satisfied. Then it is run four more times to improve the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from section \@ref(portfolioreturns) until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool, they are sold and reduce the net asset value due to transaction costs. The same is done by buying or selling any remaining assets. A rough illustration of the process can be found in the following figure:\pagebreak
+Each PSO run uses 100 particles and iterates 100 times. The PSO is repeated until the constraints are satisfied. Then it is run four more times to improve the quality of the feasible solution. Each rebalancing portfolio is simulated with the portfolio return function from section \@ref(portfolioreturns) until the next rebalancing date. In each step the weights and shares of the tracking portfolio are calculated and the shares are used to calculate the weights at the next rebalancing date. If assets are missing in the next asset pool, they are sold and reduce the net asset value due to transaction costs. The same is done by buying or selling any remaining assets. A rough illustration of the process can be found in the figure on the next page.\pagebreak
 
 
 ![Backtest Process: visualized as a flowchart](img/Chapter9_PSO_Process3333.jpg)
 
+\pagebreak
 
 ## Complete ITP Example
-The following charts visualize the test period of the whole backtests. The `QP_MSTE_cont` line represents the performance of the continuous solution of the ITP-MSTE objective solved with solve.QP and stays the same for all backtests. The discretized solution using the PSO is named `PSO_MSTE_disc` and the `PSO_MSTE_disc_TR` considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore there are used different values for the transaction costs intensity $k \in \{0, 10, 20, 30\}$ of each backtest which can be seen in the legends by `0tc`, `10tc`, `20tc` and `30tc`.
+The following charts visualize the test period of the whole backtests. The `QP_MSTE_cont` line represents the performance of the continuous solution of the ITP-MSTE objective solved with solve.QP and stays the same for all backtests. The discretized solution using the PSO is named `PSO_MSTE_disc` and the `PSO_MSTE_disc_TR` considers all transaction costs in its performance. Everything is compared to the SP500TR which is the objective to track. Furthermore, different values for the transaction cost intensity $k \in \{0, 10, 20, 30\}$ of the individual backtests are used, indicated in the legends as `0tc`, `10tc`, `20tc` and `30tc`.
 
 
 ```{r 91, echo=F, include=F, eval=F}
@@ -1299,7 +1300,7 @@ bind_rows(
 ```
 
 
-It can be seen that increasing $k$ tends to reduce the average transaction cost in USD. Since each backtest depends on different previous portfolios, further backtests are needed to confirm this result. The absolute loss of `nav` between the results of the PSO without and with transaction costs for each $k$ can be found in the chart below:
+Since each backtest depends on different previous portfolios, further backtests are needed to give confident conclusions about the phenomena that can be observed. That being said, it can be observed in this particular case that an increase in $k$ tends to lower the average transaction costs. This can be seen in the comparison of the statistics of the individual backtests, since there, except for $k=30$, a higher $k$ leads to lower average transaction costs. To analyze this in more detail, the loss due to transaction costs of each backtest is visualized in the following chart:
 
 
 ```{r, echo=F, fig.cap = "Cumulative daily return loss of the discrete PSO backtests due to transaction costs with respect to the different values of k"}
