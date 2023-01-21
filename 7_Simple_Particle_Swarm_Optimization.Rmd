@@ -5,7 +5,7 @@ output:
 editor_options:
   chunk_output_type: console
 ---
-# Particle Swarm Optimization (PSO) {#spso}
+# Particle Swarm Optimization {#spso}
 The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm [@PaVr2002]. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are extensibility, simplicity, and low computational cost, since only basic mathematical operators are used.
 
 ## The Algorithm
@@ -43,9 +43,7 @@ pso <- function(
     lower, 
     upper, 
     control = list()
-  ){
-
-}
+  ){}
 ```
 
 
@@ -463,7 +461,7 @@ This approach to dealing with constraints is called the penalization method and 
 
 ## Convergence Analysis of the Standard PSO
 
-This section summarizes the mathematical convergence analysis of the standard PSO with constant inertia weight $w$ performed in [@FbEn2010] and in [@FbEn2007], whose main goal is to prove whether the PSO converges to a local or even a global minimum. The results from the sources are presented in a simplified form so that the full scope can be understood. No mathematical foundations are proven, as this would otherwise be beyond the scope of this thesis. It is recommended to read the detailed proofs in the referenced sources to gain a deeper understanding. In this section, we first gather the conditions that must be satisfied for a general stochastic search algorithm to be classified as a local or global search algorithm. Then, these conditions are used to classify the standard PSO with constant inertia weight $w$. It follows that certain conditions must be imposed on the hyperparameters and the PSO must be modified to be classified as a global or local search algorithm. Finally, these findings are applied to the practical implementation of the PSO to derive relevant conclusions for practical applications.
+This section summarizes the mathematical convergence analysis of the standard PSO with constant inertia weight $w$ performed in [@FbEn2010] and in [@FbEn2007], whose main goal is to prove whether the PSO converges to a local or even a global minimum. The results from the sources are presented in a simplified form so that the full scope can be understood. No mathematical foundations are proven, as this would otherwise be beyond the scope of this thesis. It is recommended to read the detailed proofs in the referenced sources to gain a deeper understanding. The structure of this section begins by gathering the conditions that must be met for a general stochastic search algorithm to be classified as a local or global search algorithm. Then, these conditions are used to classify the standard PSO with constant inertia weight $w$. It follows that certain conditions must be imposed on the hyperparameters and the PSO must be modified to be classified as a global or local search algorithm. Finally, these findings are applied to the practical implementation of PSO to derive relevant conclusions.
 
 ### Convergence of a General Stochastic Search Algorithm
 We start by defining a general problem where a measurable function $f: \mathbb{R}^n\rightarrow\mathbb{R}$ has to be minimized on the search space $S \subseteq \mathbb{R}^n$. To do so, we use a procedure that starts with a position generated from the search space $S$ and in each iteration it compares its old position with a new one and keeps one of the two. This comparison of positions and the return of one of them is denoted by the mapping $D$. For the procedure to be classified as an algorithm, it is sufficient to show that the following *algorithm condition* is satisfied:
