@@ -43,9 +43,7 @@ pso <- function(
     lower, 
     upper, 
     control = list()
-  ){
-
-}
+  ){}
 ```
 
 
