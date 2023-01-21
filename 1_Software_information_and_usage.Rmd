@@ -28,4 +28,4 @@ Converts HTML plots to images to display them in the PDF output. This allows the
 
 
 ### javascript files
-The javascript files are located in the `www/` folder and are used for the HTML version of this thesis to make code blocks expandable. This allows the reader to inspect the code used and to follow analyses in detail.
+The javascript files are located in the `www/` folder of the attached GitHub repository and are used for the HTML version of this thesis to make code blocks expandable. This allows the reader to inspect the code used and to follow analyses in detail.
