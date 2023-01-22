@@ -7,7 +7,7 @@ All of the thesis was done in the R-Studio IDE using R-Markdown extended with th
 The used packages and versions can be found in the table below:
 
 
-```{r, echo=F, fig.cap="Information about the used packages and their versions"}
+```{r, echo=F, fig.cap="Information about the used packages and their versions", size_out = "fontsize{10}{10}\\selectfont"}
 options(width=70)
 x <- capture.output(sessionInfo())
 x <- x[-c(5:11)]

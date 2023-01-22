@@ -47,10 +47,11 @@ plotly_line_chart_xts(ret_to_cumret(returns)) %>%
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \@ref(mathfundations):  
 
 
-```{r MVPex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+```{r MVPex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", size_out = "fontsize{10}{10}\\selectfont"}
 mu <- ret_to_geomeanret(returns)
 cat0("estimation of expected daily returns:")
 mu
+cat0("")
 cov <- as.matrix(nearPD(cov_(returns, mu))$mat)
 cat0("estimation of positiv definite covariance matrix:")
 cov
@@ -466,7 +467,7 @@ plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns_TEV, port_returns_MST
 The ITP-TEV and the ITP-MSTE had almost the same results, which can be seen in the compositions below:
 
 
-```{r ITPex2, echo=F}
+```{r ITPex2, echo=F, size_out = "fontsize{10}{10}\\selectfont"}
 data.frame(rbind(composition_TEV, composition_MSTE), row.names = NULL)
 ```
 
