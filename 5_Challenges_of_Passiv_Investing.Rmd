@@ -39,7 +39,7 @@ The cumulative daily returns are:
 
 ```{r MVPex2, echo = F, fig.cap = "Cumulative daily returns of IBM, Apple and Google"}
 plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
-  html_save(., expand = c(-10,0,-10,0))
+  html_save(., expand = c(-20,0,-15,0), vheight=300, vwidth=700)
 
 ```
 
@@ -108,7 +108,7 @@ plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
     xaxis = list(title=list(text = "sigma", standoff = 10L), range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05))
   ) %>% 
   #config(mathjax = 'cdn') %>% 
-  html_save(., expand = c(-10,0,0,0))
+  html_save(., expand = c(-23,0,-5,0), force=T, vheight=300, vwidth=700)
 ```
 
 
@@ -124,7 +124,7 @@ for(i in 1:ncol(portfolios)){
 }
 p %>% 
   config(mathjax = 'cdn') %>% 
-  html_save(., expand = c(-10,0,-10,0))
+  html_save(., expand = c(-23,0,-11,0), force=T, vheight=300, vwidth=700)
 
 ```
 
