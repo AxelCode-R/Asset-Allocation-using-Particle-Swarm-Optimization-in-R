@@ -22,7 +22,7 @@ Let there be $N$ assets and their returns on $T$ different days, creating a retu
 The risk aversion parameter $\lambda$ defines the tradeoff between risk and return. With $\lambda = 1$, the minimization problem contains only the variance term, leading to a minimum variance portfolio, and $\lambda = 0$ transforms the problem into a minimization of negative expected returns, leading to a maximum return portfolio. All possible portfolios created by $\lambda \in [0, 1]$ define the efficient frontier.
 
 
-### MVP: Example
+### Example MVP
 All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.  
 
 
@@ -266,7 +266,7 @@ plot_ly(data = all, type = 'scatter', mode="lines+markers", y = ~mu, x = ~sd, na
     # )
   ) %>%
   config(mathjax = 'cdn') %>% 
-  html_save(., expand = c(-23,0,-11,0), vheight=350, vwidth=700)
+  html_save(., expand = c(-23,0,-7,0), vheight=350, vwidth=700)
 ```
 
 
