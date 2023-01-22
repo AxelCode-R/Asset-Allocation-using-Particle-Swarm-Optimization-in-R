@@ -121,15 +121,14 @@ for(i in 1:control$maxiter){
   # evaluate objective function
   X_fit <- apply(X, 2, fn)
   
-  # save new personal best
-  P[, P_fit >= X_fit] <- X[, P_fit >= X_fit]
-  P_fit[P_fit >= X_fit] <- X_fit[P_fit >= X_fit]
-  
+  # save new previews best
+  P[, P_fit > X_fit] <- X[, P_fit > X_fit]
+  P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+
   # save new global best
   if(any(P_fit < p_g_fit)){
-      sel <- sample(which(P_fit==min(P_fit)), 1)
-      p_g <- P[, sel]
-      p_g_fit <- P_fit[sel]
+    p_g <- P[, which.min(P_fit)]
+    p_g_fit <- min(P_fit)
   }
 }
 ```
@@ -999,7 +998,7 @@ reactable(
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13),
   defaultColDef = colDef(align="left")
 ) %>% 
-  html_save(., force=T, expand = c(-40,-20,-35,-20))
+  html_save(., expand = c(-40,-20,-35,-20))
 ```
 
 
