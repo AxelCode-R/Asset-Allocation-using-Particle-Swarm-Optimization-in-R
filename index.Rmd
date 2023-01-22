@@ -22,7 +22,16 @@ def.source.hook  <- knitr::knit_hooks$get("source")
 knitr::knit_hooks$set(source = function(x, options) {
   x <- def.source.hook(x, options)  # apply default source hook
    ifelse(!is.null(options$size), 
-         paste0("\\vspace{-0.1cm}\\", options$size,"\n", x,"\n", "\\normalsize\\vspace{-0.1cm}"), 
+         paste0("\\vspace{0.1cm}\\", options$size,"\n", x,"\n", "\\normalsize\\vspace{0.1cm}"), 
+         x)
+
+})
+
+def.output.hook <- knitr::knit_hooks$get("output")
+knitr::knit_hooks$set(output = function(x, options) {
+  x <- def.output.hook(x, options)  # apply default source hook
+   ifelse(!is.null(options$size_out), 
+         paste0("\\vspace{0.1cm}\\", options$size_out,"\n", x,"\n", "\\normalsize\\vspace{0.1cm}"), 
          x)
 
 })
