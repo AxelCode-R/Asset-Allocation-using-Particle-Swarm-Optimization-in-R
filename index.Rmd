@@ -11,7 +11,19 @@ csl: apa.csl
 editor_options:
   chunk_output_type: console
 description: This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart.
+linestretch: 1
 ---
 ---
 title: `r if(knitr::is_html_output()){"Asset Allocation using Particle Swarm Optimization in R"}else{""}`
 ---
+
+```{r, include=FALSE}
+def.source.hook  <- knitr::knit_hooks$get("source")
+knitr::knit_hooks$set(source = function(x, options) {
+  x <- def.source.hook(x, options)  # apply default source hook
+   ifelse(!is.null(options$size), 
+         paste0("\\vspace{-0.1cm}\\", options$size,"\n", x,"\n", "\\normalsize\\vspace{-0.1cm}"), 
+         x)
+
+})
+```
