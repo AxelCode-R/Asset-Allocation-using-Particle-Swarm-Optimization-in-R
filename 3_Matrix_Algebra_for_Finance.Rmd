@@ -129,7 +129,7 @@ $$
 $$
 
 
-## Markowitz Modern Portfolio Theory (MPT)
+## Markowitz Modern Portfolio Theory
 In 1952, Harry Markowitz published his first seminal paper, which had a significant impact on modern finance, primarily by outlining the implications of diversification and efficient portfolios in [@Mark1952]. He later published a monograph on a more in-depth analysis of his findings in [@Mark1959]. The definition of an efficient portfolio is a portfolio that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification might be, "A portfolio has the same return but less variance than the sum of its parts." This is the case when assets are not perfectly correlated, as poor and good performances can offset each other, reducing the likelihood of extreme events. For more information, see [@Mari2005].
 
 

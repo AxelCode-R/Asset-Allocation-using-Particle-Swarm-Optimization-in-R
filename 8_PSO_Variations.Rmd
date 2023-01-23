@@ -9,7 +9,7 @@ editor_options:
 The standard PSO analyzed in the previous chapter is capable of solving a wide range of problems, but often gets stuck in local minima. In this chapter, different variants of the standard PSO are analyzed using a problem from the financial domain. The first variant is the PSO with function stretching, which is designed to allow the PSO to escape from local minima if they are discovered. The second variant is the local PSO, which is designed to reduce the probability of getting stuck in local minima by limiting the spread of information in the swarm. The third variant, the PSO with feasibility preservation, tries to optimize within the feasibility space and therefore provide only feasible solutions. The last variant is the PSO with self-adaptive velocity, which tries to adjust the control parameters according to certain rules and randomness.
 
 
-## Testproblem: Discrete ITP-MSTE
+## Testproblem Discrete ITP-MSTE
 All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in section \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSO's start with the zero vector as the initial particle position to test the ability to find the feasible space.
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
@@ -142,8 +142,8 @@ plot_ly() %>%
   add_trace(data = df_res, x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
 ```
 
 
@@ -243,7 +243,7 @@ p2 <- plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), t
   layout(yaxis=list(range=c(-2, 20)*10^5))
 
 subplot(p1, p2, shareY=T, nrows=2, margin=0.05) %>% 
-  html_save(., vheight=500, vwidth=800)
+  html_save(., vheight=480, vwidth=800, expand = c(-10,0,-15,0))
 ```
 
 
@@ -254,7 +254,7 @@ It can be seen that the fitness is stretched upward around the local minimum $\b
 plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched", line=list(color="orange")) %>% 
   add_trace(x=X, y=rep(fn(pi-asin(1/10)), length(X)), type="scatter", mode="lines", name="local_minima", line=list(dash="dot", color="grey")) %>% 
   layout(yaxis=list(range=c(1.1*min(sapply(X, fn)), 1.1*max(sapply(X, fn))))) %>% 
-  html_save(., vheight=250, vwidth=800)
+  html_save(., vheight=240, vwidth=800, expand = c(-10,0,-15,0))
 ```
 
 
@@ -331,8 +331,8 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_median, name = "PSO-fnS", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q1, name = "PSO-fnS_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q3, name = "PSO-fnS_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
@@ -463,8 +463,8 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_median, name = "PSO-local", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q1, name = "PSO-local_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q3, name = "PSO-local_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
@@ -642,8 +642,8 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_median, name = "PSO-preFe", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q1, name = "PSO-preFe_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q3, name = "PSO-preFe_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
@@ -862,8 +862,8 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_median, name = "PSO-SAvel", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q1, name = "PSO-SAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q3, name = "PSO-SAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
@@ -980,8 +980,8 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_median, name = "PSO-pkg", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q1, name = "PSO-pkg_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q3, name = "PSO-pkg_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
