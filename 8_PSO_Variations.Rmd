@@ -739,19 +739,19 @@ Then, the parameters are adjusted to their limits using the following formulas:
 w_d^{i+1} &= 
   \begin{cases}
     \text{Unif}(0,1), & \text{if}\ \ w_d^{i+1} > 1\\
-    \text{Unif}(0,0.1), & \text{if}\ \  0 > w_d^{i+1}\\
+    \text{Unif}(0,0.1), & \text{if}\ \  w_d^{i+1} < 0\\
     w_d^{i+1}, & \text{otherwise}
   \end{cases}\\
 c_{p,d}^{i+1} &= 
   \begin{cases}
     \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{p,d}^{i+1} > 4\\
-    \text{Unif}(0,1), & \text{if}\ \  0 > c_{p,d}^{i+1}\\
+    \text{Unif}(0,1), & \text{if}\ \  c_{p,d}^{i+1} < 0\\
     c_{p,d}^{i+1}, & \text{otherwise}
   \end{cases}\\
 c_{g,d}^{i+1} &= 
   \begin{cases}
     \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{g,d}^{i+1} > 4\\
-    \text{Unif}(0,1), & \text{if}\ \  0 > c_{g,d}^{i+1}\\
+    \text{Unif}(0,1), & \text{if}\ \  c_{g,d}^{i+1} < 0\\
     c_{g,d}^{i+1}, & \text{otherwise.}
   \end{cases}\\
 \end{align*}
