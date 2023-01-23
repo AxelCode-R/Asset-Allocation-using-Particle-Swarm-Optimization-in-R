@@ -14,7 +14,7 @@ The last chapter has analyzed a backtests of a practical index tracking problem 
 
 # Conclusion
 
-This thesis has been concerned with analyzing and testing the PSO. The focus was on financial mathematical optimization problems in the area of quantitative portfolio management. In paxis it is relevant to solve this kind of problems with the same complexity as in real life, which is made possible by the PSO. It could be shown that even complex optimization problems can be solved in a stable way. 
+This thesis has been concerned with analyzing and testing the PSO. The focus was on financial optimization problems in the area of quantitative portfolio management. In paxis it is relevant to solve this kind of problems with the same complexity as in real life, which is made possible by the PSO. It could be shown that even complex optimization problems can be solved in a stable way. 
 
 
 It was shown in chapter \@ref(activevspassive) that more and more investors invest in passive managed funds, as they are more stable over time and have lower costs. To ensure competitiveness, it is important that quantitative strategies are automated as much as possible.  
