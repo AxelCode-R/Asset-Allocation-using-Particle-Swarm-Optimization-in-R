@@ -98,50 +98,20 @@ res_SPSO$fitness <- calc_fit(res_SPSO$solution)
 res_SPSO$constraints <- calc_const(res_SPSO$solution)
 
 
+df_PSOs <- NULL
+load("data/save_variant1.rdata")
+df_PSOs <- rbind(df_PSOs, df_res %>% filter(type=="PSO", iter==400))
+load("data/save_variant2.rdata")
+df_PSOs <- rbind(df_PSOs, df_res %>% filter(type!="PSO", iter==400))
+load("data/save_variant3.rdata")
+df_PSOs <- rbind(df_PSOs, df_res %>% filter(type!="PSO", iter==400))
+load("data/save_variant5.rdata")
+df_PSOs <- rbind(df_PSOs, df_res %>% filter(type!="PSO", iter==400))
+load("data/save_variant6.rdata")
+df_PSOs <- rbind(df_PSOs, df_res %>% filter(type!="PSO", iter==400))
 
 
-res_ABC <- ABC(
-    FUN = function(x){
-      x <- as.vector(round(x*nav/prices)*prices/nav)
-      fitness <- calc_fit(x)
-      constraints <- calc_const(x)
-      return(fitness+100*constraints)
-    },
-    optimType = "MIN",
-    numVar = ncol(pool_data$returns),
-    numPopulation = 40,
-    maxIter = 500,
-    rangeVar = matrix(c(0, 0.1), ncol=ncol(pool_data$returns), nrow=2)
-  )
-res_ABC_list <- list()
-res_ABC_list$solution <- as.vector(round(unlist(res_ABC)*nav/prices)*prices/nav)
-res_ABC_list$fitness <- calc_fit(res_ABC_list$solution)
-res_ABC_list$constraints <- calc_const(res_ABC_list$solution)
-
-
-
-
-
-res_GA <- GA(
-    FUN = function(x){
-      x <- as.vector(round(x*nav/prices)*prices/nav)
-      fitness <- calc_fit(x)
-      constraints <- calc_const(x)
-      return(fitness+100*constraints)
-    },
-    optimType = "MIN",
-    numVar = ncol(pool_data$returns),
-    numPopulation = 40,
-    maxIter = 500,
-    rangeVar = matrix(c(0, 0.1), ncol=ncol(pool_data$returns), nrow=2)
-  )
-res_GA_list <- list()
-res_GA_list$solution <- as.vector(round(unlist(res_GA)*nav/prices)*prices/nav)
-res_GA_list$fitness <- calc_fit(res_GA_list$solution)
-res_GA_list$constraints <- calc_const(res_GA_list$solution)
-
-
-methaheuristics <- c("ABC", "ALO", "BA", "BHO", "CLONALG", "CS", "CSO", "DA", "DE", "FFA", "GA", "GOA", "GWO", "HS", "KH", "MFO", "PSO", "SCA", "SFL", "WOA")
+methaheuristics <- c("ABC", "ALO", "BA", "BHO", "CLONALG", "CS", "CSO", "DA", "DE", "FFA", "GA", "GOA", "GWO", "HS", "KH", "MFO", "SCA", "SFL", "WOA")
 n_tests <- 1
 
 res_all <- NULL

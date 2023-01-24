@@ -316,7 +316,7 @@ df_res <- rbind(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
-save(df_res, file="data/save_variant2.rdata")
+save(df_res, df, file="data/save_variant2.rdata")
 ```
 
 
@@ -448,7 +448,7 @@ df_res <- rbind(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
-save(df_res, file="data/save_variant3.rdata")
+save(df_res, df, file="data/save_variant3.rdata")
 ```
 
 
@@ -627,7 +627,7 @@ df_res <- rbind(df_SPSO2, df) %>%
 
 df_res$iter <- df_res$iter+400
 
-save(df_res, file="data/save_variant4.rdata")
+save(df_res, df, file="data/save_variant4.rdata")
 ```
 
 
@@ -847,7 +847,7 @@ df_res <- rbind(df_SPSO, df) %>%
   ungroup()
 
 
-save(df_res, file="data/save_variant5.rdata")
+save(df_res, df, file="data/save_variant5.rdata")
 ```
 
 
@@ -965,7 +965,7 @@ df_res <- bind_rows(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
-save(df_res, file="data/save_variant6.rdata")
+save(df_res, df, file="data/save_variant6.rdata")
 ```
 
 
