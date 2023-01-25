@@ -758,14 +758,14 @@ pso_self_adaptive_velocity <- function(
     ac_params$c.p <- rcauchy(control$s, sum(WG*ac_params$c.p), 0.3)
     ac_params$c.g <- rcauchy(control$s, sum(WG*ac_params$c.g), 0.3)
 
-    ac_params$w[ac_params$w > 1] <- runif(1)
-    ac_params$w[ac_params$w < 0] <- runif(1)/10
+    ac_params$w[ac_params$w > 1] <- runif(sum(ac_params$w > 1))
+    ac_params$w[ac_params$w < 0] <- runif(sum(ac_params$w < 0))/10
 
-    ac_params$c.p[ac_params$c.p > 4] <- runif(1)*4
-    ac_params$c.p[ac_params$c.p < 0] <- runif(1)
+    ac_params$c.p[ac_params$c.p > 4] <- runif(sum(ac_params$c.p > 4))*4
+    ac_params$c.p[ac_params$c.p < 0] <- runif(sum(ac_params$c.p < 0))
 
-    ac_params$c.g[ac_params$c.g > 4] <- runif(1)*4
-    ac_params$c.g[ac_params$c.g < 0] <- runif(1)
+    ac_params$c.g[ac_params$c.g > 4] <- runif(sum(ac_params$c.g > 4))*4
+    ac_params$c.g[ac_params$c.g < 0] <- runif(sum(ac_params$c.g < 0))
 
 
     # save new previews best
