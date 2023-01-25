@@ -97,6 +97,13 @@ res_SPSO$solution <- as.vector(round(res_SPSO$solution*nav/prices)*prices/nav)
 res_SPSO$fitness <- calc_fit(res_SPSO$solution)
 res_SPSO$constraints <- calc_const(res_SPSO$solution)
 
+system.time({
+  for(i in 1:20000){
+    x <- runif(50)
+    fit <- calc_fit(x)
+    const <- calc_const(x)
+  }
+})
 
 df_PSOs <- NULL
 load("data/save_variant1.rdata")
@@ -118,7 +125,7 @@ plot_ly(data=df_PSOs, x = ~fitness, type = "box", boxpoints="all", y = ~type, co
 
 
 
-methaheuristics <- c("ABC", "ALO", "BA", "BHO", "CLONALG", "CS", "CSO", "DA", "DE", "FFA", "GA", "GOA", "GWO", "HS", "KH", "MFO", "SCA", "SFL", "WOA")
+methaheuristics <- c("ABC", "ALO", "BA", "BHO", "CLONALG", "CS", "CSO", "DA", "DE", "FFA", "GA", "GOA", "GWO", "HS", "KH", "MFO", "SCA", "WOA")
 n_tests <- 100
 
 res_all <- NULL
@@ -166,5 +173,64 @@ res_all$overall_fit <- res_all$fitness+res_all$constraints
 
 
 #save(res_all, file="data/external_methaheuristics.rdata")
+
+load("data/external_methaheuristics.rdata")
+
+
+
+
+df_PSOs <- NULL
+load("data/save_variant1.rdata")
+df_PSOs <- bind_rows(df_PSOs, df_SPSO %>% filter(type=="PSO", iter==400))
+load("data/save_variant2.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+load("data/save_variant3.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+load("data/save_variant5.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+load("data/save_variant6.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+df_PSOs <- df_PSOs %>% select(type, time, fitness=best_fit, const_break) %>% mutate(created=1)
+
+res_all <- bind_rows(
+  df_PSOs,
+  res_all %>% mutate(created=0, fitness = overall_fit) %>% select(type = opt_name, fitness, "const_break"=constraints, time, created)
+)
+#   \text{score} = 2 \cdot \text{q_5%_fit_rnk} + \text{mean_fit_rnk} + \text{q_95%_fit_rnk} + 0.25 \cdot \text{q_5%_const_break_rnk} +
+#0.25 \cdot \text{mean_const_break_rnk} + 0.5 \cdot \text{q_95%_const_break_rnk} + 2 \cdot \text{mean_runtime_rnk}
+
+res_all_agg <- res_all %>%
+  group_by(type) %>%
+  summarise(
+    created = unique(created),
+    fitness_q5 = quantile(fitness, 0.05),
+    fitness_mean = mean(fitness),
+    fitness_q95 = quantile(fitness, 0.95),
+    const_break_q5 = quantile(const_break, 0.05),
+    const_break_mean = mean(const_break),
+    const_break_q95 = quantile(const_break, 0.95),
+    time_mean = mean(time)
+  ) %>%
+  mutate(
+    score = 2 * rank(fitness_q5) + rank(fitness_mean) + rank(fitness_q95) +
+      0.25 * rank(const_break_q5) + 0.25 * rank(const_break_mean) + 0.25 * rank(const_break_q95) +
+      3 * rank(time_mean)
+  )
+
+
+p1 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~fitness, type = "box", boxpoints="all", y = ~type) %>%
+  layout(xaxis = list(range=c(min(res_all$fitness)-0.00005,-0.0215)))
+
+p2 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~const_break, type = "box", boxpoints="all", y = ~type) %>%
+  layout(xaxis = list(range=c(0,0.5)))
+
+p3 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~time, type = "box", boxpoints="all", y = ~type)
+
+p <- subplot(p1, p2, p3, nrows = 1, shareY = T)
+
+p
+
+
+
 
 
