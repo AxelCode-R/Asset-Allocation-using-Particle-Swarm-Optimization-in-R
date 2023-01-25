@@ -1074,14 +1074,14 @@ These 19 metaheuristics are used to solve the test problem defined at the beginn
 The data collected from each run of a metaheuristic are the fitness, the constraint breaks, and the run time. Aggregated for the respective metaheuristic, the 5% and 95% quantiles of the fitness and constraint breaks are calculated for the 100 runs, as well as the mean fitness, mean constraint breaks and mean runtime. These metrics are used to compare the respective metaheuristics in a ranking. The score calculated for this purpose is computed using the ranking in the respective category, which takes values from 1 to 24. The resulting score is a weighted sum of these individual rankings as follows:
 
 $$
-  \text{score} = 2 \cdot \text{q1_fit_rnk} + \text{mean_fit_rnk} + \text{q3_fit_rnk} + 0.25 \cdot \text{q1_const_break_rnk} + 0.25 \cdot \text{mean_const_break_rnk} + 0.5 \cdot \text{q3_const_break_rnk} + 2 \cdot \text{mean_runtime_rnk}
+  \text{score} = 2 \cdot \text{q_5%_fit_rnk} + \text{mean_fit_rnk} + \text{q_95%_fit_rnk} + 0.25 \cdot \text{q_5%_const_break_rnk} + 0.25 \cdot \text{mean_const_break_rnk} + 0.5 \cdot \text{q_95%_const_break_rnk} + 2 \cdot \text{mean_runtime_rnk}
 $$
 
 The score is to be interpreted in such a way that a smaller number is better than a larger one. It can be seen that the highest weight is on the 5% quantile of fitness, as this is representative of the best solutions after repeating the metaheuristic several times. Overall, this is a subjective ranking to compare the metaheuristics with a single number. In the following chart should therefore be all the necessary information to allow the reader to form his or here own opinion:
 
 
 
-
+Since fitness is one of the most important metrics, it is additionally visualized in the boxplot below:
 
 
 
