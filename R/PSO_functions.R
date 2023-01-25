@@ -707,8 +707,8 @@ pso_self_adaptive_velocity <- function(
       }
     }) %>% t()
     V <- ac_params$w * V +
-      ac_params$c.p * rand_vec[,1] * (P-X) +
-      ac_params$c.g * rand_vec[,2] * (p_g-X)
+      ac_params$c.p * t(rand_vec[,1] * t(P-X)) +
+      ac_params$c.g * t(rand_vec[,2] * t(p_g-X))
     X <- X + V
 
 
