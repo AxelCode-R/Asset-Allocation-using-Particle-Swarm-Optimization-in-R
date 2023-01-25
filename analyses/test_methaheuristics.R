@@ -100,19 +100,26 @@ res_SPSO$constraints <- calc_const(res_SPSO$solution)
 
 df_PSOs <- NULL
 load("data/save_variant1.rdata")
-df_PSOs <- rbind(df_PSOs, df_res %>% filter(type=="PSO", iter==400))
+df_PSOs <- bind_rows(df_PSOs, df_SPSO %>% filter(type=="PSO", iter==400))
 load("data/save_variant2.rdata")
-df_PSOs <- rbind(df_PSOs, df_res %>% filter(type!="PSO", iter==400))
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
 load("data/save_variant3.rdata")
-df_PSOs <- rbind(df_PSOs, df_res %>% filter(type!="PSO", iter==400))
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
 load("data/save_variant5.rdata")
-df_PSOs <- rbind(df_PSOs, df_res %>% filter(type!="PSO", iter==400))
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
 load("data/save_variant6.rdata")
-df_PSOs <- rbind(df_PSOs, df_res %>% filter(type!="PSO", iter==400))
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+df_PSOs <- df_PSOs %>% select(type, time, fitness=best_fit, const_break) %>% mutate(created=1)
+
+
+
+
+plot_ly(data=df_PSOs, x = ~fitness, type = "box", boxpoints="all", y = ~type, colors = ~created)
+
 
 
 methaheuristics <- c("ABC", "ALO", "BA", "BHO", "CLONALG", "CS", "CSO", "DA", "DE", "FFA", "GA", "GOA", "GWO", "HS", "KH", "MFO", "SCA", "SFL", "WOA")
-n_tests <- 1
+n_tests <- 100
 
 res_all <- NULL
 for(i in 1:length(methaheuristics)){
@@ -158,5 +165,6 @@ res_all$overall_fit <- res_all$fitness+res_all$constraints
 
 
 
+#save(res_all, file="data/external_methaheuristics.rdata")
 
 
