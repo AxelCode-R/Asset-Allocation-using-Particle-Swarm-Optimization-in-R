@@ -212,21 +212,24 @@ res_all_agg <- res_all %>%
     time_mean = mean(time)
   ) %>%
   mutate(
-    score = 2 * rank(fitness_q5) + rank(fitness_mean) + rank(fitness_q95) +
-      0.25 * rank(const_break_q5) + 0.25 * rank(const_break_mean) + 0.25 * rank(const_break_q95) +
+    score = 3 * rank(fitness_q5) + 2 * rank(fitness_mean) + rank(fitness_q95) +
+      1 * rank(const_break_q5) + 0.5 * rank(const_break_mean) + 0.5 * rank(const_break_q95) +
       3 * rank(time_mean)
-  )
+  ) %>%
+  arrange(score)
+#res_all_agg$type <- factor(res_all_agg$type, levels = res_all_agg$type)
 
 
 p1 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~fitness, type = "box", boxpoints="all", y = ~type) %>%
-  layout(xaxis = list(range=c(min(res_all$fitness)-0.00005,-0.0215)))
+  layout(xaxis = list(range=c(min(res_all$fitness)-0.00005,-0.021)), yaxis = list(title=list(text="metaheuristic", standoff = 1), categoryorder = "array", categoryarray = rev(res_all_agg$type)))
 
 p2 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~const_break, type = "box", boxpoints="all", y = ~type) %>%
-  layout(xaxis = list(range=c(0,0.5)))
+  layout(xaxis = list(range=c(0,0.5)), yaxis = list(standoff = 40, title="metaheuristic", categoryorder = "array", categoryarray = rev(res_all_agg$type)))
 
-p3 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~time, type = "box", boxpoints="all", y = ~type)
+p3 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~time, type = "box", boxpoints="all", y = ~type) %>%
+  layout(xaxis = list(range=c(0,30)), yaxis = list(standoff = 40, title="metaheuristic", categoryorder = "array", categoryarray = rev(res_all_agg$type)), showlegend=F)
 
-p <- subplot(p1, p2, p3, nrows = 1, shareY = T)
+p <- subplot(p1, p2, p3, nrows = 1, shareY = T, titleX=T)
 
 p
 
