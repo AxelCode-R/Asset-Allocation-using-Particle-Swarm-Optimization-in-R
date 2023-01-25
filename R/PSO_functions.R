@@ -700,7 +700,7 @@ pso_self_adaptive_velocity <- function(
     rand_vec <- sapply(rand_switch, function(x){
       if(x > control$Sp){
         runif(2)
-      }else if(x > control$Sp/2){
+      }else if(x < control$Sp/2){
         rcauchy(2, mu1, sig1)
       }else{
         rcauchy(2, mu2, sig2)
@@ -713,8 +713,7 @@ pso_self_adaptive_velocity <- function(
 
 
     upper_breaks <- X > upper
-    ub_ind <- which(upper_breaks==T, arr.ind = T)
-    X[ub_ind] <- unlist(sapply(runif(nrow(ub_ind)), function(x){if(x>control$Cp){runif(1, lower, upper)}else{upper}}))
+    X[upper_breaks] <- unlist(sapply(runif(sum(upper_breaks)), function(x){if(x>control$Cp){runif(1, lower, upper)}else{upper}}))
 
     # if(nrow(ub_ind)>0){
     #   for(k in 1:nrow(ub_ind)){
@@ -739,8 +738,7 @@ pso_self_adaptive_velocity <- function(
     # }
 
     lower_breaks <- X < lower
-    lb_ind <- which(lower_breaks==T, arr.ind = T)
-    X[lb_ind] <- unlist(sapply(runif(nrow(lb_ind)), function(x){if(x>control$Cp){runif(1, lower, upper)}else{lower}}))
+    X[lower_breaks] <- unlist(sapply(runif(sum(lower_breaks)), function(x){if(x>control$Cp){runif(1, lower, upper)}else{lower}}))
 
 
     # # set velocity to zeros if not in valid space
