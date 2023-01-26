@@ -146,7 +146,7 @@ source("R/PSO_functions.R")
 
 
 ## Animation 2-Dimensional
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The amazing animation template and the objective function is inspired by [@Rtic2021]. The PSO core from the above chapter was used to complete the `pso()` function and is tested here with seed 0. The objective is to minimize the following function ($f:\mathbb{R}^2 \rightarrow \mathbb{R}$):
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The animation template and the objective function is inspired by [@Rtic2021]. The PSO core from the above chapter was used to complete the `pso()` function and is tested here with seed 0. The objective is to minimize the following function ($f:\mathbb{R}^2 \rightarrow \mathbb{R}$):
 
 $$
 f(x, y) = -20\cdot e^{-0.2 \cdot \sqrt{0.5 \cdot ((x-1)^2 + (y-1)^2)}} \ - e^{0.5 \cdot ( cos(2\cdot \pi \cdot x) + cos(2\cdot \pi \cdot y))} + e + 20.
