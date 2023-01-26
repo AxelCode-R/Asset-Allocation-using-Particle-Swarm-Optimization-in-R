@@ -898,7 +898,7 @@ The results look very promising, and with fewer hyperparameters to fine-tune, th
 
 
 
-## PSO R-Package
+## PSO R Package
 In this section, the existing package `pso` from R is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
 
 
@@ -969,7 +969,7 @@ save(df_res, df, file="data/save_variant6.rdata")
 ```
 
 
-```{r variantspkgs, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO"}
+```{r variantspkgs, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R package with standard PSO settings and the standard PSO"}
 
 load("data/save_variant6.rdata")
 
@@ -991,7 +991,7 @@ The existing PSO package is slightly different from the standard PSO, which is m
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
-```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO"}
+```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R package with standard PSO settings and the standard PSO"}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -1220,7 +1220,7 @@ p %>%
 ```
 
 
-
+It can be observed that the metaheuristics from the R package `metaheuristicOpt`, consistently have a longer runtime, which is partly due to the implementation, since it does not make use of vectorial operations. Additionally it can be seen that beside the PSO and its variants also the Clonal Selection Algorithm (CLONALG) and the Ant Lion Optimizer Algorithm (ALO) reach a satisfying fitness, but have a significantly longer runtime. Overall, the selfadaptive velocity PSO (PSO-SAvel) had the best ranking, which is also confirmed by the key statistics. In addition, the PSO-SAvel has fewer hyperparameters, which is why it will be used for the backtests in the next chapter.
 
 
 
