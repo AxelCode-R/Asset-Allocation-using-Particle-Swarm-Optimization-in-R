@@ -1094,7 +1094,7 @@ for(i in 1:length(methaheuristics)){
                 },
                 optimType = "MIN",
                 numVar = ncol(pool_data$returns),
-                numPopulation = 40,
+                numPopulation = 50,
                 maxIter = 400,
                 rangeVar = matrix(c(0, 0.1), ncol=ncol(pool_data$returns), nrow=2)
               )
