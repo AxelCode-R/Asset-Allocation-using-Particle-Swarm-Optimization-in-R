@@ -24,7 +24,7 @@ The following functions were created to simplify working with R-Markdown and to 
 
 
 ### `html_save()`
-Converts HTML plots to images to display them in the PDF output. This allows the author to use the desired plot packages without having to worry about the different output formats.
+Converts HTML plots to images to display them in the PDF output. This allows the author to use the desired plot packages without having to worry about the different output formats. The disadvantage is, that it is not possible to define the font size within the charts and tables exactly, because the saved images are adjusted to the page width by latex.
 
 
 ### javascript files
