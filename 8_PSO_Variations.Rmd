@@ -1018,7 +1018,8 @@ reactable(
 
 In addition to the PSO, there are other metaheuristics that also treat the optimization problem as a black box and can thus be brought to a generic form. This is exactly what has been done in the R package `metaheuristicOpt` by implementing 19 more metaheuristics besides the PSO. Therefore, this package can be used to compare which metaheuristic is suitable for a specific type of optimization problem. The implemented metaheuristics are the standard versions, which is why no statement about variants of these metaheuristics can be given. Likewise, it is not guaranteed how performant the respective metaheuristics have been implemented. Nevertheless, this package is a great help to quickly and easily test different metaheuristics for an explicit problem. The metaheuristics implemented in the R package `metaheuristicOpt` are the following:
 
-```{r, fig.cap = "List of methaheuristics from the R package `metaheuristicOpt`", echo=F}
+
+```{r, fig.cap = "List of methaheuristics from the R package metaheuristicOpt", echo=F}
 reactable(
   data.frame(
     "abbreviation" = c(
@@ -1042,7 +1043,7 @@ reactable(
       "SFL",
       "WOA"
       ),
-    "full name"= c(
+    "full_name"= c(
       "Artificial Bee Colony Algorithm",
       "Ant Lion Optimizer Algorithm",
       "Bat Algorithm",
@@ -1064,12 +1065,28 @@ reactable(
       "Whale Optimization Algorithm"
       )
   ), 
+  defaultPageSize = 30,
+  columns = list(
+    full_name = colDef(name = "full name")
+  ),
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
-  html_save(., expand = c(-40,-20,-45,-20))
+  html_save(., expand = c(-40,-20,-39,-20), vheight=900, vwidth=600, force=T)
 ```
 
-These metaheuristics are used to solve the test problem defined at the beginning of this chapter. The same settings are used as for the PSO variants, i.e. each run has a population size of 50, which corresponds to the number of particles in the swarm. The maximum iteration is 400 and each metaheuristic is run 100 times. Unlike the analysis above, only the last iteration of each run is recorded and compared.
+
+These metaheuristics are used to solve the test problem defined at the beginning of this chapter. The same settings are used as for the PSO variants, i.e. each run has a population size of 50, which corresponds to the number of particles in the swarm. The maximum iteration is 400 and each metaheuristic is run 100 times. Unlike the analysis above, only the last iteration of each run is recorded and compared. The data collected from each run of a metaheuristic are the fitness, the constraint breaks, and the run time. Aggregated for the respective metaheuristic, the 5% and 95% quantiles of the fitness and constraint breaks are calculated for the 100 runs, as well as the mean fitness, mean constraint breaks and mean runtime. These metrics are used to compare the respective metaheuristics in a ranking. The score calculated for this purpose is computed using the ranking in the respective category, which takes values from 1 to 24. The resulting score is a weighted sum of these individual rankings as follows:
+
+
+\begin{align*}
+\text{score} =& \ 3 \cdot \text{q5\_fitness\_rnk} + 2 \cdot \text{mean\_fitness\_rnk} + \text{q95\_fitness\_rnk}\\ 
+&+ \text{q5\_const\_break\_rnk} + 0.5 \cdot \text{mean\_const\_break\_rnk} \\
+&+ 0.5 \cdot \text{q95\_const\_break\_rnk} + 3 \cdot \text{mean\_runtime\_rnk}
+\end{align*}
+
+
+The score is to be interpreted in such a way that a smaller number is better than a larger one. It can be seen that the highest weight is on the 5% quantile of fitness, as this is representative of the best solutions after repeating the metaheuristic several times. Overall, this is a subjective ranking to sort the metaheuristics and compare them with a single number. In the following chart should therefore be all the necessary information to allow the reader to form his or here own opinion:
+
 
 ```{r, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 library(metaheuristicOpt)
@@ -1124,13 +1141,6 @@ res_all$overall_fit <- res_all$fitness+res_all$constraints
 
 ```
 
-The data collected from each run of a metaheuristic are the fitness, the constraint breaks, and the run time. Aggregated for the respective metaheuristic, the 5% and 95% quantiles of the fitness and constraint breaks are calculated for the 100 runs, as well as the mean fitness, mean constraint breaks and mean runtime. These metrics are used to compare the respective metaheuristics in a ranking. The score calculated for this purpose is computed using the ranking in the respective category, which takes values from 1 to 24. The resulting score is a weighted sum of these individual rankings as follows:
-
-$$
-  \text{score} = 3 \cdot \text{q_5%_fit_rnk} + 2 \cdot \text{mean_fit_rnk} + \text{q_95%_fit_rnk} + \text{q_5%_const_break_rnk} + 0.5 \cdot \text{mean_const_break_rnk} + 0.5 \cdot \text{q_95%_const_break_rnk} + 3 \cdot \text{mean_runtime_rnk}
-$$
-
-The score is to be interpreted in such a way that a smaller number is better than a larger one. It can be seen that the highest weight is on the 5% quantile of fitness, as this is representative of the best solutions after repeating the metaheuristic several times. Overall, this is a subjective ranking to sort the metaheuristics and compare them with a single number. In the following chart should therefore be all the necessary information to allow the reader to form his or here own opinion:
 
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of statistics between metaheuristics"}
 
@@ -1178,7 +1188,7 @@ res_all_agg <- res_all %>%
 reactable(
   res_all_agg,
   columns = list(
-    type = colDef(width=90),
+    type = colDef(width=85),
     created = colDef(show=F),
     fitness_q5 = colDef(width=90, format=colFormat(digits=6)),
     fitness_mean = colDef(width=100, format=colFormat(digits=6)),
@@ -1187,12 +1197,12 @@ reactable(
     const_break_mean = colDef(width=135, format=colFormat(digits=6)),
     const_break_q95 = colDef(width=125, format=colFormat(digits=6)),
     time_mean = colDef(width=85, format=colFormat(digits=2)),
-    score = colDef(width=70, format=colFormat(digits=1))
+    score = colDef(width=60, format=colFormat(digits=1))
   ),
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13),
   defaultPageSize = 30
 ) %>% 
-  html_save(., expand = c(-40,-20,-40,-20), vwidth=980, vheight = 1250)
+  html_save(., expand = c(-40,-20,-40,-20), vwidth=970, vheight = 1100, force=T)
 
 
 ```
