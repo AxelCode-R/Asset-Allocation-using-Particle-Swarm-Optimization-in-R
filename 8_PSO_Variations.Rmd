@@ -1069,19 +1069,155 @@ reactable(
   html_save(., expand = c(-40,-20,-45,-20))
 ```
 
-These 19 metaheuristics are used to solve the test problem defined at the beginning of this chapter. The same settings are used as for the PSO variants, i.e. each run has a population size of 50, which corresponds to the number of particles in the swarm. The maximum iteration is 400 and each metaheuristic is run 100 times. Unlike the analysis above, only the last iteration of each run is recorded and compared. The data collected from each run of a metaheuristic are the fitness, the constraint breaks, and the runtime. Aggregated to the respective metaheuristic, the 5% and 95% quantiles of the fitness and the constraint breaks are calculated for the 100 runs, as well as the mean fitness, mean constraint breaks and mean runtime.
+These metaheuristics are used to solve the test problem defined at the beginning of this chapter. The same settings are used as for the PSO variants, i.e. each run has a population size of 50, which corresponds to the number of particles in the swarm. The maximum iteration is 400 and each metaheuristic is run 100 times. Unlike the analysis above, only the last iteration of each run is recorded and compared.
+
+```{r, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+library(metaheuristicOpt)
+methaheuristics <- c("ABC", "ALO", "BA", "BHO", "CLONALG", "CS", "CSO", "DA", "DE", "FFA", "GA", "GOA", "GWO", "HS", "KH", "MFO", "SCA", "WOA")
+n_tests <- 100
+
+res_all <- NULL
+for(i in 1:length(methaheuristics)){
+  opt_name <- methaheuristics[i]
+  try({
+    for(k in 1:n_tests){
+      eval(
+        expr=parse(
+          text=paste('
+            time <- system.time({
+              res <- ',opt_name,'(
+                FUN = function(x){
+                  x <- as.vector(round(x*nav/prices)*prices/nav)
+                  fitness <- calc_fit(x)
+                  constraints <- calc_const(x)
+                  return(fitness+100*constraints)
+                },
+                optimType = "MIN",
+                numVar = ncol(pool_data$returns),
+                numPopulation = 40,
+                maxIter = 400,
+                rangeVar = matrix(c(0, 0.1), ncol=ncol(pool_data$returns), nrow=2)
+              )
+            }) %>% .[3]
+            res <- as.vector(round(unlist(res)*nav/prices)*prices/nav)
+            res_df <- data.frame(
+              opt_name = opt_name,
+              fitness = calc_fit(res),
+              constraints = calc_const(res),
+              time = time,
+              row.names = NULL
+            )
+          '))
+      )
+
+
+      res_all <- rbind(res_all, res_df)
+    }
+  })
+}
+
+res_all$overall_fit <- res_all$fitness+res_all$constraints
+
+
+
+#save(res_all, file="data/external_methaheuristics.rdata")
+
+```
 
 The data collected from each run of a metaheuristic are the fitness, the constraint breaks, and the run time. Aggregated for the respective metaheuristic, the 5% and 95% quantiles of the fitness and constraint breaks are calculated for the 100 runs, as well as the mean fitness, mean constraint breaks and mean runtime. These metrics are used to compare the respective metaheuristics in a ranking. The score calculated for this purpose is computed using the ranking in the respective category, which takes values from 1 to 24. The resulting score is a weighted sum of these individual rankings as follows:
 
 $$
-  \text{score} = 2 \cdot \text{q_5%_fit_rnk} + \text{mean_fit_rnk} + \text{q_95%_fit_rnk} + 0.25 \cdot \text{q_5%_const_break_rnk} + 0.25 \cdot \text{mean_const_break_rnk} + 0.5 \cdot \text{q_95%_const_break_rnk} + 2 \cdot \text{mean_runtime_rnk}
+  \text{score} = 3 \cdot \text{q_5%_fit_rnk} + 2 \cdot \text{mean_fit_rnk} + \text{q_95%_fit_rnk} + \text{q_5%_const_break_rnk} + 0.5 \cdot \text{mean_const_break_rnk} + 0.5 \cdot \text{q_95%_const_break_rnk} + 3 \cdot \text{mean_runtime_rnk}
 $$
 
-The score is to be interpreted in such a way that a smaller number is better than a larger one. It can be seen that the highest weight is on the 5% quantile of fitness, as this is representative of the best solutions after repeating the metaheuristic several times. Overall, this is a subjective ranking to compare the metaheuristics with a single number. In the following chart should therefore be all the necessary information to allow the reader to form his or here own opinion:
+The score is to be interpreted in such a way that a smaller number is better than a larger one. It can be seen that the highest weight is on the 5% quantile of fitness, as this is representative of the best solutions after repeating the metaheuristic several times. Overall, this is a subjective ranking to sort the metaheuristics and compare them with a single number. In the following chart should therefore be all the necessary information to allow the reader to form his or here own opinion:
+
+```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of statistics between metaheuristics"}
+
+load("data/external_methaheuristics.rdata")
 
 
+df_PSOs <- NULL
+load("data/save_variant1.rdata")
+df_PSOs <- bind_rows(df_PSOs, df_SPSO %>% filter(type=="PSO", iter==400))
+load("data/save_variant2.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+load("data/save_variant3.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+load("data/save_variant5.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+load("data/save_variant6.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+df_PSOs <- df_PSOs %>% select(type, time, fitness=best_fit, const_break) %>% mutate(created=1)
 
-Since fitness is one of the most important metrics, it is additionally visualized in the boxplot below:
+res_all <- bind_rows(
+  df_PSOs,
+  res_all %>% mutate(created=0, fitness = overall_fit) %>% select(type = opt_name, fitness, "const_break"=constraints, time, created)
+)
+
+res_all_agg <- res_all %>%
+  group_by(type) %>%
+  summarise(
+    created = unique(created),
+    fitness_q5 = quantile(fitness, 0.05),
+    fitness_mean = mean(fitness),
+    fitness_q95 = quantile(fitness, 0.95),
+    const_break_q5 = quantile(const_break, 0.05),
+    const_break_mean = mean(const_break),
+    const_break_q95 = quantile(const_break, 0.95),
+    time_mean = mean(time)
+  ) %>%
+  mutate(
+    score = 3 * rank(fitness_q5) + 2 * rank(fitness_mean) + rank(fitness_q95) +
+      1 * rank(const_break_q5) + 0.5 * rank(const_break_mean) + 0.5 * rank(const_break_q95) +
+      3 * rank(time_mean)
+  ) %>%
+  arrange(score)
+#res_all_agg$type <- factor(res_all_agg$type, levels = res_all_agg$type)
+
+reactable(
+  res_all_agg,
+  columns = list(
+    type = colDef(width=90),
+    created = colDef(show=F),
+    fitness_q5 = colDef(width=90, format=colFormat(digits=6)),
+    fitness_mean = colDef(width=100, format=colFormat(digits=6)),
+    fitness_q95 = colDef(width=90, format=colFormat(digits=6)),
+    const_break_q5 = colDef(width=115, format=colFormat(digits=6)),
+    const_break_mean = colDef(width=135, format=colFormat(digits=6)),
+    const_break_q95 = colDef(width=125, format=colFormat(digits=6)),
+    time_mean = colDef(width=85, format=colFormat(digits=2)),
+    score = colDef(width=70, format=colFormat(digits=1))
+  ),
+  style = list(fontFamily="Computer Modern, sans-serif", fontSize=13),
+  defaultPageSize = 30
+) %>% 
+  html_save(., expand = c(-40,-20,-40,-20), vwidth=980, vheight = 1250)
+
+
+```
+
+
+To visualize the detailed runs, a boxplot of the important key figures fitness, constraint break and runtime was also created. In this boxplot, the individual points of each run are displayed under the respective boxes. If there are no points, it is because they have taken on too large values:
+
+
+```{r, echo =F, fig.cap="Comparison of statistics between metaheuristics with boxplots"}
+p1 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~fitness, type = "box", boxpoints="all", y = ~type, marker = list(size=4)) %>%
+  layout(xaxis = list(range=c(min(res_all$fitness)-0.00005,-0.021)), yaxis = list(title=list(text="metaheuristic", standoff = 1), categoryorder = "array", categoryarray = rev(res_all_agg$type)))
+
+p2 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~const_break, type = "box", boxpoints="all", y = ~type, marker = list(size=4)) %>%
+  layout(xaxis = list(range=c(0,0.00001)), yaxis = list(standoff = 40, title="metaheuristic", categoryorder = "array", categoryarray = rev(res_all_agg$type)))
+
+p3 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~time, type = "box", boxpoints="all", y = ~type, marker = list(size=4)) %>%
+  layout(xaxis = list(range=c(0,30)), yaxis = list(standoff = 40, title="metaheuristic", categoryorder = "array", categoryarray = rev(res_all_agg$type)), showlegend=F)
+suppressWarnings({
+  p_pre <- subplot(p2, p3, nrows = 1, shareY = T, titleX=T)
+  p <- subplot(p1, p_pre, nrows = 1, shareY = T, titleX=T)
+})
+
+p %>% 
+  html_save(., expand = c(-25,0,0,0), force=T, vwidth=800, vheight = 850)
+```
 
 
 
