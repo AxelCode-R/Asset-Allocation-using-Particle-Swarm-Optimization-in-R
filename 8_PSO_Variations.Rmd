@@ -1216,7 +1216,7 @@ suppressWarnings({
 })
 
 p %>% 
-  html_save(., expand = c(-25,0,0,0), force=T, vwidth=800, vheight = 850)
+  html_save(., expand = c(-25,0,0,0), vwidth=800, vheight = 850)
 ```
 
 
