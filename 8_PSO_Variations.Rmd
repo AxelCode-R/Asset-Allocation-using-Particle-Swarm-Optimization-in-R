@@ -1069,7 +1069,8 @@ reactable(
   columns = list(
     full_name = colDef(name = "full name")
   ),
-  style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
+  compact=T,
+  style = list(fontFamily="Computer Modern, sans-serif", fontSize=11)
 ) %>% 
   html_save(., expand = c(-40,-20,-39,-20), vheight=900, vwidth=600, force=T)
 ```
@@ -1213,10 +1214,10 @@ To visualize the detailed runs, a boxplot of the important key figures fitness, 
 
 ```{r, echo =F, fig.cap="Comparison of statistics between metaheuristics with boxplots"}
 p1 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~fitness, type = "box", boxpoints="all", y = ~type, marker = list(size=4)) %>%
-  layout(xaxis = list(range=c(min(res_all$fitness)-0.00005,-0.021)), yaxis = list(title=list(text="metaheuristic", standoff = 1), categoryorder = "array", categoryarray = rev(res_all_agg$type)))
+  layout(xaxis = list(range=c(min(res_all$fitness)-0.00005,-0.02105)), yaxis = list(title=list(text="metaheuristic", standoff = 1), categoryorder = "array", categoryarray = rev(res_all_agg$type)))
 
 p2 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~const_break, type = "box", boxpoints="all", y = ~type, marker = list(size=4)) %>%
-  layout(xaxis = list(range=c(0,0.00001)), yaxis = list(standoff = 40, title="metaheuristic", categoryorder = "array", categoryarray = rev(res_all_agg$type)))
+  layout(xaxis = list(range=c(0,0.000012)), yaxis = list(standoff = 40, title="metaheuristic", categoryorder = "array", categoryarray = rev(res_all_agg$type)))
 
 p3 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~time, type = "box", boxpoints="all", y = ~type, marker = list(size=4)) %>%
   layout(xaxis = list(range=c(0,30)), yaxis = list(standoff = 40, title="metaheuristic", categoryorder = "array", categoryarray = rev(res_all_agg$type)), showlegend=F)
