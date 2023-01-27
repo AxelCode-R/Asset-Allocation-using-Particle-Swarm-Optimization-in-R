@@ -1,9 +1,9 @@
 # Information about the used Software
-All of the thesis was done in the R-Studio IDE using R-Markdown extended with the bookdown package. R-Markdown allows the user to execute R-code in so-called code chunks that are located between the texts. These code chunks can be used, for example, to generate charts that can be displayed in the output instead of the code. Each chunk of code can be cached to avoid time-consuming repetition, and the caching can be disabled to recreate the entire thesis, including all the code and charts it contains. This is helpful primarily for the user to ensure stability of older code, and secondarily for the reader who has access to the R-Markdown files, as they can trace back any analysis or diagram displayed. R-Markdown can produce various formats, such as HTML or PDF output, both of which are used for this thesis. The HTML output is deposited in the corresponding GitHub repository at [@GitHub]. The recommended output format of R-Markdown is an HTML file, which has all the capabilities of a web page with HTML, CSS, and Javascript. For this reason, some javascript code has been added to the HTML version to allow the reader to expand important blocks of code alongside the text. The bookdown package is used as a template that contains the necessary styles and formatting to write books with an HTML or PDF output including table of contents, references and more. Together with the possibilities of the R programming language, a reproducible and traceable thesis can be created.
+All of the thesis was done in the R-Studio IDE using R Markdown extended with the bookdown package. R Markdown allows the user to execute R code in so-called code chunks that are located between the texts. These code chunks can be used, for example, to generate charts that can be displayed in the output instead of the code. Each chunk of code can be cached to avoid time-consuming repetition, and the caching can be disabled to recreate the entire thesis, including all the code and charts it contains. This is helpful primarily for the user to ensure stability of older code, and secondarily for the reader who has access to the R-Markdown files, as they can trace back any analysis or diagram displayed. R-Markdown can produce various formats, such as HTML or PDF output, both of which are used for this thesis. The HTML output is deposited in the corresponding GitHub repository at [@GitHub]. The recommended output format of R-Markdown is an HTML file, which has all the capabilities of a web page with HTML, CSS, and Javascript. For this reason, some javascript code has been added to the HTML version to allow the reader to expand important blocks of code alongside the text. The bookdown package is used as a template that contains the necessary styles and formatting to write books with an HTML or PDF output including table of contents, references and more. Together with the possibilities of the programming language R, a reproducible and traceable thesis can be created.
 
 
 
-## R-Version and Packages
+## R Version and Packages
 The used packages and versions can be found in the table below:
 
 
@@ -19,8 +19,8 @@ z <- sapply(x, function(k){cat(paste0(k, "\n"))})
 Everything in this thesis can be reproduced via the public GitHub repository at [@GitHub]. All code sections that use random number generators start with seed 0 to ensure the credibility of the analyses and diagrams shown.
 
 
-## R-functions
-The following functions were created to simplify working with R-Markdown and to take advantage of the HTML version of this thesis.
+## R Functions
+The following functions were created to simplify working with R Markdown and to take advantage of the HTML version of this thesis.
 
 
 ### `html_save()`
