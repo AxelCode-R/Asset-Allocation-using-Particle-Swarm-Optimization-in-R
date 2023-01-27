@@ -363,7 +363,7 @@ reactable(
 ```
 
 
-It can be seen that the function stretching did not bring any advantages in this particular problem. Perhaps it is due to the unfavorable values for $\gamma_1$, $\gamma_2$ and $\mu$, which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
+It turns out that functional stretching does not provide any benefits in this particular problem. Perhaps it is due to the unfavorable values for $\gamma_1$, $\gamma_2$ and $\mu$, which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
 
 
 
@@ -498,7 +498,7 @@ reactable(
 It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
 
 ## Preserving Feasibility
-Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, a new variant was investigated in [@XiEb2002] that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the result of trying to find a feasible position among a million randomly generated positions is as follows:
+Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, a new variant was created in [@XiEb2002] that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but rather a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the result of trying to find a feasible position among a million randomly generated positions of the test problem looks like this:
 
 
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
@@ -559,7 +559,7 @@ for(i in 1:100){
         s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 200, # iterations
+        maxiter = 400, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T,
@@ -598,7 +598,7 @@ for(i in 1:100){
         s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 200, # iterations
+        maxiter = 400, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T # save more information
@@ -635,6 +635,7 @@ save(df_res, df, file="data/save_variant4.rdata")
 
 load("data/save_variant4.rdata")
 
+
 plot_ly() %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
@@ -653,6 +654,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 
 
 ```{r variants6next2, echo=F, fig.cap = "Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions"}
+
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
