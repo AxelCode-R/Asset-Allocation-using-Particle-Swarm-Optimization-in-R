@@ -766,7 +766,7 @@ c_{g,d}^{i+1} &=
 
 
 ### Analyse Implementation
-The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration $i$ with 100 maximum iterations are distributed as follows:  
+The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients in iteration $i$ with 100 maximum iterations are distributed as follows:  
 
 
 ```{r, echo=F, fig.cap = "Comparison of the different distributions used in the velocity update of the PSO with self-adapting velocity depending on the iteration"}
@@ -989,7 +989,6 @@ plot_ly() %>%
 ```
 
 
-The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
 
 
@@ -1014,6 +1013,8 @@ reactable(
   html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
 
+
+The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
 
 
 ## Comparison with other Methaheuristics
@@ -1211,7 +1212,7 @@ reactable(
 ```
 
 
-To visualize the detailed runs, a boxplot of the important key figures fitness, constraint break and runtime was also created. In this boxplot, the individual points of each run are displayed under the respective boxes. If there are no points, it is because they have taken on too large values:
+To visualize the detailed runs, a boxplot of the important metrics fitness, constraint break and runtime was also created. In this boxplot, the individual points of each run are displayed under the respective boxes. If there are no points or boxes, it is because they have taken on too large values:
 
 
 ```{r, echo =F, fig.cap="Comparison of statistics between metaheuristics with boxplots"}
@@ -1233,7 +1234,7 @@ p %>%
 ```
 
 
-It can be observed that the metaheuristics from the R package `metaheuristicOpt`, consistently have a longer runtime, which is partly due to the implementation, since it does not make use of vectorial operations. Additionally it can be seen that beside the PSO and its variants also the Clonal Selection Algorithm (CLONALG) and the Ant Lion Optimizer Algorithm (ALO) reach a satisfying fitness, but have a significantly longer runtime. Overall, the selfadaptive velocity PSO (PSO-SAvel) had the best ranking, which is also confirmed by the key statistics. In addition, the PSO-SAvel has fewer hyperparameters, which is why it will be used for the backtests in the next chapter.
+It can be observed that the metaheuristics from the R package `metaheuristicOpt`, consistently have a longer runtime, which is partly due to the implementation, since it does not make use of vectorial operations. Additionally it can be seen that beside the PSO and its variants also the Clonal Selection Algorithm (CLONALG) and the Ant Lion Optimizer Algorithm (ALO) reached a satisfying fitness, but had a significantly longer runtime. Overall, the self-adaptive velocity PSO (PSO-SAvel) had the best ranking, which is also confirmed by the key statistics. In addition, the PSO-SAvel has fewer hyperparameters, which is why it will be used for the backtests in the next chapter.
 
 
 
