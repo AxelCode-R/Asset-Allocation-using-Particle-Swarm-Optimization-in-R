@@ -901,7 +901,7 @@ The results look very promising, and with fewer hyperparameters to fine-tune, th
 
 
 ## PSO R Package
-In this section, the existing package `pso` from R is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
+In this section, the existing package `pso` is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
 
 
 ```{r variantspkg, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
@@ -1014,7 +1014,7 @@ reactable(
 ```
 
 
-The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
+The `PSO-pkg` is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
 
 
 ## Comparison with other Methaheuristics
