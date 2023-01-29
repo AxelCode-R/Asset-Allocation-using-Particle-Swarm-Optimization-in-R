@@ -7,9 +7,12 @@ editor_options:
 ---
 
 # Future Research
-The PSO variants were analyzed and some showed promising results in solving the index tracking problem. The best of them were the local PSO and the self-adaptive velocity PSO, both of which increase the ability to find good solutions by increasing the diversity in the swarm. This often prevents premature convergence in local minimum situations. The additional advantage of the self-adaptive velocity PSO is the reduction in hyperparameters, making it capable of solving a wide range of problems without additional fine-tuning effort. The implementation of the self-adaptive velocity PSO is identical to the source in [@FaYa2014] and works well, but it would be interesting to analyze whether it can be improved by combining it with the local variant.
+The variants of the Particle Swarm Optimization (PSO) algorithm were examined for their efficacy in solving the index tracking problem. The local PSO and the self-adaptive velocity PSO were found to be particularly effective, as they increase the diversity within the swarm and prevent premature convergence in local minima. Additionally, the self-adaptive velocity PSO offers the advantage of reducing the number of hyperparameters, making it capable of solving a wide range of problems without the need for extensive fine-tuning. The implementation of the self-adaptive velocity PSO, as described in [@FaYa2014], was found to be effective, but further research is needed to determine whether it can be improved by combining it with the local variant.
 
-The last chapter has analyzed a backtests of a practical index tracking problem for retail investors, which yielded promising results but require further evaluation to verify their stability due to path-dependent portfolios.
+A backtesting study was conducted in the final chapter, evaluating the practical application of the index tracking problem for retail investors. The results were promising, but further evaluation is necessary to confirm the stability of the results, given the path-dependent nature of the portfolios.
+
+
+
 
 
 # Conclusion
