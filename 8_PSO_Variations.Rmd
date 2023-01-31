@@ -895,7 +895,7 @@ reactable(
   html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
 
-
+\vspace{-0.1cm}
 The results look very promising, and with fewer hyperparameters to fine-tune, this may be one of the best variants for general use of a PSO.
 
 
@@ -903,7 +903,7 @@ The results look very promising, and with fewer hyperparameters to fine-tune, th
 ## PSO R Package
 In this section, the existing package `pso` is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
 
-
+\vspace{-0.1cm}
 ```{r variantspkg, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 load("data/save_variant1.rdata")
 set.seed(0)
@@ -988,9 +988,9 @@ plot_ly() %>%
 
 ```
 
-
+\vspace{-0.1cm}
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
-
+\vspace{-0.2cm}
 
 ```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R package with standard PSO settings and the standard PSO"}
 reactable(
@@ -1012,9 +1012,9 @@ reactable(
 ) %>% 
   html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
+\vspace{-0.5cm}
 
-
-The `PSO-pkg` is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
+The `PSO-pkg` is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the package `pso` has many features and variants that are disabled for this comparison.
 
 
 ## Comparison with other Methaheuristics
