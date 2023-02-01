@@ -1017,12 +1017,12 @@ reactable(
 The `PSO-pkg` is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the package `pso` has many features and variants that are disabled for this comparison.
 
 
-## Comparison with other Methaheuristics
+## Comparison with other Metaheuristics
 
 In addition to the PSO, there are other metaheuristics that also treat the optimization problem as a black box and can thus be brought to a generic form. This is exactly what has been done in the R package `metaheuristicOpt` by implementing 19 more metaheuristics besides the PSO. Therefore, this package can be used to compare which metaheuristic is suitable for a specific type of optimization problem. The implemented metaheuristics are the standard versions, which is why no statement about variants of these metaheuristics can be given. Likewise, it is not guaranteed how performant the respective metaheuristics have been implemented. Nevertheless, this package is a great help to quickly and easily test different metaheuristics for an explicit problem. The metaheuristics implemented in the R package `metaheuristicOpt` are the following:
 
 
-```{r, fig.cap = "List of methaheuristics from the R package metaheuristicOpt", echo=F}
+```{r, fig.cap = "List of metaheuristics from the R package metaheuristicOpt", echo=F}
 reactable(
   data.frame(
     "abbreviation" = c(
@@ -1094,12 +1094,12 @@ The score is to be interpreted in such a way that a smaller number is better tha
 
 ```{r, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 library(metaheuristicOpt)
-methaheuristics <- c("ABC", "ALO", "BA", "BHO", "CLONALG", "CS", "CSO", "DA", "DE", "FFA", "GA", "GOA", "GWO", "HS", "KH", "MFO", "SCA", "WOA")
+metaheuristics <- c("ABC", "ALO", "BA", "BHO", "CLONALG", "CS", "CSO", "DA", "DE", "FFA", "GA", "GOA", "GWO", "HS", "KH", "MFO", "SCA", "WOA")
 n_tests <- 100
 
 res_all <- NULL
-for(i in 1:length(methaheuristics)){
-  opt_name <- methaheuristics[i]
+for(i in 1:length(metaheuristics)){
+  opt_name <- metaheuristics[i]
   try({
     for(k in 1:n_tests){
       eval(
@@ -1141,7 +1141,7 @@ res_all$overall_fit <- res_all$fitness+res_all$constraints
 
 
 
-#save(res_all, file="data/external_methaheuristics.rdata")
+#save(res_all, file="data/external_metaheuristics.rdata")
 
 ```
 
