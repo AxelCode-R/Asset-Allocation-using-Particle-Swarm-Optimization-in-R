@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Deterministic Optimization Methods for Quadratic Programming Problems | Asset Allocation using Particle Swarm Optimization in R</title>
+  <meta name="description" content="This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart." />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Deterministic Optimization Methods for Quadratic Programming Problems | Asset Allocation using Particle Swarm Optimization in R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart." />
+  <meta name="github-repo" content="https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Deterministic Optimization Methods for Quadratic Programming Problems | Asset Allocation using Particle Swarm Optimization in R" />
+  
+  <meta name="twitter:description" content="This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart." />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="challenges.html"/>
+<link rel="next" href="spso.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/core-js-2.5.3/shim.min.js"></script>
+<script src="libs/react-17.0.0/react.min.js"></script>
+<script src="libs/react-17.0.0/react-dom.min.js"></script>
+<script src="libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/reactable-binding-0.3.0/reactable.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script src="libs/mathjax-2.7.5/cdn.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="my_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Master Thesis Axel Roth</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="list-of-abbreviations.html"><a href="list-of-abbreviations.html"><i class="fa fa-check"></i>List of Abbreviations</a></li>
+<li class="chapter" data-level="" data-path="abstract.html"><a href="abstract.html"><i class="fa fa-check"></i>Abstract</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="information-about-the-used-software.html"><a href="information-about-the-used-software.html"><i class="fa fa-check"></i><b>2</b> Information about the used Software</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="information-about-the-used-software.html"><a href="information-about-the-used-software.html#r-version-and-packages"><i class="fa fa-check"></i><b>2.1</b> R Version and Packages</a></li>
+<li class="chapter" data-level="2.2" data-path="information-about-the-used-software.html"><a href="information-about-the-used-software.html#reproducibility"><i class="fa fa-check"></i><b>2.2</b> Reproducibility</a></li>
+<li class="chapter" data-level="2.3" data-path="information-about-the-used-software.html"><a href="information-about-the-used-software.html#r-functions"><i class="fa fa-check"></i><b>2.3</b> R Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="open-data-sources.html"><a href="open-data-sources.html"><i class="fa fa-check"></i><b>3</b> Open Data Sources</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="open-data-sources.html"><a href="open-data-sources.html#r-functions-1"><i class="fa fa-check"></i><b>3.1</b> R Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="mathfundations.html"><a href="mathfundations.html"><i class="fa fa-check"></i><b>4</b> Mathematical Foundations</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="mathfundations.html"><a href="mathfundations.html#basic-operators"><i class="fa fa-check"></i><b>4.1</b> Basic Operators</a></li>
+<li class="chapter" data-level="4.2" data-path="mathfundations.html"><a href="mathfundations.html#formula-conventions"><i class="fa fa-check"></i><b>4.2</b> Formula Conventions</a></li>
+<li class="chapter" data-level="4.3" data-path="mathfundations.html"><a href="mathfundations.html#return-calculation"><i class="fa fa-check"></i><b>4.3</b> Return Calculation</a></li>
+<li class="chapter" data-level="4.4" data-path="mathfundations.html"><a href="mathfundations.html#markowitz-modern-portfolio-theory"><i class="fa fa-check"></i><b>4.4</b> Markowitz Modern Portfolio Theory</a></li>
+<li class="chapter" data-level="4.5" data-path="mathfundations.html"><a href="mathfundations.html#portfolio-math"><i class="fa fa-check"></i><b>4.5</b> Portfolio Math</a></li>
+<li class="chapter" data-level="4.6" data-path="mathfundations.html"><a href="mathfundations.html#r-functions-2"><i class="fa fa-check"></i><b>4.6</b> R Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="activevspassive.html"><a href="activevspassive.html"><i class="fa fa-check"></i><b>5</b> Active vs Passive Portfolio Managment</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="activevspassive.html"><a href="activevspassive.html#results-of-the-literature"><i class="fa fa-check"></i><b>5.1</b> Results of the Literature</a></li>
+<li class="chapter" data-level="5.2" data-path="activevspassive.html"><a href="activevspassive.html#aggregation-of-the-literature"><i class="fa fa-check"></i><b>5.2</b> Aggregation of the Literature</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="challenges.html"><a href="challenges.html"><i class="fa fa-check"></i><b>6</b> Challenges of Passive Portfolio Management</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="challenges.html"><a href="challenges.html#mean-variance-portfolio-mvp"><i class="fa fa-check"></i><b>6.1</b> Mean-Variance Portfolio (MVP)</a></li>
+<li class="chapter" data-level="6.2" data-path="challenges.html"><a href="challenges.html#index-tracking-portfolio-itp"><i class="fa fa-check"></i><b>6.2</b> Index-Tracking Portfolio (ITP)</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="analyticalsolver.html"><a href="analyticalsolver.html"><i class="fa fa-check"></i><b>7</b> Deterministic Optimization Methods for Quadratic Programming Problems</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="analyticalsolver.html"><a href="analyticalsolver.html#quadratic-programming-qp"><i class="fa fa-check"></i><b>7.1</b> Quadratic Programming (QP)</a></li>
+<li class="chapter" data-level="7.2" data-path="analyticalsolver.html"><a href="analyticalsolver.html#qp-solver-from-quadprog"><i class="fa fa-check"></i><b>7.2</b> QP Solver from quadprog</a></li>
+<li class="chapter" data-level="7.3" data-path="analyticalsolver.html"><a href="analyticalsolver.html#exampleanalyticalmvp"><i class="fa fa-check"></i><b>7.3</b> Solving MVP Problem with <code>solve.QP</code></a></li>
+<li class="chapter" data-level="7.4" data-path="analyticalsolver.html"><a href="analyticalsolver.html#exampleitpsolveqp"><i class="fa fa-check"></i><b>7.4</b> Solving ITP-MSTE with <code>solve.QP</code></a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="spso.html"><a href="spso.html"><i class="fa fa-check"></i><b>8</b> Particle Swarm Optimization</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="spso.html"><a href="spso.html#the-algorithm"><i class="fa fa-check"></i><b>8.1</b> The Algorithm</a></li>
+<li class="chapter" data-level="8.2" data-path="spso.html"><a href="spso.html#pso-function"><i class="fa fa-check"></i><b>8.2</b> <code>pso()</code> Function</a></li>
+<li class="chapter" data-level="8.3" data-path="spso.html"><a href="spso.html#animation-2-dimensional"><i class="fa fa-check"></i><b>8.3</b> Animation 2-Dimensional</a></li>
+<li class="chapter" data-level="8.4" data-path="spso.html"><a href="spso.html#animation-2-dimensional-app"><i class="fa fa-check"></i><b>8.4</b> Animation 2-Dimensional App</a></li>
+<li class="chapter" data-level="8.5" data-path="spso.html"><a href="spso.html#simple-constraint-handling"><i class="fa fa-check"></i><b>8.5</b> Simple Constraint Handling</a></li>
+<li class="chapter" data-level="8.6" data-path="spso.html"><a href="spso.html#convergence-analysis-of-the-standard-pso"><i class="fa fa-check"></i><b>8.6</b> Convergence Analysis of the Standard PSO</a></li>
+<li class="chapter" data-level="8.7" data-path="spso.html"><a href="spso.html#example-mvp-1"><i class="fa fa-check"></i><b>8.7</b> Example MVP</a></li>
+<li class="chapter" data-level="8.8" data-path="spso.html"><a href="spso.html#example-itp-mste"><i class="fa fa-check"></i><b>8.8</b> Example ITP-MSTE</a></li>
+<li class="chapter" data-level="8.9" data-path="spso.html"><a href="spso.html#pros-and-cons-for-continuous-problems"><i class="fa fa-check"></i><b>8.9</b> Pros and Cons for Continuous Problems</a></li>
+<li class="chapter" data-level="8.10" data-path="spso.html"><a href="spso.html#discrete-problems"><i class="fa fa-check"></i><b>8.10</b> Discrete Problems</a></li>
+<li class="chapter" data-level="8.11" data-path="spso.html"><a href="spso.html#example-discrete-itp-mste"><i class="fa fa-check"></i><b>8.11</b> Example Discrete ITP-MSTE</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="psovariants.html"><a href="psovariants.html"><i class="fa fa-check"></i><b>9</b> PSO Variations</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="psovariants.html"><a href="psovariants.html#testproblem-discrete-itp-mste"><i class="fa fa-check"></i><b>9.1</b> Testproblem Discrete ITP-MSTE</a></li>
+<li class="chapter" data-level="9.2" data-path="psovariants.html"><a href="psovariants.html#function-stretching"><i class="fa fa-check"></i><b>9.2</b> Function Stretching</a></li>
+<li class="chapter" data-level="9.3" data-path="psovariants.html"><a href="psovariants.html#local-pso"><i class="fa fa-check"></i><b>9.3</b> Local PSO</a></li>
+<li class="chapter" data-level="9.4" data-path="psovariants.html"><a href="psovariants.html#preserving-feasibility"><i class="fa fa-check"></i><b>9.4</b> Preserving Feasibility</a></li>
+<li class="chapter" data-level="9.5" data-path="psovariants.html"><a href="psovariants.html#self-adaptive-velocity"><i class="fa fa-check"></i><b>9.5</b> Self-Adaptive Velocity</a></li>
+<li class="chapter" data-level="9.6" data-path="psovariants.html"><a href="psovariants.html#pso-r-package"><i class="fa fa-check"></i><b>9.6</b> PSO R Package</a></li>
+<li class="chapter" data-level="9.7" data-path="psovariants.html"><a href="psovariants.html#comparison-with-other-metaheuristics"><i class="fa fa-check"></i><b>9.7</b> Comparison with other Metaheuristics</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="reallife.html"><a href="reallife.html"><i class="fa fa-check"></i><b>10</b> Real Life ITP Example</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="reallife.html"><a href="reallife.html#transaction-costs"><i class="fa fa-check"></i><b>10.1</b> Transaction Costs</a></li>
+<li class="chapter" data-level="10.2" data-path="reallife.html"><a href="reallife.html#rebalancing-constraint"><i class="fa fa-check"></i><b>10.2</b> Rebalancing Constraint</a></li>
+<li class="chapter" data-level="10.3" data-path="reallife.html"><a href="reallife.html#objective"><i class="fa fa-check"></i><b>10.3</b> Objective</a></li>
+<li class="chapter" data-level="10.4" data-path="reallife.html"><a href="reallife.html#complete-itp-example"><i class="fa fa-check"></i><b>10.4</b> Complete ITP Example</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="future-research.html"><a href="future-research.html"><i class="fa fa-check"></i><b>11</b> Future Research</a></li>
+<li class="chapter" data-level="12" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>12</b> Conclusion</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R" target="blank">GitHub Repository</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Asset Allocation using Particle Swarm Optimization in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="analyticalsolver" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Deterministic Optimization Methods for Quadratic Programming Problems<a href="analyticalsolver.html#analyticalsolver" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this chapter, the advantages and disadvantages of deterministic optimization methods for quadratic programming problems are discussed. For simplicity, this thesis refers to the implementation of a deterministic optimization method as a solver. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver handles quadratic problems; only the applications and analysis are discussed. The main reason for dealing with solvers for quadratic programming problems is to use them as a benchmark for the PSO.</p>
+<div id="quadratic-programming-qp" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Quadratic Programming (QP)<a href="analyticalsolver.html#quadratic-programming-qp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A quadratic program is a minimization problem of a function that returns a scalar and consists of a quadratic term and a linear term that depend on the variable of interest. In addition, the problem may be constrained by several linear inequalities that bound the solution. The general formulation used is to find <span class="math inline">\(x\)</span> that minimizes the following problem:</p>
+<p><span class="math display">\[
+  \min\limits_{x} \ \frac{1}{2} \cdot x^T \times D \times x - d^T \times x 
+\]</span></p>
+<p>and is valid under the linear constraints:</p>
+<p><span class="math display">\[
+  A^T \times x \geq b_0.
+\]</span></p>
+<p>Some other sources notate the problem with different signs or coefficients, all of which are interchangeable with the above problem. In addition, the above problem has the same notation used in the R package <code>quadprog</code>, which reduces the substitution overhead. All modern programming languages have many solvers for quadratic problems. They differ mainly in the computation time for certain problems and the requirements. Some commercial QP solvers additionally accept more complex constraints, such as absolute (e.g., <span class="math inline">\(|A^T \times x| \geq a_0\)</span>) or mixed-integer (e.g., <span class="math inline">\(x \in \mathbb{N}\)</span>). Especially the mixed-integer constraint problems lead to a huge increase in memory requirements.</p>
+</div>
+<div id="qp-solver-from-quadprog" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> QP Solver from quadprog<a href="analyticalsolver.html#qp-solver-from-quadprog" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The common free QP solver used in R comes from the package <a href="https://cran.r-project.org/web/packages/quadprog/quadprog.pdf">quadprog</a>, which consists of a single function called <code>solve.QP</code>. Its implementation routine is the dual method of Goldfarb and Idnani published in <span class="citation">(<a href="#ref-GoId1982" role="doc-biblioref">Goldfarb &amp; Idnani, 1982</a>)</span> and <span class="citation">(<a href="#ref-GoId1983" role="doc-biblioref">Goldfarb &amp; Idnani, 1983</a>)</span>. It uses the above QP with the condition that <span class="math inline">\(D\)</span> must be a symmetric positive definite matrix. This means that <span class="math inline">\(D\in \mathbb{R}^{N \times N}\)</span> and <span class="math inline">\(x^T D x &gt; 0 \ \forall \ x \in \mathbb{R}^N \setminus \{\vec{0}\}\)</span>, which is equivalent to all eigenvalues being greater than zero. In most cases this is not achieved by estimating the covariance matrix <span class="math inline">\(\sum\)</span>, but it is possible to find the nearest positive definite matrix of <span class="math inline">\(\textstyle\sum\)</span> using the function <code>nearPD()</code> from the <a href="https://cran.r-project.org/web/packages/Matrix/Matrix.pdf">matrix</a> R package. The error encountered often does not exceed a percent change in elements greater than <span class="math inline">\(10^{-15} \%\)</span>, which is negligible for the context of this work. The function <code>solve.QP</code> for an <span class="math inline">\(N\)</span> dimensional vector of interest, has the following arguments, which are also found in the above formulation of a QP:</p>
+<ul>
+<li><code>Dmat</code>: Symmetric positive definite matrix <span class="math inline">\(D \in \mathbb{R}^{N \times N}\)</span> of the quadratic term</li>
+<li><code>dvec</code>: Vector <span class="math inline">\(d \in \mathbb{R}^{N}\)</span> of the linear term</li>
+<li><code>Amat</code>: Constraint matrix <span class="math inline">\(A\)</span></li>
+<li><code>bvec</code>: Constraint vector <span class="math inline">\(b_0\)</span></li>
+<li><code>meq = 1</code>: means that the first <code>meq</code> columns of <span class="math inline">\(A\)</span> are treated as an equality constraint</li>
+</ul>
+<p>The return of <code>solve.QP</code> is a list and contains, among others, the following attributes of interest:</p>
+<ul>
+<li><code>solution</code>: Vector containing the solution <span class="math inline">\(x\)</span> of the quadratic programming problem (e.g. portfolio weights)</li>
+<li><code>value</code>: Scalar, the value of the quadratic function at the solution</li>
+</ul>
+</div>
+<div id="exampleanalyticalmvp" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Solving MVP Problem with <code>solve.QP</code><a href="analyticalsolver.html#exampleanalyticalmvp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This section provides insights into the effects of diversification and the use of <code>solve.QP</code> by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier <span class="math inline">\(i \in \{1, 2, \cdots, 10\}\)</span> consists of <span class="math inline">\(N_i = i\)</span> assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb13-1"><a href="analyticalsolver.html#cb13-1" aria-hidden="true" tabindex="-1"></a>returns_raw <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
+<span id="cb13-2"><a href="analyticalsolver.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(</span>
+<span id="cb13-3"><a href="analyticalsolver.html#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">tickers =</span> <span class="fu">c</span>(<span class="st">&quot;IBM&quot;</span>, <span class="st">&quot;GOOG&quot;</span>, <span class="st">&quot;AAPL&quot;</span>, <span class="st">&quot;MSFT&quot;</span>, <span class="st">&quot;AMZN&quot;</span>, </span>
+<span id="cb13-4"><a href="analyticalsolver.html#cb13-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;NVDA&quot;</span>, <span class="st">&quot;JPM&quot;</span>, <span class="st">&quot;META&quot;</span>, <span class="st">&quot;V&quot;</span>, <span class="st">&quot;WMT&quot;</span>), </span>
+<span id="cb13-5"><a href="analyticalsolver.html#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">from =</span> <span class="st">&quot;2018-01-01&quot;</span>, </span>
+<span id="cb13-6"><a href="analyticalsolver.html#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">to =</span> <span class="st">&quot;2019-12-31&quot;</span></span>
+<span id="cb13-7"><a href="analyticalsolver.html#cb13-7" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>returns, </span>
+<span id="cb13-8"><a href="analyticalsolver.html#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AS_10_assets&quot;</span></span>
+<span id="cb13-9"><a href="analyticalsolver.html#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-10"><a href="analyticalsolver.html#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="analyticalsolver.html#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># re-arrange: low var first</span></span>
+<span id="cb13-12"><a href="analyticalsolver.html#cb13-12" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">sapply</span>(returns_raw, var)</span>
+<span id="cb13-13"><a href="analyticalsolver.html#cb13-13" aria-hidden="true" tabindex="-1"></a>returns_raw <span class="ot">&lt;-</span> returns_raw[, <span class="fu">order</span>(vars, <span class="at">decreasing =</span> F)]</span></code></pre></div>
+<p>The next step is to create a function <code>mvp()</code> that has the arguments <code>return</code> and <code>lambda</code>. It computes the expected returns <code>mu</code> and the estimated positive definite covariance <code>cov</code>. It then solves an MVP problem with constraints <span class="math inline">\(\textstyle\sum w_i = 1\)</span> and <span class="math inline">\(w_i \geq 0\)</span>, which yields the key features <code>mu</code>, <code>var</code> and <code>composition</code> of the portfolio.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb14-1"><a href="analyticalsolver.html#cb14-1" aria-hidden="true" tabindex="-1"></a>mvp <span class="ot">&lt;-</span> <span class="cf">function</span>(returns, lambda){</span>
+<span id="cb14-2"><a href="analyticalsolver.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  tc <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>({</span>
+<span id="cb14-3"><a href="analyticalsolver.html#cb14-3" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> <span class="fu">ret_to_geomeanret</span>(returns)</span>
+<span id="cb14-4"><a href="analyticalsolver.html#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="analyticalsolver.html#cb14-5" aria-hidden="true" tabindex="-1"></a>    cov <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">nearPD</span>(<span class="fu">cov_</span>(returns, mu))<span class="sc">$</span>mat)</span>
+<span id="cb14-6"><a href="analyticalsolver.html#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="analyticalsolver.html#cb14-7" aria-hidden="true" tabindex="-1"></a>    mat <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb14-8"><a href="analyticalsolver.html#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">Dmat =</span> lambda <span class="sc">*</span> cov,</span>
+<span id="cb14-9"><a href="analyticalsolver.html#cb14-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">dvec =</span> (<span class="dv">1</span><span class="sc">-</span>lambda) <span class="sc">*</span> mu,</span>
+<span id="cb14-10"><a href="analyticalsolver.html#cb14-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
+<span id="cb14-11"><a href="analyticalsolver.html#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(returns)), <span class="co"># sum up to 1</span></span>
+<span id="cb14-12"><a href="analyticalsolver.html#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">diag</span>(</span>
+<span id="cb14-13"><a href="analyticalsolver.html#cb14-13" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span>, <span class="at">nrow=</span><span class="fu">ncol</span>(returns), <span class="at">ncol=</span><span class="fu">ncol</span>(returns)</span>
+<span id="cb14-14"><a href="analyticalsolver.html#cb14-14" aria-hidden="true" tabindex="-1"></a>        ) <span class="co"># long only</span></span>
+<span id="cb14-15"><a href="analyticalsolver.html#cb14-15" aria-hidden="true" tabindex="-1"></a>      )),</span>
+<span id="cb14-16"><a href="analyticalsolver.html#cb14-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">bvec =</span> <span class="fu">c</span>(</span>
+<span id="cb14-17"><a href="analyticalsolver.html#cb14-17" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
+<span id="cb14-18"><a href="analyticalsolver.html#cb14-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(returns)) <span class="co"># long only</span></span>
+<span id="cb14-19"><a href="analyticalsolver.html#cb14-19" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb14-20"><a href="analyticalsolver.html#cb14-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">meq =</span> <span class="dv">1</span></span>
+<span id="cb14-21"><a href="analyticalsolver.html#cb14-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-22"><a href="analyticalsolver.html#cb14-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-23"><a href="analyticalsolver.html#cb14-23" aria-hidden="true" tabindex="-1"></a>    qp <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(</span>
+<span id="cb14-24"><a href="analyticalsolver.html#cb14-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">Dmat =</span> mat<span class="sc">$</span>Dmat, <span class="at">dvec =</span> mat<span class="sc">$</span>dvec, </span>
+<span id="cb14-25"><a href="analyticalsolver.html#cb14-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">Amat =</span> mat<span class="sc">$</span>Amat, <span class="at">bvec =</span> mat<span class="sc">$</span>bvec, <span class="at">meq =</span> mat<span class="sc">$</span>meq</span>
+<span id="cb14-26"><a href="analyticalsolver.html#cb14-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-27"><a href="analyticalsolver.html#cb14-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-28"><a href="analyticalsolver.html#cb14-28" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb14-29"><a href="analyticalsolver.html#cb14-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mu&quot;</span> <span class="ot">=</span> mu <span class="sc">%*%</span> qp<span class="sc">$</span>solution,</span>
+<span id="cb14-30"><a href="analyticalsolver.html#cb14-30" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="fu">t</span>(qp<span class="sc">$</span>solution) <span class="sc">%*%</span> cov <span class="sc">%*%</span> qp<span class="sc">$</span>solution,</span>
+<span id="cb14-31"><a href="analyticalsolver.html#cb14-31" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;composition&quot;</span> <span class="ot">=</span> <span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(returns))</span>
+<span id="cb14-32"><a href="analyticalsolver.html#cb14-32" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-33"><a href="analyticalsolver.html#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span></span>
+<span id="cb14-34"><a href="analyticalsolver.html#cb14-34" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e){<span class="cn">FALSE</span>})</span>
+<span id="cb14-35"><a href="analyticalsolver.html#cb14-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-36"><a href="analyticalsolver.html#cb14-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-37"><a href="analyticalsolver.html#cb14-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(tc){</span>
+<span id="cb14-38"><a href="analyticalsolver.html#cb14-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(res)</span>
+<span id="cb14-39"><a href="analyticalsolver.html#cb14-39" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb14-40"><a href="analyticalsolver.html#cb14-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(</span>
+<span id="cb14-41"><a href="analyticalsolver.html#cb14-41" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;mu&quot;</span> <span class="ot">=</span> <span class="cn">NA</span>,</span>
+<span id="cb14-42"><a href="analyticalsolver.html#cb14-42" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="cn">NA</span>,</span>
+<span id="cb14-43"><a href="analyticalsolver.html#cb14-43" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;composition&quot;</span> <span class="ot">=</span> <span class="cn">NA</span></span>
+<span id="cb14-44"><a href="analyticalsolver.html#cb14-44" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb14-45"><a href="analyticalsolver.html#cb14-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-46"><a href="analyticalsolver.html#cb14-46" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Each <span class="math inline">\(\lambda \in \{0.01, 0.02, \cdots, 1\}\)</span> and each combination of ascending number of assets results in a portfolio that can be created with two for loops.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb15-1"><a href="analyticalsolver.html#cb15-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb15-2"><a href="analyticalsolver.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;index&quot;</span><span class="ot">=</span><span class="dv">1</span>, </span>
+<span id="cb15-3"><a href="analyticalsolver.html#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;var&quot;</span><span class="ot">=</span><span class="fu">as.numeric</span>(<span class="fu">var</span>(returns_raw[, <span class="dv">1</span>])), </span>
+<span id="cb15-4"><a href="analyticalsolver.html#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;return&quot;</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">ret_to_geomeanret</span>(returns_raw[, <span class="dv">1</span>])), </span>
+<span id="cb15-5"><a href="analyticalsolver.html#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names=</span><span class="cn">NULL</span></span>
+<span id="cb15-6"><a href="analyticalsolver.html#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-7"><a href="analyticalsolver.html#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(returns_raw)){</span>
+<span id="cb15-8"><a href="analyticalsolver.html#cb15-8" aria-hidden="true" tabindex="-1"></a>  returns <span class="ot">&lt;-</span> returns_raw[, <span class="dv">1</span><span class="sc">:</span>i]</span>
+<span id="cb15-9"><a href="analyticalsolver.html#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(lambda <span class="cf">in</span> <span class="fu">seq</span>(<span class="fl">0.01</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)){</span>
+<span id="cb15-10"><a href="analyticalsolver.html#cb15-10" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">mvp</span>(returns, lambda)</span>
+<span id="cb15-11"><a href="analyticalsolver.html#cb15-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-12"><a href="analyticalsolver.html#cb15-12" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb15-13"><a href="analyticalsolver.html#cb15-13" aria-hidden="true" tabindex="-1"></a>      df, </span>
+<span id="cb15-14"><a href="analyticalsolver.html#cb15-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(<span class="st">&quot;index&quot;</span><span class="ot">=</span>i, <span class="st">&quot;var&quot;</span><span class="ot">=</span>res<span class="sc">$</span>var, <span class="st">&quot;return&quot;</span> <span class="ot">=</span> res<span class="sc">$</span>mu)</span>
+<span id="cb15-15"><a href="analyticalsolver.html#cb15-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-16"><a href="analyticalsolver.html#cb15-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-17"><a href="analyticalsolver.html#cb15-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>The result is filtered and names are added to represent the number of assets. Now the <span class="math inline">\(\mu\)</span>-<span class="math inline">\(\sigma\)</span> diagram can be created:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb16-1"><a href="analyticalsolver.html#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="analyticalsolver.html#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(return)) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-3"><a href="analyticalsolver.html#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb16-4"><a href="analyticalsolver.html#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">paste0</span>(<span class="st">&quot;n_&quot;</span>, index)) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-5"><a href="analyticalsolver.html#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(name) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-6"><a href="analyticalsolver.html#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">factor</span>(name, <span class="at">levels=</span><span class="fu">paste0</span>(<span class="st">&quot;n_&quot;</span>, <span class="fu">ncol</span>(returns_raw)<span class="sc">:</span><span class="dv">1</span>)))</span>
+<span id="cb16-7"><a href="analyticalsolver.html#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="analyticalsolver.html#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="analyticalsolver.html#cb16-9" aria-hidden="true" tabindex="-1"></a>max_show_sd <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb16-10"><a href="analyticalsolver.html#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(index) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-11"><a href="analyticalsolver.html#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">max_x =</span> <span class="fu">max</span>(var)) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-12"><a href="analyticalsolver.html#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(max_x) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-13"><a href="analyticalsolver.html#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb16-14"><a href="analyticalsolver.html#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>()</span>
+<span id="cb16-15"><a href="analyticalsolver.html#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="analyticalsolver.html#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>(</span>
+<span id="cb16-17"><a href="analyticalsolver.html#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> df[df<span class="sc">$</span>index<span class="sc">!=</span><span class="dv">1</span>,], </span>
+<span id="cb16-18"><a href="analyticalsolver.html#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="sc">~</span><span class="fu">sqrt</span>(var), </span>
+<span id="cb16-19"><a href="analyticalsolver.html#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="sc">~</span>return, </span>
+<span id="cb16-20"><a href="analyticalsolver.html#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">name=</span><span class="sc">~</span>name, </span>
+<span id="cb16-21"><a href="analyticalsolver.html#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, </span>
+<span id="cb16-22"><a href="analyticalsolver.html#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>, </span>
+<span id="cb16-23"><a href="analyticalsolver.html#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="sc">~</span>name, </span>
+<span id="cb16-24"><a href="analyticalsolver.html#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;green&quot;</span>, <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb16-25"><a href="analyticalsolver.html#cb16-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-26"><a href="analyticalsolver.html#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(</span>
+<span id="cb16-27"><a href="analyticalsolver.html#cb16-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>df[df<span class="sc">$</span>index<span class="sc">==</span><span class="dv">1</span>,],  </span>
+<span id="cb16-28"><a href="analyticalsolver.html#cb16-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="sc">~</span><span class="fu">sqrt</span>(var), </span>
+<span id="cb16-29"><a href="analyticalsolver.html#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="sc">~</span>return, </span>
+<span id="cb16-30"><a href="analyticalsolver.html#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">showlegend=</span>T, </span>
+<span id="cb16-31"><a href="analyticalsolver.html#cb16-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">marker=</span><span class="fu">list</span>(<span class="at">color=</span><span class="st">&quot;red&quot;</span>), </span>
+<span id="cb16-32"><a href="analyticalsolver.html#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode=</span><span class="st">&quot;markers&quot;</span>, </span>
+<span id="cb16-33"><a href="analyticalsolver.html#cb16-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">name=</span><span class="st">&quot;n_1&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-34"><a href="analyticalsolver.html#cb16-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(</span>
+<span id="cb16-35"><a href="analyticalsolver.html#cb16-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">xaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="fu">sqrt</span>(<span class="fu">min</span>(df<span class="sc">$</span>var))<span class="sc">*</span><span class="fl">0.9</span>, max_show_sd), <span class="at">title=</span><span class="st">&quot;sigma&quot;</span>),</span>
+<span id="cb16-36"><a href="analyticalsolver.html#cb16-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="fu">min</span>(df<span class="sc">$</span>return)<span class="sc">*</span><span class="fl">0.9</span>, (<span class="fu">max</span>(df<span class="sc">$</span>return)<span class="sc">+</span><span class="fu">mean</span>(df<span class="sc">$</span>return))<span class="sc">*</span><span class="fl">0.5</span>), <span class="at">title=</span><span class="st">&quot;mu&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-37"><a href="analyticalsolver.html#cb16-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
+
+<div class="figure"><span style="display:block;" id="fig:qpmvp4"></span>
+<div id="htmlwidget-87cfe9faa403ff28050b" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-87cfe9faa403ff28050b">{"x":{"visdat":{"18cc19a73e94":["function () ","plotlyVisDat"],"18cc5181bc":["function () ","data"]},"cur_data":"18cc5181bc","attrs":{"18cc19a73e94":{"x":{},"y":{},"mode":"lines","name":{},"color":{},"colors":["green","red"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"},"18cc5181bc":{"x":{},"y":{},"mode":"markers","name":"n_1","color":{},"colors":["green","red"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter","showlegend":true,"marker":{"color":"red"},"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"range":[0.00885243038471533,0.0145781236425266],"title":"sigma"},"yaxis":{"domain":[0,1],"automargin":true,"range":[0.000418535977952161,0.00119762658588636],"title":"mu"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0.0153818817998113,0.0153818817998106,0.0153818817998113,0.0153818817998102,0.0153818817998108,0.0153818817998107,0.0153818817998108,0.0153818817998109,0.0153818817998107,0.015381881799811,0.0153818817998117,0.0153818817998111,0.0153818817998113,0.015381881799811,0.0153818817998104,0.0153818817998111,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998107,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.015381881799811,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.015381881799811,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.015381881799811,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153716445529559,0.0153148083335773,0.0152619818246189,0.0152129256861179,0.0151674155158427,0.0151252408557579,0.0150862042694656,0.0150501204850097,0.015016815597954,0.0149861263301061,0.0149578993396688,0.0149319905789682,0.014859293972475,0.014689122240451,0.0145255804719777,0.0140387703239877,0.0135841738378228,0.013162035985283,0.012720030070287,0.012277736817605,0.0118735977882713,0.0115082889302282,0.0111823901220855,0.0108963327945454,0.0106503466005896,0.010444409293603,0.0102782045740925,0.0101510926047859,0.010038581514285,0.00988441878143579,0.00983603376079482],"y":[0.00128140495426775,0.00128140495426771,0.00128140495426782,0.00128140495426769,0.00128140495426775,0.00128140495426774,0.00128140495426774,0.00128140495426775,0.00128140495426775,0.00128140495426777,0.00128140495426783,0.00128140495426778,0.00128140495426779,0.00128140495426777,0.00128140495426772,0.00128140495426778,0.00128140495426775,0.00128140495426777,0.00128140495426776,0.00128140495426775,0.00128140495426776,0.00128140495426774,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426775,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426775,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128103915833632,0.00127895545959065,0.00127692964136569,0.00127495932500991,0.00127304226044752,0.0012711763176068,0.00126935947852505,0.0012675898300688,0.00126586555721398,0.00126418493683651,0.00126254633196847,0.00126094818647989,0.00125610359109555,0.00124425364478097,0.00123214779134477,0.0011942528794803,0.00115723924463594,0.00112107649794892,0.00108095624245058,0.00103842516028762,0.000996839213283845,0.000956167243137293,0.000916379446254797,0.00087744730091816,0.000839343499099324,0.000802041882581938,0.00076551738307533,0.000729745966032777,0.000683551048347504,0.000583744517158316,0.000491126205390014],"mode":"lines","name":"n_10","type":"scatter","marker":{"color":"rgba(0,255,0,1)","line":{"color":"rgba(0,255,0,1)"}},"textfont":{"color":"rgba(0,255,0,1)"},"error_y":{"color":"rgba(0,255,0,1)"},"error_x":{"color":"rgba(0,255,0,1)"},"line":{"color":"rgba(0,255,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.0153818817998093,0.0153818817998108,0.0153818817998106,0.0153818817998112,0.0153818817998116,0.015381881799811,0.0153818817998109,0.0153818817998109,0.015381881799811,0.015381881799811,0.015381881799811,0.015381881799811,0.0153818817998109,0.015381881799811,0.0153818817998111,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.015381881799811,0.015381881799811,0.0153818817998109,0.015381881799811,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.015381881799811,0.0153818817998109,0.015381881799811,0.0153818817998108,0.015381881799811,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.015381881799811,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153716445529559,0.0153148083335773,0.0152619818246188,0.0152129256861179,0.0151674155158428,0.0151252408557579,0.0150862042694656,0.0150501204850097,0.015016815597954,0.0149861263301061,0.0149578993396688,0.0149319905789682,0.014859293972475,0.014689122240451,0.0145255804719777,0.0140387703239877,0.0135841738378228,0.013162035985283,0.012720030070287,0.012277736817605,0.0118735977882713,0.0115082889302282,0.0111823901220855,0.0108963327945454,0.0106503466005896,0.010444409293603,0.0102782045740925,0.0101510926047859,0.010038581514285,0.00988441878143578,0.00983603376079481],"y":[0.00128140495426774,0.00128140495426776,0.00128140495426776,0.00128140495426781,0.00128140495426783,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426779,0.00128140495426778,0.00128140495426777,0.00128140495426777,0.00128140495426778,0.00128140495426777,0.00128140495426775,0.00128140495426777,0.00128140495426777,0.00128140495426777,0.00128140495426776,0.00128140495426777,0.00128140495426775,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426777,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128103915833632,0.00127895545959065,0.00127692964136569,0.00127495932500991,0.00127304226044752,0.0012711763176068,0.00126935947852505,0.00126758983006879,0.00126586555721398,0.00126418493683651,0.00126254633196847,0.00126094818647989,0.00125610359109555,0.00124425364478097,0.00123214779134477,0.0011942528794803,0.00115723924463594,0.00112107649794892,0.00108095624245058,0.00103842516028762,0.000996839213283845,0.000956167243137293,0.000916379446254797,0.00087744730091816,0.000839343499099324,0.000802041882581938,0.00076551738307533,0.000729745966032776,0.000683551048347503,0.000583744517158315,0.000491126205390013],"mode":"lines","name":"n_9","type":"scatter","marker":{"color":"rgba(106,237,0,1)","line":{"color":"rgba(106,237,0,1)"}},"textfont":{"color":"rgba(106,237,0,1)"},"error_y":{"color":"rgba(106,237,0,1)"},"error_x":{"color":"rgba(106,237,0,1)"},"line":{"color":"rgba(106,237,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.0153818817998094,0.0153818817998083,0.01538188179981,0.0153818817998112,0.0153818817998113,0.0153818817998112,0.0153818817998108,0.0153818817998104,0.0153818817998109,0.0153818817998107,0.0153818817998107,0.0153818817998108,0.0153818817998109,0.015381881799811,0.015381881799811,0.0153818817998108,0.0153818817998108,0.0153818817998109,0.0153818817998108,0.015381881799811,0.0153818817998109,0.015381881799811,0.0153818817998108,0.015381881799811,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153716445529559,0.0153148083335773,0.0152619818246188,0.0152129256861179,0.0151674155158427,0.0151252408557579,0.0150862042694656,0.0150501204850097,0.015016815597954,0.0149861263301061,0.0149578993396688,0.0149319905789682,0.014859293972475,0.014689122240451,0.0145255804719777,0.0140387703239877,0.0135841738378228,0.013162035985283,0.012720030070287,0.012277736817605,0.0118735977882713,0.0115082889302282,0.0111823901220855,0.0108963327945454,0.0106503466005896,0.010444409293603,0.0102782045740925,0.0101510926047859,0.010038581514285,0.00990659305595759,0.00986538395244183],"y":[0.00128140495426762,0.00128140495426758,0.0012814049542677,0.00128140495426778,0.00128140495426779,0.00128140495426778,0.00128140495426776,0.00128140495426773,0.00128140495426777,0.00128140495426774,0.00128140495426775,0.00128140495426775,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426775,0.00128140495426777,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426775,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426775,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128103915833632,0.00127895545959065,0.00127692964136569,0.00127495932500991,0.00127304226044752,0.0012711763176068,0.00126935947852505,0.00126758983006879,0.00126586555721398,0.00126418493683651,0.00126254633196847,0.00126094818647989,0.00125610359109555,0.00124425364478097,0.00123214779134477,0.0011942528794803,0.00115723924463594,0.00112107649794893,0.00108095624245058,0.00103842516028762,0.000996839213283846,0.000956167243137294,0.000916379446254797,0.00087744730091816,0.000839343499099325,0.000802041882581938,0.00076551738307533,0.000729745966032777,0.000683551048347503,0.000598399162857519,0.000515064441323894],"mode":"lines","name":"n_8","type":"scatter","marker":{"color":"rgba(144,219,0,1)","line":{"color":"rgba(144,219,0,1)"}},"textfont":{"color":"rgba(144,219,0,1)"},"error_y":{"color":"rgba(144,219,0,1)"},"error_x":{"color":"rgba(144,219,0,1)"},"line":{"color":"rgba(144,219,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.0153818817998116,0.0153818817998117,0.0153818817998104,0.015381881799811,0.0153818817998107,0.0153818817998109,0.0153818817998108,0.015381881799811,0.0153818817998106,0.0153818817998106,0.0153818817998106,0.0153818817998108,0.0153818817998105,0.0153818817998109,0.0153818817998109,0.0153818817998111,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998107,0.0153818817998109,0.0153818817998108,0.0153818817998108,0.0153818817998108,0.0153818817998109,0.0153818817998108,0.0153818817998108,0.0153818817998108,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.015381881799811,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153716445529559,0.0153148083335773,0.0152619818246188,0.0152129256861179,0.0151674155158427,0.0151252408557579,0.0150862042694656,0.0150501204850097,0.015016815597954,0.0149861263301061,0.0149578993396688,0.0149319905789682,0.014859293972475,0.014689122240451,0.0145255804719777,0.0140387703239877,0.0135841738378228,0.013162035985283,0.012720030070287,0.012277736817605,0.0118735977882713,0.0115082889302282,0.0111823901220855,0.0108963327945454,0.0106503466005896,0.010444409293603,0.0102782045740925,0.0101510926047858,0.010038581514285,0.00990659305595758,0.00986538395244182],"y":[0.00128140495426782,0.00128140495426782,0.00128140495426772,0.00128140495426777,0.00128140495426775,0.00128140495426776,0.00128140495426775,0.00128140495426777,0.00128140495426774,0.00128140495426774,0.00128140495426774,0.00128140495426775,0.00128140495426774,0.00128140495426776,0.00128140495426776,0.00128140495426778,0.00128140495426776,0.00128140495426777,0.00128140495426777,0.00128140495426774,0.00128140495426776,0.00128140495426776,0.00128140495426775,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426775,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128103915833632,0.00127895545959065,0.00127692964136569,0.00127495932500991,0.00127304226044752,0.0012711763176068,0.00126935947852505,0.0012675898300688,0.00126586555721398,0.00126418493683651,0.00126254633196847,0.00126094818647989,0.00125610359109555,0.00124425364478097,0.00123214779134477,0.0011942528794803,0.00115723924463594,0.00112107649794893,0.00108095624245058,0.00103842516028762,0.000996839213283845,0.000956167243137293,0.000916379446254797,0.00087744730091816,0.000839343499099325,0.000802041882581938,0.000765517383075331,0.000729745966032777,0.000683551048347504,0.000598399162857519,0.000515064441323894],"mode":"lines","name":"n_7","type":"scatter","marker":{"color":"rgba(171,201,0,1)","line":{"color":"rgba(171,201,0,1)"}},"textfont":{"color":"rgba(171,201,0,1)"},"error_y":{"color":"rgba(171,201,0,1)"},"error_x":{"color":"rgba(171,201,0,1)"},"line":{"color":"rgba(171,201,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.0153818817998096,0.0153818817998112,0.0153818817998108,0.0153818817998113,0.0153818817998101,0.0153818817998101,0.0153818817998112,0.015381881799811,0.0153818817998104,0.015381881799811,0.0153818817998105,0.0153818817998106,0.015381881799811,0.0153818817998107,0.0153818817998107,0.0153818817998109,0.0153818817998109,0.0153818817998106,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.015381881799811,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.015208219576231,0.0150261194916943,0.0148581043779903,0.0145654741615753,0.0140826942957677,0.013632035953669,0.0131426931970957,0.0126725328231011,0.0122393163756698,0.0118437128150034,0.0114863384162264,0.0111677105127551,0.010888197872854,0.0106479707642031,0.0104469546309857,0.0102847917791027,0.010160815317381,0.0100370981864661,0.00990153889470529,0.00986548026554435],"y":[0.00128140495426763,0.00128140495426777,0.00128140495426777,0.00128140495426779,0.00128140495426769,0.00128140495426768,0.00128140495426779,0.00128140495426777,0.00128140495426772,0.00128140495426777,0.00128140495426773,0.00128140495426774,0.00128140495426777,0.00128140495426775,0.00128140495426775,0.00128140495426776,0.00128140495426776,0.00128140495426774,0.00128140495426776,0.00128140495426775,0.00128140495426776,0.00128140495426776,0.00128140495426775,0.00128140495426775,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426775,0.00128140495426776,0.00128140495426777,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00127040172474259,0.00125827682487502,0.00124644409126931,0.00122442954403123,0.00118673808650696,0.00114992317450652,0.00110790871218352,0.00106543926948285,0.00102392419628107,0.000983331680261559,0.000943631307451265,0.000904793986223803,0.000866791876205534,0.000829598321719569,0.000793187789433308,0.000757535809903011,0.000722618922734164,0.000671258840567746,0.000585511314018072,0.000513284879602946],"mode":"lines","name":"n_6","type":"scatter","marker":{"color":"rgba(192,181,0,1)","line":{"color":"rgba(192,181,0,1)"}},"textfont":{"color":"rgba(192,181,0,1)"},"error_y":{"color":"rgba(192,181,0,1)"},"error_x":{"color":"rgba(192,181,0,1)"},"line":{"color":"rgba(192,181,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.0153818817998086,0.0153818817998101,0.0153818817998111,0.0153818817998112,0.015381881799811,0.0153818817998108,0.0153818817998111,0.0153818817998105,0.0153818817998109,0.0153818817998108,0.015381881799811,0.015381881799811,0.0153818817998106,0.0153818817998107,0.0153818817998109,0.0153818817998108,0.0153818817998108,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998108,0.0153818817998108,0.015381881799811,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998108,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.0153818817998109,0.015208219576231,0.0150261194916943,0.0148581043779903,0.0145654741615753,0.0140826942957677,0.013632035953669,0.0131426931970957,0.0126725328231011,0.0122393163756698,0.0118437128150034,0.0114863384162264,0.0111677105127551,0.010888197872854,0.0106479707642031,0.0104469546309857,0.0102847917791027,0.010160815317381,0.0100370981864661,0.00990153889470529,0.00986622116457275],"y":[0.00128140495426757,0.0012814049542677,0.00128140495426778,0.00128140495426779,0.00128140495426778,0.00128140495426776,0.00128140495426778,0.00128140495426773,0.00128140495426776,0.00128140495426775,0.00128140495426777,0.00128140495426777,0.00128140495426774,0.00128140495426775,0.00128140495426776,0.00128140495426775,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426775,0.00128140495426775,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426777,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00128140495426776,0.00127040172474259,0.00125827682487502,0.00124644409126931,0.00122442954403123,0.00118673808650696,0.00114992317450652,0.00110790871218352,0.00106543926948285,0.00102392419628107,0.000983331680261559,0.000943631307451265,0.000904793986223803,0.000866791876205534,0.000829598321719569,0.000793187789433308,0.000757535809903011,0.000722618922734164,0.000671258840567746,0.000585511314018073,0.000516394224923338],"mode":"lines","name":"n_5","type":"scatter","marker":{"color":"rgba(209,160,0,1)","line":{"color":"rgba(209,160,0,1)"}},"textfont":{"color":"rgba(209,160,0,1)"},"error_y":{"color":"rgba(209,160,0,1)"},"error_x":{"color":"rgba(209,160,0,1)"},"line":{"color":"rgba(209,160,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.0138400512494134,0.013840051249413,0.0138400512494139,0.0138400512494137,0.0138400512494135,0.0138400512494139,0.0138400512494139,0.0138400512494138,0.0138400512494137,0.0138400512494137,0.0138400512494137,0.0138400512494137,0.0138400512494137,0.0138400512494138,0.0138400512494138,0.0138400512494137,0.0138400512494138,0.0138400512494137,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494137,0.0138400512494137,0.0138400512494137,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494137,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0136446875170475,0.013255168868193,0.0128824479809546,0.0125338795291308,0.0122093267659789,0.0119086411640327,0.0116316525141974,0.0113781590152741,0.0111479176898555,0.0109406355106698,0.0107559616462606,0.0105934812288162,0.0104527110051448,0.0103330971534966,0.0102340154384884,0.0101547737431491,0.0100946168744151,0.0100096060131369,0.00990153889470529,0.00986622116457275],"y":[0.00102084059030802,0.00102084059030799,0.00102084059030806,0.00102084059030804,0.00102084059030803,0.00102084059030805,0.00102084059030806,0.00102084059030805,0.00102084059030804,0.00102084059030804,0.00102084059030805,0.00102084059030804,0.00102084059030804,0.00102084059030805,0.00102084059030805,0.00102084059030804,0.00102084059030805,0.00102084059030804,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030804,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00100968378345247,0.000986594750946805,0.000963636199955751,0.000941224281131151,0.000919339701573012,0.000897964065725527,0.00087707982380557,0.000856670223747431,0.000836719266387228,0.000817211663635029,0.000798132799404856,0.000779468693092731,0.000761205965410973,0.000743331806403297,0.000725833945479991,0.000708700623325922,0.000691920565546163,0.000656038955951475,0.000585511314018072,0.000516394224923338],"mode":"lines","name":"n_4","type":"scatter","marker":{"color":"rgba(223,138,0,1)","line":{"color":"rgba(223,138,0,1)"}},"textfont":{"color":"rgba(223,138,0,1)"},"error_y":{"color":"rgba(223,138,0,1)"},"error_x":{"color":"rgba(223,138,0,1)"},"line":{"color":"rgba(223,138,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.0138400512494122,0.0138400512494144,0.013840051249414,0.0138400512494133,0.0138400512494138,0.013840051249414,0.0138400512494138,0.0138400512494139,0.0138400512494137,0.0138400512494139,0.0138400512494137,0.0138400512494138,0.0138400512494137,0.0138400512494137,0.0138400512494138,0.0138400512494138,0.0138400512494137,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494137,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0138400512494138,0.0136446875170475,0.013255168868193,0.0128824479809546,0.0125338795291308,0.0122093267659789,0.0119086411640327,0.0116316525141974,0.0113781590152741,0.0111479176898555,0.0109406355106698,0.0107559616462606,0.0105934812288162,0.0104527110051448,0.0103330971534966,0.0102340154384884,0.0101547737431491,0.0100946168744151,0.0100527334016207,0.010028264171457,0.0100203120593533],"y":[0.00102084059030793,0.00102084059030809,0.00102084059030806,0.00102084059030802,0.00102084059030805,0.00102084059030806,0.00102084059030805,0.00102084059030806,0.00102084059030804,0.00102084059030805,0.00102084059030804,0.00102084059030805,0.00102084059030805,0.00102084059030804,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030804,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00102084059030805,0.00100968378345247,0.000986594750946805,0.000963636199955751,0.000941224281131151,0.000919339701573012,0.000897964065725527,0.00087707982380557,0.000856670223747431,0.000836719266387228,0.000817211663635029,0.000798132799404856,0.000779468693092731,0.000761205965410974,0.000743331806403297,0.000725833945479992,0.000708700623325922,0.000691920565546163,0.000675482957925175,0.000659377423185419,0.000643593999140458],"mode":"lines","name":"n_3","type":"scatter","marker":{"color":"rgba(235,112,0,1)","line":{"color":"rgba(235,112,0,1)"}},"textfont":{"color":"rgba(235,112,0,1)"},"error_y":{"color":"rgba(235,112,0,1)"},"error_x":{"color":"rgba(235,112,0,1)"},"line":{"color":"rgba(235,112,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.012933740130959,0.0129337401309586,0.0129337401309587,0.0129337401309589,0.0129337401309588,0.0129337401309589,0.0129337401309587,0.0129337401309588,0.0129337401309588,0.0129337401309588,0.0129337401309587,0.0129337401309587,0.0129337401309588,0.0129337401309588,0.0129337401309588,0.0129337401309587,0.0129337401309588,0.0129337401309587,0.0129337401309587,0.0129337401309588,0.0129337401309588,0.0129337401309588,0.0129337401309588,0.0129337401309588,0.0129337401309588,0.0129337401309588,0.0129337401309588,0.0129337401309588,0.0128401439969687,0.012662097996545,0.0124946494793637,0.0123372407053981,0.0121893448158968,0.0120504636778574,0.0119201259425785,0.0117978852925778,0.011683318854233,0.0115760257562245,0.0114756258162596,0.0113817583407025,0.0112940810236287,0.0112122689335146,0.0111360135772679,0.0110650220326367,0.0109990161412076,0.0109377317552462,0.0108809180325412,0.0108283367742183,0.0107797618011896,0.0107349783655088,0.0106937825934345,0.0106559809574532,0.0106213897749051,0.0105898347311857,0.0105611504257795,0.0105351799396153,0.0105117744224367,0.0104907926990424,0.0104721008933916,0.0104555720696815,0.0104410858895979,0.010428528285016,0.0104177911454906,0.0104087720199239,0.0104013738318425,0.010395504607747,0.0103910772180236,0.0103880091299332,0.0103862221722084,0.010385642310807],"y":[0.000623574987856266,0.000623574987856248,0.000623574987856252,0.000623574987856263,0.00062357498785626,0.000623574987856261,0.000623574987856255,0.000623574987856258,0.000623574987856257,0.00062357498785626,0.000623574987856256,0.000623574987856255,0.00062357498785626,0.000623574987856256,0.000623574987856257,0.000623574987856255,0.000623574987856258,0.000623574987856256,0.000623574987856256,0.000623574987856257,0.000623574987856257,0.000623574987856258,0.000623574987856257,0.000623574987856256,0.000623574987856257,0.000623574987856257,0.000623574987856256,0.000623574987856256,0.0006218572662254,0.000618522489140691,0.000615297049009579,0.00061217565533431,0.000609153353521747,0.000606225498640828,0.000603387731602398,0.000600635957504526,0.000597966325917039,0.000595375212905654,0.000592859204619237,0.000590415082283861,0.000588039808464973,0.000585730514474389,0.000583484488812313,0.00058129916654651,0.000579172119541128,0.000577101047456941,0.000575083769452862,0.000573118216525811,0.000571202424432356,0.000569334527141238,0.000567512750770888,0.000565735407970546,0.000564000892707562,0.00056230767542703,0.000560654298553099,0.000559039372304143,0.000557461570796542,0.000555919628414114,0.000554412336422303,0.000552938539808087,0.000551497134328249,0.000550087063750147,0.000548707317270499,0.000547356927098929,0.000546034966194128,0.000544740546141511,0.000543472815162144,0.00054223095624358,0.000541014185383977,0.000539821749941566],"mode":"lines","name":"n_2","type":"scatter","marker":{"color":"rgba(246,78,0,1)","line":{"color":"rgba(246,78,0,1)"}},"textfont":{"color":"rgba(246,78,0,1)"},"error_y":{"color":"rgba(246,78,0,1)"},"error_x":{"color":"rgba(246,78,0,1)"},"line":{"color":"rgba(246,78,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[0.0124590325547251],"y":[0.000465039975502402],"mode":"markers","name":"n_1","type":"scatter","showlegend":true,"marker":{"color":"red","line":{"color":"rgba(255,0,0,1)"}},"textfont":{"color":"rgba(255,0,0,1)"},"error_y":{"color":"rgba(255,0,0,1)"},"error_x":{"color":"rgba(255,0,0,1)"},"line":{"color":"rgba(255,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 7.1: Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset that has the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm
+</p>
+</div>
+<p>It can be seen that each added asset leads to a minimum variance portfolio with a smaller or equal standard deviation. Despite starting with the asset that has the smallest standard deviation of 0.012459. This is the effect of diversification mentioned by Markowitz.</p>
+</div>
+<div id="exampleitpsolveqp" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Solving ITP-MSTE with <code>solve.QP</code><a href="analyticalsolver.html#exampleitpsolveqp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the SP500TR from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded, and the remaining assets serve as the new asset pool for the next replication until only five assets remain. First, the required data can be downloaded from the <code>R/</code> directory using existing functions. The function <code>get_spx_composition()</code> uses web scraping to read the components of <a href="https://en.wikipedia.org/wiki/List_of_S%26P_500_companies">wikipedia</a> and converts them into monthly compositions of the SP500TR. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the SP500TR:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb17-1"><a href="analyticalsolver.html#cb17-1" aria-hidden="true" tabindex="-1"></a>from <span class="ot">&lt;-</span> <span class="st">&quot;2018-01-01&quot;</span></span>
+<span id="cb17-2"><a href="analyticalsolver.html#cb17-2" aria-hidden="true" tabindex="-1"></a>to <span class="ot">&lt;-</span> <span class="st">&quot;2019-12-31&quot;</span></span>
+<span id="cb17-3"><a href="analyticalsolver.html#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="analyticalsolver.html#cb17-4" aria-hidden="true" tabindex="-1"></a>spx_composition <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
+<span id="cb17-5"><a href="analyticalsolver.html#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_spx_composition</span>(),</span>
+<span id="cb17-6"><a href="analyticalsolver.html#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AS_spx_composition&quot;</span></span>
+<span id="cb17-7"><a href="analyticalsolver.html#cb17-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-8"><a href="analyticalsolver.html#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="analyticalsolver.html#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="analyticalsolver.html#cb17-10" aria-hidden="true" tabindex="-1"></a>pool_returns_raw <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
+<span id="cb17-11"><a href="analyticalsolver.html#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(</span>
+<span id="cb17-12"><a href="analyticalsolver.html#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">tickers =</span> spx_composition <span class="sc">%&gt;%</span> </span>
+<span id="cb17-13"><a href="analyticalsolver.html#cb17-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Date<span class="sc">&lt;=</span>to) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-14"><a href="analyticalsolver.html#cb17-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Date<span class="sc">==</span><span class="fu">max</span>(Date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-15"><a href="analyticalsolver.html#cb17-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pull</span>(Ticker), </span>
+<span id="cb17-16"><a href="analyticalsolver.html#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">from =</span> from, </span>
+<span id="cb17-17"><a href="analyticalsolver.html#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">to =</span> to</span>
+<span id="cb17-18"><a href="analyticalsolver.html#cb17-18" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">$</span>returns, </span>
+<span id="cb17-19"><a href="analyticalsolver.html#cb17-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AS_sp500_assets&quot;</span></span>
+<span id="cb17-20"><a href="analyticalsolver.html#cb17-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-21"><a href="analyticalsolver.html#cb17-21" aria-hidden="true" tabindex="-1"></a>pool_returns_raw <span class="ot">&lt;-</span> </span>
+<span id="cb17-22"><a href="analyticalsolver.html#cb17-22" aria-hidden="true" tabindex="-1"></a>  pool_returns_raw[, <span class="fu">colSums</span>(<span class="fu">is.na</span>(pool_returns_raw))<span class="sc">==</span><span class="dv">0</span>]</span>
+<span id="cb17-23"><a href="analyticalsolver.html#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-24"><a href="analyticalsolver.html#cb17-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-25"><a href="analyticalsolver.html#cb17-25" aria-hidden="true" tabindex="-1"></a>bm_returns <span class="ot">&lt;-</span> <span class="fu">buffer</span>(</span>
+<span id="cb17-26"><a href="analyticalsolver.html#cb17-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_yf</span>(<span class="at">tickers =</span> <span class="st">&quot;^SP500TR&quot;</span>, <span class="at">from =</span> from, <span class="at">to =</span> to)<span class="sc">$</span>returns, </span>
+<span id="cb17-27"><a href="analyticalsolver.html#cb17-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;AS_sp500tr&quot;</span></span>
+<span id="cb17-28"><a href="analyticalsolver.html#cb17-28" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">setNames</span>(., <span class="st">&quot;SP500TR&quot;</span>)</span></code></pre></div>
+<p>The required data is now available and the function for the ITP-MSTE can be created. It requires <code>pool_returns</code> with variable number of columns and the single-column matrix <code>bm_returns</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb18-1"><a href="analyticalsolver.html#cb18-1" aria-hidden="true" tabindex="-1"></a>itp <span class="ot">&lt;-</span> <span class="cf">function</span>(pool_returns, bm_returns){</span>
+<span id="cb18-2"><a href="analyticalsolver.html#cb18-2" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb18-3"><a href="analyticalsolver.html#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> <span class="fu">t</span>(pool_returns) <span class="sc">%*%</span> pool_returns,</span>
+<span id="cb18-4"><a href="analyticalsolver.html#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">dvec =</span> <span class="fu">t</span>(pool_returns) <span class="sc">%*%</span> bm_returns,</span>
+<span id="cb18-5"><a href="analyticalsolver.html#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> <span class="fu">t</span>(<span class="fu">rbind</span>(</span>
+<span id="cb18-6"><a href="analyticalsolver.html#cb18-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(pool_returns)), <span class="co"># sum up to 1</span></span>
+<span id="cb18-7"><a href="analyticalsolver.html#cb18-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">diag</span>(<span class="dv">1</span>, </span>
+<span id="cb18-8"><a href="analyticalsolver.html#cb18-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">nrow=</span><span class="fu">ncol</span>(pool_returns), </span>
+<span id="cb18-9"><a href="analyticalsolver.html#cb18-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">ncol=</span><span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb18-10"><a href="analyticalsolver.html#cb18-10" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb18-11"><a href="analyticalsolver.html#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">bvec =</span> <span class="fu">c</span>(</span>
+<span id="cb18-12"><a href="analyticalsolver.html#cb18-12" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>, <span class="co"># sum up to 1</span></span>
+<span id="cb18-13"><a href="analyticalsolver.html#cb18-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(pool_returns)) <span class="co"># long only</span></span>
+<span id="cb18-14"><a href="analyticalsolver.html#cb18-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb18-15"><a href="analyticalsolver.html#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">meq =</span> <span class="dv">1</span></span>
+<span id="cb18-16"><a href="analyticalsolver.html#cb18-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-17"><a href="analyticalsolver.html#cb18-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-18"><a href="analyticalsolver.html#cb18-18" aria-hidden="true" tabindex="-1"></a>  qp <span class="ot">&lt;-</span> <span class="fu">solve.QP</span>(</span>
+<span id="cb18-19"><a href="analyticalsolver.html#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Dmat =</span> mat<span class="sc">$</span>Dmat, <span class="at">dvec =</span> mat<span class="sc">$</span>dvec, </span>
+<span id="cb18-20"><a href="analyticalsolver.html#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Amat =</span> mat<span class="sc">$</span>Amat, <span class="at">bvec =</span> mat<span class="sc">$</span>bvec, <span class="at">meq =</span> mat<span class="sc">$</span>meq</span>
+<span id="cb18-21"><a href="analyticalsolver.html#cb18-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-22"><a href="analyticalsolver.html#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="analyticalsolver.html#cb18-23" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb18-24"><a href="analyticalsolver.html#cb18-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="fu">as.numeric</span>(</span>
+<span id="cb18-25"><a href="analyticalsolver.html#cb18-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">var</span>(pool_returns <span class="sc">%*%</span> qp<span class="sc">$</span>solution <span class="sc">-</span> bm_returns)),</span>
+<span id="cb18-26"><a href="analyticalsolver.html#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;solution&quot;</span> <span class="ot">=</span> <span class="fu">setNames</span>(qp<span class="sc">$</span>solution, <span class="fu">colnames</span>(pool_returns))</span>
+<span id="cb18-27"><a href="analyticalsolver.html#cb18-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-28"><a href="analyticalsolver.html#cb18-28" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>The successive removal of assets can begin and the results are stored in <code>res</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb19-1"><a href="analyticalsolver.html#cb19-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb19-2"><a href="analyticalsolver.html#cb19-2" aria-hidden="true" tabindex="-1"></a>asset_pool <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb19-3"><a href="analyticalsolver.html#cb19-3" aria-hidden="true" tabindex="-1"></a>n_assets <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">seq</span>(<span class="dv">5</span>, <span class="fu">ncol</span>(pool_returns_raw), <span class="dv">5</span>))</span>
+<span id="cb19-4"><a href="analyticalsolver.html#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> n_assets){</span>
+<span id="cb19-5"><a href="analyticalsolver.html#cb19-5" aria-hidden="true" tabindex="-1"></a>  temp <span class="ot">&lt;-</span> <span class="cf">if</span>(i<span class="sc">==</span><span class="fu">max</span>(n_assets)){</span>
+<span id="cb19-6"><a href="analyticalsolver.html#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">itp</span>(pool_returns_raw, bm_returns)</span>
+<span id="cb19-7"><a href="analyticalsolver.html#cb19-7" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb19-8"><a href="analyticalsolver.html#cb19-8" aria-hidden="true" tabindex="-1"></a>    asset_pool <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">sort</span>(temp<span class="sc">$</span>solution, <span class="at">decreasing =</span> T)[<span class="dv">1</span><span class="sc">:</span>i])</span>
+<span id="cb19-9"><a href="analyticalsolver.html#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">itp</span>(</span>
+<span id="cb19-10"><a href="analyticalsolver.html#cb19-10" aria-hidden="true" tabindex="-1"></a>      pool_returns_raw[, asset_pool], </span>
+<span id="cb19-11"><a href="analyticalsolver.html#cb19-11" aria-hidden="true" tabindex="-1"></a>      bm_returns</span>
+<span id="cb19-12"><a href="analyticalsolver.html#cb19-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-13"><a href="analyticalsolver.html#cb19-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-14"><a href="analyticalsolver.html#cb19-14" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb19-15"><a href="analyticalsolver.html#cb19-15" aria-hidden="true" tabindex="-1"></a>    res, </span>
+<span id="cb19-16"><a href="analyticalsolver.html#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="st">&quot;N&quot;</span><span class="ot">=</span>i, <span class="st">&quot;var&quot;</span><span class="ot">=</span>temp<span class="sc">$</span>var, <span class="st">&quot;sd&quot;</span><span class="ot">=</span><span class="fu">sqrt</span>(temp<span class="sc">$</span>var), <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb19-17"><a href="analyticalsolver.html#cb19-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-18"><a href="analyticalsolver.html#cb19-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-19"><a href="analyticalsolver.html#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># for later analysis</span></span>
+<span id="cb19-20"><a href="analyticalsolver.html#cb19-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(asset_pool)<span class="sc">==</span><span class="dv">100</span>){</span>
+<span id="cb19-21"><a href="analyticalsolver.html#cb19-21" aria-hidden="true" tabindex="-1"></a>    assets_pool_100 <span class="ot">&lt;-</span> asset_pool</span>
+<span id="cb19-22"><a href="analyticalsolver.html#cb19-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save</span>(assets_pool_100, <span class="at">file=</span><span class="st">&quot;data/assets_pool_100.rdata&quot;</span>)</span>
+<span id="cb19-23"><a href="analyticalsolver.html#cb19-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-24"><a href="analyticalsolver.html#cb19-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(asset_pool)<span class="sc">==</span><span class="dv">50</span>){</span>
+<span id="cb19-25"><a href="analyticalsolver.html#cb19-25" aria-hidden="true" tabindex="-1"></a>    assets_pool_50 <span class="ot">&lt;-</span> asset_pool</span>
+<span id="cb19-26"><a href="analyticalsolver.html#cb19-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save</span>(assets_pool_50, <span class="at">file=</span><span class="st">&quot;data/assets_pool_50.rdata&quot;</span>)</span>
+<span id="cb19-27"><a href="analyticalsolver.html#cb19-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-28"><a href="analyticalsolver.html#cb19-28" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>The following chart illustrates the increase in standard deviation to track the historical performance of the SP500TR as the number of assets <span class="math inline">\(N\)</span> in the asset pool decreases:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r code_fold_it_collapsed"><code class="sourceCode r"><span id="cb20-1"><a href="analyticalsolver.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>(<span class="at">data=</span>res, <span class="at">x=</span><span class="sc">~</span>N, <span class="at">y=</span><span class="sc">~</span>sd, <span class="at">mode=</span><span class="st">&quot;lines&quot;</span>, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="analyticalsolver.html#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis=</span><span class="fu">list</span>(<span class="at">range=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">mean</span>(<span class="fu">max</span>(res<span class="sc">$</span>sd),<span class="fu">mean</span>(res<span class="sc">$</span>sd)) ))) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="analyticalsolver.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_save</span>()</span></code></pre></div>
+
+<div class="figure"><span style="display:block;" id="fig:qpitp4"></span>
+<div id="htmlwidget-8d121c80c8324c1576c1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8d121c80c8324c1576c1">{"x":{"visdat":{"18cc77e7383c":["function () ","plotlyVisDat"]},"cur_data":"18cc77e7383c","attrs":{"18cc77e7383c":{"x":{},"y":{},"mode":"lines","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"range":[0,0.00357373382548585],"title":"sd"},"xaxis":{"domain":[0,1],"automargin":true,"title":"N"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[485,480,475,470,465,460,455,450,445,440,435,430,425,420,415,410,405,400,395,390,385,380,375,370,365,360,355,350,345,340,335,330,325,320,315,310,305,300,295,290,285,280,275,270,265,260,255,250,245,240,235,230,225,220,215,210,205,200,195,190,185,180,175,170,165,160,155,150,145,140,135,130,125,120,115,110,105,100,95,90,85,80,75,70,65,60,55,50,45,40,35,30,25,20,15,10,5],"y":[0.000371999688899012,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899014,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899014,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000371999688899013,0.000372005776621893,0.000371992147674332,0.000372267405883102,0.000372232897509942,0.000372215545240186,0.000372412661851511,0.000372522478828007,0.000372740432835064,0.00037298773042293,0.000373502641231931,0.000374046959354861,0.000375077603264727,0.000378363603908009,0.000380258957712292,0.000380989770181112,0.000384906828404927,0.000386128309157342,0.000387707215250226,0.000389105825783982,0.00039313924734249,0.000397974371316567,0.000405129237893409,0.000408058386431335,0.000414078301515277,0.000423798553383837,0.00043309066607544,0.00044021435968057,0.000452311705386136,0.000471083975341252,0.000479954334272378,0.000497010083959196,0.000516576818921837,0.000535169558598278,0.000555000926664588,0.000584660612999296,0.000622777066878551,0.000668401050314851,0.000709266229896837,0.00076396658495046,0.000848032973948214,0.000916180407143141,0.0010281270939826,0.00113556823510395,0.00140659607335214,0.00166306529406136,0.00219540105838989,0.00357373382548585],"mode":"lines","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 7.2: Standard deviation between the performance of the SP500TR and the tracking portfolio over the fitting period for each asset pool of size N. The asset pool was created successively by discarding the five assets with the lowest weights to create the next pool
+</p>
+</div>
+<p>It can be seen that the standard deviation stagnates at about <span class="math inline">\(N=200\)</span>. This leads to the conclusion that a sparse replication with two hundred assets is sufficient in this particular case to track the historical performance of the SP500TR over this period.</p>
+
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-GoId1982" class="csl-entry">
+Goldfarb, D., &amp; Idnani, A. (1982). Dual and primal-dual methods for solving strictly convex quadratic programs. <em>Numerical Analysis</em>, 226–239.
+</div>
+<div id="ref-GoId1983" class="csl-entry">
+Goldfarb, D., &amp; Idnani, A. (1983). A numerically stable dual method for solving strictly convex quadratic programs. <em>Mathematical Programming, 27, 1–33</em>.
+</div>
+</div>
+<script src="script.js"></script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="challenges.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="spso.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R/edit/master/6_Analytical_Solver.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Master_Thesis.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
