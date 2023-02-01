@@ -8,7 +8,7 @@ This chapter provides an overview of the mathematical calculations and conventio
 
 
 ## Basic Operators
-The programming language R makes it possible to formulate almost all computations in a matrix notation, since the usual matrix operators and element-wise operators are already efficiently implemented in base R. Elementwise operators are not considered standard in mathematics, so they are defined in more detail in this section. The representation of calculations in a matrix notation helps the user to keep the overview, because the formulas are more compact and in addition, these operators are already implemented efficiently in base R, which makes them more performant than simple for-loops. The operators used here can be found in the table below and are intended to establish the relationship between the notation in the text, in the R code and their meaning:
+The programming language R makes it possible to formulate almost all computations in a matrix notation, since the usual matrix operators and element-wise operators are already efficiently implemented in base R. Element-wise operators are not considered standard in mathematics, so they are defined in more detail in this section. The representation of calculations in a matrix notation helps the user to keep the overview, because the formulas are more compact and in addition, these operators are already implemented efficiently in base R, which makes them more performant than simple for-loops. The operators used here can be found in the table below and are intended to establish the relationship between the notation in the text, in the R code and their meaning:
 
 
 ```{r, fig.cap = "List of used opterators and their meanings", echo=F}
@@ -16,11 +16,11 @@ reactable(
   data.frame(
     "Latex" = c("&#215;", "&#x2297", 'A<sup>T</sup>', "&middot;", "/", "+", "-"),
     "R"= c("%*%", "%*%","t(A)", "*", "/", "+", "-"),
-    "Meaning" = c("Matrix product", "Outer product (special case of the matrix product)", "Transpose of matrix or vector A", "Scalar or element-wise matrix multiplication", "Scalar or elementwise matrix division", "Scalar or elementwise matrix addition", "Scalar or elementwise matrix subtraction")
+    "Meaning" = c("Matrix product", "Outer product (special case of the matrix product)", "Transpose of matrix or vector A", "Scalar or element-wise matrix multiplication", "Scalar or element-wise matrix division", "Scalar or element-wise matrix addition", "Scalar or element-wise matrix subtraction")
   ), 
   columns = list(
     Latex = colDef(name = "Latex/Displayed", html = T),
-    R = colDef(name="R-Code")
+    R = colDef(name="R Code")
   ),
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
@@ -72,7 +72,7 @@ $$
 \begin{bmatrix}a_{1} \cdot b_{1} &\cdots  & a_{1} \cdot b_{y} \\ \vdots & \ddots & \vdots  \\ a_{x} \cdot b_{1}  & \cdots & a_{x} \cdot b_{y} \end{bmatrix}.
 $$
 
-This thesis is specified for the use of R, so element-wise operators are very important to make code comparable with formulas. In mathematics, these operators are not common. For this reason, they must be explicitly specified. All element-wise operators work in the same way. Assuming $\square$ is one of the four element-wise operators, the mapping is defined as follows:
+This thesis is specified for the use of R, so element-wise operators are very important to make code comparable with formulas. In mathematics, these operators are not common. For this reason, they must be explicitly specified. All element-wise operators work in the same way. Assuming that $\square$ is one of the four element-wise operators, then the mapping is defined as follows:
 
 \begin{align*}
 \square &: \ \ R^{x \times y} \times R^{x \times y}  \rightarrow R^{x \times y}\\
@@ -129,7 +129,7 @@ $$
 $$
 
 
-## Markowitz Modern Portfolio Theory (MPT)
+## Markowitz Modern Portfolio Theory
 In 1952, Harry Markowitz published his first seminal paper, which had a significant impact on modern finance, primarily by outlining the implications of diversification and efficient portfolios in [@Mark1952]. He later published a monograph on a more in-depth analysis of his findings in [@Mark1959]. The definition of an efficient portfolio is a portfolio that has either the maximum expected return for a given risk target or the minimum risk for a given expected return target. A simple quote to define diversification might be, "A portfolio has the same return but less variance than the sum of its parts." This is the case when assets are not perfectly correlated, as poor and good performances can offset each other, reducing the likelihood of extreme events. For more information, see [@Mari2005].
 
 
@@ -184,7 +184,7 @@ The following formula can be used to get the expected returns of a vector with n
  \mu
 \end{align*}
 
-and $\mu_i$ can be estimated in R using historical data and the formula for the geometric mean of returns (also called compound returns). The function to calculate the geometric mean of returns from an xts object can be found in \@ref(geomeanret). 
+and $\mu_i$ can be estimated in R using historical data and the formula for the geometric mean of returns (also called compound returns). The function to calculate the geometric mean of returns from an xts object can be found in section \@ref(geomeanret). 
 
 
 ### Expected Portfolio Returns
@@ -237,7 +237,7 @@ The general formula of the covariance matrix $\textstyle\sum$ of a random vector
   &=\textstyle\sum
 \end{align*}
 
-and can be estimated in R using the basis function `cov()` and historical data. The function `cov_()` explained in section \@ref(covfun) can be used to calculate the covariance using the geometric mean to estimate the expected returns.
+and can be estimated in R using the base function `cov()` and historical data. The function `cov_()` explained in section \@ref(covfun) can be used to calculate the covariance using the geometric mean to estimate the expected returns.
 
 
 ### Portfolio Variance {#portvar}
@@ -282,8 +282,8 @@ $$
 The requirement that the portfolio is full can be achieved by adding an additional weight to $w_{t_0}$, which includes the residual $1-\textstyle\sum w_{t_0}$ and an additional zero return vector to $R$. This calculation of portfolio returns is implemented in the function `calc_portfolio_returns()` below.
 
 
-## R-Functions
-The following functions serve the purpose to encapsulate mathematical calculations and to make the calculations reusable. All functions are located in the corresponding GitHub repository inside the `R/` folder.
+## R Functions
+The following functions serve the purpose to encapsulate mathematical calculations and to make the calculations reusable. All functions are located in the dedicated GitHub repository inside the `R/` folder.
 
 
 ### `cov_()` {#covfun}

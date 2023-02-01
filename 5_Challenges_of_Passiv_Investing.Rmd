@@ -22,7 +22,7 @@ Let there be $N$ assets and their returns on $T$ different days, creating a retu
 The risk aversion parameter $\lambda$ defines the tradeoff between risk and return. With $\lambda = 1$, the minimization problem contains only the variance term, leading to a minimum variance portfolio, and $\lambda = 0$ transforms the problem into a minimization of negative expected returns, leading to a maximum return portfolio. All possible portfolios created by $\lambda \in [0, 1]$ define the efficient frontier.
 
 
-### MVP: Example
+### Example MVP
 All possible MVP's together define the efficient frontier, which is analyzed in this section without going into the details of its calculation. This example uses three assets (stocks: IBM, Google, Apple) and calculates the MVP for each $\lambda$. First, the daily returns of these three assets from 2018-01-01 to 2019-12-31 are loaded.  
 
 
@@ -39,7 +39,7 @@ The cumulative daily returns are:
 
 ```{r MVPex2, echo = F, fig.cap = "Cumulative daily returns of IBM, Apple and Google"}
 plotly_line_chart_xts(ret_to_cumret(returns)) %>% 
-  html_save(., expand = c(-20,0,-15,0), vheight=300, vwidth=700)
+  html_save(., expand = c(-20,0,-15,0), vheight=350, vwidth=700)
 
 ```
 
@@ -47,7 +47,7 @@ plotly_line_chart_xts(ret_to_cumret(returns)) %>%
 The expected daily returns and the covariance matrix for the three assets can be estimated using the formulas from chapter \@ref(mathfundations):  
 
 
-```{r MVPex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", size_out = "fontsize{10}{10}\\selectfont"}
+```{r MVPex3, results = "hold", echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", size_out = "fontsize{11}{12}\\selectfont"}
 mu <- ret_to_geomeanret(returns)
 cat0("estimation of expected daily returns:")
 mu
@@ -109,7 +109,7 @@ plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
     xaxis = list(title=list(text = "sigma", standoff = 10L), range=c(min(mu_and_var$sd)*0.95, max(mu_and_var$sd)*1.05))
   ) %>% 
   #config(mathjax = 'cdn') %>% 
-  html_save(., expand = c(-23,0,-5,0), force=T, vheight=300, vwidth=700)
+  html_save(., expand = c(-23,0,-5,0), vheight=350, vwidth=700)
 ```
 
 
@@ -125,7 +125,7 @@ for(i in 1:ncol(portfolios)){
 }
 p %>% 
   config(mathjax = 'cdn') %>% 
-  html_save(., expand = c(-23,0,-11,0), force=T, vheight=300, vwidth=700)
+  html_save(., expand = c(-23,0,-11,0), vheight=350, vwidth=700)
 
 ```
 
@@ -266,7 +266,7 @@ plot_ly(data = all, type = 'scatter', mode="lines+markers", y = ~mu, x = ~sd, na
     # )
   ) %>%
   config(mathjax = 'cdn') %>% 
-  html_save()
+  html_save(., expand = c(-23,0,-7,0), vheight=350, vwidth=700)
 ```
 
 
@@ -402,7 +402,7 @@ $$
 
 
 ### Example ITP
-This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. Because the returns are calculated from adjusted closing prices, the index needs to represent dividends, stock splits and rights offerings too. This can be achieved by taking the S&P 500 Total Return Index (SP500TR in short). The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted return changes of the ITP-TEV and ITP-MSTE are:
+This example shows the results of tracking the S&P 500 with a tracking portfolio that can only invest in IBM, Apple and Google. Because the returns are calculated from adjusted closing prices, the index needs to represent dividends, stock splits and rights offerings too. This can be achieved by taking the S&P 500 Total Return Index (SP500TR in short). The time frame ranges from 2018-01-01 till 2019-12-31 and the goal is to minimize the difference in returns between the portfolio and the benchmark. The fitted performance of the ITP-TEV and ITP-MSTE are:
 
 
 ```{r ITPex, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of ITP-TEV and ITP-MSTE objectives, presented as cumulative daily returns"}
@@ -460,14 +460,14 @@ port_returns_MSTE <- xts(pool_returns %*% qp$solution, order.by=index(pool_retur
 
 
 plotly_line_chart_xts(ret_to_cumret(cbind.xts(port_returns_TEV, port_returns_MSTE, bm_returns))) %>% 
-  html_save(., expand=c(-20,0,0,0))
+  html_save(., expand = c(-23,0,-11,0), vheight=350, vwidth=700)
 ```
 
 
 The ITP-TEV and the ITP-MSTE had almost the same results, which can be seen in the compositions below:
 
 
-```{r ITPex2, echo=F, size_out = "fontsize{10}{10}\\selectfont"}
+```{r ITPex2, echo=F, size_out = "fontsize{11}{12}\\selectfont"}
 data.frame(rbind(composition_TEV, composition_MSTE), row.names = NULL)
 ```
 

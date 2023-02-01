@@ -18,16 +18,16 @@ $$
 \end{aligned}
 $$
 
-Where $r_1^{i(d)}$ and $r_2^{i(d)}$ are uniformly distributed random numbers in $[0, 1]$. The cognitive parameter $c_p$ acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter $c_g$, which is a weighting of the direction to the global best position. The inertial weight $w$ is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for $d = 1, 2, \cdots, D$ particles can be given in the following matrix notation:
+Where $r_1^{i(d)}$ and $r_2^{i(d)}$ are uniformly distributed random numbers in $[0, 1]$. The cognitive parameter $c_p$ acts as a weighting of the direction to its previous best position of the particle. This contrasts with the social parameter $c_g$, which is a weighting of the direction to the global best position. The inertia weight $w$ is crucial for the convergence behavior by remembering part of its previous trajectory. A study reviewed in [@PaVr2002] showed that these parameters can be set to $c_p=c_g=0.5$ and $w$ should decrease from $1.2$ to $0$. However, some problems benefit from a more precise tuning of these parameters. To allow effortless translation to code, the above formula for $d = 1, 2, \cdots, D$ particles can be given in the following matrix notation:
 
 $$
 \begin{aligned}
   V^{i+1} &= w \cdot V^{i} + c_p \cdot (\vec{r}_1^{\,i} \cdot (P^i-X^i)^T)^T + c_g \cdot (\vec{r}_2^{\,i} \cdot (p_g^i - X^i)^T)^T \\
-  X^{i+1} &= X^i + V^{i+1}.
+  X^{i+1} &= X^i + V^{i+1}
 \end{aligned}
 $$
 
-With current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$ and $c_g$ are stile scalars. The random numbers $r_1$ and $r_2$ are replaced by the vectors $\vec{r}_1$ and $\vec{r}_2$, in which each element is a uniformly distributed random number generated in $[0, 1]$. The first transpose is needed to multiply each random number element-wise with each column and the second transpose transforms it back to the format of $V$ and $X$.
+with current positions $X \in \mathbb{R}^{N \times D}$, current velocities $V \in \mathbb{R}^{N \times D}$, previous best positions $P \in \mathbb{R}^{N \times D}$, and global best position $p_g \in \mathbb{R}^{N}$. The parameters $w$, $c_p$ and $c_g$ are stile scalars. The random numbers $r_1$ and $r_2$ are replaced by the vectors $\vec{r}_1$ and $\vec{r}_2$, in which each element is a uniformly distributed random number generated in $[0, 1]$. The first transpose is needed to multiply each random number element-wise with each column and the second transpose transforms it back to the format of $V$ and $X$.
 
 The algorithm mentioned above is the first published variant of PSO and is therefore referred to as standard PSO in this thesis. There are also other names like global PSO, because the information is distributed globally over all particles in the swarm and some also call it the basic or original PSO.
 
@@ -121,15 +121,14 @@ for(i in 1:control$maxiter){
   # evaluate objective function
   X_fit <- apply(X, 2, fn)
   
-  # save new personal best
-  P[, P_fit >= X_fit] <- X[, P_fit >= X_fit]
-  P_fit[P_fit >= X_fit] <- X_fit[P_fit >= X_fit]
-  
+  # save new previews best
+  P[, P_fit > X_fit] <- X[, P_fit > X_fit]
+  P_fit[P_fit > X_fit] <- X_fit[P_fit > X_fit]
+
   # save new global best
   if(any(P_fit < p_g_fit)){
-      sel <- sample(which(P_fit==min(P_fit)), 1)
-      p_g <- P[, sel]
-      p_g_fit <- P_fit[sel]
+    p_g <- P[, which.min(P_fit)]
+    p_g_fit <- min(P_fit)
   }
 }
 ```
@@ -147,7 +146,7 @@ source("R/PSO_functions.R")
 
 
 ## Animation 2-Dimensional
-This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The amazing animation template and the objective function is inspired by [@Rtic2021]. The PSO core from the above chapter was used to complete the `pso()` function and is tested here with seed 0. The objective is to minimize the following function ($f:\mathbb{R}^2 \rightarrow \mathbb{R}$):
+This section provides insights into the behavior of the PSO by visualizing multiple iterations in a GIF. The GIF works in Adobe Acrobat DC or in the Markdown/HTML version of this thesis. The animation template and the objective function is inspired by [@Rtic2021]. The PSO core from the above chapter was used to complete the `pso()` function and is tested here with seed 0. The objective is to minimize the following function ($f:\mathbb{R}^2 \rightarrow \mathbb{R}$):
 
 $$
 f(x, y) = -20\cdot e^{-0.2 \cdot \sqrt{0.5 \cdot ((x-1)^2 + (y-1)^2)}} \ - e^{0.5 \cdot ( cos(2\cdot \pi \cdot x) + cos(2\cdot \pi \cdot y))} + e + 20.
@@ -461,7 +460,7 @@ This approach to dealing with constraints is called the penalization method and 
 
 ## Convergence Analysis of the Standard PSO
 
-This section summarizes the mathematical convergence analysis of the standard PSO with constant inertia weight $w$ performed in [@FbEn2010] and in [@FbEn2007], whose main goal is to prove whether the PSO converges to a local or even a global minimum. The results from the sources are presented in a simplified form so that the full scope can be understood. No mathematical foundations are proven, as this would otherwise be beyond the scope of this thesis. It is recommended to read the detailed proofs in the referenced sources to gain a deeper understanding. The structure of this section begins by gathering the conditions that must be met for a general stochastic search algorithm to be classified as a local or global search algorithm. Then, these conditions are used to classify the standard PSO with constant inertia weight $w$. It follows that certain conditions must be imposed on the hyperparameters and the PSO must be modified to be classified as a global or local search algorithm. Finally, these findings are applied to the practical implementation of PSO to derive relevant conclusions.
+This section summarizes the convergence analysis of the standard PSO with constant inertia weight $w$ performed in [@FbEn2010] and in [@FbEn2007], whose main goal is to prove whether the PSO converges to a local or even a global minimum. The results from the sources are presented in a simplified form so that the full scope can be understood. No mathematical foundations are proven, as this would otherwise be beyond the scope of this thesis. It is recommended to read the detailed proofs in the referenced sources to gain a deeper understanding. The structure of this section begins by gathering the conditions that must be met for a general stochastic search algorithm to be classified as a local or global search algorithm. Then, these conditions are used to classify the standard PSO with constant inertia weight $w$. It follows that certain conditions must be imposed on the hyperparameters and the PSO must be modified to be classified as a global or local search algorithm. Finally, these findings are applied to the practical implementation of PSO to derive relevant conclusions.
 
 ### Convergence of a General Stochastic Search Algorithm
 We start by defining a general problem where a measurable function $f: \mathbb{R}^n\rightarrow\mathbb{R}$ has to be minimized on the search space $S \subseteq \mathbb{R}^n$. To do so, we use a procedure that starts with a position generated from the search space $S$ and in each iteration it compares its old position with a new one and keeps one of the two. This comparison of positions and the return of one of them is denoted by the mapping $D$. For the procedure to be classified as an algorithm, it is sufficient to show that the following *algorithm condition* is satisfied:
@@ -599,7 +598,7 @@ In this theoretical approach, the behavior of the PSO is analyzed with increasin
 
 
 ## Example MVP
-This example uses the `solve.QP` approach from section section \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The main characteristics of all portfolios created with the `solve.QP` compared to the PSO are shown below:
+This example uses the `solve.QP` approach from section \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The main characteristics of all portfolios created with the `solve.QP` compared to the PSO are shown below:
 
 
 ```{r pso7, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of the MVP's generated with solve.QP and the PSO. The gray lines show the difference of the solutions of both approaches for each lambda"}
@@ -813,8 +812,9 @@ plot_ly(
 
 The corresponding portfolios for each $\lambda$ are connected with a grey line to visualize the error of the PSO. It turns out that it is possible to solve MVP problems with a PSO approach. It is noticable that some PSO runs were not able to reach the global minimum and thus show a deviation from the `solve.QP` approach, which can often be fixed by repeated runs. 
 
-## Example: ITP-MSTE
-The same ITP-MSTE solved with `solve.QP` in \@ref(exampleitpsolveqp) is used as the benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$ and decreases to zero, the upper bound is $0.05$, and a starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
+## Example ITP-MSTE
+
+A similar ITP-MSTE solved with `solve.QP` in section \@ref(exampleitpsolveqp) is used as a benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$ and decreases to zero, the upper bound is $0.05$, and a starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
 
 
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of solving ITP-MSTE with solve.QP and the PSO"}
@@ -862,12 +862,16 @@ itp_QP <- function(pool_returns, bm_returns){
       rep(1, ncol(pool_returns)), # sum w >= 0.99
       diag(1, 
            nrow=ncol(pool_returns), 
-           ncol=ncol(pool_returns)) # long only
+           ncol=ncol(pool_returns)), # long only
+      diag(-1, 
+           nrow=ncol(pool_returns), 
+           ncol=ncol(pool_returns)) # w <= 0.05
     )),
     bvec = c(
       -1, # sum w <= 1
       0.99, # sum w >= 0.99
-      rep(0, ncol(pool_returns)) # long only
+      rep(0, ncol(pool_returns)), # long only
+      rep(-0.05, ncol(pool_returns)) # w <= 0.05
     ),
     meq = 0
   )
@@ -913,25 +917,28 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
     const <- t(mat$Amat) %*% x - mat$bvec
     sum(pmin(0, const)^2)
   }
-  pso_res <- pso(
-    par = rep(1/ncol(pool_returns), ncol(pool_returns)),
-    fn = function(x){
-      fitness <- calc_fit(x)
-      constraints <- calc_const(x)
-      return(fitness+10*constraints)
-    },
-    lower = 0,
-    upper = 0.05,
-    control = list(
-      s = 200, # swarm size
-      c.p = 0.5, # inherit best
-      c.g = 0.5, # global best
-      maxiter = 100, # iterations
-      w0 = 1.2, # starting inertia weight
-      wN = 0, # ending inertia weight
-      save_traces = F # save more information
+  time_it <- system.time({
+    pso_res <- pso(
+      par = rep(1/ncol(pool_returns), ncol(pool_returns)),
+      fn = function(x){
+        fitness <- calc_fit(x)
+        constraints <- calc_const(x)
+        return(fitness+100*constraints)
+      },
+      lower = 0,
+      upper = 0.05,
+      control = list(
+        s = 100, # swarm size
+        c.p = 0.5, # inherit best
+        c.g = 0.5, # global best
+        maxiter = 300, # iterations
+        w0 = 1.2, # starting inertia weight
+        wN = 0, # ending inertia weight
+        save_traces = F # save more information
+      )
     )
-  )
+  })
+
   if(!silent){
     p0("constraint: ", sum(calc_const(pso_res$solution)))
     p0("fitness: ", calc_fit(pso_res$solution))
@@ -942,7 +949,8 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
     "fit" = calc_fit(pso_res$solution),
     "constraint" = calc_const(pso_res$solution),
     "var" = as.numeric(
-      var(pool_returns %*% pso_res$solution - bm_returns))
+      var(pool_returns %*% pso_res$solution - bm_returns)),
+    "time" = time_it[3]
   )
   
   return(res)
@@ -965,7 +973,7 @@ for(i in 1:10){
       "var"=temp_pso$var, 
       "fitness"=temp_pso$fit, 
       "constraint"=temp_pso$constraint, 
-      "time"=time[3]
+      "time"=temp_pso$time
     )
   )
   
@@ -999,7 +1007,7 @@ reactable(
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13),
   defaultColDef = colDef(align="left")
 ) %>% 
-  html_save(., force=T, expand = c(-40,-20,-35,-20))
+  html_save(., expand = c(-40,-20,-35,-20))
 ```
 
 
@@ -1007,7 +1015,7 @@ reactable(
 It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
 
 ## Pros and Cons for Continuous Problems
-A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP` alone, as it is for example the case with mixed-integer-quadratic-problems. In these types of problems, the condition for the variable of interest $x$ is to be a integer vector. These kind of problems could be solved by the `solve.QP` approach only continuously and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP` approach.
+A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP` alone, as it is for example the case with mixed-integer-quadratic-problems. In this type of problems, the condition is that the variable of interest $x$ must be an integer vector, which can only be solved continuously using `solve.QP` and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP` approach.
 
 
 ## Discrete Problems
@@ -1017,8 +1025,8 @@ $$
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}.
 $$
 
-## Example: Discrete ITP-MSTE
-This example analyses the error of rounding a solution with the `solve.QP` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP` and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the SP500TR with its top 100 assets derived from the example with discarding in section \@ref(exampleitpsolveqp) and tries to construct a portfolio with the constraints long only, $0.99 \leq \textstyle\sum w_i \leq 1$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 200 particles and 200 iterations. The results can be observed in the table below:
+## Example Discrete ITP-MSTE
+This example analyses the error of rounding a solution with the `solve.QP` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP` and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the SP500TR with its top 100 assets derived from the example with discarding in section \@ref(exampleitpsolveqp) and tries to construct a portfolio with the constraints long only, $0.99 \leq \textstyle\sum w_i \leq 1$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 100 particles and 300 iterations. The results can be observed in the table below:
 
 
 ```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of solving a discrete ITP-MSTE with PSO and the solve.QP with rounding afterwards"}
@@ -1112,10 +1120,10 @@ time_pso <- system.time({
     lower = 0,
     upper = 1,
     control = list(
-      s = 200, # swarm size
+      s = 100, # swarm size
       c.p = 0.5, # inherit best
       c.g = 0.5, # global best
-      maxiter = 200, # iterations
+      maxiter = 300, # iterations
       w0 = 1.2, # starting inertia weight
       wN = 0, # ending inertia weight
       save_traces = F # save more information

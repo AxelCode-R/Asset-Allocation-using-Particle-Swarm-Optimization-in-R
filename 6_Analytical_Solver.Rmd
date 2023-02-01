@@ -3,9 +3,9 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# Mathematical Optimization Methods for Quadratic Programming Problems {#analyticalsolver}
-\chaptermark{Mathematical Optimization Methods}
-In this chapter, the advantages and disadvantages of mathematical optimization methods for quadratic programming problems are discussed. For simplicity, this thesis refers to the implementation of a mathematical optimization method as a solver. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver handles quadratic problems; only the applications and analysis are discussed. The main reason for dealing with solvers for quadratic programming problems is to use them as a benchmark for the PSO.
+# Deterministic Optimization Methods for Quadratic Programming Problems {#analyticalsolver}
+\chaptermark{Deterministic Optimization Methods}
+In this chapter, the advantages and disadvantages of deterministic optimization methods for quadratic programming problems are discussed. For simplicity, this thesis refers to the implementation of a deterministic optimization method as a solver. It is beyond the scope of this thesis to explain the underlying mathematical principles of how a solver handles quadratic problems; only the applications and analysis are discussed. The main reason for dealing with solvers for quadratic programming problems is to use them as a benchmark for the PSO.
 
 
 ## Quadratic Programming (QP)
@@ -38,7 +38,7 @@ The return of `solve.QP` is a list and contains, among others, the following att
 + `value`: Scalar, the value of the quadratic function at the solution
 
 
-## Example: Solving MVP Problem with `solve.QP` {#exampleanalyticalmvp}
+## Solving MVP Problem with `solve.QP` {#exampleanalyticalmvp}
 This section provides insights into the effects of diversification and the use of `solve.QP` by creating ten different efficient frontiers from a pool of ten assets. Each efficient frontier $i \in \{1, 2, \cdots, 10\}$ consists of $N_i = i$ assets and is created by adding the asset with the next smallest variance first. After loading the returns for ten of the largest stocks in the U.S. market, the variance is calculated to rank all columns in ascending order of variance, as shown in the code below:
 
 
@@ -185,7 +185,7 @@ It can be seen that each added asset leads to a minimum variance portfolio with 
 
 
 
-## Example: Solving ITP-MSTE with `solve.QP` {#exampleitpsolveqp}
+## Solving ITP-MSTE with `solve.QP` {#exampleitpsolveqp}
 This example analyzes how many assets are needed to minimize the mean square error between the replication and historical returns of the SP500TR from 2018-01-01 to 2019-12-31. The constraints are set to be long only and the weights should sum to one. To gradually reduce the number of assets, the five assets with the lowest weights are discarded, and the remaining assets serve as the new asset pool for the next replication until only five assets remain. First, the required data can be downloaded from the `R/` directory using existing functions. The function `get_spx_composition()` uses web scraping to read the components of [wikipedia](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies) and converts them into monthly compositions of the SP500TR. The pool is formed from all assets present in the last month of the time frame, reduced by assets with missing values. The code below loads the returns of all assets in the pool and the SP500TR:
 
 

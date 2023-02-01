@@ -9,7 +9,7 @@ editor_options:
 The standard PSO analyzed in the previous chapter is capable of solving a wide range of problems, but often gets stuck in local minima. In this chapter, different variants of the standard PSO are analyzed using a problem from the financial domain. The first variant is the PSO with function stretching, which is designed to allow the PSO to escape from local minima if they are discovered. The second variant is the local PSO, which is designed to reduce the probability of getting stuck in local minima by limiting the spread of information in the swarm. The third variant, the PSO with feasibility preservation, tries to optimize within the feasibility space and therefore provide only feasible solutions. The last variant is the PSO with self-adaptive velocity, which tries to adjust the control parameters according to certain rules and randomness.
 
 
-## Testproblem: Discrete ITP-MSTE
+## Testproblem Discrete ITP-MSTE
 All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in section \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400. All PSO's start with the zero vector as the initial particle position to test the ability to find the feasible space.
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
@@ -142,8 +142,8 @@ plot_ly() %>%
   add_trace(data = df_res, x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_q1, name = "PSO_q1", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 0.4)"), showlegend=F) %>% 
   add_trace(data = df_res, x=~iter, y=~best_fit_q3, name = "PSO_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(255, 51, 0, 0.4)"), fillcolor = "rgba(255, 51, 0, 0.4)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
 ```
 
 
@@ -243,7 +243,7 @@ p2 <- plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), t
   layout(yaxis=list(range=c(-2, 20)*10^5))
 
 subplot(p1, p2, shareY=T, nrows=2, margin=0.05) %>% 
-  html_save(., vheight=500, vwidth=800)
+  html_save(., vheight=480, vwidth=800, expand = c(-10,0,-15,0))
 ```
 
 
@@ -254,7 +254,7 @@ It can be seen that the fitness is stretched upward around the local minimum $\b
 plot_ly(x=X, y=sapply(X, fn1, pos_best=x_best, pos_best_fit=x_best_fit), type="scatter", mode="lines", name="fn_stretched", line=list(color="orange")) %>% 
   add_trace(x=X, y=rep(fn(pi-asin(1/10)), length(X)), type="scatter", mode="lines", name="local_minima", line=list(dash="dot", color="grey")) %>% 
   layout(yaxis=list(range=c(1.1*min(sapply(X, fn)), 1.1*max(sapply(X, fn))))) %>% 
-  html_save(., vheight=250, vwidth=800)
+  html_save(., vheight=240, vwidth=800, expand = c(-10,0,-15,0))
 ```
 
 
@@ -316,7 +316,7 @@ df_res <- rbind(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
-save(df_res, file="data/save_variant2.rdata")
+save(df_res, df, file="data/save_variant2.rdata")
 ```
 
 
@@ -331,8 +331,8 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_median, name = "PSO-fnS", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q1, name = "PSO-fnS_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-fnS"), x=~iter, y=~best_fit_q3, name = "PSO-fnS_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
@@ -363,7 +363,7 @@ reactable(
 ```
 
 
-It can be seen that the function stretching did not bring any advantages in this particular problem. Perhaps it is due to the unfavorable values for $\gamma_1$, $\gamma_2$ and $\mu$, which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
+It turns out that functional stretching does not provide any benefits in this particular problem. Perhaps it is due to the unfavorable values for $\gamma_1$, $\gamma_2$ and $\mu$, which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
 
 
 
@@ -380,10 +380,10 @@ $$
   \bar{k} = floor(\frac{k}{2}) = \lfloor \frac{k}{2} \rfloor.
 $$
 
-To illustrate this, the following figure defines the neighborhoods $N(x_4, 4)$ and $N(x_1, 4)$:
+To illustrate this, the following figure defines the neighborhoods $N(x_3, 4)$ and $N(x_1, 4)$:
 
 
-![Visualization of the simple neighborhood topology.](img/PSO_local_chart444.png)
+![Visualization of the simple neighborhood topology.](img/PSO_local_chart4444.png)
 
 
 In the latter case, it can be seen that the overflowing boundary will continue on the opposite side of the arranged particles.
@@ -448,7 +448,7 @@ df_res <- rbind(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
-save(df_res, file="data/save_variant3.rdata")
+save(df_res, df, file="data/save_variant3.rdata")
 ```
 
 
@@ -463,8 +463,8 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_median, name = "PSO-local", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q1, name = "PSO-local_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-local"), x=~iter, y=~best_fit_q3, name = "PSO-local_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
@@ -498,7 +498,7 @@ reactable(
 It can be seen that it is superior to the standard PSO in this case. Especially in preventing stagnation in local minimas, which can be seen in the narrower quantile bands at the end.
 
 ## Preserving Feasibility
-Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, a new variant was investigated in [@XiEb2002] that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the result of trying to find a feasible position among a million randomly generated positions is as follows:
+Other variants of PSO often provide solutions that are infeasible, resulting in the need to run them multiple times. To ensure that each solution is feasible, a new variant was created in [@XiEb2002] that preserves the feasibility of the solutions. To be precise, this is not a variant of its own, but rather a different method for handling constraints instead of the commonly used penalty method. Nevertheless, it must change the core of the PSO implementation, which is why it is classified as its own variant in this work. The difference to the standard PSO is that the initialization of the particles is repeated until all positions are feasible. After that, only feasible solutions are stored as global or personal best positions, resulting in a guaranteed feasible final solution. Even the first step is the most difficult to achieve in practice. To illustrate this, the result of trying to find a feasible position among a million randomly generated positions of the test problem looks like this:
 
 
 ```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
@@ -559,7 +559,7 @@ for(i in 1:100){
         s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 200, # iterations
+        maxiter = 400, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T,
@@ -598,7 +598,7 @@ for(i in 1:100){
         s = 50, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
-        maxiter = 200, # iterations
+        maxiter = 400, # iterations
         w0 = 1.2, # starting inertia weight
         wN = 0, # ending inertia weight
         save_fit = T # save more information
@@ -627,13 +627,14 @@ df_res <- rbind(df_SPSO2, df) %>%
 
 df_res$iter <- df_res$iter+400
 
-save(df_res, file="data/save_variant4.rdata")
+save(df_res, df, file="data/save_variant4.rdata")
 ```
 
 
 ```{r variants6nextss, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions"}
 
 load("data/save_variant4.rdata")
+
 
 plot_ly() %>% 
   add_trace(data = df_res %>% filter(type=="PSO"), x=~iter, y=~best_fit_median, name = "PSO", mode="lines", type = 'scatter', line = list(color="rgba(255, 51, 0, 1)")) %>% 
@@ -642,8 +643,8 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_median, name = "PSO-preFe", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q1, name = "PSO-preFe_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-preFe"), x=~iter, y=~best_fit_q3, name = "PSO-preFe_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
@@ -653,6 +654,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 
 
 ```{r variants6next2, echo=F, fig.cap = "Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions"}
+
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -739,19 +741,19 @@ Then, the parameters are adjusted to their limits using the following formulas:
 w_d^{i+1} &= 
   \begin{cases}
     \text{Unif}(0,1), & \text{if}\ \ w_d^{i+1} > 1\\
-    \text{Unif}(0,0.1), & \text{if}\ \  0 > w_d^{i+1}\\
+    \text{Unif}(0,0.1), & \text{if}\ \  w_d^{i+1} < 0\\
     w_d^{i+1}, & \text{otherwise}
   \end{cases}\\
 c_{p,d}^{i+1} &= 
   \begin{cases}
     \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{p,d}^{i+1} > 4\\
-    \text{Unif}(0,1), & \text{if}\ \  0 > c_{p,d}^{i+1}\\
+    \text{Unif}(0,1), & \text{if}\ \  c_{p,d}^{i+1} < 0\\
     c_{p,d}^{i+1}, & \text{otherwise}
   \end{cases}\\
 c_{g,d}^{i+1} &= 
   \begin{cases}
     \text{Unif}(0,1) \cdot 4, & \text{if}\ \ c_{g,d}^{i+1} > 4\\
-    \text{Unif}(0,1), & \text{if}\ \  0 > c_{g,d}^{i+1}\\
+    \text{Unif}(0,1), & \text{if}\ \  c_{g,d}^{i+1} < 0\\
     c_{g,d}^{i+1}, & \text{otherwise.}
   \end{cases}\\
 \end{align*}
@@ -764,7 +766,7 @@ c_{g,d}^{i+1} &=
 
 
 ### Analyse Implementation
-The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients of iteration $i$ with 100 maximum iterations are distributed as follows:  
+The random use of the distributions for the velocity update increases the diversity of the swarm. The coefficients in iteration $i$ with 100 maximum iterations are distributed as follows:  
 
 
 ```{r, echo=F, fig.cap = "Comparison of the different distributions used in the velocity update of the PSO with self-adapting velocity depending on the iteration"}
@@ -847,7 +849,7 @@ df_res <- rbind(df_SPSO, df) %>%
   ungroup()
 
 
-save(df_res, file="data/save_variant5.rdata")
+save(df_res, df, file="data/save_variant5.rdata")
 ```
 
 
@@ -862,8 +864,8 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_median, name = "PSO-SAvel", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q1, name = "PSO-SAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q3, name = "PSO-SAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
@@ -893,15 +895,15 @@ reactable(
   html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
 
-
+\vspace{-0.1cm}
 The results look very promising, and with fewer hyperparameters to fine-tune, this may be one of the best variants for general use of a PSO.
 
 
 
-## PSO R-Package
-In this section, the existing package `pso` from R is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
+## PSO R Package
+In this section, the existing package `pso` is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
 
-
+\vspace{-0.1cm}
 ```{r variantspkg, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 load("data/save_variant1.rdata")
 set.seed(0)
@@ -965,11 +967,11 @@ df_res <- bind_rows(df_SPSO, df) %>%
   summarise(time_mean=mean(time), const_break_mean=mean(const_break), best_fit_q1 = quantile(best_fit, 0.05), best_fit_q3 = quantile(best_fit, 0.95), best_fit_mean = mean(best_fit), best_fit_median = quantile(best_fit, 0.5)) %>% 
   ungroup()
 
-save(df_res, file="data/save_variant6.rdata")
+save(df_res, df, file="data/save_variant6.rdata")
 ```
 
 
-```{r variantspkgs, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R-package with standard PSO settings and the standard PSO"}
+```{r variantspkgs, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of fitness between the PSO R package with standard PSO settings and the standard PSO"}
 
 load("data/save_variant6.rdata")
 
@@ -980,18 +982,17 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_median, name = "PSO-pkg", mode="lines", type = 'scatter',line = list(color="rgba(0, 102, 204, 1)")) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q1, name = "PSO-pkg_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q3, name = "PSO-pkg_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
-  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0005,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=400, vwidth = 850)
+  layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
+  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
   
 
 ```
 
-
-The existing PSO package is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the existing PSO package has many features and variants that are disabled for this comparison.
+\vspace{-0.1cm}
 The aggregate statistics of the last iterations of all 100 runs can be found in the table below:
+\vspace{-0.2cm}
 
-
-```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R-package with standard PSO settings and the standard PSO"}
+```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R package with standard PSO settings and the standard PSO"}
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -1011,5 +1012,231 @@ reactable(
 ) %>% 
   html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
 ```
+\vspace{-0.5cm}
+
+The `PSO-pkg` is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the package `pso` has many features and variants that are disabled for this comparison.
+
+
+## Comparison with other Metaheuristics
+
+In addition to the PSO, there are other metaheuristics that also treat the optimization problem as a black box and can thus be brought to a generic form. This is exactly what has been done in the R package `metaheuristicOpt` by implementing 19 more metaheuristics besides the PSO. Therefore, this package can be used to compare which metaheuristic is suitable for a specific type of optimization problem. The implemented metaheuristics are the standard versions, which is why no statement about variants of these metaheuristics can be given. Likewise, it is not guaranteed how performant the respective metaheuristics have been implemented. Nevertheless, this package is a great help to quickly and easily test different metaheuristics for an explicit problem. The metaheuristics implemented in the R package `metaheuristicOpt` are the following:
+
+
+```{r, fig.cap = "List of metaheuristics from the R package metaheuristicOpt", echo=F}
+reactable(
+  data.frame(
+    "abbreviation" = c(
+      "ABC", 
+      "ALO",
+      "BA",
+      "BHO",
+      "CLONALG",
+      "CS",
+      "CSO",
+      "DA",
+      "DE",
+      "FFA",
+      "GA",
+      "GOA",
+      "GWO",
+      "HS",
+      "KH",
+      "MFO",
+      "SCA",
+      "SFL",
+      "WOA"
+      ),
+    "full_name"= c(
+      "Artificial Bee Colony Algorithm",
+      "Ant Lion Optimizer Algorithm",
+      "Bat Algorithm",
+      "Black-Hole based Optimization Algorithm",
+      "Clonal Selection Algorithm",
+      "Cuckoo search Algorithm",
+      "Cat Swarm Optimization Algorithm",
+      "Dragonfly Algorithm",
+      "Differential Evolution Algorithm",
+      "Firefly Algorithm",
+      "Genetic Algorithm",
+      "Grasshopper Algorithm",
+      "Grey Wolf Optimizer Algorithm",
+      "Harmony Search Algorithm",
+      "Krill-Herd Algorithm",
+      "Moth Flame Optimization Algorithm",
+      "Sine Cosine Algorithm",
+      "Shuffled Frog Leaping Algorithm",
+      "Whale Optimization Algorithm"
+      )
+  ), 
+  defaultPageSize = 30,
+  columns = list(
+    full_name = colDef(name = "full name")
+  ),
+  compact=T,
+  style = list(fontFamily="Computer Modern, sans-serif", fontSize=11)
+) %>% 
+  html_save(., expand = c(-40,-20,-39,-20), vheight=900, vwidth=600, force=T)
+```
+
+
+These metaheuristics are used to solve the test problem defined at the beginning of this chapter. The same settings are used as for the PSO variants, i.e. each run has a population size of 50, which corresponds to the number of particles in the swarm. The maximum iteration is 400 and each metaheuristic is run 100 times. Unlike the analysis above, only the last iteration of each run is recorded and compared. The data collected from each run of a metaheuristic are the fitness, the constraint breaks, and the run time. Aggregated for the respective metaheuristic, the 5% and 95% quantiles of the fitness and constraint breaks are calculated for the 100 runs, as well as the mean fitness, mean constraint breaks and mean runtime. These metrics are used to compare the respective metaheuristics in a ranking. The score calculated for this purpose is computed using the ranking in the respective category, which takes values from 1 to 24. The resulting score is a weighted sum of these individual rankings as follows:
+
+
+\begin{align*}
+\text{score} =& \ 3 \cdot \text{q5\_fitness\_rnk} + 2 \cdot \text{mean\_fitness\_rnk} + \text{q95\_fitness\_rnk}\\ 
+&+ \text{q5\_const\_break\_rnk} + 0.5 \cdot \text{mean\_const\_break\_rnk} \\
+&+ 0.5 \cdot \text{q95\_const\_break\_rnk} + 3 \cdot \text{mean\_runtime\_rnk}
+\end{align*}
+
+
+The score is to be interpreted in such a way that a smaller number is better than a larger one. It can be seen that the highest weight is on the 5% quantile of fitness, as this is representative of the best solutions after repeating the metaheuristic several times. Overall, this is a subjective ranking to sort the metaheuristics and compare them with a single number. In the following chart should therefore be all the necessary information to allow the reader to form his or here own opinion:
+
+
+```{r, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
+library(metaheuristicOpt)
+metaheuristics <- c("ABC", "ALO", "BA", "BHO", "CLONALG", "CS", "CSO", "DA", "DE", "FFA", "GA", "GOA", "GWO", "HS", "KH", "MFO", "SCA", "WOA")
+n_tests <- 100
+
+res_all <- NULL
+for(i in 1:length(metaheuristics)){
+  opt_name <- metaheuristics[i]
+  try({
+    for(k in 1:n_tests){
+      eval(
+        expr=parse(
+          text=paste('
+            time <- system.time({
+              res <- ',opt_name,'(
+                FUN = function(x){
+                  x <- as.vector(round(x*nav/prices)*prices/nav)
+                  fitness <- calc_fit(x)
+                  constraints <- calc_const(x)
+                  return(fitness+100*constraints)
+                },
+                optimType = "MIN",
+                numVar = ncol(pool_data$returns),
+                numPopulation = 50,
+                maxIter = 400,
+                rangeVar = matrix(c(0, 0.1), ncol=ncol(pool_data$returns), nrow=2)
+              )
+            }) %>% .[3]
+            res <- as.vector(round(unlist(res)*nav/prices)*prices/nav)
+            res_df <- data.frame(
+              opt_name = opt_name,
+              fitness = calc_fit(res),
+              constraints = calc_const(res),
+              time = time,
+              row.names = NULL
+            )
+          '))
+      )
+
+
+      res_all <- rbind(res_all, res_df)
+    }
+  })
+}
+
+res_all$overall_fit <- res_all$fitness+res_all$constraints
+
+
+
+#save(res_all, file="data/external_metaheuristics.rdata")
+
+```
+
+
+```{r, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of statistics between metaheuristics"}
+
+load("data/external_methaheuristics.rdata")
+
+
+df_PSOs <- NULL
+load("data/save_variant1.rdata")
+df_PSOs <- bind_rows(df_PSOs, df_SPSO %>% filter(type=="PSO", iter==400))
+load("data/save_variant2.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+load("data/save_variant3.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+load("data/save_variant5.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+load("data/save_variant6.rdata")
+df_PSOs <- bind_rows(df_PSOs, df %>% filter(type!="PSO", iter==400))
+df_PSOs <- df_PSOs %>% select(type, time, fitness=best_fit, const_break) %>% mutate(created=1)
+
+res_all <- bind_rows(
+  df_PSOs,
+  res_all %>% mutate(created=0, fitness = overall_fit) %>% select(type = opt_name, fitness, "const_break"=constraints, time, created)
+)
+
+res_all_agg <- res_all %>%
+  group_by(type) %>%
+  summarise(
+    created = unique(created),
+    fitness_q5 = quantile(fitness, 0.05),
+    fitness_mean = mean(fitness),
+    fitness_q95 = quantile(fitness, 0.95),
+    const_break_q5 = quantile(const_break, 0.05),
+    const_break_mean = mean(const_break),
+    const_break_q95 = quantile(const_break, 0.95),
+    time_mean = mean(time)
+  ) %>%
+  mutate(
+    score = 3 * rank(fitness_q5) + 2 * rank(fitness_mean) + rank(fitness_q95) +
+      1 * rank(const_break_q5) + 0.5 * rank(const_break_mean) + 0.5 * rank(const_break_q95) +
+      3 * rank(time_mean)
+  ) %>%
+  arrange(score)
+#res_all_agg$type <- factor(res_all_agg$type, levels = res_all_agg$type)
+
+reactable(
+  res_all_agg,
+  columns = list(
+    type = colDef(width=85),
+    created = colDef(show=F),
+    fitness_q5 = colDef(width=90, format=colFormat(digits=6)),
+    fitness_mean = colDef(width=100, format=colFormat(digits=6)),
+    fitness_q95 = colDef(width=90, format=colFormat(digits=6)),
+    const_break_q5 = colDef(width=115, format=colFormat(digits=6)),
+    const_break_mean = colDef(width=135, format=colFormat(digits=6)),
+    const_break_q95 = colDef(width=125, format=colFormat(digits=6)),
+    time_mean = colDef(width=85, format=colFormat(digits=2)),
+    score = colDef(width=60, format=colFormat(digits=1))
+  ),
+  style = list(fontFamily="Computer Modern, sans-serif", fontSize=13),
+  defaultPageSize = 30
+) %>% 
+  html_save(., expand = c(-40,-20,-40,-20), vwidth=970, vheight = 1100, force=T)
+
+
+```
+
+
+To visualize the detailed runs, a boxplot of the important metrics fitness, constraint break and runtime was also created. In this boxplot, the individual points of each run are displayed under the respective boxes. If there are no points or boxes, it is because they have taken on too large values:
+
+
+```{r, echo =F, fig.cap="Comparison of statistics between metaheuristics with boxplots"}
+p1 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~fitness, type = "box", boxpoints="all", y = ~type, marker = list(size=4)) %>%
+  layout(xaxis = list(range=c(min(res_all$fitness)-0.00005,-0.02105)), yaxis = list(title=list(text="metaheuristic", standoff = 1), categoryorder = "array", categoryarray = rev(res_all_agg$type)))
+
+p2 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~const_break, type = "box", boxpoints="all", y = ~type, marker = list(size=4)) %>%
+  layout(xaxis = list(range=c(0,0.000012)), yaxis = list(standoff = 40, title="metaheuristic", categoryorder = "array", categoryarray = rev(res_all_agg$type)))
+
+p3 <- plot_ly(data=res_all %>% filter(!type %in% c("FFA")), x = ~time, type = "box", boxpoints="all", y = ~type, marker = list(size=4)) %>%
+  layout(xaxis = list(range=c(0,30)), yaxis = list(standoff = 40, title="metaheuristic", categoryorder = "array", categoryarray = rev(res_all_agg$type)), showlegend=F)
+suppressWarnings({
+  p_pre <- subplot(p2, p3, nrows = 1, shareY = T, titleX=T)
+  p <- subplot(p1, p_pre, nrows = 1, shareY = T, titleX=T)
+})
+
+p %>% 
+  html_save(., expand = c(-25,0,0,0), vwidth=800, vheight = 850)
+```
+
+
+It can be observed that the metaheuristics from the R package `metaheuristicOpt`, consistently have a longer runtime, which is partly due to the implementation, since it does not make use of vectorial operations. Additionally it can be seen that beside the PSO and its variants also the Clonal Selection Algorithm (CLONALG) and the Ant Lion Optimizer Algorithm (ALO) reached a satisfying fitness, but had a significantly longer runtime. Overall, the self-adaptive velocity PSO (PSO-SAvel) had the best ranking, which is also confirmed by the key statistics. In addition, the PSO-SAvel has fewer hyperparameters, which is why it will be used for the backtests in the next chapter.
+
+
+
 
 
