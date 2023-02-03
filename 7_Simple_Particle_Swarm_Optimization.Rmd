@@ -183,62 +183,6 @@ The function `f` has many local minima and a global minimum at $(1,1)$ with the 
 
 
 ```{r gifanimate, echo=F, eval=F, include=F}
-# grid <- expand.grid(seq(-10, 10, length.out = 100), seq(-10, 10, length.out = 100), stringsAsFactors = F)
-# grid$z <- apply(grid, 1, f)
-# 
-# 
-# background <- ggplot() +
-#   geom_contour_filled(data = grid, aes(x = Var1, y = Var2, z = z), color = "black", alpha = 0.5) +
-#   scale_fill_brewer(palette = "Spectral") +
-#   theme(axis.line=element_blank(),
-#       axis.text.x=element_blank(),
-#       axis.text.y=element_blank(),
-#       axis.ticks=element_blank(),
-#       axis.title.x=element_blank(),
-#       axis.title.y=element_blank(),
-#       legend.position="none",
-#       panel.background=element_blank(),
-#       panel.border=element_blank(),
-#       panel.grid.major=element_blank(),
-#       panel.grid.minor=element_blank(),
-#       plot.background=element_blank())
-# ggsave(background, filename = "gifs/pso_2dim/background.jpg", scale = 1, dpi=150)
-# 
-# 
-# anim <- ggplot(res$trace_data) +
-#   background_image(jpeg::readJPEG("gifs/pso_2dim/background.jpg")) +
-#   geom_point(aes(X1, X2)) +
-#   xlim(-10, 10) +
-#   ylim(-10, 10) +
-#   labs(x = "X", y = "Y") +
-#   transition_time(iter) +
-#   ease_aes("linear")
-# 
-# 
-# 
-# if(!knitr::is_latex_output()){
-#   temp <- sapply(list.files('gifs/pso_2dim/', full.names = T), file.remove)
-#   suppressMessages(animate(anim, renderer = file_renderer('gifs/pso_2dim/'), device = "jpeg", nframes=100, fps=10, duration=10,  start_pause = 10))
-#   images <- list.files('gifs/pso_2dim/')
-#   for(i in 1:length(images)){
-#     file.rename(
-#       paste0('gifs/pso_2dim/',images[i]),
-#       paste0("gifs/pso_2dim/gganim_plot", as.numeric(gsub(".jpg", "", gsub(pattern = "gganim_plot","", images[i])))+10, ".jpg")
-#     )
-#   }
-#   for(i in 10:1){
-#     file.copy(
-#       from = 'gifs/pso_2dim/gganim_plot11.jpg',
-#       to = paste0("gifs/pso_2dim/gganim_plot", i, ".jpg")
-#     )
-#   }
-#   anim
-# }
-# 
-# 
-
-
-
 
 grid <- setNames(expand.grid(seq(-10, 10, length.out = 100), seq(-10, 10, length.out = 100)), c("x1", "x2"))
 
@@ -598,7 +542,7 @@ In this theoretical approach, the behavior of the PSO is analyzed with increasin
 
 
 ## Example MVP
-This example uses the `solve.QP` approach from section \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The PSO has 300 particles and 200 iterations for each lambda. The starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The main characteristics of all portfolios created with the `solve.QP` compared to the PSO are shown below:
+This example uses the `solve.QP` approach from section \@ref(exampleanalyticalmvp) with ten assets as the benchmark. Briefly, the goal is to create an MVP from ten of the largest U.S. stocks between 2018-01-01 and 2019-12-31 for each possible $\lambda$. The constraints are long only and the weights should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. The PSO has 300 particles and 200 iterations for each lambda. The starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The main characteristics of all portfolios created with the `solve.QP` compared to the PSO are shown below:
 
 
 ```{r pso7, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of the MVP's generated with solve.QP and the PSO. The gray lines show the difference of the solutions of both approaches for each lambda"}
@@ -814,7 +758,7 @@ The corresponding portfolios for each $\lambda$ are connected with a grey line t
 
 ## Example ITP-MSTE
 
-A similar ITP-MSTE solved with `solve.QP` in section \@ref(exampleitpsolveqp) is used as a benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should sum to one. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$ and decreases to zero, the upper bound is $0.05$, and a starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
+A similar ITP-MSTE solved with `solve.QP` in section \@ref(exampleitpsolveqp) is used as a benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$ and decreases to zero, the upper bound is $0.05$, and a starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
 
 
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of solving ITP-MSTE with solve.QP and the PSO"}
