@@ -31,7 +31,7 @@
 \contentsline {subsection}{\numberline {4.6.3}\texttt {ret\_to\_cumret()}}{14}{subsection.4.6.3}%
 \contentsline {subsection}{\numberline {4.6.4}\texttt {ret\_to\_geomeanret()}}{14}{subsection.4.6.4}%
 \contentsline {subsection}{\numberline {4.6.5}\texttt {calc\_portfolio\_returns()}}{15}{subsection.4.6.5}%
-\contentsline {chapter}{\numberline {5}Active vs Passive Portfolio Managment}{16}{chapter.5}%
+\contentsline {chapter}{\numberline {5}Active vs.\nobreakspace {}Passive Portfolio Management}{16}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Results of the Literature}{16}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Aggregation of the Literature}{17}{section.5.2}%
 \contentsline {chapter}{\numberline {6}Challenges of Passive Portfolio Management}{18}{chapter.6}%
