@@ -331,7 +331,7 @@ for(i in 1:length(unique(trace_data$iter)) ){
 
 
 ## Animation 2-Dimensional App
-To gain an even better understanding of the behavior of a PSO, a WebApp was developed that allows the user to minimize any two-dimensional functions with constraints. Three variants of the PSO were implemented, which will be analyzed in detail in the later chapters of this thesis. The app can also be used to study the effect of hyperparameters on the behavior of the PSO in more detail. Within the app it is possible to display each step of the iterations and this even with all the direction vectors that generate the resulting motion of each particle. The app is hosted at [@PSOApp] and the code for it is also freely available at [@GitPSO]. The hosted app may be used for educational purposes and using, copying, modifying, and sharing the code is permitted without restriction.
+To gain an even better understanding of the behavior of a PSO, a WebApp was developed that allows the user to minimize any two-dimensional functions with constraints. Three variants of the PSO were implemented, which will be analyzed in detail in the later chapters of this thesis. The app can also be used to study the effect of hyperparameters on the behavior of the PSO in more detail. Within the app it is possible to display each step of the iterations and this even with all the direction vectors that generate the resulting motion of each particle. The app is hosted at [@PSOApp] and the code for it is also freely available at [@GitPSO]. The hosted app may be used for educational purposes and using, copying, modifying, and sharing the code is permitted without restrictions.
 
 
 ## Simple Constraint Handling

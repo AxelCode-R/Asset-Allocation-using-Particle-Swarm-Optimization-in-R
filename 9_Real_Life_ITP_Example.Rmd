@@ -27,7 +27,7 @@ with
 $$
   g(x) =    \begin{cases}
   0 &\text{, if }\ x = 0\\
-  1 &\text{, else,}
+  1 &\text{, otherwise,}
   \end{cases}
 $$
 

@@ -10,7 +10,7 @@ The standard PSO analyzed in the previous chapter is capable of solving a wide r
 
 
 ## Testproblem Discrete ITP-MSTE
-All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in section \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension space of the problem. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400 with coefficients $c_p=c_g=0.5$ and the inertia weight starts at $1.2$ and decreases to zero. All PSO's start with the zero vector as the initial particle position to test the ability to find the feasible space.
+All variants are tested on a discrete ITP-MSTE to replicate the SP500TR with a tracking portfolio consisting of the top 50 assets in the S&P 500 derived from the example with discarding in section \@ref(exampleitpsolveqp). The daily data used to solve the ITP ranges from 2018-01-01 to 2019-12-31, and the assets must be in the SP500TR at the end of the time frame and have no missing values. The tracking portfolio is discrete and has a net asset value of twenty thousand USD. The tracking portfolio is discretized using closing prices on 2019-12-31, and returns are calculated as simple returns using the adjusted closing prices. The maximum weighting for each asset is 10% to reduce the dimension of the search space. Additional constraints are long only and portfolio weights $w$ should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. All variants are run 100 times and compared to 100 runs of the standard PSO created in the previous chapter. The swarm size for the PSO and all variants is 50 and the iterations are set to 400 with coefficients $c_p=c_g=0.5$ and the inertia weight starts at $1.2$ and decreases to zero. All PSO's start with the zero vector as the initial particle position to test the ability to find the feasible space.
 
 The next plot analyzes the behavior of the 100 standard PSO runs in each iteration by plotting the median of the best fitness achieved in each iteration. The confidence bands for the 95% and 5% quantiles of the best fitness values are plotted in the same color as the median, with less transparency:
 
@@ -173,7 +173,7 @@ reactable(
 
 
 ## Function Stretching
-PSO often gets stuck in local minima, i.e. when the current global best position is a local minimum with a surrounding region, with only higher fitnesses. In such situations, it is difficult for the PSO to escape to find the global minimum. Function stretching attempts to allow the PSO to escape such local minima by transforming the fitness function in the same way as described in [@PaVr2002]. After finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function such that the discovered local minimum is transformed into a maximum and any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum $\bar{x}$ are:
+PSO often gets stuck in local minima, i.e. when the current global best position is a local minimum with a surrounding region, with only higher fitnesses. In such situations, it is difficult for the PSO to escape and find the global minimum. Function stretching attempts to allow the PSO to escape such local minima by transforming the fitness function in the same way as described in [@PaVr2002]. After finding a local minimum, a two-stage transformation proposed by Vrahatis in 1996 can be used to stretch the original function such that the discovered local minimum is transformed into a maximum and any position with less fitness remains unchanged. The two stages of the transformation with a discovered local minimum $\bar{x}$ are:
 
 \begin{equation} 
 G(x) = f(x) +  \gamma_1 \cdot \| x-\bar{x} \| \cdot (\text{sign}(f(x)-f(\bar{x}))+1)
@@ -363,7 +363,7 @@ reactable(
 ```
 
 
-It turns out that functional stretching does not provide any benefits in this particular problem. Perhaps it is due to the unfavorable values for $\gamma_1$, $\gamma_2$ and $\mu$, which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
+It turns out that function stretching does not provide any benefits in this particular problem. Perhaps it is due to the unfavorable values for $\gamma_1$, $\gamma_2$ and $\mu$, which lead to too strong repulsion of the particles. Another reason could be that the stretching of the function generates new local minima which are even more difficult to overcome than the original ones, especially in higher dimensions.
 
 
 
@@ -676,7 +676,7 @@ reactable(
 ```
 
 
-The results indicate that the PSO with feasibility preservation is not able to solve finance-related problems that have a very small feasible space. It is more efficient to repeat the PSO with the previous best position until the solution is feasible.
+The results indicate that the PSO with feasibility preservation is not able to solve finance-related problems that have a very small feasible space. It is more efficient to repeat the standard PSO with the previous best position until the solution is feasible.
 
 ## Self-Adaptive Velocity
 A PSO approach with self-adaptive velocity that attempts to reduce hyperparameters was analyzed in [@FaYa2014]. The self-adaptive velocity is enabled by multiple velocity update schemes that are used randomly. Moreover, all hyperparameters are self-adaptive, since each particle has its own coefficients $c_g$, $c_p$, and $w$, which change after each iteration depending on the fitness and other factors. The resulting PSO has no real hyperparameters that need to be tuned, and thus can be used as a general-purpose PSO. 
@@ -712,12 +712,12 @@ with
 \end{align*}
 \endgroup
 
-and $\text{Cauchy}(\mu, \sigma)$ is a random number generated from the Cauchy distribution obtained with `rcauchy()` in R. The position update is the same as for the standard PSO. When a particle $d$ has left the feasible search space in its coordinate $z$, it is moved back with the following switch-case for $r = \text{Unif}(0,1)$:
+and $\text{Cauchy}(\mu, \sigma)$ is a random number generated from the Cauchy distribution obtained with `rcauchy()` in R. The position update is the same as for the standard PSO. When a particle $d$ has left the search space in its coordinate $z$, it is moved back with the following switch-case for $r = \text{Unif}(0,1)$:
 
 $$
   x_{z,d} = 
   \begin{cases}
-    \text{generate uniform in the defined space}, & \text{if}\ \ r > 0.7\\
+    \text{generate uniform in the search space}, & \text{if}\ \ r > 0.7\\
     \text{push back to boundary}, & \text{otherwise.}\ \ \\
   \end{cases}
 $$
@@ -865,7 +865,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q1, name = "PSO-SAvel_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-SAvel"), x=~iter, y=~best_fit_q3, name = "PSO-SAvel_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
+  html_save(., vheight=345, vwidth = 850, expand=c(-25,0,-3,0))
   
 
 ```
@@ -892,7 +892,7 @@ reactable(
   rownames = F,
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
+  html_save(., vwidth = 808, expand = c(-45,-35,-60,-35))
 ```
 
 \vspace{-0.1cm}
@@ -901,9 +901,9 @@ The results look very promising, and with fewer hyperparameters to fine-tune, th
 
 
 ## PSO R Package
-In this section, the existing package `pso` is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The diagram below compares the fitness:
+In this section, the existing package `pso` is used to compare the results with the standard PSO. The PSO from the existing package is called `PSO-pkg` and has been reconfigured to have the same hyperparameters as the standard PSO. It must be said that the `PSO-pkg` differs in the initialization of the velocity and does not use the compression coefficient of one tenth of the initialized velocity. The following diagram compares the fitness of the standard PSO and the `PSO-pkg` based on the test problem:
 
-\vspace{-0.1cm}
+\vspace{-0.2cm}
 ```{r variantspkg, eval = F, echo= knitr::is_html_output(), class.source="code_fold_it_collapsed"}
 load("data/save_variant1.rdata")
 set.seed(0)
@@ -983,7 +983,7 @@ plot_ly() %>%
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q1, name = "PSO-pkg_q1", mode="lines", type = 'scatter', line = list(color="rgba(0, 102, 204, 0.3)"), showlegend=F) %>% 
   add_trace(data = df_res %>% filter(type=="PSO-pkg"), x=~iter, y=~best_fit_q3, name = "PSO-pkg_q3", mode="lines", type = 'scatter', fill="tonexty", line = list(color="rgba(0, 102, 204, 0.3)"), fillcolor = "rgba(0, 102, 204, 0.3)", showlegend=F) %>% 
   layout(yaxis=list(range=c(min(df_res[df_res$iter>30,]$best_fit_q1)-0.0002,  max(df_res[df_res$iter>30,]$best_fit_q3)+0.0005), title="best fitness")) %>% 
-  html_save(., vheight=345, vwidth = 850, expand=c(-15,0,-3,0))
+  html_save(., vheight=345, vwidth = 850, expand=c(-25,0,-3,0))
   
 
 ```
@@ -1010,9 +1010,9 @@ reactable(
   rownames = F,
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13)
 ) %>% 
-  html_save(., vwidth = 808, expand = c(-45,-35,-55,-35))
+  html_save(., vwidth = 808, expand = c(-43,-35,-60,-35))
 ```
-\vspace{-0.5cm}
+\vspace{-0.6cm}
 
 The `PSO-pkg` is slightly different from the standard PSO, which is most likely due to the different velocity initialization. It is important to note that the package `pso` has many features and variants that are disabled for this comparison.
 
@@ -1206,7 +1206,7 @@ reactable(
   style = list(fontFamily="Computer Modern, sans-serif", fontSize=13),
   defaultPageSize = 30
 ) %>% 
-  html_save(., expand = c(-40,-20,-40,-20), vwidth=970, vheight = 1100, force=T)
+  html_save(., expand = c(-40,-20,-40,-20), vwidth=970, vheight = 1100)
 
 
 ```
