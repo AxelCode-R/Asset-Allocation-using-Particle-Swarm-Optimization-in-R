@@ -407,19 +407,25 @@ This approach to dealing with constraints is called the penalization method and 
 This section summarizes the convergence analysis of the standard PSO with constant inertia weight $w$ performed in [@FbEn2010] and in [@FbEn2007], whose main goal is to prove whether the PSO converges to a local or even a global minimum. The results from the sources are presented in a simplified form so that the full scope can be understood. No mathematical foundations are proven, as this would otherwise be beyond the scope of this thesis. It is recommended to read the detailed proofs in the referenced sources to gain a deeper understanding. The structure of this section begins by gathering the conditions that must be met for a general stochastic search algorithm to be classified as a local or global search algorithm. Then, these conditions are used to classify the standard PSO with constant inertia weight $w$. It follows that certain conditions must be imposed on the hyperparameters and the PSO must be modified to be classified as a global or local search algorithm. Finally, these findings are applied to the practical implementation of PSO to derive relevant conclusions.
 
 ### Convergence of a General Stochastic Search Algorithm
-We start by defining a general problem where a measurable function $f: \mathbb{R}^n\rightarrow\mathbb{R}$ has to be minimized on the measurable search space $S \subseteq \mathbb{R}^n$. To do so, we use a procedure that starts with a position generated from the search space $S$ and in each iteration it compares its old position with a new one and keeps one of the two. This comparison of positions and the return of one of them is denoted by the mapping $D$. For the procedure to be classified as an algorithm, it is sufficient to show that the following *algorithm condition* is satisfied:
+We start by defining a general problem where a measurable function $f: \mathbb{R}^n\rightarrow\mathbb{R}$ has to be minimized on the measurable search space $S \subseteq \mathbb{R}^n$. To do so, we use a procedure that starts with a position generated from the search space $S$ and in each iteration it compares its old position with a new one and keeps one of the two. More precisely, we assume that in each iteration of the procedure a random vector $\xi$ is selected according to a probability measure $\mu_i$ (for iteration $i$) and then the next position is determined and compared to the current position. This comparison of positions and the return of one of them is denoted by the mapping $D$. For the procedure to be classified as an algorithm, it is sufficient to show that the following *algorithm condition* is satisfied:
 
 **Algorithm condition**: The mapping $D: S \times \mathbb{R}^n\rightarrow S$ should satisfy $f(D(z, \xi)) \leq f(z)$ and if $\xi \in S$, then $f(D(z, \xi)) \leq f(\xi)$.
 
-Thus, the procedure is an algorithm if after each iteration the position is returned that has the lowest fitness value and also lies in the search space $S$.
+Thus, the procedure is an algorithm if after each iteration a position is returned that has the lowest fitness value and also lies in the search space $S$.
 
-Next, we need to change the definition of the global minimum. Since the probability of generating an exact point in a search space $S$ with a stochastic algorithm is zero, we define an optimality region $R_{\epsilon}$ that has a non-zero volume:
+Next, we need to adapt the definition of the global minimum to a set based perspective. Since the probability of generating an exact point in a search space $S$ with a stochastic algorithm is zero, we define an optimality region $R_{\epsilon}$ that has a non-zero volume:
 
 $$
  R_{\epsilon} = \{z\in S| f(z) < \psi + \epsilon\}
 $$
 
-where $\psi$ denotes the essential infimum of $f$ on $S$, with $\epsilon > 0$.
+where $\psi$ denotes the essential infimum of $f$ on $S$, with $\epsilon > 0$. Here the essential infimum of $f$ on $S$ is defined as
+
+$$
+\psi := \text{ess inf} (f) := \inf \{ b \in R \mid L \{ x \in S \mid f(x) < b\}) > 0 \} 
+$$
+
+and $L$ denotes the Lebesgue measure.
 
 We are now interested in the conditions under which the algorithm is guaranteed to converge to the optimality region. For this purpose, we first consider the simpler case of global convergence, for which the following convergence condition must be satisfied:
 
@@ -430,7 +436,7 @@ $$
 $$
 where $\mu_i(A)$ is the probability of the algorithm, in iteration $i$, to generate a new point in $A$. 
 
-This means that it is sufficient to show that the generation of new positions in the algorithm have a probability of zero to miss any subset in $S$ with a positive volume infinitely often. For example, an algorithm that generates new positions uniformly distributed on $S$ would satisfy this condition.
+This means that it is sufficient to show that the generation of new positions in the algorithm have a probability of zero to miss any subset of $S$ with a positive volume infinitely often. For example, an algorithm that generates new positions uniformly distributed on $S$ would satisfy this condition.
 
 In summary, an algorithm that satisfies the *algorithm condition* and the *convergence condition (for global search)* is guaranteed to converge to the optimality region, which is stated in the following theorem:
 
@@ -439,7 +445,7 @@ In summary, an algorithm that satisfies the *algorithm condition* and the *conve
 Assume that $f$ is a measurable function, $S$ is a measurable subset of $\mathbb{R}^n$ and both the algorithm condition and the convergence condition (for global search) are satisfied. If $\{x_i\}^{\infty}_{i=0}$ is a sequence generated by the algorithm, D, then
 
 $$
-  \lim_{i\rightarrow \infty} \ P(x_i \in R_{g,\epsilon}) = 1
+  \lim_{i\rightarrow \infty} \ P(x_i \in R_{\epsilon}) = 1
 $$
 
 :::
@@ -453,9 +459,9 @@ $$
   \mu_i(\text{dist}(x_{i+1}, R_{\epsilon}) \leq \text{dist}(x_{i}, R_{\epsilon})-\gamma \ \text{  or  } \  x_i \in R_{\epsilon} ) \geq \eta
 $$
 
-with a probability measure $\mu_i$ and a distance measure $\text{dist}()$. 
+for all probability measures $\mu_i$ and a distance measure $\text{dist}()$ where $x_{i+1} = D(x_i,\xi)$. 
 
-This means that the algorithm must be able to get one step closer to the optimality region in each iteration with a non-zero probability, and the fitness function $f$ on a compact set $S$ must be unimodal, which means that it has exactly one minimum, what is also the global minimum. Later, we will explain why this condition, extended to a larger set of functions, leads to convergence to a local minimum for the PSO.
+This means that the algorithm must be able to get closer to the optimality region by at least $\gamma$ in each iteration with a non-zero probability, and the fitness function $f$ on a compact set $S$ must be unimodal, which means that it has exactly one minimum, which is also the global minimum. Later, we will explain why this condition, extended to a larger set of functions, leads to convergence to a local minimum for the PSO.
 
 Thus, for a stochastic search algorithm that satisfies the *algorithm condition* and the *convergence condition (for local search)*, the following theorem applies:
 
@@ -468,7 +474,7 @@ $$
 
 :::
 
-It is difficult to prove that an algorithm satisfies the *convergence condition (for local search)*, so one may ask why this is important at all. The biggest advantage of local search algorithms is that they usually converge much faster than global search algorithms. Even if it is in local minimas, restarting can often increase the chance of finding the global minimum at some point. In case it is sufficient to find a good local minimum, a local search algorithm is preferable in most cases.
+It is difficult to prove that an algorithm satisfies the *convergence condition (for local search)*, so one may ask why this is important at all. The biggest advantage of local search algorithms is, that they usually converge much faster than global search algorithms. Even if it is in local minima, restarting can often increase the chance of finding the global minimum at some point. In case it is sufficient to find a good local minimum, a local search algorithm is preferable in most cases.
 
 
 ### Convergence of the PSO
@@ -523,11 +529,11 @@ plot_ly(z = grid*1, type = "heatmap", x = colnames(grid), y=rownames(grid), colo
 
 In the HTML version of this thesis, the diagram can be displayed with additional information as a mouse-hover, which facilitates the precise classification of a parameter pair.
 
-Returning to the convergence analysis of the PSO analyzed in [@FbEn2010], which uses parameters $w$, $c_p$, and $c_g$ that lie in the convergent parameter region. This leads to a standard PSO that converges with all particles to a single point $\hat{p}$.
 
-Accordingly, the *convergence condition (for local search)* must be satisfied, which means that the PSO must be able to reduce the distance to the optimality region in each iteration with a downward bounded non-zero probability. Unfortunately, this is not the case, as can be seen in a simple example. Suppose the PSO is to minimize a 2-dimensional objective function $f$ with only two particles and the initial positions are $x_1=(k_1, k_2)$, $x_2=(k_1, k_2) + a_1 \cdot (1, 0)$ and the initial velocities are $v_1=a_2 \cdot (1, 0)$ and $v_2=a_3 \cdot (1, 0)$ with constants $k_1, k_2, a_1, a_2$, and $a_3$. It follows that all particles and saved positions have $k_2$ in the second coordinate, resulting in a zero in the second coordinate of the velocity update in all iterations. Therefore, the second coordinate with $k_2$ is not guaranteed to lead to the optimality region and the PSO cannot improve in this coordinate, which contradicts with the *convergence condition (for local search)* and it follows that the PSO is not a local search algorithm.
 
-The possibility of this premature stagnation in a coordinate decreases significantly with increasing particle number, which is why it is very unlikely in practice. In order for the PSO to still be classified as a local search algorithm, a variant of the PSO was developed in [@FbEn2010], called the guaranteed convergence PSO (GCPSO). In this variant, it is guaranteed that it is at least possible to randomly shift the position of the global best particle in each coordinate by a uniformly generated value from the interval $[-\rho_i, \rho_i]$ in iteration $i$. Therefore, the GCPSO does not stagnate in the above example and it is possible to prove that the *convergence condition (for local search)* is satisfied. The exact implementation of the value $\rho_i$ and how it is changed per iteration is quite technical and is not exactly reproduced here. Further, it can be imagined that $\rho_0$ is chosen large enough and doubles per iteration if the global best position is successfully changed and halves if the global best particle is not changed. This behavior of the GCPSO is needed to argue why the space of functions is larger than the unimodal functions. 
+Furthermore, the choice of parameters $w$, $c_p$ and $c_g$ is assumed to lie in the convergent parameter region, which leads to the PSO converging to a point $\hat{p}$ with all particles. The point $\hat{p}$ is not necessarily a local minimum. To see this, we examine the *convergence condition (for local search)* for the PSO. This would mean that the PSO must be able to reduce the distance to the optimality region in each iteration with a downward bounded non-zero probability. Unfortunately, this is not the case, as can be seen in a simple example. Suppose the PSO is to minimize a 2-dimensional objective function $f$ with only two particles and the initial positions are $x_1=(k_1, k_2)$, $x_2=(k_1, k_2) + a_1 \cdot (1, 0)$ and the initial velocities are $v_1=a_2 \cdot (1, 0)$ and $v_2=a_3 \cdot (1, 0)$ with constants $k_1, k_2, a_1, a_2$, and $a_3$. It follows that all particles and saved positions have $k_2$ in the second coordinate, resulting in a zero in the second coordinate of the velocity update in all iterations. Therefore, the second coordinate with $k_2$ is not guaranteed to lead to the optimality region and the PSO cannot improve in this coordinate, which contradicts with the *convergence condition (for local search)* and it follows that the PSO is not a local search algorithm.
+
+The possibility of this premature stagnation in a coordinate decreases significantly with increasing particle number, which is why it is very unlikely in practice. In order for the PSO to still be classified as a local search algorithm, a variant of the PSO was developed in [@FbEn2010], called the guaranteed convergence PSO (GCPSO). In this variant, it is guaranteed that it is at least possible to randomly shift the position of the global best particle in each coordinate by a uniformly generated value from the interval $[-\rho_i, \rho_i]$ in iteration $i$. Therefore, the GCPSO does not stagnate in the above example and it is possible to prove that the *convergence condition (for local search)* is satisfied. The exact implementation of the value $\rho_i$ and how it is changed per iteration is quite technical and is not exactly reproduced here. Further, it can be imagined that $\rho_0$ is chosen large enough and doubles per iteration if the global best position is successfully changed and halves if the global best particle is not changed. This behavior of the GCPSO is necessary to explain why the GCPSO for multimodal functions can converge to a local minimum.
 
 
 Assume that the function $f$ is multimodal and therefore has several local minimas on $S$. But it is possible to divide the space $S$ and all minimas $k$ into compact subsets $\hat{S}_k \subseteq S$ with $\hat{S}_j \cap \hat{S}_t = \emptyset \ \forall j\neq t$ on which $f$ is unimodal and therefore has exactly one minimum. It follows that if the GCPSO with hyperparameters chosen from the convergent parameter region is applied to this problem, it will initially jump around between the subsets $\hat{S}_k$. However, due to the choice of parameters, the swarm will eventually contract and converge towards the global best particle. From this point on, the GCPSO stagnates, which is why the $\rho_i$ becomes smaller and smaller. After a certain iteration, it is no longer possible for the GCPSO to leave the current subset $\hat{S}_{k^*}$. Subsequently, all requirements for the *convergence condition (for local search)* in the respective subset $\hat{S}_{k^*}$ hold, which is why the swarm converges with probability 1 towards the minimum in this subset. It cannot be guaranteed in which subset $\hat{S}_k$ this happens, so it can only be said that the GCPSO converges to at least a local minimum if the function $f$ can be divided into compact subsets on which $f$ is unimodal. 
@@ -536,9 +542,7 @@ Assume that the function $f$ is multimodal and therefore has several local minim
 It is clear that the standard PSO and also the GCPSO do not satisfy the *convergence condition (for global search)*, since it cannot be guaranteed that every region in $S$ is searched. However, this can be enforced by rather trivial changes to the algorithm. For example, by introducing a particle that is randomly generated every $k$ iterations. Another approach is to restart the PSO when the majority of particles are in a small region. Other approaches and their advantages are discussed in [@FbEn2010].
 
 
-In this theoretical approach, the behavior of the PSO is analyzed with increasing iterations to infinity. In practice, the PSO is often used for complex problems, and usually a local minimum with a Pareto-optimal objective value is sufficient for the purpose, since a fast solution is usually preferred. To achieve faster convergence to Pareto-optimal minima, the decreasing inertia weight $w$ is used, and to increase the probability of finding the global optimum, the PSO is restarted after the maximum number of iterations. This is often done until a certain time or number of restarts is reached.
-
-
+In this theoretical approach, the behavior of the PSO is evaluated as the number of iterations approaches infinity. In practical applications, PSO is frequently utilized to tackle complex problems and a local minimum with an acceptable objective value is deemed sufficient as speed is often prioritized. To expedite convergence to minima, the decreasing inertia weight $w$ is employed. To enhance the likelihood of finding the global optimum or an acceptable local minimum, the PSO is restarted after a predetermined maximum number of iterations. This process is repeatedly carried out until a specified time or number of restarts has been reached.
 
 
 ## Example MVP
