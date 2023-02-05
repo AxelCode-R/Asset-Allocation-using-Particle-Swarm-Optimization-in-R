@@ -368,7 +368,8 @@ It turns out that function stretching does not provide any benefits in this part
 
 
 ## Local PSO
-The local PSO is a more general case of the standard PSO, which is also referred to as global PSO. The only difference is the selection of the global best particle by defining a neighborhood. Each particle $x_i$ has a neighborhood $N(x_i, \bar{k})$, and the global best particle in its neighborhood is called the local best particle of $x_i$. If the neighborhood is chosen large enough to contain all particles, it corresponds to the standard PSO (global PSO). A simple definition of a neighborhood with $k$ neighbors for particles $x_i$ given in [@Enge2013] would be:
+The standard PSO, also referred to as global PSO is a special case of the local PSO. The main difference lies in how the best particle is selected. In the local PSO, after the particles $x_1, x_2, \cdots$ are initialized, each particle $x_i$ is assigned a neighborhood $N(x_i, \bar{k})$. The best particle within this neighborhood is referred to as the local best particle for particle $x_i$, and it replaces the global best particle in the velocity update. If the neighborhood is chosen to be large enough to include all particles, it becomes equivalent to the standard PSO. A simple way to define the neighborhood with $k$ neighbors for particle $x_i$ is given in [@Enge2013]:
+
 
 $$
   N(x_i, k) = \{ x_{i-\bar{k}}, x_{i-(\bar{k}-1)}, x_{i-(\bar{k}-2)}, \cdots, x_{i}, \cdots, x_{i+(\bar{k}-2)}, x_{i+(\bar{k}-1)}, x_{i+\bar{k}} \}
