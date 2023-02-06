@@ -6,7 +6,7 @@ editor_options:
   chunk_output_type: console
 ---
 # Particle Swarm Optimization {#spso}
-The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm [@PaVr2002]. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are extensibility, simplicity, and low computational cost, since only basic mathematical operators are used.
+The PSO was developed by J. Kennedy as a global optimization method based on swarm intelligence and presented to the public in 1995 by Eberhart and Kennedy [@KeEb1995]. The original PSO was intended to resemble a flock of birds flying through the sky without collisions. Therefore, its first applications were found in particle physics to analyze moving particles in high-dimensional spaces, which the name Particle recalls. Later, it was adapted in Evolutionary Computation to exploit a set of potential solutions in high dimensions and to find the optima by cooperating with other particles in the swarm [@PaVr2002]. Since it does not require gradient information, it is easier to apply than other global optimization methods. It can find the optimum by considering only the result of the function to be optimized. This means that the function can be arbitrarily complex and it is still possible to reach the global optimum. Other advantages are extensibility, simplicity, and low computational costs, since only basic mathematical operators are used.
 
 ## The Algorithm
 Each particle $d$ with position $x_d$ moves in the search space $\mathbb{R}^N$ and has its own velocity $v_d$ and remembers its previous best position $p_{p,d}$. After each iteration, the velocity changes in the direction of the intrinsic velocity, the best previous position, and the global best position $p_g$ of all particles. A position change from $i$ to $i+1$ can be calculated by the following two equations [@PaVr2002]:
@@ -335,7 +335,7 @@ To gain an even better understanding of the behavior of a PSO, a WebApp was deve
 
 
 ## Simple Constraint Handling
-The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure of constraints. This can be used to create a generic constraint handling function for these particular QP's. Both problems must satisfy the following equation:
+The simplest method for dealing with constraints is the penalty method, which takes into account the intensity of constraint breaks by increasing the objective value of a minimization problem. The two common problems studied in the last two chapters are quadratic problems with the same structure of constraints. This can be used to create a generic constraint handling function for these particular QP's. Both problems has to satisfy the following equation:
 
 $$
   A^T \times x  \geq b_0
@@ -397,14 +397,14 @@ fn <- function(x){
 ```
 
 
-This approach to dealing with constraints is called the penalization method and is definitely the most straightforward approach. Its disadvantage is the fact that the PSO has to find a balance between the violation of constraints and the goal. As explained in [@InSi2008], there are three other constraint handling methods, but the results show that none of them is superior. The treatment of constraints should be chosen appropriately for the given problem. For example, it may be useful to use the feasibility preservation technique to obtain a solution that is guaranteed not to break any constraints. The disadvantages here are longer computation time and less exploration of particles, since only feasible solutions can be stored as personal or global best solutions.
+This approach to handle constraints is called the penalization method and is definitely the most straightforward approach. Its disadvantage is the fact that the PSO has to find a balance between the violation of constraints and the goal. As explained in [@InSi2008], there are three other constraint handling methods, but the results show that none of them is superior. The treatment of constraints should be chosen appropriately for the given problem. For example, it may be useful to use the feasibility preservation technique to obtain a solution that is guaranteed not to break any constraints. The disadvantages here are longer computation time and less exploration of particles, since only feasible solutions can be stored as personal or global best solutions.
 
 
 
 
 ## Convergence Analysis of the Standard PSO
 
-This section summarizes the convergence analysis of the standard PSO with constant inertia weight $w$ performed in [@FbEn2010] and in [@FbEn2007], whose main goal is to prove whether the PSO converges to a local or even a global minimum. The results from the sources are presented in a simplified form so that the full scope can be understood. No mathematical foundations are proven, as this would otherwise be beyond the scope of this thesis. It is recommended to read the detailed proofs in the referenced sources to gain a deeper understanding. The structure of this section begins by gathering the conditions that must be met for a general stochastic search algorithm to be classified as a local or global search algorithm. Then, these conditions are used to classify the standard PSO with constant inertia weight $w$. It follows that certain conditions must be imposed on the hyperparameters and the PSO must be modified to be classified as a global or local search algorithm. Finally, these findings are applied to the practical implementation of PSO to derive relevant conclusions.
+This section summarizes the convergence analysis of the standard PSO with constant inertia weight $w$ performed in [@FbEn2010] and in [@FbEn2007], whose main goal is to prove whether the PSO converges to a local or even a global minimum. The results from the sources are presented in a simplified form so that the full scope can be understood. No mathematical foundations are proven, as this would otherwise be beyond the scope of this thesis. It is recommended to read the detailed proofs in the referenced sources to gain a deeper understanding. The structure of this section begins by gathering conditions that have to be met for a general stochastic search algorithm to be classified as a local or global search algorithm. Then, these conditions are used to classify the standard PSO with constant inertia weight $w$. It follows that certain conditions have to be imposed on the hyperparameters and the PSO has to be modified to be classified as a global or local search algorithm. Finally, these findings are applied to the practical implementation of PSO to derive relevant conclusions.
 
 ### Convergence of a General Stochastic Search Algorithm
 We start by defining a general problem where a measurable function $f: \mathbb{R}^n\rightarrow\mathbb{R}$ has to be minimized on the measurable search space $S \subseteq \mathbb{R}^n$. To do so, we use a procedure that starts with a position generated from the search space $S$ and in each iteration compares its old position with a new one and keeps one of the two. More precisely, we assume that in each iteration of the procedure a random vector $\xi$ is selected according to a probability measure $\mu_i$ (for iteration $i$) and then compared to the current position. This comparison of positions and the return of one of them is denoted by the mapping $D$. For the procedure to be classified as an algorithm, it is sufficient to show that the following *algorithm condition* is satisfied:
@@ -427,7 +427,7 @@ $$
 
 and $L$ denotes the Lebesgue measure.
 
-We are now interested in the conditions under which the algorithm is guaranteed to converge to the optimality region. For this purpose, we first consider the simpler case of global convergence, for which the following convergence condition must be satisfied:
+We are now interested in the conditions under which the algorithm is guaranteed to converge to the optimality region. For this purpose, we first consider the simpler case of global convergence, for which the following convergence condition has to be satisfied:
 
 **Convergence condition (for global search):** Sufficient condition for convergence to a global minimum: For any (Borel) subset $A$ of $S$ with a positive Lebesgue measure $L(A)>0$,
 
@@ -461,7 +461,7 @@ $$
 
 for all probability measures $\mu_i$ and a distance measure $\text{dist}()$ where $x_{i+1} = D(x_i,\xi)$. 
 
-This means that the algorithm must be able to get closer to the optimality region by at least $\gamma$ in each iteration with a non-zero probability, and the fitness function $f$ on a compact set $S$ has to be unimodal, which means that it has exactly one minimum, which is also the global minimum. Later, we will explain why this condition, extended to a larger set of functions, leads to convergence to a local minimum for the PSO.
+This means that the algorithm has to be able to get closer to the optimality region by at least $\gamma$ in each iteration with a non-zero probability, and the fitness function $f$ on a compact set $S$ has to be unimodal, which means that it has exactly one minimum, which is also the global minimum. Later, we will explain why this condition, extended to a larger set of functions, leads to convergence to a local minimum for the PSO.
 
 Thus, for a stochastic search algorithm that satisfies the *algorithm condition* and the *convergence condition (for local search)*, the following theorem applies:
 
@@ -482,7 +482,7 @@ It is difficult to prove that an algorithm satisfies the *convergence condition 
 
 First of all it has to be ensured that the PSO satisfies the *algorithm condition*. That is, the *algorithm condition* is satisfied if the algorithm has a mapping $D$ that compares two positions and returns the position with the lowest objective value that is also in the domain of definition. In terms of the PSO, we are concerned with the behavior when the global best position is changed. If a new personal best position $\xi$ is found, it is guaranteed to be in the search space, since all calculated positions are pushed back to their edge if they are outside the search space. Then, the PSO compares the objective value of $\xi$ with the objective value of the previous global best position $z$ and stores the position with the lowest objective value as the global best position. Thus, the PSO satisfies the *algorithm condition*. 
 
-Before we can begin to analyze whether the PSO converges to a local or global minimum, conditions must first be placed on the hyperparameters to ensure that the entire swarm converges to a fixed point. In [@FbEn2010], results were referenced from [@RiPo2007], which analyzed the convergence property of a deterministic PSO, i.e., when the uniformly random numbers are replaced by their upper bounds. Subsequently, the results were verified by simulations of the stochastic standard PSO. This work was subsequently extended by [@Mjly2006] to deal directly with the stochastic version of the standard PSO. 
+Before we can begin to analyze whether the PSO converges to a local or global minimum, conditions has to be placed on the hyperparameters to ensure that the entire swarm converges to a fixed point. In [@FbEn2010], results were referenced from [@RiPo2007], which analyzed the convergence property of a deterministic PSO, i.e., when the uniformly random numbers are replaced by their upper bounds. Subsequently, the results were verified by simulations of the stochastic standard PSO. This work was subsequently extended by [@Mjly2006] to deal directly with the stochastic version of the standard PSO. 
 
 In [@Mjly2006], the trajectory of each particle $d$ is described as a sequence of random variables $\{\pmb{X}^d_i\}$, with particle positions $\pmb{X}^d_i$ in iteration $i$. This is used to determine the following three properties that govern the convergence behavior of the PSO: Property 1 is satisfied if the expected value of particle positions $\pmb{X}^d_i$ converges to a fixed point for each particle, which can be summarized as $\lim_{i\rightarrow \infty} E[\pmb{X}^d_i] = p^d \ \forall d$. Property 2 is satisfied if the variance of the positions for each particle tends to zero, which can be summarized as $\lim_{i\rightarrow \infty} Var[\pmb{X}^d_i] = 0 \ \forall d$. Property 3 is satisfied if the entire particle swarm converges to a fixed point in the mean square, i.e., all particle positions converge to a single point $\hat{p}$, which can be summarized as $\lim_{i\rightarrow \infty} E[(\pmb{X}_i^d-\hat{p})^2]=0 \ \forall d$. 
 
@@ -531,7 +531,7 @@ In the HTML version of this thesis, the diagram can be displayed with additional
 
 
 
-Furthermore, it is assumed that the choice of parameters $w$, $c_p$, and $c_g$ lies within the convergent parameter region, leading the PSO algorithm to converge to a point $\hat{p}$ with all particles. The point $\hat{p}$ is not necessarily a local minimum. To see this, we examine the *convergence condition (for local search)* for the PSO. This would mean that the PSO must be able to reduce the distance to the optimality region in each iteration with a downward bounded non-zero probability. Unfortunately, this is not the case, as can be seen in a simple example. Suppose the PSO is to minimize a 2-dimensional objective function $f$ with only two particles and the initial positions are $x_1=(k_1, k_2)$, $x_2=(k_1, k_2) + a_1 \cdot (1, 0)$ and the initial velocities are $v_1=a_2 \cdot (1, 0)$ and $v_2=a_3 \cdot (1, 0)$ with constants $k_1, k_2, a_1, a_2$, and $a_3$. It follows that all particles and saved positions have $k_2$ in the second coordinate, resulting in a zero in the second coordinate of the velocity update in all iterations. Therefore, the second coordinate with $k_2$ is not guaranteed to lead to the optimality region and the PSO cannot improve in this coordinate, which contradicts with the *convergence condition (for local search)* and it follows that the PSO is not a local search algorithm.
+Furthermore, it is assumed that the choice of parameters $w$, $c_p$, and $c_g$ lies within the convergent parameter region, leading the PSO algorithm to converge to a point $\hat{p}$ with all particles. The point $\hat{p}$ is not necessarily a local minimum. To see this, we examine the *convergence condition (for local search)* for the PSO. This would mean that the PSO has to be able to reduce the distance to the optimality region in each iteration with a downward bounded non-zero probability. Unfortunately, this is not the case, as can be seen in a simple example. Suppose the PSO is to minimize a 2-dimensional objective function $f$ with only two particles and the initial positions are $x_1=(k_1, k_2)$, $x_2=(k_1, k_2) + a_1 \cdot (1, 0)$ and the initial velocities are $v_1=a_2 \cdot (1, 0)$ and $v_2=a_3 \cdot (1, 0)$ with constants $k_1, k_2, a_1, a_2$, and $a_3$. It follows that all particles and saved positions have $k_2$ in the second coordinate, resulting in a zero in the second coordinate of the velocity update in all iterations. Therefore, the second coordinate with $k_2$ is not guaranteed to lead to the optimality region and the PSO cannot improve in this coordinate, which contradicts with the *convergence condition (for local search)* and it follows that the PSO is not a local search algorithm.
 
 The possibility of this premature stagnation in a coordinate decreases significantly with increasing particle number, which is why it is very unlikely in practice. In order for the PSO to still be classified as a local search algorithm, a variant of the PSO was developed in [@FbEn2010], called the guaranteed convergence PSO (GCPSO). In this variant, it is guaranteed that it is at least possible to randomly shift the position of the global best particle in each coordinate by a uniformly generated value from the interval $[-\rho_i, \rho_i]$ in iteration $i$. Therefore, the GCPSO does not stagnate in the above example and it is possible to prove that the *convergence condition (for local search)* is satisfied. The exact implementation of the value $\rho_i$ and how it is changed per iteration is quite technical and is not exactly reproduced here. Further, it can be imagined that $\rho_0$ is chosen large enough and doubles per iteration if the global best position is successfully changed and halves if the global best particle is not changed. This behavior of the GCPSO is necessary to explain why the GCPSO can converge to a local minimum for multimodal functions.
 
@@ -764,7 +764,7 @@ The corresponding portfolios for each $\lambda$ are connected with a grey line t
 
 ## Example ITP-MSTE
 
-A similar ITP-MSTE solved with `solve.QP` in section \@ref(exampleitpsolveqp) is used as a benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. The parameters for the PSO are a swarm size of 100, 100 iterations, the inertia weight starts at $1.2$ and decreases to zero, the coefficients are $c_p=c_g=0.5$, the upper bound is $0.05$ and the starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
+A similar ITP-MSTE solved with `solve.QP` in section \@ref(exampleitpsolveqp) is used as a benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. The parameters for the PSO are a swarm size of 100, 300 iterations, the inertia weight starts at $1.2$ and decreases to zero, the coefficients are $c_p=c_g=0.5$, the upper bound is $0.05$ and the starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
 
 
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of solving ITP-MSTE with solve.QP and the PSO"}
@@ -819,9 +819,9 @@ itp_QP <- function(pool_returns, bm_returns){
     )),
     bvec = c(
       -1, # sum w <= 1
-      0.99, # sum w >= 0.99
+      0.96, # sum w >= 0.99
       rep(0, ncol(pool_returns)), # long only
-      rep(-0.05, ncol(pool_returns)) # w <= 0.05
+      rep(-0.04, ncol(pool_returns)) # w <= 0.05
     ),
     meq = 0
   )
@@ -833,7 +833,7 @@ itp_QP <- function(pool_returns, bm_returns){
 
   
   res <- list(
-    "value" = qp$value,
+    "value" = as.numeric(0.5 * t(qp$solution) %*% mat$Dmat %*% qp$solution - t(mat$dvec) %*% qp$solution),
     "var" = as.numeric(
       var(pool_returns %*% qp$solution - bm_returns)),
     "solution" = setNames(qp$solution, colnames(pool_returns))
@@ -854,7 +854,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
     )),
     bvec = c(
       -1, # sum w <= 1
-      0.99, # sum w >= 0.99
+      0.96, # sum w >= 0.99
       rep(0, ncol(pool_returns)) # long only
     ),
     meq = 0
@@ -873,12 +873,12 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
       fn = function(x){
         fitness <- calc_fit(x)
         constraints <- calc_const(x)
-        return(fitness+100*constraints)
+        return(fitness+1000*constraints)
       },
       lower = 0,
-      upper = 0.05,
+      upper = 0.04,
       control = list(
-        s = 100, # swarm size
+        s = 200, # swarm size
         c.p = 0.5, # inherit best
         c.g = 0.5, # global best
         maxiter = 300, # iterations
@@ -962,21 +962,21 @@ reactable(
 
 
 
-It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
+It can be seen that in all PSO runs, acceptable fitness was achieved with negligible constraint breaks, but much more computation time was required.
 
 ## Pros and Cons for Continuous Problems
-A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP` alone, as it is for example the case with mixed-integer-quadratic-problems. In this type of problems, the condition is that the variable of interest $x$ must be an integer vector, which can only be solved continuously using `solve.QP` and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP` approach.
+A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP` alone, as it is for example the case with mixed-integer-quadratic-problems. In this type of problems, the condition is that the variable of interest $x$ has to be an integer vector, which can only be solved continuously using `solve.QP` and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP` approach.
 
 
 ## Discrete Problems
-A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of conditions and the difference in the objective value, which often can't reach the new optimum. A solution with broken conditions is not acceptable in practice and a `solve.QP` approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function `fn()`. In a portfolio with net asset value (`nav`) consisting of only American stocks with weights $w_i$ and closing prices $p_i$ can be discretized to $w_i^d$ by the following formula:
+A continuous solution for a portfolio is not sufficient for practical purposes, since usually only integer amounts of assets can be purchased. It's even worse if lot sizes are needed, because these can only be bought in minimum denomination of e.g. ten thousand. Lot sizes are often used in fixed income products. The biggest drawbacks of rounding a continuous solution are the disregarding of constraints and the difference in the objective value, which often can't reach the new optimum. A solution with broken conditions is not acceptable in practice and a `solve.QP` approach only produces one solution, which is why its insecure to hope for a sufficient solution after rounding. The PSO doesn't have these drawbacks and can be easily used for discrete problems by rounding the input of the objective function `fn()`. In a portfolio with net asset value (`nav`) consisting of only American stocks with weights $w_i$ and closing prices $p_i$ can be discretized to $w_i^d$ by the following formula:
 
 $$
   w_i^d =\text{round}(w_i \cdot \frac{\text{nav}}{p_i})\cdot \frac{p_i}{\text{nav}}.
 $$
 
 ## Example Discrete ITP-MSTE
-This example analyses the error of rounding a solution with the `solve.QP` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP` and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the SP500TR with its top 100 assets derived from the example with discarding in section \@ref(exampleitpsolveqp) and tries to construct a tracking portfolio with the constraints long only, $0.99 \leq \textstyle\sum w_i \leq 1$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The used prices are closing prices and both PSO's have 100 particles, 300 iterations, coefficients $c_p=c_g=0.5$ and the inertia weight starts at $1.2$ and decreases to zero. The results can be observed in the table below:
+This example analyses the error of rounding a solution with the `solve.QP` approach and compares it to a discrete PSO. A second discrete PSO is added, that takes the continuous solution of the `solve.QP` and uses it as starting position of one particle. The ITP-MSTE focuses on replicating the SP500TR with its top 100 assets derived from the example with discarding in section \@ref(exampleitpsolveqp) and tries to construct a tracking portfolio with the constraints long only, $0.99 \leq \textstyle\sum w_i \leq 1$ and $\text{nav} = 10000$ in the time frame from 2018-01-01 to 2019-12-31. The prices used to discretize are the closing prices on 2019-12-31 and both PSO's have 100 particles, 300 iterations, coefficients $c_p=c_g=0.5$ and the inertia weight starts at $1.2$ and decreases to zero. The results can be observed in the table below:
 
 
 ```{r pso9, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap="Comparison of solving a discrete ITP-MSTE with PSO and the solve.QP with rounding afterwards"}

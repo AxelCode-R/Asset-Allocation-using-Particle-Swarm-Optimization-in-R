@@ -151,6 +151,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 
 
 ```{r variants2, echo=F, fig.cap = "Statistics of the standard PSO for comparison with later variants", strip.white=T}
+load("data/save_variant1.rdata")
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -342,6 +343,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 
 
 ```{r variants4, echo=F, fig.cap="Comparison of statistics between the PSO with functional stretching and the standard PSO"}
+load("data/save_variant2.rdata")
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -368,7 +370,7 @@ It turns out that function stretching does not provide any benefits in this part
 
 
 ## Local PSO
-The standard PSO, also referred to as global PSO is a special case of the local PSO. The main difference lies in how the best particle is selected. In the local PSO, after the particles $x_1, x_2, \cdots$ are initialized, each particle $x_i$ is assigned a neighborhood $N(x_i, \bar{k})$. The best particle within this neighborhood is referred to as the local best particle for particle $x_i$, and it replaces the global best particle in the velocity update. If the neighborhood is chosen to be large enough to include all particles, it becomes equivalent to the standard PSO. A simple way to define the neighborhood with $k$ neighbors for particle $x_i$ is given in [@Enge2013]:
+The standard PSO, also referred to as global PSO is a special case of the local PSO. The main difference lies in how the best particle is selected. In the local PSO, after the particles $x_1, x_2, \cdots, x_N$ are initialized, each particle $x_i$ is assigned a neighborhood $N(x_i, \bar{k})$. The best particle within this neighborhood is referred to as the local best particle for particle $x_i$, and it replaces the global best particle in the velocity update. If the neighborhood is chosen to be large enough to include all particles, it becomes equivalent to the standard PSO. A simple way to define the neighborhood with $k$ neighbors for particle $x_i$ is given in [@Enge2013]:
 
 
 $$
@@ -391,7 +393,7 @@ In the latter case, it can be seen that the overflowing boundary will continue o
 
 
 ### Implementation
-First, the neighbors for each particle are stored in a suitable data structure before the main part of the PSO is executed. In the local version there is no global best particle, instead the global best particle for the neighborhood of each particle has to be calculated in each step.
+First, the neighbors for each particle are stored in a suitable data structure before the main part of the PSO is executed. In the local PSO, the global best particle is replaced by the local best particle, which must be determined for each particle in every iteration.
 
 ### Test Local PSO
 The PSO with particle neighborhoods is called `PSO-local` and is evaluated on the test problem with $k=10$:
@@ -475,6 +477,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 
 
 ```{r variants6, echo=F, fig.cap="Comparison of statistics between the local PSO and the standard PSO"}
+load("data/save_variant3.rdata")
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -655,7 +658,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 
 
 ```{r variants6next2, echo=F, fig.cap = "Comparison of statistics between the PSO with feasibility preservation and the standard PSO, starting from the same randomly selected initial particles obtained from the last iterations of the standard PSO solutions"}
-
+load("data/save_variant4.rdata")
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -690,7 +693,7 @@ The process of this PSO variant is significantly different from the standard PSO
 1\) Initialize: Each particle $d$ must initialize its own inertial weight $w_d^0=0.5$ and acceleration coefficients $c_{p,d}^0 = c_{g,d}^0 = 2$.
 
 
-2\) Velocity and positions: Update the velocity of each particle $d$ with the following switch-case for a uniform random number $r = \text{Unif}(0,1)$ in iteration $i+1$:
+2\) Velocity and positions: Update the velocity of each particle $d$ with the following switch-case for a uniform random number $r = \text{Unif}(0,1)$ and maximal iterations $i_{max}$, in iteration $i+1$:
 
 \begin{align*}
   v_d^{i+1} &= w_d^i \cdot v_d^{i}+c_{p,d}^i \cdot Z \cdot (p_{p,d}^i-x_d^i) + c_{g,d}^i \cdot Z \cdot (p_{g}^i-x_d^i) \\
@@ -760,7 +763,7 @@ c_{g,d}^{i+1} &=
 \end{align*}
 
 
-5\) Update the best positions: Update the personal best $P$ and global best $p_g$ positions as in the standard PSO.
+5\) Update the best positions: Update the personal best positions $p_{p,d}$ and global best position $p_g$ as in the standard PSO.
 
 
 6\) Repeat: Steps 2 to 5 are repeated until the maximum iteration $i_{max}$ is reached.
@@ -876,6 +879,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 
 
 ```{r variants8, echo=F, fig.cap="Comparison of statistics between the PSO with self-adaptive velocity and the standard PSO"}
+load("data/save_variant5.rdata")
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),
@@ -994,6 +998,7 @@ The aggregate statistics of the last iterations of all 100 runs can be found in 
 \vspace{-0.2cm}
 
 ```{r variants9, echo=F, fig.cap="Comparison of statistics between the PSO R package with standard PSO settings and the standard PSO"}
+load("data/save_variant6.rdata")
 reactable(
   df_res[df_res$iter==max(df_res$iter),],
   defaultColDef = colDef(align = "left"),

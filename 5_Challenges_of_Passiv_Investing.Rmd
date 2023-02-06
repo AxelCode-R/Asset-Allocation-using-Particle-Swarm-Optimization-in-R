@@ -11,7 +11,7 @@ In this chapter, two common challenges of passive portfolio management are analy
 Markowitz showed that diversifying risk across multiple assets reduces overall portfolio risk. This result was the beginning of the widely used modern portfolio theory, which uses mathematical models to create portfolios with minimal variance for a given return target. All such optimal portfolios for a given return target are called efficient and constitute the efficient frontier. The problem behind Markowitz's original MVP without constraints can be solved in a closed form, which is explained in [@Eric2021]. This type of MVP has no practical use, so only MVP problems with constraints and without closed forms are of interest in this thesis.
 
 
-### MVP: Problem
+### MVP Problem
 Let there be $N$ assets and their returns on $T$ different days, creating a return matrix $R \in \mathbb{R}^{T \times N}$. Each element $R_{t,i}$ contains the return of the $i$-th asset on day $t$. The estimated covariance matrix of the returns is $\textstyle\sum \in \mathbb{R}^{N \times N}$ and the estimation of the expected returns are $\mu \in \mathbb{R}^{N}$. The MVP problem with the risk aversion parameter $\lambda \in [0,1]$, as shown in [@Mari2005], can be formalized as follows:
 
 \begin{equation} 
@@ -58,7 +58,7 @@ cov
 ```
 
 
-This is all the data necessary to solve the MVP problem with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic minimization problem with the long only ($w_i \geq 0 \ \forall \ i$) constraint and the weights should sum to 1.
+This is all of the data needed to solve the MVP problem with $\lambda \in \{0.01, 0.02, ..., 0.99, 1\}$. All 100 portfolios are computed by solving a quadratic problem with constraints long only ($w_i \geq 0 \ \forall \ i$) and the weights should sum to one.
 
 
 ```{r MVPex4, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed"}
@@ -100,7 +100,7 @@ colnames(portfolios) <- colnames(returns)
 The resulting portfolios are plotted in the daily $\mu$-$\sigma$ diagram to create the efficient frontier:
 
 
-```{r MVPex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F, fig.cap = "Optimal MVP for each lambda and interpolated efficiency frontier"}
+```{r MVPex5, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", warning=F, message=F, fig.cap = "Optimal MVP for each lambda and interpolated efficient frontier"}
 plot_ly(data = mu_and_var, type = 'scatter', mode="lines+markers") %>%
   add_lines(y = ~mu, x = ~sd, name = "efficient frontier", mode="lines", type = 'scatter') %>%
   add_trace(x = ~sd, y=~mu, mode="markers", name = "lambda steps", type = 'scatter') %>%
@@ -133,7 +133,7 @@ p %>%
 It can be observed that the portfolio with the lowest variance was obtained with a diversified composition of the three assets. With gradually decreasing $\lambda$, the minimization problem starts to ignore the variance, which leads to a portfolio investing more in the riskiest asset with the highest return.
 
 
-### MVP: Compare Estimators
+### MVP Compare Estimators
 The above solution for the MVP problem was performed using a geometric mean to estimate the expected returns $\mu$ and was also used in the estimation of the covariance $\textstyle\sum$. This raises the question of whether the result is different from the classical approach of estimating these parameters using the arithmetic mean. The following plot illustrates the efficient frontier created from the MVP's as a function of $\lambda$ using the arithmetic mean versus the geometric mean to estimate $\mu$. The weights of the MVP's using the geometric mean are used to calculate $\mu$ and $\sigma$ as a function of the arithmetic mean to make both efficient frontiers comparable:
 
 
@@ -270,7 +270,7 @@ plot_ly(data = all, type = 'scatter', mode="lines+markers", y = ~mu, x = ~sd, na
 ```
 
 
-It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with $\lambda$ are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean returns as estimation for the expected returns.
+It can be seen, that both estimators produce portfolios on the same efficient frontier. If the aim of the MVP is to generate a portfolio with minimal variance for a given return target, the type of return needs to be specified to use the geometric or arithmetic mean. This specification will determine the type of estimator needed for the MVP. This analogy is not needed in the scope of this thesis, because the more generic portfolios specified with $\lambda$ are sufficient to create test-cases for the PSO. The later examples with the MVP will always use the geometric mean of returns as estimation for the expected returns.
 
 
 ## Index-Tracking Portfolio (ITP)
@@ -346,7 +346,7 @@ $$
 d = Cov(r_{bm}, R)^T.
 $$
 
-It is possible to add some basic constraints, as in the MVP to sum the weights to 1 and be long only. Despite the fact that this model is often used, it has a big disadvantage in that it cannot detect constant deviations in the returns. For this reason, the following model exists, which focuses on the mean square tracking error of returns (MSTE).
+It is possible to add some basic constraints, such as in the MVP problem where the sum of the weights should be one and all assets are long only. Despite the fact that this model is often used, it has a big disadvantage in that it cannot detect constant deviations in the returns. For this reason, the following model exists, which focuses on the mean square tracking error of returns.
 
 ### ITP with MSTE objective (ITP-MSTE) {#ITPMSTE}
 A good explanation of the ITP with MSTE objective can be found in [@AhBa2017]. The objective is to minimize the mean square tracking error (MSTE) of daily portfolio returns $r_{t, p}$ and daily benchmark returns $r_{t, bm}$ on $T$ historical days:
