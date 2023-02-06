@@ -764,7 +764,7 @@ The corresponding portfolios for each $\lambda$ are connected with a grey line t
 
 ## Example ITP-MSTE
 
-A similar ITP-MSTE solved with `solve.QP` in section \@ref(exampleitpsolveqp) is used as a benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should satisfy $0.99 \leq \textstyle\sum w_i \leq 1$. The parameters for the PSO are a swarm size of 100, 300 iterations, the inertia weight starts at $1.2$ and decreases to zero, the coefficients are $c_p=c_g=0.5$, the upper bound is $0.05$ and the starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
+A similar ITP-MSTE solved with `solve.QP` in section \@ref(exampleitpsolveqp) is used as a benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should satisfy $0.96 \leq \textstyle\sum w_i \leq 1$. The parameters for the PSO are a swarm size of 200, 300 iterations, the inertia weight starts at $1.2$ and decreases to zero, the coefficients are $c_p=c_g=0.5$, the upper bound is $0.04$ and the starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
 
 
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of solving ITP-MSTE with solve.QP and the PSO"}
@@ -962,7 +962,7 @@ reactable(
 
 
 
-It can be seen that in all PSO runs, acceptable fitness was achieved with negligible constraint breaks, but much more computation time was required.
+It can be seen that in all PSO runs, sufficient fitness was achieved with negligible constraint breaks, but much more computation time was required.
 
 ## Pros and Cons for Continuous Problems
 A PSO approach has advantages and disadvantages, since on the one hand any problem can theoretically be solved, but it cannot be guaranteed that the solution is also optimal. In addition, the calculations take much longer than with the `solve.QP` approach, which raises the question why a PSO approach should have any benefit at all. This is exactly the case, if the solution of the problem is no longer possible by the `solve.QP` alone, as it is for example the case with mixed-integer-quadratic-problems. In this type of problems, the condition is that the variable of interest $x$ has to be an integer vector, which can only be solved continuously using `solve.QP` and then rounded. However, this rounding error can become arbitrarily large, which is why the chances of the PSO approach to achieve a better solution are greater than with the `solve.QP` approach.
