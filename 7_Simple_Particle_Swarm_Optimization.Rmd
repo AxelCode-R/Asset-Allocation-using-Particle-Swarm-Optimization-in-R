@@ -451,7 +451,7 @@ $$
 :::
 
 
-Now we address the local convergence of the algorithm, which in addition to the *algorithm condition* must also satisfy the following condition:
+Now we address the local convergence of the algorithm, which in addition to the *algorithm condition* has to satisfy the following condition:
 
 **Convergence condition (for local search):** Sufficient condition for convergence to at least a local minimum: The function $f$ is unimodal on a compact set $S$ and for any $x_i\in S$ there exists a $\gamma > 0$ and an $0<\eta\leq1$ such that
 
