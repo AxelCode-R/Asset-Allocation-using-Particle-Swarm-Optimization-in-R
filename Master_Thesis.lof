@@ -6,12 +6,12 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {6.1}{\ignorespaces Cumulative daily returns of IBM, Apple and Google}}{19}{figure.6.1}%
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Optimal MVP for each lambda and interpolated efficiency frontier}}{20}{figure.6.2}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Optimal MVP for each lambda and interpolated efficient frontier}}{20}{figure.6.2}%
 \contentsline {figure}{\numberline {6.3}{\ignorespaces Portfolio composition of MVP's in respect of each lambda}}{20}{figure.6.3}%
 \contentsline {figure}{\numberline {6.4}{\ignorespaces Comparison of the use of the arithmetic and geometric means in the calculation of MVP's for each lambda. The plot of MVP's in terms of mu - sigma is calculated with the arithmetic mean using the resulting portfolio weights}}{21}{figure.6.4}%
 \contentsline {figure}{\numberline {6.5}{\ignorespaces Comparison of ITP-TEV and ITP-MSTE objectives, presented as cumulative daily returns}}{24}{figure.6.5}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Comparison of efficiency frontiers generated from an ascending pool of assets, starting with the asset that has the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm}}{29}{figure.7.1}%
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Comparison of efficient frontiers generated from an ascending pool of assets, starting with the asset that has the lowest variance and sequentially adding the asset with the next lowest variance to the pool. Displayed in a mu - sigma diagramm}}{29}{figure.7.1}%
 \contentsline {figure}{\numberline {7.2}{\ignorespaces Standard deviation between the performance of the SP500TR and the tracking portfolio over the fitting period for each asset pool of size N. The asset pool was created successively by discarding the five assets with the lowest weights to create the next pool}}{32}{figure.7.2}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {8.1}{\ignorespaces Visualization of the behavior of the standard PSO in a GIF.}}{37}{figure.8.1}%

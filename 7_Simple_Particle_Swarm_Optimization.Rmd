@@ -764,7 +764,7 @@ The corresponding portfolios for each $\lambda$ are connected with a grey line t
 
 ## Example ITP-MSTE
 
-A similar ITP-MSTE solved with `solve.QP` in section \@ref(exampleitpsolveqp) is used as a benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should satisfy $0.96 \leq \textstyle\sum w_i \leq 1$. The parameters for the PSO are a swarm size of 200, 300 iterations, the inertia weight starts at $1.2$ and decreases to zero, the coefficients are $c_p=c_g=0.5$, the upper bound is $0.04$ and the starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
+A similar ITP-MSTE solved with `solve.QP` in section \@ref(exampleitpsolveqp) is used as a benchmark for the PSO. In summary, the goal is to create a portfolio that minimizes the mean square error of the returns of itself and the SP500TR between 2018-01-01 and 2019-12-31. The pool of assets includes all assets that are present in 2019-12-31 and have no missing values. The constraints are long only and the weights should satisfy $0.97 \leq \textstyle\sum w_i \leq 1$. The parameters for the PSO are a swarm size of 200, 300 iterations, the inertia weight starts at $1.2$ and decreases to zero, the coefficients are $c_p=c_g=0.5$, the  maximum weight of each asset is $5\%$ and the starting position is the equally weighted vector $v$ with $\textstyle\sum v_i=1$. The PSO was run ten times, and the aggregated best and mean runs are compared to the `solve.QP` approach for seed 0 in the table below:
 
 
 ```{r pso8, echo = knitr::is_html_output(), class.source="code_fold_it_collapsed", fig.cap = "Comparison of solving ITP-MSTE with solve.QP and the PSO"}
@@ -819,9 +819,9 @@ itp_QP <- function(pool_returns, bm_returns){
     )),
     bvec = c(
       -1, # sum w <= 1
-      0.96, # sum w >= 0.99
+      0.97, # sum w >= 0.99
       rep(0, ncol(pool_returns)), # long only
-      rep(-0.04, ncol(pool_returns)) # w <= 0.05
+      rep(-0.05, ncol(pool_returns)) # w <= 0.05
     ),
     meq = 0
   )
@@ -854,7 +854,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
     )),
     bvec = c(
       -1, # sum w <= 1
-      0.96, # sum w >= 0.99
+      0.97, # sum w >= 0.99
       rep(0, ncol(pool_returns)) # long only
     ),
     meq = 0
@@ -876,7 +876,7 @@ itp_PSO <- function(pool_returns, bm_returns, silent = T){
         return(fitness+1000*constraints)
       },
       lower = 0,
-      upper = 0.04,
+      upper = 0.05,
       control = list(
         s = 200, # swarm size
         c.p = 0.5, # inherit best
