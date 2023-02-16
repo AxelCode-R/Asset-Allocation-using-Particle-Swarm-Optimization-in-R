@@ -39,5 +39,5 @@ knitr::knit_hooks$set(output = function(x, options) {
 ```
 
 
-# Preface
+# Preface {-}
 This is the online version of my Master Thesis called "Asset Allocation using Particle Swarm Optimization in R". In this thesis the Particle Swarm Optimization is extensively analyzed and tested for optimization problems in quantitative portfolio management. The PDF version can be downloaded by clicking the PDF button at the top of the page.
