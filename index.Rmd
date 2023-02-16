@@ -1,4 +1,5 @@
 --- 
+title: Asset Allocation using Particle Swarm Optimization in R
 documentclass: book
 classoption: oneside, a4paper, 12pt, openany
 github-repo: https://github.com/AxelCode-R/Asset-Allocation-using-Particle-Swarm-Optimization-in-R
@@ -12,10 +13,10 @@ editor_options:
   chunk_output_type: console
 description: This GitBook is the Master Thesis of Axel Roth, which was created for the graduation at the HFT Stuttgart.
 linestretch: 1
+author: Axel Roth
+date: "`r Sys.Date()`"
 ---
----
-title: `r if(knitr::is_html_output()){"Asset Allocation using Particle Swarm Optimization in R"}else{""}`
----
+
 
 ```{r, include=FALSE}
 def.source.hook  <- knitr::knit_hooks$get("source")
@@ -36,3 +37,7 @@ knitr::knit_hooks$set(output = function(x, options) {
 
 })
 ```
+
+
+# Preface
+This is the online version of my Master Thesis called "Asset Allocation using Particle Swarm Optimization in R". In this thesis the Particle Swarm Optimization is extensively analyzed and tested for optimization problems in quantitative portfolio management. The PDF version can be downloaded by clicking the PDF button at the top of the page.
